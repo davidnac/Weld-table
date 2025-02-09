@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Welding Wire Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 25px;
+            margin-top: 30px;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 25%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        select {
+            width: 15%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .table-container {
+            width: 90%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            height: 71vh; /* Fixed height of the table container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-bottom: 22px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+
+        th {
+            background-color: #98D8EF;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            position: sticky;
+            top: 0; /* Make header sticky */
+            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .sort-icon {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+       
+        /* Modal Styles */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+        }
+        .modal-header {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+        br {
+            display: block;
+            content: "";
+            margin-bottom: 10px; /* Adjust the space */
+        }
+        .highlighted {
+            background-color: #e0f7fa !important;
+        }
+
+        .section a{
+          color: #3674B5;
+          margin-left: 12px;
+          margin-right: 12px;
+          text-align: center;
+          font-size: 14px;
+          text-transform: uppercase;
+          text-decoration: none;
+       }
+
+    </style>
+
+    <script>
+
+        window.onload = function() {
+            document.getElementById("tableSelect").selectedIndex = 0;
+            changeTable();
+        }
+
+        //highlight clicked rows
+        document.addEventListener("DOMContentLoaded", function() {
+            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+
+            rows.forEach(row => {
+                row.addEventListener("click", function(event) {
+                    if (row.classList.contains("highlighted")) {
+                        row.classList.remove("highlighted");
+                    } else {
+                        rows.forEach(r => r.classList.remove("highlighted"));
+                        row.classList.add("highlighted");
+                    }
+                    event.stopPropagation();
+                });
+
+                  // Double-click event to call a function
+                  row.addEventListener("dblclick", function() {
+                    openModal(row);
+                });
+
+            });
+
+            
+
+            document.addEventListener("click", function() {
+                rows.forEach(row => row.classList.remove("highlighted"));
+            });
+        });
+
+
+        /*
+        window.onload = function() {
+            highlightSlashes();
+
+            let rows = document.querySelectorAll('#dataTable tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('dblclick', function() {
+                    let materialName = row.cells[0].textContent;
+                    let chemicalComposition = row.cells[5].textContent; // Composition Data from 6th column
+                    let header = 'Chemical Composition for ' + materialName;
+                    openModal(row, chemicalComposition, header);
+                });
+            });
+
+            // Close modal if clicked outside of modal content
+             let modal = document.getElementById('modal');
+             modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+              closeModal();
+            }
+         });
+        }
+*/
+        function searchTable() {
+                    let input = document.getElementById("search").value.toLowerCase();
+                    let table = document.querySelector("table:not([style*='display: none'])");
+                    if (!table) return;
+                    let rows = table.getElementsByTagName("tr");
+                    for (let i = 1; i < rows.length; i++) {
+                        let rowText = rows[i].textContent.toLowerCase();
+                        rows[i].style.display = rowText.includes(input) ? "" : "none";
+            }
+         }
+
+         function changeTable() {
+            let selectedTable = document.getElementById("tableSelect").value;
+            document.querySelectorAll("table").forEach(table => {
+                table.style.display = (table.id === selectedTable) ? "table" : "none";
+            });
+        }
+
+/*
+        function searchTable() {
+            let input = document.getElementById("search").value.toLowerCase();
+            let table = document.getElementById("dataTable");
+            let rows = table.getElementsByTagName("tr");
+            
+            for (let i = 1; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName("td");
+                let rowText = "";
+                for (let j = 0; j < cells.length; j++) {
+                    rowText += cells[j].textContent.toLowerCase() + " ";
+                }
+                rows[i].style.display = rowText.includes(input) ? "" : "none";
+            }
+        }*/
+
+        function sortTable(n) {
+            let table = document.getElementById("dataTable");
+            let rows = Array.from(table.rows).slice(1);
+            let sortedRows = rows.sort((rowA, rowB) => {
+                let cellA = rowA.cells[n].textContent.trim().toLowerCase();
+                let cellB = rowB.cells[n].textContent.trim().toLowerCase();
+                return cellA.localeCompare(cellB);
+            });
+            
+            sortedRows.forEach(row => table.appendChild(row));
+        }
+
+
+        function openModal(row) {
+            // Get the material name and the composition
+            let materialName = row.cells[1].textContent;
+            let composition = row.cells[4].textContent; // assuming the 6th column (index 5) holds the composition data
+
+            // Set the modal content header
+            let modalHeader = `Chemical Composition of ${materialName}`;
+
+            // Set the modal content
+            document.getElementById('modal-header').textContent = modalHeader;
+            document.getElementById('modal-content').textContent = composition;
+
+            // Show the modal
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+
+    </script>
+</head>
+<body>
+
+    <h2>Searchable Heat Treatments Table</h2>
+    <div class="controls">
+        <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
+        <select id="tableSelect" onchange="changeTable()">
+            <option value="dataTable">Safran (CFM)</option>
+            <option value="dataTable3">Pratt & Whitney (Civilian)</option>
+            <option value="dataTable2">Pratt & Whitney (Military)</option>
+        </select>
+    </div>
+
+
+    <div class="table-container">
+      <table id="dataTable">
+        <tr>
+            <th>Cycle No.</th>
+            <th>Heat Treat Cycle</th>
+            <th>Application</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Heat to 1325 degF ±25 degF (720 degC ±14 degC). Hold for 8 hours. Cool at 100 degF (55 degC) per hour to 1150 degF ±25 degF (620 degC ±14 degC). Hold for 8 hours. Air-cool or equivalent to room temperature.</td>
+            <td>Full age of Inconel 718 (NC19FeNb) and Incoloy 903 (Z3NK38)</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Heat to 1400 degF ±25 degF (760 degC ±14 degC). Hold for 16 hours. Cool to room temperature at convenient rate.</td>
+            <td>Full age of Rene’ 41, (NC19KDT), and Rene’ 77 (NK15CADT)</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Heat to 1550 degF ±25 degF (843 degC ±14 degC). Hold for 16 hours. Cool to room temperature at convenient rate.</td>
+            <td>Final age for Rene’ 77 (NK15CADT)</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Heat to 1150 degF ±15 degF (620 degC ±10 degC). Hold for 4 hours. Air-cool or equivalent to room temperature.</td>
+            <td>Aging of 17-4 PH (Z5CNU17)</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Heat to 1325 degF ±25 degF (720 degC ±14 degC). Hold for 1 hour. Air-cool or equivalent rate to room temperature.</td>
+            <td>Stress relief for A-286 (Z6NCT25) alloy</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Heat to 1925 degF ±25 degF (1052 degC ±14 degC). Hold for 30 min. Cool to 1000 degF (540 degC) at the rate not less than 30 degF (17 degC) per minute. Air-cool or equivalent rate to room temperature.</td>
+            <td>Solution treatment for 300 series stainless steel and Hastelloy X (NC22FeD)</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Heat to 1975 degF ±25 degF (1080 degC ±14 degC). Hold for 30 min. Cool to 1000 degF (540 degC) at a rate not less than 30 degF (17 degC) per minute. Air-cool or equivalent rate to room temperature.</td>
+            <td>Solution treatment for Rene’ 77 (NK15CADT) and Rene’ 41 (NC19KDT)</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Heat to 1300 degF ±25 degF (705 degC ±14 degC). Cool to 1000 degF (540 degC). Cooling rate is not critical. Air-cool or equivalent rate to room temperature.</td>
+            <td>Stress relief for some Titanium alloys</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>Heat to 1025 degF ±25 degF (550 degC ±14 degC). Hold for 2 hours. Air-cool or equivalent rate to room temperature.</td>
+            <td>Partial stress relief for Ti6-4 (TA6V)</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>Heat to 2150 degF ±25 degF (1180 degC ±14 degC). Hold for 1 hour. Cool to 1200 degF (650 degC) in 20 min. Air-cool or equivalent rate to room temperature.</td>
+            <td>Solution treatment for X-40 alloy (KC25NW)</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>Heat to 2075 degF ±25 degF (1135 degC ±14 degC). Hold for 30 min minimum. Cool to 1200 degF (650 degC) in 20 min. Air-cool or equivalent rate to room temperature.</td>
+            <td>Solution treatment for Hastelloy X (NC22FeD) and HS188 (KCN22W)</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>Heat to 1950 degF ±25 degF (1065 degC ±14 degC). Hold for 30 min. Cool to 1000 degF (540 degC) at a rate not less than 30 degF (17 degC) per minute. Air-cool or equivalent rate to room temperature.</td>
+            <td>Solution treatment for Rene’ 41 (NC19KDT) and Hastelloy X (NC22FeD)</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>Heat to 1550 degF ±25 degF (845 degC ±14 degC). Hold for 1 hour. Air-cool or equivalent rate to room temperature.</td>
+            <td>Solution treatment for Incoloy 903 (Z3NK38 alloy)</td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td>Heat to 1750 degF ±25 degF (955 degC ±14 degC) and hold for 60 min ± 5 min. Cool to 1000 degF (540 degC) at a rate not less than 30 degF (20 degC) per minute. Air-cool or equivalent rate to room temperature.</td>
+            <td>Solution treatment for Inconel 718 (NC19FeNb)</td>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td>Heat to 1780 degF ±25 degF (970 degC ±14 degC). Hold for 15 ± 5 min. Cool to 1000 degF (540 degC) at a rate not less than 30 degF (20 degC) per minute. Air-cool or equivalent rate to room temperature.</td>
+            <td>High temperature solution treatment for Inconel 718 (NC19FeNb)</td>
+        </tr>
+        <tr>
+            <td>16</td>
+            <td>Deleted. See cycle No. 14</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>17</td>
+            <td>Heat to 1400 degF ±25 degF (760 degC ±14 degC). Hold for 2 hours. Introduce inert gas and cool to 1150 degF ±25 degF (620 degC ±14 degC). Hold for 4 hours.</td>
+            <td>Short age for Inconel 718 (NC19FeNb)</td>
+        </tr>
+
+          <tr>
+              <td>18</td>
+              <td>Heat to 1600 degF ±25 degF (870 degC ±14 degC). Hold for 2 hours. Cool to 400 degF (205 degC) in inert atmosphere. Cool to room temperature.</td>
+              <td>Stress relief for IN100 (NK15CATu) DS200 (NW12KCA)</td>
+          </tr>
+          <tr>
+              <td>19</td>
+              <td>Heat to 1400 degF ±25 degF (760 degC ±14 degC). Hold for 4 hours. Cool to 400 degF (205 degC) in inert atmosphere. Cool to room temperature.</td>
+              <td>Stress relief for Rene’ 77 (NK15CADT)</td>
+          </tr>
+          <tr>
+              <td>20</td>
+              <td>Heat to 1400 degF ±25 degF (760 degC ±14 degC). Hold for 8 hours. Cool to 400 degF (205 degC) in inert atmosphere. Cool to room temperature.</td>
+              <td>Stress relief for Rene’ 77 (NK15CADT)</td>
+          </tr>
+          <tr>
+              <td>21</td>
+              <td>Heat to 1400 degF ±25 degF (760 degC ±14 degC). Hold for 5 hours. Cool to 1200 degF (650 degC). Hold for 1 hour. Cool to room temperature.</td>
+              <td>Alt full age for Inconel 718 (NC19FeNb)</td>
+          </tr>
+          <tr>
+              <td>22</td>
+              <td>Heat to 1600 degF ±25 degF (870 degC ±14 degC). Hold for 16 hours in vacuum or inert atmosphere. Cool to room temperature.</td>
+              <td>Full age for DS200 (NW12KCA)</td>
+          </tr>
+          <tr>
+              <td>23</td>
+              <td>Heat to 1095 degF ±15 degF (590 degC ±10 degC). Hold for 2 hours. Air-cool to room temperature.</td>
+              <td>Stress relief for 17-4 PH (Z5CNU17)</td>
+          </tr>
+    </table>
+
+    <table id="dataTable3">
+        <tr>
+          <th>SPOP No./Cycle No.</th>
+          <th>Materials</th>
+          <th>Temperature/Time</th>
+        </tr>
+        <tr>
+          <td>455-1</td>
+          <td>Type 410, Greek Ascoloy, Low Alloy Steels</td>
+          <td>1015°F (546°C) For 2 Hours</td>
+        </tr>
+        <tr>
+          <td>455-2/1, 1A</td>
+          <td>Low Alloy Steels</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>456-2</td>
+          <td>6061 Aluminum AZ92 and ZE41 Magnesium</td>
+          <td>325°F (163°C) For 4 Hours</td>
+        </tr>
+        <tr>
+          <td>458-1, 458-2/4, 4A</td>
+          <td>Inconel X-750</td>
+          <td>1300°F (704°C) For 2 Hours</td>
+        </tr>
+        <tr>
+          <td>459-1, 459-2/5, 5A</td>
+          <td>B-1900/PWA 663/PWA 1455, STELLITE 31/AMS 5382, Inconel 713/PWA 655, WI-52/PWA 653, MAR-M-509/PWA 647, MAR-M-200/PWA 1422/PWA 1480</td>
+          <td>1600°F (871°C) For 2 Hours</td>
+        </tr>
+        <tr>
+          <td>459-3/9</td>
+          <td>Inconel 600, Nimonic 75/PWA 673</td>
+          <td>1600°F (871°C) For 1 Hour</td>
+        </tr>
+        <tr>
+          <td>460-1, 460-2/6, 6A</td>
+          <td>Greek Ascoloy</td>
+          <td>1050°F (566°C) For 2 Hours</td>
+        </tr>
+        <tr>
+          <td>461/7, 461-1</td>
+          <td>WASPALOY (Wrought), Udimet 700</td>
+          <td>1500°F (816°C) For 4 Hours</td>
+        </tr>
+        <tr>
+          <td>462</td>
+          <td>Types 321/347 (Partial Stress-Relief)</td>
+          <td>1200°F (649°C) For 1 Hour</td>
+        </tr>
+        <tr>
+          <td>463/10</td>
+          <td>HASTELLOY X, W, N, S, Haynes 188/ PWA 1042, Inconel 625, Types 310/316</td>
+          <td>1800°F (982°C) For 1 Hour</td>
+        </tr>
+        <tr>
+          <td>464/11</td>
+          <td>Ti-8Al-1Mo-1V and Ti-5Al-2.5Sn</td>
+          <td>Use SPOP 464-1.</td>
+        </tr>
+        <tr>
+          <td>464/11</td>
+          <td>Titanium Other than Ti-8Al-1Mo-1V and Ti-5Al-2.5Sn</td>
+          <td>Use SPOP 464-2.</td>
+        </tr>
+        <tr>
+          <td>464/11</td>
+          <td>Where specified by repair procedure</td>
+          <td>Use SPOP 464-3.</td>
+        </tr>
+        <tr>
+          <td>464-1</td>
+          <td>Ti-8Al-1Mo-1V and Ti-5Al-2.5Sn Other than blades</td>
+          <td>1150°F (621°C) for 1 - 2 Hours or 1200°F (649°C) for 10 - 15 Minutes</td>
+        </tr>
+        <tr>
+            <td>464-2</td>
+            <td>Titanium Other than Ti-8Al-1Mo-1V, Ti-5Al-2.5Sn, and welded low cycle fatigue (LCF) life-limited Ti-6Al-4V parts</td>
+            <td>1100°F (593°C) for 90 Minutes</td>
+          </tr>
+          <tr>
+            <td>464-3</td>
+            <td>Where specified by repair procedure</td>
+            <td>1150°F (621°C) For 1 - 2 Hours</td>
+          </tr>
+          <tr>
+            <td>465-1, 465-2/12, 12A</td>
+            <td>Inconel 718 Short Cycle Precipitation Heat Treatment</td>
+            <td>1350°F (732°C)/1200°F (649°C) For 7 Hours Total</td>
+          </tr>
+          <tr>
+            <td>466/13</td>
+            <td>17-7PH Austenite Conditioning, Types 410/430 with 430 Rod</td>
+            <td>1400°F (760°C) For 2 - 4 Hours</td>
+          </tr>
+          <tr>
+            <td>467/14</td>
+            <td>Type 430 with AMS 5776 or AMS 5680 Rod</td>
+            <td>1500°F (816°C) For 30 Minutes</td>
+          </tr>
+          <tr>
+            <td>468/ 472/15, 15A</td>
+            <td>A-286 Tinidur Stress-Relief/Age</td>
+            <td>1300°F (704°C) For 4 Hours</td>
+          </tr>
+          <tr>
+            <td>469/16</td>
+            <td>Inconel 706 or 718 Simple Stress-Relief</td>
+            <td>1325°F (718°C) For 4 Hours</td>
+          </tr>
+          <tr>
+            <td>470/17</td>
+            <td>Incoloy 901 (Structural Welds)</td>
+            <td>Refer to SPOP 470/Cycle No. 17.</td>
+          </tr>
+          <tr>
+            <td>473/18</td>
+            <td>Cast Nickel and Cobalt Alloy Airfoil Materials</td>
+            <td>1975°F (1079°C) For 30 Minutes - 4 Hours</td>
+          </tr>
+          <tr>
+            <td>474-1</td>
+            <td>Inconel 718 [Wrought and Cast (PWA 649, AMS 5383) Excluding Cast Stators]</td>
+            <td>Refer to SPOP 474-1.</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Full Heat Treatment</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>475-1</td>
+            <td>Incoloy 901 (Knife-Edges)</td>
+            <td>1325°F (718°C) For 14 - 18 Hours</td>
+          </tr>
+          <tr>
+            <td>476-1</td>
+            <td>Waspaloy (Wrought) Full Heat Treatment</td>
+            <td>Refer to SPOP 476-1.</td>
+          </tr>
+          <tr>
+            <td>477-1, 477-2</td>
+            <td>H-46 (12% Chrome Steel)</td>
+            <td>1150°F (621°C) For 2 Hours</td>
+          </tr>
+          <tr>
+            <td>478-1</td>
+            <td>Inconel X-750 (All Specifications Except AMS 5668) Full Heat Treatment</td>
+            <td>Refer to SPOP 478-1.</td>
+          </tr>
+          <tr>
+            <td>478-2</td>
+            <td>Inconel X-750 (AMS 5668 Only) Full Heat Treatment</td>
+            <td>Refer to SPOP 478-2.</td>
+          </tr>
+          <tr>
+            <td>479</td>
+            <td>Martensitic Corrosion Resistant Steels</td>
+            <td>Refer to SPOP 479.</td>
+          </tr>
+          <tr>
+            <td>482/22</td>
+            <td>Hastelloy X (Solution Heat Treatment)</td>
+            <td>1900°F (1038°C) For 1 Hour</td>
+          </tr>
+          <tr>
+            <td>487</td>
+            <td>17-4PH (H-1025)</td>
+            <td>1025°F (552°C) For 4 Hours</td>
+          </tr>
+          <tr>
+            <td>488</td>
+            <td>Inconel 718 [Cast + HIP (PWA 1469)] Full Heat Treatment, Not For Stators</td>
+            <td>Refer to SPOP 488.</td>
+          </tr>
+          <tr>
+            <td>489</td>
+            <td>Inconel 718 [Assemblies With Wrought and Cast + HIP (PWA 1469) Details] Full Heat Treatment</td>
+            <td>Refer to SPOP 489.</td>
+          </tr>
+          <tr>
+            <td>490</td>
+            <td>Waspaloy (Cast PWA 1471) Full Heat Treatment</td>
+            <td>Refer to SPOP 490</td>
+          </tr>
+          <tr>
+            <td>491</td>
+            <td>Haynes 214 Honeycomb</td>
+            <td>2000°F (1093°C) For 1 Hour</td>
+          </tr>
+          <tr>
+            <td>492</td>
+            <td>Thermo-Span Full Heat Treatment (PWA 1199)</td>
+            <td>Refer to SPOP 492.</td>
+          </tr>
+        </table>
+
+        <table id="dataTable2">
+            <tr>
+              <th>SPOP No.</th>
+              <th>Type*</th>
+              <th>Possible Alloy Application</th>
+            </tr>
+            <tr>
+              <td>455-1, 455-2</td>
+              <td>STRESS RELIEF</td>
+              <td>Low alloy steel, as AMS 6322 and AMS 6415; martensitic stainless steel, as Type 410 (AMS 5504 and AMS 5613) and Greek Ascoloy (AMS 5508 and AMS 5616); Titanium (Blades)</td>
+            </tr>
+            <tr>
+              <td>456</td>
+              <td>STRESS RELIEF</td>
+              <td>Aluminum</td>
+            </tr>
+            <tr>
+              <td>457</td>
+              <td>STRESS RELIEF</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>458-1, 458-2</td>
+              <td>STRESS RELIEF</td>
+              <td>Inconel X</td>
+            </tr>
+            <tr>
+              <td>459-1, 459-2</td>
+              <td>STRESS RELIEF</td>
+              <td>Nickel alloys: B-1900 (PWA 663 and PWA 1455); Inconel 713 (PWA 655) Cobalt alloys: Stellite 31 (AMS 5382); WI-52 (PWA 653); MAR-M-509 (PWA 647)</td>
+            </tr>
+            <tr>
+              <td>460-1, 460-2</td>
+              <td>STRESS RELIEF</td>
+              <td>Greek Ascoloy (AMS 5508 and AMS 5616) (martensitic stainless steel)</td>
+            </tr>
+            <tr>
+              <td>461</td>
+              <td>STRESS RELIEF</td>
+              <td>Waspaloy, Udimet 700</td>
+            </tr>
+            <tr>
+              <td>455-3</td>
+              <td>STRESS RELIEF</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>459-3</td>
+              <td>STRESS RELIEF</td>
+              <td>Inconel 600 (nickel alloy); Nimonic 75 (PWA 673) (nickel alloy); stainless steel, as Types 310, 316, 321, and 347</td>
+            </tr>
+            <tr>
+              <td>464-2, 464-3</td>
+              <td>STRESS RELIEF</td>
+              <td>Titanium as Ti comm pure (AMS 4921, AMS 4900) , Ti-8Al-1Mo-1V (AMS 4972), Ti-5Al-2.5Sn  (AMS 4909), Ti-6Al-4V (AMS 4911, AMS 4928), Ti-6-2-4-2 (AMS 4975, AMS 4919, PWA 1267)</td>
+            </tr>
+            <tr>
+              <td>465-1, 465-2</td>
+              <td>PRECIPITATION</td>
+              <td>Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663</td>
+            </tr>
+            <tr>
+              <td>466</td>
+              <td>STRESS RELIEF</td>
+              <td>17-7PH (stainless steel - austenite conditioning); Type 430 (ferritic stainless steel), welded with Type 430 filler metal</td>
+            </tr>
+            <tr>
+              <td>467</td>
+              <td>STRESS RELIEF</td>
+              <td>Type 430 (ferritic stainless steel), welded with AMS 5680 (Type 347 stainless steel)</td>
+            </tr>
+            <tr>
+              <td>468</td>
+              <td>PRECIPITATION</td>
+              <td>A-286 (modified Tinidur) stainless steel, as AMS 5525, AMS 5731, AMS 5732, and AMS 5737</td>
+            </tr>
+            <tr>
+              <td>469</td>
+              <td>STRESS RELIEF</td>
+              <td>Inconel 706 or 718 (simple stress-relief)</td>
+            </tr>
+            <tr>
+              <td>470</td>
+              <td>PRECIPITATION</td>
+              <td>Incoloy 901 (nickel alloy), as AMS 5660 and AMS 5661</td>
+            </tr>
+            <tr>
+              <td>473</td>
+              <td>STRESS RELIEF</td>
+              <td>Cast nickel and cobalt alloy airfoil materials, MAR-M-200 (PWA 1422 and PWA 1484)</td>
+            </tr>
+            <tr>
+              <td>480</td>
+              <td>SOLUTION</td>
+              <td>Hastelloy X (nickel alloy)</td>
+            </tr>
+            <tr>
+              <td>481</td>
+              <td>SOLUTION</td>
+              <td>Nickel alloy: Hastelloy X (AMS 5536 and AMS 5754) Cobalt alloys: Stellite 31 (AMS 5382); Haynes 188 (AMS 5608, AMS 5772, and PWA 1042); L-605 (AMS 5537 and AMS 5759)</td>
+            </tr>
+            <tr>
+              <td>482</td>
+              <td>STRESS RELIEF</td>
+              <td>Nickel alloys: Inconel 600 (AMS 5540 and AMS 5665); Inconel 625 (AMS 5599 and AMS 5666); Hastelloy N; Hastelloy X (AMS 5536, AMS 5754, and PWA 1038); Hastelloy W Cobalt alloys: Stellite 31 (AMS 5382); Haynes 188 (AMS 5608, AMS 5772, and PWA 1042); L-605 (AMS 5537 and AMS 5759); MAR-M-509 (PWA 647)</td>
+            </tr>
+            <tr>
+              <td>485</td>
+              <td>PRECIPITATION</td>
+              <td>Nickel castings</td>
+            </tr>
+            <tr>
+              <td>760</td>
+              <td>STRESS RELIEF</td>
+              <td>Titanium and Titanium Alloys</td>
+            </tr>
+            <tr>
+              <td>488</td>
+              <td>SOLUTION/ PRECIPITATION</td>
+              <td>Inconel 718 (nickel alloy castings)</td>
+            </tr>
+            <tr>
+              <td>761</td>
+              <td>SOLUTION</td>
+              <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, and AMS 5707</td>
+            </tr>
+            <tr>
+              <td>762</td>
+              <td>SOLUTION</td>
+              <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, and AMS 5707</td>
+            </tr>
+            <tr>
+              <td>763</td>
+              <td>STABILAZATION</td>
+              <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, AMS 5707, AMS 5708, and AMS 5709</td>
+            </tr>
+            <tr>
+              <td>764</td>
+              <td>PRECIPITATION</td>
+              <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, AMS 5707, AMS 5708, and AMS 5709</td>
+            </tr>
+            <tr>
+              <td>765</td>
+              <td>SOLUTION</td>
+              <td>Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663</td>
+            </tr>
+            <tr>
+              <td>766</td>
+              <td>SOLUTION</td>
+              <td>Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663</td>
+            </tr>
+            <tr>
+              <td>767</td>
+              <td>PRECIPITATION</td>
+              <td>Nickel alloys: Inconel 718, as AMS 5596, AMS 5662, and AMS 5663; Inconel X-750, as AMS 5598, AMS 5670, and AMS 5671</td>
+            </tr>
+        </table>
+
+         <!-- civilian notes 
+           <p><strong>NOTES</strong></p>
+        <ul>
+            <li>SPOP 469 (Cycle No. 16) can be used as an alternate to SPOP 468, SPOP 472 (Cycle No. 15, and 15A).</li>
+            <li>SPOP 482 (Cycle No. 22) can be used as an alternate to SPOP 463 (Cycle No. 10) for Hastelloy X.</li>
+            <li>SPOP 465-1, SPOP 465-2 (Cycle No. 12, and 12A) or SPOP 469 (Cycle No. 16) can be used as an alternate to SPOP 458-1, SPOP 458-2 (Cycle No. 4, and 4A).</li>
+        </ul>
+        -->
+
+    </div>
+
+    <!-- Modal -->
+    <div id="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-header" class="modal-header"></div> <!-- Added modal header -->
+            <div id="modal-content"></div>
+        </div>
+    </div>
+    
+</body>
+</html>
