@@ -227,19 +227,20 @@
               for (let j = 0; j < cells.length; j++) {
                 let cell = cells[j];
                 let cellText = cell.textContent;
+                let cellTextInnerHtml = cell.innerHTML;
 
                 // Clear previous highlights: remove all <span> elements and preserve their content
                 let spans = cell.querySelectorAll("span");
                 spans.forEach(span => {
                     span.replaceWith(...span.childNodes); // Remove <span> and keep its children
+                      cellTextInnerHtml = cell.innerHTML;
                 });
 
                 // Highlight matching text if there's input
                 if (searchValue && cellText.toLowerCase().includes(searchValue)) {
                     let regex = new RegExp(`(${searchValue})`, "gi");
                     // Create a new HTML string with <span> for the matching text
-                    let highlightedHTML = cellText.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
-                    
+                    let highlightedHTML = cellTextInnerHtml.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
                     // Replace the cell's HTML with the newly highlighted content
                     cell.innerHTML = highlightedHTML;
                     found = true;
