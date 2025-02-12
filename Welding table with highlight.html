@@ -279,6 +279,19 @@
                 table.style.display = (table.id === selectedTable) ? "table" : "none";
             });
 
+            let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
+
+            if (selectedTable === "dataTable2") {
+                ulElement.forEach(element => {
+                    element.style.display = 'block';
+                });
+            } else {
+              ulElement.forEach(element => {
+                    element.style.display = 'none';
+                });
+            }
+
+
             searchTable();
         }
 
@@ -1449,24 +1462,6 @@
                    <td>17-4PH bare</td>
                  </tr>
 
-                 <tr>
-                   <td colspan="9">
-                     <h4>NOTES</h4>
-                       <ul>
-                          <li class="p&wm">1. Category numbers in this Table are composed of the material group number followed by a nonsigniﬁcant decimal number for convenience of reference in subsequent notes.</li>
-                          <li class="p&wm">2. For information only; ﬁller metal shall conform to speciﬁcations listed.</li>
-                          <li class="p&wm">3. AMS 5786 or AMS 5837 may be used for joining Categories 2.1 or 2.2 to Categories 2.6, 2.7, 2.8, or 2.9.</li>
-                          <li class="p&wm">4. AMS 5786 ﬁller metal may be used for joining this category to Categories 3.1, 3.2, or 3.3 (Refer to Table 15-13).</li>
-                          <li class="p&wm">5. Use of parent metal in any form as ﬁller metal is prohibited.</li>
-                          <li class="p&wm">6. Shall be used for all welding of this category, unless otherwise speciﬁed.</li>
-                          <li class="p&wm">7. Shall be used for joining this category to other categories.</li>
-                          <li class="p&wm">8. Shall be used where no other category is involved.</li>
-                       </ul>
-                   </td>
-                 </tr>
-
-
-
                                <tr>
                                  <td>33.5</td>
                                  <td>Nickel and Nonprecipation Hardenable  Nickel Alloys</td>
@@ -1884,51 +1879,52 @@
                  <td></td>
                  <td>C-103</td>
              </tr>
-
         </table>
+
+        <!--
         <p>
           Nickel-chromium (Ni-Cr) and nickel-chromium-iron (Ni-Cr-Fe) superalloys:These Nickel-chromium alloys and nickel-chromium-iron (Ni-Cr-Fe) superalloys, which include Inconel 600 and Inconel 800, are noted for their strength and corrosion resistance at high temperatures. Some of these alloys are derived from the Ni-Cr group by adding aluminum and/or titanium for precipitation hardening. Controlled precipitation hardening of Ni-Cr and Ni-Cr-Fe alloys lets metallurgists increase strength and hardness temperatures to about 1,300°F. Included in this list of precipitation-hardened alloys are 713 C, IN-100, IN-733, MAR-M200, MAM-241, Mar-M432, and wrought alloys Inconel X-750, Rene 41, Rene 95, Waspaloy, Udimet 700, Astroloy, and Udimet 520.
 
           Several of these types of alloys (Inconel 625, IN-102, Udimet620, and RA 383) can be strengthened by adding refractory metals such as molybdenum, tungsten, and columbium. The resulting alloys have good oxidation resistance and strength at high temperatures. They cannot be precipitation- hardened, but they can withstand thousands of hours at temperatures to 1,200°F. Alloys HW and HX (Alloy Casting Institute designations) are typical casting alloys that survive temperatures to 2,000°F.
-        </p>
+        </p>-->
 
 
-        <div id="notesList">
+        <div class="pwm">
           <h3>NOTES 2.0</h3>
             <ul>
-              <li class="p&wc">1. Category numbers in this Table are composed of the material group number followed by a nonsigniﬁcant decimal number for convenience  of reference  in subsequent  notes.</li>
-              <li class="p&wc">2. For information only; ﬁller metal shall conform to speciﬁcations listed.</li>
-              <li class="p&wc">3. AMS 5786 or AMS 5837 may be used for joining Categories  2.1 or 2.2 to Categories  2.6, 2.7, 2.8, or 2.9.</li>
-              <li class="p&wc">4. AMS 5786 ﬁller metal may be used for joining this category to Categories 3.1, 3.2, or 3.3 (Refer to Table 15-13).</li>
-              <li class="p&wc">5. Use of parent metal in any form as ﬁller metal is prohibited.</li>
-              <li class="p&wc">6. Shall be used for all welding of this category, unless otherwise speciﬁed.</li>
-              <li class="p&wc">7. Shall be used for joining  this category  to other categories.</li>
-              <li class="p&wc">8. Shall be used  where no other category is involved.</li>
+              <li>1. Category numbers in this Table are composed of the material group number followed by a nonsigniﬁcant decimal number for convenience  of reference  in subsequent  notes.</li>
+              <li>2. For information only; ﬁller metal shall conform to speciﬁcations listed.</li>
+              <li>3. AMS 5786 or AMS 5837 may be used for joining Categories  2.1 or 2.2 to Categories  2.6, 2.7, 2.8, or 2.9.</li>
+              <li>4. AMS 5786 ﬁller metal may be used for joining this category to Categories 3.1, 3.2, or 3.3 (Refer to Table 15-13).</li>
+              <li>5. Use of parent metal in any form as ﬁller metal is prohibited.</li>
+              <li>6. Shall be used for all welding of this category, unless otherwise speciﬁed.</li>
+              <li>7. Shall be used for joining  this category  to other categories.</li>
+              <li>8. Shall be used  where no other category is involved.</li>
             </ul>
        </div>
 
-       <div id="notesList">
+       <div class="pwm">
          <h3>NOTES 3.0</h3>
            <ul>
-             <li class="p&wc">1. Category numbers in this Table are composed of the material group number followed by a nonsigniﬁcant decimal number for convenience  of reference  in subsequent  notes.</li>
-             <li class="p&wc">2. For information only; ﬁller metal shall conform to speciﬁcations listed.</li>
-             <li class="p&wc">3. AMS 5786 ﬁller metal may be used for joining this category to Categories 2.1 through 2.8 (Refer to Table 15-12).</li>
-             <li class="p&wc">4. Shall not be used for welding by gas tungsten  arc (GTAW-MA and GTAW-ME)  or gas metal arc (GMAW-MA  and GMAW-ME)  processes if parent metal thickness  is over 0.125  inch.</li>
-             <li class="p&wc">5. Shall be used for all welding of this category, unless otherwise speciﬁed.</li>
-             <li class="p&wc">6. Use of parent metal in any form as ﬁller metal is prohibited.</li>
-             <li class="p&wc">7. Shall not be used for welding  airfoils of blades and  vanes.</li>
-             <li class="p&wc">8 (mine*). Hasteloy X parent metal must be solutioned prior to welding</li>
+             <li>1. Category numbers in this Table are composed of the material group number followed by a nonsigniﬁcant decimal number for convenience  of reference  in subsequent  notes.</li>
+             <li>2. For information only; ﬁller metal shall conform to speciﬁcations listed.</li>
+             <li>3. AMS 5786 ﬁller metal may be used for joining this category to Categories 2.1 through 2.8 (Refer to Table 15-12).</li>
+             <li>4. Shall not be used for welding by gas tungsten  arc (GTAW-MA and GTAW-ME)  or gas metal arc (GMAW-MA  and GMAW-ME)  processes if parent metal thickness  is over 0.125  inch.</li>
+             <li>5. Shall be used for all welding of this category, unless otherwise speciﬁed.</li>
+             <li>6. Use of parent metal in any form as ﬁller metal is prohibited.</li>
+             <li>7. Shall not be used for welding  airfoils of blades and  vanes.</li>
+             <li>8 (mine*). Hasteloy X parent metal must be solutioned prior to welding</li>
            </ul>
       </div>
 
-      <div id="notesList">
+      <div class="pwm">
         <h3>NOTES 9.0</h3>
           <ul>
-            <li class="p&wc">1. Category numbers in this Table are composed of the material group number followed by a nonsigniﬁcant decimal number for convenience of reference in subsequent  notes.</li>
-            <li class="p&wc">2. For information only; ﬁller metal shall conform to speciﬁcations listed.</li>
-            <li class="p&wc">3. Shall be used  where no other category is involved.</li>
-            <li class="p&wc">4. Shall be used for welding this category to Category  3.3 (Refer  to Table  15-13).</li>
-            <li class="p&wc">5. Shall be used for welding Category  9.1  to Categories  2.6 and  2.7 (Refer to Table  15-12), and  Category 7.1 (Refer  to Table 15-17).</li>
+            <li>1. Category numbers in this Table are composed of the material group number followed by a nonsigniﬁcant decimal number for convenience of reference in subsequent  notes.</li>
+            <li>2. For information only; ﬁller metal shall conform to speciﬁcations listed.</li>
+            <li>3. Shall be used  where no other category is involved.</li>
+            <li>4. Shall be used for welding this category to Category  3.3 (Refer  to Table  15-13).</li>
+            <li>5. Shall be used for welding Category  9.1  to Categories  2.6 and  2.7 (Refer to Table  15-12), and  Category 7.1 (Refer  to Table 15-17).</li>
           </ul>
      </div>
 
