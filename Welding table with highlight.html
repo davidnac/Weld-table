@@ -200,8 +200,7 @@
         });
 
 
-
-
+        
         function searchTable() {
           let input = document.getElementById("search");
           let searchValue = input.value.toLowerCase();
@@ -225,19 +224,28 @@
               let found = false;
 
               for (let j = 0; j < cells.length; j++) {
-                  let cell = cells[j];
-                  let cellText = cell.textContent;
+                let cell = cells[j];
+                let cellText = cell.textContent;
+                let cellTextInnerHtml = cell.innerHTML;
 
-                  // Clear previous highlights
-                  cell.innerHTML = cellText;
+                // Clear previous highlights: remove all <span> elements and preserve their content
+                let spans = cell.querySelectorAll("span");
+                spans.forEach(span => {
+                    span.replaceWith(...span.childNodes); // Remove <span> and keep its children
+                      cellTextInnerHtml = cell.innerHTML;
+                });
 
-                  // Highlight matching text if there's input
-                  if (searchValue && cellText.toLowerCase().includes(searchValue)) {
-                      let regex = new RegExp(`(${searchValue})`, "gi");
-                      cell.innerHTML = cellText.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
-                      found = true;
-                  }
-              }
+                // Highlight matching text if there's input
+                if (searchValue && cellText.toLowerCase().includes(searchValue)) {
+                    let regex = new RegExp(`(${searchValue})`, "gi");
+                    // Create a new HTML string with <span> for the matching text
+                    let highlightedHTML = cellTextInnerHtml.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+                    // Replace the cell's HTML with the newly highlighted content
+                    cell.innerHTML = highlightedHTML;
+                    found = true;
+                }
+            }
+
 
               // Show row if match is found, otherwise hide it
               rows[i].style.display = searchValue ? (found ? "" : "none") : "";
@@ -245,33 +253,37 @@
       }
 
 
-      function clearSearch() {
-          let input = document.getElementById("search");
-          let clearBtn = document.getElementById("clearSearch");
+        function clearSearch() {
+            let input = document.getElementById("search");
+            let clearBtn = document.getElementById("clearSearch");
 
-          // Clear the search input
-          input.value = "";
-          clearBtn.style.display = "none"; // Hide the clear button
+            // Clear the search input
+            input.value = "";
+            clearBtn.style.display = "none"; // Hide the clear button
 
-          // Reset the table to show all rows
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
+            // Reset the table to show all rows
+            let table = document.querySelector("table:not([style*='display: none'])");
+            if (!table) return;
 
-          let rows = table.getElementsByTagName("tr");
-          for (let i = 1; i < rows.length; i++) {
-              rows[i].style.display = ""; // Make all rows visible again
+            let rows = table.getElementsByTagName("tr");
+            for (let i = 1; i < rows.length; i++) {
+                rows[i].style.display = ""; // Make all rows visible again
 
-              // Remove any highlighting
-              let cells = rows[i].getElementsByTagName("td");
-              for (let j = 0; j < cells.length; j++) {
-                  cells[j].innerHTML = cells[j].textContent;
-              }
-          }
-      }
+                // Remove any highlighting from cells
+                let cells = rows[i].getElementsByTagName("td");
+                for (let j = 0; j < cells.length; j++) {
+                    let cell = cells[j];
 
+                    // Remove previous highlights: remove all <span> elements and preserve their content
+                    let spans = cell.querySelectorAll("span");
+                    spans.forEach(span => {
+                        span.replaceWith(...span.childNodes); // Remove <span> and keep its children
+                    });
+                }
+            }
+        }
 
-
-
+        
 
          function changeTable() {
             let selectedTable = document.getElementById("tableSelect").value;
