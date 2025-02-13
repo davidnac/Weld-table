@@ -345,8 +345,6 @@
 
               if (!cellA || !cellB) {
                   console.warn("Column index out of bounds:", col);
-                  console.warn("Column index out of bounds:", rowA);
-                  console.warn("Column index out of bounds:", rowB);
                   return 0; // Prevent sorting errors
               }
 
@@ -405,6 +403,7 @@
           <th>Cycle No.</th>
           <th>Type*</th>
           <th>Application</th>
+          <th>Acceptable Atmosphere</th>
           <th>Heat Treat Cycle</th>
           <th>File</th>
         </tr>
@@ -412,6 +411,7 @@
           <td>1</td>
           <td>Full age</td>
           <td>Inconel 718 (NC19FeNb) and Incoloy 903 (Z3NK38)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1325°F ±25°F (720°C ±14°C).</li>
@@ -431,6 +431,7 @@
           <td>2</td>
           <td>Full age</td>
           <td>Rene’ 41, (NC19KDT), and Rene’ 77 (NK15CADT)</td>
+          <td>-</td>
           <td>
             <ul>
                 <li><strong>a.</strong> Heat to 1400°F ±25°F (760°C ±14°C).</li>
@@ -443,6 +444,7 @@
           <td>3</td>
           <td>Final age</td>
           <td>Rene’ 77 (NK15CADT)</td>
+          <td>-</td>
           <td>
             <ul>
                 <li><strong>a.</strong> Heat to 1550°F ±25°F (843°C ±14°C).</li>
@@ -455,6 +457,7 @@
           <td>4</td>
           <td>Aging</td>
           <td>17-4 PH (Z5CNU17)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1150°F ±15°F (620°C ±10°C).</li>
@@ -467,6 +470,7 @@
           <td>5</td>
           <td>Stress relief</td>
           <td>A-286 (Z6NCT25) alloy</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1325°F ±25°F (720°C ±14°C).</li>
@@ -479,6 +483,7 @@
           <td>6</td>
           <td>Solution</td>
           <td>300 series stainless steel and Hastelloy X (NC22FeD)</td>
+          <td>-</td>
           <td>
             <ul>
                 <li><strong>a.</strong> Heat to 1925°F ±25°F (1052°C ±14°C).</li>
@@ -492,6 +497,7 @@
           <td>7</td>
           <td>Solution</td>
           <td>Rene’ 77 (NK15CADT) and Rene’ 41 (NC19KDT)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1975°F ±25°F (1080°C ±14°C).</li>
@@ -505,6 +511,7 @@
           <td>8</td>
           <td>Stress relief</td>
           <td>Some Titanium alloys</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1300°F ±25°F (705°C ±14°C).</li>
@@ -517,6 +524,7 @@
           <td>9</td>
           <td>Partial Stress relief</td>
           <td>Ti6-4 (TA6V)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1025°F ±25°F (550°C ±14°C).</li>
@@ -529,6 +537,7 @@
           <td>10</td>
           <td>Solution</td>
           <td>X-40 alloy (KC25NW)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 2150°F ±25°F (1180°C ±14°C).</li>
@@ -542,6 +551,7 @@
           <td>11</td>
           <td>Solution</td>
           <td>Hastelloy X (NC22FeD) and HS188 (KCN22W)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 2075°F ±25°F (1135°C ±14°C).</li>
@@ -555,6 +565,7 @@
           <td>12</td>
           <td>Solution</td>
           <td>Rene’ 41 (NC19KDT) and Hastelloy X (NC22FeD)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1950°F ±25°F (1065°C ±14°C).</li>
@@ -568,6 +579,7 @@
           <td>13</td>
           <td>Solution</td>
           <td>Incoloy 903 (Z3NK38 alloy)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1550°F ±25°F (845°C ±14°C).</li>
@@ -580,6 +592,7 @@
           <td>14</td>
           <td>Solution</td>
           <td>Inconel 718 (NC19FeNb)</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1750°F ±25°F (955°C ±14°C) and hold for 60 min ±5 min.</li>
@@ -592,6 +605,7 @@
           <td>15</td>
           <td>High temperature Solution</td>
           <td>Inconel 718 (NC19FeNb) Forge, Case & Frame</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1780°F ±25°F (970°C ±14°C).</li>
@@ -601,16 +615,19 @@
             </ul>
           </td>
       <td></td></tr>
-      <tr>
+       <tr>
           <td>16</td>
-          <td>-</td>
           <td>Deleted. See cycle No. 14</td>
-          <td></td>
-      <td></td></tr>
-      <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+       <tr>
           <td>17</td>
           <td>Short age</td>
           <td>Inconel 718 (NC19FeNb) Seal teeth</td>
+          <td>-</td>
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1400°F ±25°F (760°C ±14°C).</li>
@@ -626,6 +643,7 @@
             <td>18</td>
             <td>Stress relief</td>
             <td>IN100 (NK15CATu) DS200 (NW12KCA)</td>
+            <td>-</td>
             <td>
               <ul>
                 <li><strong>a.</strong> Heat to 1600°F ±25°F (870°C ±14°C).</li>
@@ -639,6 +657,7 @@
             <td>19</td>
             <td>Stress relief</td>
             <td>Rene’ 77 (NK15CADT)</td>
+            <td>-</td>
             <td>
               <ul>
                 <li><strong>a.</strong> Heat to 1400°F ±25°F (760°C ±14°C).</li>
@@ -652,6 +671,7 @@
             <td>20</td>
             <td>Stress relief</td>
             <td>Rene’ 77 (NK15CADT)</td>
+            <td>-</td>
             <td>
               <ul>
                 <li><strong>a.</strong> Heat to 1400°F ±25°F (760°C ±14°C).</li>
@@ -665,6 +685,7 @@
             <td>21</td>
             <td>Alt full age </td>
             <td>Inconel 718 (NC19FeNb)</td>
+            <td>-</td>
             <td>
               <ul>
                 <li><strong>a.</strong> Heat to 1400°F ±25°F (760°C ±14°C).</li>
@@ -679,6 +700,7 @@
             <td>22</td>
             <td>Full age</td>
             <td>DS200 (NW12KCA)</td>
+            <td>-</td>
             <td>
               <ul>
                 <li><strong>a.</strong> Heat to 1600°F ±25°F (870°C ±14°C).</li>
@@ -691,6 +713,7 @@
             <td>23</td>
             <td>Stress relief</td>
             <td>17-4 PH (Z5CNU17)</td>
+            <td>-</td>
             <td>
               <ul>
                 <li><strong>a.</strong> Heat to 1095°F ±15°F (590°C ±10°C).</li>
