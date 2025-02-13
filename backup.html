@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Tables</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-size: 12px;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .sensitivity-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sensitivity-container label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="sensitivity-container">
+        <label for="sensitivity">Sensitivity:</label>
+        <input type="number" id="sensitivity" min="0" max="100" value="1">
+    </div>
+    
+    <table>
+        <tr>
+            <th>Material</th>
+            <th>Nickel</th>
+            <th>Cobalt</th>
+            <th>Iron</th>
+            <th>Aluminum</th>
+            <th>Titanium</th>
+            <th>Molybdenum</th>
+            <th>Silicon</th>
+            <th>Chromium</th>
+            <th>Tungsten</th>
+            <th>Carbon</th>
+            <th>Boron</th>
+            <th>Copper</th>
+            <th>Manganese</th>
+            <th>Vanadium</th>
+            <th>Oxygen</th>
+        </tr>
+      
+        <tr>
+            <td><input type="number" min="0" max="100" class="filter" data-col="1"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="2"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="3"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="4"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="5"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="6"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="7"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="8"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="9"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="10"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="11"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="12"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="13"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="14"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="15"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="16"></td>
+
+        </tr>
+    </table>
+
+    <table id="data-table">
+        <tr>
+            <th>Material</th>
+            <th>Nickel</th>
+            <th>Cobalt</th>
+            <th>Iron</th>
+            <th>Aluminum</th>
+            <th>Titanium</th>
+            <th>Molybdenum</th>
+            <th>Silicon</th>
+            <th>Chromium</th>
+            <th>Tungsten</th>
+            <th>Carbon</th>
+            <th>Boron</th>
+            <th>Copper</th>
+            <th>Manganese</th>
+            <th>Vanadium</th>
+            <th>Oxygen</th>
+        </tr>
+        <tr>
+            <td>Alpha</td>
+            <td>10</td>
+            <td>20</td>
+            <td>30</td>
+            <td>5</td>
+            <td>8</td>
+            <td>12</td>
+            <td>6</td>
+            <td>9</td>
+            <td>15</td>
+            <td>3</td>
+            <td>7</td>
+            <td>11</td>
+            <td>14</td>
+            <td>4</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Beta</td>
+            <td>15</td>
+            <td>25</td>
+            <td>35</td>
+            <td>7</td>
+            <td>11</td>
+            <td>14</td>
+            <td>9</td>
+            <td>12</td>
+            <td>18</td>
+            <td>5</td>
+            <td>9</td>
+            <td>13</td>
+            <td>16</td>
+            <td>6</td>
+            <td>12</td>
+        </tr>
+        <tr>
+            <td>Gamma</td>
+            <td>12</td>
+            <td>22</td>
+            <td>32</td>
+            <td>6</td>
+            <td>10</td>
+            <td>13</td>
+            <td>8</td>
+            <td>11</td>
+            <td>17</td>
+            <td>4</td>
+            <td>8</td>
+            <td>12</td>
+            <td>15</td>
+            <td>5</td>
+            <td>11</td>
+        </tr>
+        <tr>
+            <td>Delta</td>
+            <td>18</td>
+            <td>28</td>
+            <td>38</td>
+            <td>9</td>
+            <td>13</td>
+            <td>16</td>
+            <td>11</td>
+            <td>14</td>
+            <td>20</td>
+            <td>7</td>
+            <td>11</td>
+            <td>15</td>
+            <td>18</td>
+            <td>8</td>
+            <td>14</td>
+        </tr>
+    </table>
+</div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("input[type='number']").forEach(input => {
+                input.addEventListener("input", function () {
+                    if (this.value < 0) this.value = 0;
+                    if (this.value > 100) this.value = 100;
+                    filterTable();
+                });
+            });
+        });
+
+        function filterTable() {
+            let filters = document.querySelectorAll(".filter");
+            let rows = document.querySelectorAll("#data-table tr:not(:first-child)");
+            let sensitivity = parseFloat(document.getElementById("sensitivity").value) || 1;
+            
+            rows.forEach(row => {
+                let cells = row.getElementsByTagName("td");
+                let showRow = true;
+                
+                filters.forEach(filter => {
+                    let colIndex = filter.getAttribute("data-col") - 1;
+                    let filterValue = parseFloat(filter.value.trim());
+                    let cellValue = parseFloat(cells[colIndex].textContent.trim());
+                    
+                    if (!isNaN(filterValue)) {
+                        let lowerBound = filterValue - (filterValue * sensitivity / 100);
+                        let upperBound = filterValue + (filterValue * sensitivity / 100);
+                        if (cellValue < lowerBound || cellValue > upperBound) {
+                            showRow = false;
+                        }
+                    }
+                });
+                
+                row.style.display = showRow ? "" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
