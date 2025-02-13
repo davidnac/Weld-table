@@ -314,16 +314,36 @@
 
 
 
-        function sortTable(n) {
-            let table = document.getElementById("dataTable");
-            let rows = Array.from(table.rows).slice(1);
-            let sortedRows = rows.sort((rowA, rowB) => {
-                let cellA = rowA.cells[n].textContent.trim().toLowerCase();
-                let cellB = rowB.cells[n].textContent.trim().toLowerCase();
-                return cellA.localeCompare(cellB);
-            });
+        function sortTable(col, tableName) {
+           let table = document.getElementById(tableName);
 
-            sortedRows.forEach(row => table.appendChild(row));
+           if (!table) {
+              console.error("Table not found");
+              return;
+          }
+
+           let headerRows = Array.from(table.rows).filter(row => row.getElementsByTagName("th").length > 0);
+           console.log(headerRows.length)
+
+          let rows = Array.from(table.rows).slice(headerRows.length); //remove header row
+
+          let sortedRows = rows.sort((rowA, rowB) => {
+              let cellA = rowA.cells[col];
+              let cellB = rowB.cells[col];
+
+              if (!cellA || !cellB) {
+                  console.warn("Column index out of bounds:", col);
+                  console.warn("Column index out of bounds:", rowA);
+                  console.warn("Column index out of bounds:", rowB);
+                  return 0; // Prevent sorting errors
+              }
+
+              let textA = cellA.textContent.trim().toLowerCase();
+              let textB = cellB.textContent.trim().toLowerCase();
+              return textA.localeCompare(textB);
+          });
+
+          sortedRows.forEach(row => table.appendChild(row));
         }
 
 
@@ -666,8 +686,8 @@
     <!--Pratt & Whitney (Civilian)-->
     <table id="dataTable3">
       <tr>
-        <th onclick="sortTable(0)">Cycle No.<span class="sort-icon">&#x2195;</span></th>
-        <th onclick="sortTable(1)">SPOP No.<span class="sort-icon">&#x2195;</span></th>
+        <th onclick="sortTable(0, 'dataTable3')">Cycle No.<span class="sort-icon">&#x2195;</span></th>
+        <th onclick="sortTable(1, 'dataTable3')">SPOP No.<span class="sort-icon">&#x2195;</span></th>
         <th>Type</th>
         <th>Application</th>
         <th>Heat Treat Cycle</th>
@@ -973,8 +993,8 @@
     <!--Pratt & Whitney (Military)-->
     <table id="dataTable2">
           <tr>
-            <th onclick="sortTable(0)">Cycle No.<span class="sort-icon">&#x2195;</span></th>
-            <th onclick="sortTable(1)">SPOP No.<span class="sort-icon">&#x2195;</span></th>
+            <th onclick="sortTable(0, 'dataTable2')">Cycle No.<span class="sort-icon">&#x2195;</span></th>
+            <th onclick="sortTable(1, 'dataTable2')">SPOP No.<span class="sort-icon">&#x2195;</span></th>
             <th>Type</th>
             <th>Application</th>
             <th>Heat Treat Cycle</th>
