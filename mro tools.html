@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Engine Manuals</title>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            text-align: center;
+            padding: 1.2rem;
+            background-color: #3674B5;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        .search-container {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .search-container input {
+            width: 50%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .filter-buttons button {
+            padding: 0.5rem 1rem;
+            margin: 0.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #578FCA;
+            color: white;
+            font-size: 1rem;
+        }
+        .filter-buttons button:hover {
+            background-color: #493D9E;
+        }
+        .container {
+            max-width: 78rem;
+            height: 75vh;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center; /* This centers the cards vertically */
+            gap: 1rem;
+        }
+        .card {
+            width: 12%;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: 12rem;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+        .card img {
+            margin-bottom: 10px;
+            width: 80%;
+        }
+        .card img.small{
+            margin-bottom: 10px;
+            width: 50px;
+        }
+        .card p {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .card:link, .card:visited {
+            text-decoration: none;
+            color: inherit;
+        }
+        p{
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        MRO MATERIALS LAB TOOLS
+    </header>
+
+
+    <div class="container" id="manualContainer">
+        
+        <a href="manuals search.html" target="_blank" class="card" data-tag="CFM">
+            <p>Manual Selection</p>
+            <p style="font-size: 0.8rem; color: gray;">Browse engine Repair & Inspection Manuals</p>
+        </a>
+        <a href="Welding table.html" target="_blank" class="card" data-tag="CFM">
+            <p>Welding Wire Selection</p>
+            <p style="font-size: 0.8rem; color: gray;">Find the correct welding material</p>
+        </a>
+        <a href="Heat treatments table c.html" target="_blank" class="card" data-tag="CFM">
+            <p>Heat Treatments Selction</p>
+            <p style="font-size: 0.8rem; color: gray;">Find the correct heat treatment</p>
+        </a>
+        <a href="backup v2.html" target="_blank"class="card" data-tag="Honeywell">
+            <p>Material Composition</p>
+            <p style="font-size: 0.8rem; color: gray;">Find a material base on its elemnts composition</p>
+        </a>
+   
+</body>
+</html>
