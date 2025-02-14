@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Two Tables</title>
+    <title>Composition Finder</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,13 +27,16 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 9px;
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
         }
         th {
             background-color: #007BFF;
             color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
         input {
             width: 75%;
@@ -44,7 +47,7 @@
         }
         .sensitivity-container {
             background: white;
-            padding: 15px;
+            padding: 12px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             display: flex;
@@ -54,39 +57,50 @@
         .sensitivity-container label {
             font-weight: bold;
             width: 170px;
-        }
+            font-size: 15px;        }
         .sensitivity-container input{
             width:25%;
         }
         /* Hover effect */
         #data-table tr:hover {
-            background-color: #f1f1f1;
+            background-color: #e0f7fa;
             cursor: pointer;
         }
         .clear-btn {
             background-color: #FF4C4C;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 6px 15px;
             border-radius: 5px;
             cursor: pointer;
             width: 120px;
+        }
+        .search-btn {
+            background-color: #73C7C7;
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 160px;
         }
         .clear-btn:hover {
             background-color: #CC0000;
         }
         .highlight {
-          background-color: yellow !important; /* Change color as needed */
+          background-color: #FFD95F !important; /* Change color as needed */
           }
 
     </style>
 </head>
 <body>
     <div class="container">
+    <h2>Material Seach By Composision</h2>
     <div class="sensitivity-container">
         <label for="sensitivity">Sensitivity, %:</label>
-        <input type="number" id="sensitivity" min="0" max="100" value="5">
+        <input type="number" id="sensitivity" min="0" max="100" value="20">
         <button class="clear-btn" onclick="clearInputs()">Clear All</button>
+        <button class="search-btn" onclick="filterTable()">Search Similar</button>
     </div>
     
     <table id="query-table">
@@ -104,7 +118,7 @@
         </tr>
       
         <tr>
-            <td><input type="text" id="materialSearch" placeholder="Search material"></td>
+            <td><input type="text" id="materialSearch" placeholder="Search material..."></td>
             <td><input type="number" min="0" max="100" class="filter" data-col="1"></td>
             <td><input type="number" min="0" max="100" class="filter" data-col="2"></td>
             <td><input type="number" min="0" max="100" class="filter" data-col="3"></td>
@@ -133,56 +147,43 @@
           <th onclick="sortTable(10)">Other Elements <span class="sort-icon">⇅</span></th>
         </tr>
         <tr>
-          <td>AMS 5837</td>
-          <td>Balance</td>
-          <td>10.0</td>
+          <td>CRES 308</td>
+          <td>-</td>
+          <td>-</td>
           <td>19.0 - 21.0</td>
-          <td>5.0 - 6.0</td>
           <td>-</td>
-          <td>2.0 - 3.0</td>
-          <td>1.2 - 1.5</td>
           <td>-</td>
-          <td>3.0 max</td>
-          <td>0.06% C, 1.0% Mn, 0.5% Si</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.08% C, 2.0% Mn, 0.75% Si</td>
         </tr>
         <tr>
-          <td>Inconel 713</td>
+          <td>CRES 308L</td>
+          <td>-</td>
+          <td>-</td>
+          <td>19.0 - 21.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
           <td>Balance</td>
-          <td>-</td>
-          <td>12.5</td>
-          <td>4.2</td>
-          <td>2.0</td>
-          <td>0.6</td>
-          <td>6.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>0.12% C, 0.01% B, 0.10% Zr</td>
+          <td>0.03% C max, 2.0% Mn, 0.75% Si</td>
         </tr>
         <tr>
-          <td>René 41</td>
-          <td>Balance</td>
-          <td>10.0 - 12.0</td>
-          <td>18.0 - 20.0</td>
-          <td>9.0 - 10.5</td>
+          <td>CRES 410</td>
           <td>-</td>
-          <td>3.0 - 3.3</td>
-          <td>1.4 - 1.6</td>
           <td>-</td>
-          <td>5.0 max</td>
-          <td>0.05 - 0.12% C, 0.003 - 0.010% B</td>
-        </tr>
-        <tr>
-          <td>Tribaloy T-800</td>
+          <td>11.5 - 13.5</td>
           <td>-</td>
-          <td>Balance</td>
-          <td>17.5</td>
-          <td>28.5</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
           <td>Balance</td>
-          <td>3.4% Si, 0.08% C </td>
+          <td>0.08 - 0.15% C, 1.0% Mn, 1.0% Si</td>
         </tr>
         <tr>
           <td>CRES 304</td>
@@ -236,32 +237,19 @@
           <td>Balance</td>
           <td>2.0% Mn, 0.75% Si, 0.08% C</td>
         </tr>
-        <tr>
-            <td>Inconel 100</td>
-            <td>Balance</td>
-            <td>-</td>
-            <td>10.0</td>
-            <td>3.0</td>
-            <td>-</td>
-            <td>4.7</td>
-            <td>5.5</td>
-            <td>-</td>
-            <td>-</td>
-            <td>0.18% C, 0.015% B, 0.06% Zr</td>
-          </tr>
-    
+        
           <tr>
-            <td>Inconel 718</td>
+            <td>René 41</td>
             <td>Balance</td>
+            <td>10.0 - 12.0</td>
+            <td>18.0 - 20.0</td>
+            <td>9.0 - 10.5</td>
             <td>-</td>
-            <td>17.0 - 21.0</td>
-            <td>2.8 - 3.3</td>
-            <td>4.75 - 5.5</td>
-            <td>0.65 - 1.15</td>
-            <td>0.2 - 0.8</td>
+            <td>3.0 - 3.3</td>
+            <td>1.4 - 1.6</td>
             <td>-</td>
             <td>5.0 max</td>
-            <td>0.08% C, 1.0% Mn, 0.35% Si</td>
+            <td>0.05 - 0.12% C, 0.003 - 0.010% B</td>
           </tr>
           <tr>
             <td>René 77</td>
@@ -301,6 +289,45 @@
             <td>4.0</td>
             <td>-</td>
             <td>0.06% C, 0.5% Si, 0.6% Mn</td>
+          </tr>
+          <tr>
+            <td>Tribaloy T-800</td>
+            <td>-</td>
+            <td>Balance</td>
+            <td>17.5</td>
+            <td>28.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Balance</td>
+            <td>3.4% Si, 0.08% C </td>
+          </tr>
+          <tr>
+            <td>Stellite 31 (X40)</td>
+            <td>-</td>
+            <td>Balance</td>
+            <td>27.0 - 32.0</td>
+            <td>7.0 - 10.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>3.5 - 5.5</td>
+            <td>-</td>
+            <td>1.5% Si, 0.2% C</td>
+          </tr>
+          <tr>
+            <td>Inconel 100</td>
+            <td>Balance</td>
+            <td>-</td>
+            <td>10.0</td>
+            <td>3.0</td>
+            <td>-</td>
+            <td>4.7</td>
+            <td>5.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>0.18% C, 0.015% B, 0.06% Zr</td>
           </tr>
         <tr>
           <td>Inconel 600</td>
@@ -353,6 +380,45 @@
           <td>-</td>
           <td>5.0 max</td>
           <td>0.10% C, 0.5% Si, 0.5% Mn</td>
+        </tr>
+        <tr>
+          <td>AMS 5837</td>
+          <td>Balance</td>
+          <td>10.0</td>
+          <td>19.0 - 21.0</td>
+          <td>5.0 - 6.0</td>
+          <td>-</td>
+          <td>2.0 - 3.0</td>
+          <td>1.2 - 1.5</td>
+          <td>-</td>
+          <td>3.0 max</td>
+          <td>0.06% C, 1.0% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>Inconel 713</td>
+          <td>Balance</td>
+          <td>-</td>
+          <td>12.5</td>
+          <td>4.2</td>
+          <td>2.0</td>
+          <td>0.6</td>
+          <td>6.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>0.12% C, 0.01% B, 0.10% Zr</td>
+        </tr>
+        <tr>
+          <td>Inconel 718</td>
+          <td>Balance</td>
+          <td>-</td>
+          <td>17.0 - 21.0</td>
+          <td>2.8 - 3.3</td>
+          <td>4.75 - 5.5</td>
+          <td>0.65 - 1.15</td>
+          <td>0.2 - 0.8</td>
+          <td>-</td>
+          <td>5.0 max</td>
+          <td>0.08% C, 1.0% Mn, 0.35% Si</td>
         </tr>
         <tr>
           <td>Hastelloy X</td>
@@ -420,45 +486,6 @@
           <td>0.10% C, 0.5% Si, 0.5% Mn</td>
         </tr>
         <tr>
-          <td>AMS 4777</td>
-          <td>Balance</td>
-          <td>9.0 - 11.0</td>
-          <td>13.0 - 15.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>2.3 - 2.7</td>
-          <td>0.8 - 1.2</td>
-          <td>-</td>
-          <td>4.0 max</td>
-          <td>0.06 - 0.12% C, 0.5% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>AMS 4778</td>
-          <td>Balance</td>
-          <td>10.0 - 12.0</td>
-          <td>19.0 - 21.0</td>
-          <td>5.0 - 6.0</td>
-          <td>-</td>
-          <td>2.0 - 3.0</td>
-          <td>1.2 - 1.5</td>
-          <td>-</td>
-          <td>3.0 max</td>
-          <td>0.06% C, 1.0% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>Stellite 31</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>27.0 - 32.0</td>
-          <td>7.0 - 10.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>3.5 - 5.5</td>
-          <td>-</td>
-          <td>1.5% Si, 0.2% C</td>
-        </tr>
-        <tr>
           <td>17-4 PH</td>
           <td>3.0 - 5.0</td>
           <td>-</td>
@@ -470,6 +497,19 @@
           <td>-</td>
           <td>Balance</td>
           <td>3.0 - 5.0% Cu, 0.07% C, 1.0% Mn, 1.0% Si</td>
+        </tr>
+        <tr>
+          <td>X-750</td>
+          <td>70.0</td>
+          <td>1.0 max</td>
+          <td>14.0 - 17.0</td>
+          <td>-</td>
+          <td>0.7 - 1.2</td>
+          <td>2.25 - 2.75</td>
+          <td>0.4 - 1.0</td>
+          <td>-</td>
+          <td>5.0 - 9.0</td>
+          <td>0.08% C, 1.0% Mn, 0.5% Si</td>
         </tr>
         <tr>
           <td>Greek Ascoloy</td>
@@ -510,58 +550,7 @@
           <td>-</td>
           <td>0.06% C, 0.4% Si, 0.6% Mn</td>
         </tr>
-        <tr>
-          <td>X-750</td>
-          <td>70.0</td>
-          <td>1.0 max</td>
-          <td>14.0 - 17.0</td>
-          <td>-</td>
-          <td>0.7 - 1.2</td>
-          <td>2.25 - 2.75</td>
-          <td>0.4 - 1.0</td>
-          <td>-</td>
-          <td>5.0 - 9.0</td>
-          <td>0.08% C, 1.0% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>CRES 308</td>
-          <td>-</td>
-          <td>-</td>
-          <td>19.0 - 21.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.08% C, 2.0% Mn, 0.75% Si</td>
-        </tr>
-        <tr>
-          <td>CRES 308L</td>
-          <td>-</td>
-          <td>-</td>
-          <td>19.0 - 21.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.03% C max, 2.0% Mn, 0.75% Si</td>
-        </tr>
-        <tr>
-          <td>CRES 410</td>
-          <td>-</td>
-          <td>-</td>
-          <td>11.5 - 13.5</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.08 - 0.15% C, 1.0% Mn, 1.0% Si</td>
-        </tr>
+       
         <tr>
           <td>C276</td>
           <td>Balance</td>
@@ -575,7 +564,6 @@
           <td>4.0 - 7.0</td>
           <td>0.01% C, 0.08% Si, 0.35% V</td>
         </tr>
-    
         <tr>
           <td>4340</td>
           <td>1.65 - 2.00</td>
@@ -601,6 +589,32 @@
           <td>-</td>
           <td>Balance</td>
           <td>0.28 - 0.33% C, 0.4 - 0.6% Mn, 0.15 - 0.35% Si</td>
+        </tr>
+        <tr>
+          <td>AMS 4777</td>
+          <td>Balance</td>
+          <td>9.0 - 11.0</td>
+          <td>13.0 - 15.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>2.3 - 2.7</td>
+          <td>0.8 - 1.2</td>
+          <td>-</td>
+          <td>4.0 max</td>
+          <td>0.06 - 0.12% C, 0.5% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>AMS 4778</td>
+          <td>Balance</td>
+          <td>10.0 - 12.0</td>
+          <td>19.0 - 21.0</td>
+          <td>5.0 - 6.0</td>
+          <td>-</td>
+          <td>2.0 - 3.0</td>
+          <td>1.2 - 1.5</td>
+          <td>-</td>
+          <td>3.0 max</td>
+          <td>0.06% C, 1.0% Mn, 0.5% Si</td>
         </tr>
       </table>
             
@@ -693,53 +707,64 @@
     });
 }
 
-            function filterTable() {
-                let filters = document.querySelectorAll(".filter");
-                let rows = document.querySelectorAll("#data-table tr:not(:first-child)");
-                let sensitivity = parseFloat(document.getElementById("sensitivity").value) || 1;
+function filterTable() {
+    let filters = document.querySelectorAll(".filter");
+    let rows = document.querySelectorAll("#data-table tr:not(:first-child)");
+    let sensitivity = parseFloat(document.getElementById("sensitivity").value) || 1;
 
-                rows.forEach(row => {
-                    let cells = row.getElementsByTagName("td");
-                    let showRow = true;
+    rows.forEach(row => {
+        let cells = row.getElementsByTagName("td");
+        let showRow = true;
 
-                    filters.forEach(filter => {
-                        let colIndex = filter.getAttribute("data-col");
-                        let filterValue = filter.value.trim();
-                        let cellText = cells[colIndex].textContent.trim();
-                        let cellValue;
+        filters.forEach(filter => {
+            let colIndex = filter.getAttribute("data-col");
+            let filterValue = filter.value.trim();
+            let cellText = cells[colIndex].textContent.trim();
 
-                        if (cellText.includes("-")) {
-                            // Handle range format like "10-15" by using both min and max values for filtering
-                            let [min, max] = cellText.split("-").map(num => parseFloat(num.trim()));
-                            if (!isNaN(min) && !isNaN(max)) {
-                                cellValue = [min, max]; // Store range for filtering
-                            } else {
-                                cellValue = parseFloat(cellText); // Fallback to normal parsing
-                            }
-                        } else {
-                            cellValue = parseFloat(cellText);
-                        }
+            // If filter is empty, ignore filtering for this column
+            if (filterValue === "") return;
 
-                        if (!isNaN(parseFloat(filterValue))) {
-                            let lowerBound = parseFloat(filterValue) - (parseFloat(filterValue) * sensitivity / 100);
-                            let upperBound = parseFloat(filterValue) + (parseFloat(filterValue) * sensitivity / 100);
-
-                            if (Array.isArray(cellValue)) {
-                                // Filter using both min and max values of the range
-                                if (cellValue[1] < lowerBound || cellValue[0] > upperBound) {
-                                    showRow = false;
-                                }
-                            } else if (!isNaN(cellValue)) {
-                                if (cellValue < lowerBound || cellValue > upperBound) {
-                                    showRow = false;
-                                }
-                            }
-                        }
-                    });
-
-                    row.style.display = showRow ? "" : "none";
-                });
+            // Ignore rows where the cell is just "-"
+            if (cellText === "-") {
+                showRow = false;
+                return;
             }
+
+            let cellValue;
+            if (cellText.includes("-")) {
+                // Handle range values like "10 - 14"
+                let [min, max] = cellText.split("-").map(num => parseFloat(num.trim()));
+                if (!isNaN(min) && !isNaN(max)) {
+                    cellValue = [min, max]; // Store range for filtering
+                } else {
+                    cellValue = parseFloat(cellText); // Fallback in case of malformed data
+                }
+            } else {
+                cellValue = parseFloat(cellText);
+            }
+
+            // Ensure valid number input
+            if (!isNaN(parseFloat(filterValue))) {
+                let lowerBound = parseFloat(filterValue) - (parseFloat(filterValue) * sensitivity / 100);
+                let upperBound = parseFloat(filterValue) + (parseFloat(filterValue) * sensitivity / 100);
+
+                if (Array.isArray(cellValue)) {
+                    // Filter using both min and max values of the range
+                    if (cellValue[1] < lowerBound || cellValue[0] > upperBound) {
+                        showRow = false;
+                    }
+                } else if (!isNaN(cellValue)) {
+                    if (cellValue < lowerBound || cellValue > upperBound) {
+                        showRow = false;
+                    }
+                }
+            }
+        });
+
+        row.style.display = showRow ? "" : "none";
+    });
+}
+
 
 
             //double click row to copy data
