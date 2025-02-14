@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Tables</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-size: 12px;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .sensitivity-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .sensitivity-container label {
+            font-weight: bold;
+            width: 170px;
+        }
+        .sensitivity-container input{
+            width:25%;
+        }
+        /* Hover effect */
+        #data-table tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+        .clear-btn {
+            background-color: #FF4C4C;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 120px;
+        }
+        .clear-btn:hover {
+            background-color: #CC0000;
+        }
+        .highlight {
+          background-color: yellow !important; /* Change color as needed */
+          }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="sensitivity-container">
+        <label for="sensitivity">Sensitivity, %:</label>
+        <input type="number" id="sensitivity" min="0" max="100" value="5">
+        <button class="clear-btn" onclick="clearInputs()">Clear All</button>
+    </div>
+    
+    <table id="query-table">
+        <tr>
+            <th>Material</th>
+            <th>Nickel</th>
+            <th>Cobalt</th>
+            <th>Chromium</th>
+            <th>Molybdenum</th>
+            <th>Niobium</th>
+            <th>Titanium</th>
+            <th>Aluminum</th>
+            <th>Tungsten</th>
+            <th>Iron</th>
+        </tr>
+      
+        <tr>
+            <td><input type="text" id="materialSearch" placeholder="Search material"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="1"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="2"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="3"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="4"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="5"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="6"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="7"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="8"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="9"></td>
+           
+        </tr>
+    </table>
+
+    <table id="data-table">
+        <tr>
+          <th onclick="sortTable(0)">Material <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(1)">Nickel (Ni) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(2)">Cobalt (Co) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(3)">Chromium (Cr) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(4)">Molybdenum (Mo) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(5)">Niobium (Nb) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(6)">Titanium (Ti) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(7)">Aluminum (Al) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(8)">Tungsten (W) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(9)">Iron (Fe) % <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(10)">Other Elements <span class="sort-icon">⇅</span></th>
+        </tr>
+        <tr>
+          <td>AMS 5837</td>
+          <td>Balance</td>
+          <td>10.0</td>
+          <td>19.0 - 21.0</td>
+          <td>5.0 - 6.0</td>
+          <td>-</td>
+          <td>2.0 - 3.0</td>
+          <td>1.2 - 1.5</td>
+          <td>-</td>
+          <td>3.0 max</td>
+          <td>0.06% C, 1.0% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>Inconel 713</td>
+          <td>Balance</td>
+          <td>-</td>
+          <td>12.5</td>
+          <td>4.2</td>
+          <td>2.0</td>
+          <td>0.6</td>
+          <td>6.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>0.12% C, 0.01% B, 0.10% Zr</td>
+        </tr>
+        <tr>
+          <td>René 41</td>
+          <td>Balance</td>
+          <td>10.0 - 12.0</td>
+          <td>18.0 - 20.0</td>
+          <td>9.0 - 10.5</td>
+          <td>-</td>
+          <td>3.0 - 3.3</td>
+          <td>1.4 - 1.6</td>
+          <td>-</td>
+          <td>5.0 max</td>
+          <td>0.05 - 0.12% C, 0.003 - 0.010% B</td>
+        </tr>
+        <tr>
+          <td>Tribaloy T-800</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>17.5</td>
+          <td>28.5</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>3.4% Si, 0.08% C </td>
+        </tr>
+        <tr>
+          <td>CRES 304</td>
+          <td>8.0 - 10.5</td>
+          <td>-</td>
+          <td>18.0 - 20.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>2.0% Mn, 0.75% Si, 0.08% C</td>
+        </tr>
+        <tr>
+          <td>CRES 321</td>
+          <td>9.0 - 12.0</td>
+          <td>-</td>
+          <td>17.0 - 19.0</td>
+          <td>-</td>
+          <td>5 x (C + N) min / 0.70 max</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>2.0% Mn, 0.75% Si, 0.08% C</td>
+        </tr>
+        <tr>
+          <td>CRES 316</td>
+          <td>10.0 - 14.0</td>
+          <td>-</td>
+          <td>16.0 - 18.0</td>
+          <td>2.0 - 3.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>2.0% Mn, 0.75% Si, 0.08% C</td>
+        </tr>
+        <tr>
+          <td>CRES 347</td>
+          <td>9.0 - 12.0</td>
+          <td>-</td>
+          <td>17.0 - 19.0</td>
+          <td>-</td>
+          <td>10 x C min to 1.00 max</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>2.0% Mn, 0.75% Si, 0.08% C</td>
+        </tr>
+        <tr>
+            <td>Inconel 100</td>
+            <td>Balance</td>
+            <td>-</td>
+            <td>10.0</td>
+            <td>3.0</td>
+            <td>-</td>
+            <td>4.7</td>
+            <td>5.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>0.18% C, 0.015% B, 0.06% Zr</td>
+          </tr>
+    
+          <tr>
+            <td>Inconel 718</td>
+            <td>Balance</td>
+            <td>-</td>
+            <td>17.0 - 21.0</td>
+            <td>2.8 - 3.3</td>
+            <td>4.75 - 5.5</td>
+            <td>0.65 - 1.15</td>
+            <td>0.2 - 0.8</td>
+            <td>-</td>
+            <td>5.0 max</td>
+            <td>0.08% C, 1.0% Mn, 0.35% Si</td>
+          </tr>
+          <tr>
+            <td>René 77</td>
+            <td>Balance</td>
+            <td>15.0</td>
+            <td>14.0</td>
+            <td>4.0</td>
+            <td>-</td>
+            <td>3.4</td>
+            <td>3.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>0.09% C, 0.015% B, 0.05% Zr</td>
+          </tr>
+          <tr>
+            <td>MAR-M 200</td>
+            <td>Balance</td>
+            <td>12.5</td>
+            <td>9.0</td>
+            <td>2.0</td>
+            <td>-</td>
+            <td>1.0</td>
+            <td>5.0</td>
+            <td>10.0</td>
+            <td>-</td>
+            <td>0.15% C, 0.015% B, 0.05% Zr</td>
+          </tr>
+          <tr>
+            <td>Coast Metal 64</td>
+            <td>-</td>
+            <td>Balance</td>
+            <td>25.0</td>
+            <td>7.5</td>
+            <td>-</td>
+            <td>0.5</td>
+            <td>-</td>
+            <td>4.0</td>
+            <td>-</td>
+            <td>0.06% C, 0.5% Si, 0.6% Mn</td>
+          </tr>
+        <tr>
+          <td>Inconel 600</td>
+          <td>72.0</td>
+          <td>-</td>
+          <td>14.0 - 17.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>6.0 - 10.0</td>
+          <td>0.15% C, 1.0% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>Inconel 601</td>
+          <td>58.0 - 63.0</td>
+          <td>1.0 max</td>
+          <td>21.0 - 25.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>1.0 - 1.7</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.10% C, 1.5% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>Inconel 602</td>
+          <td>Balance</td>
+          <td>-</td>
+          <td>24.0 - 26.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>0.15 - 0.25</td>
+          <td>1.8 - 2.4</td>
+          <td>2.5 - 3.5</td>
+          <td>-</td>
+          <td>0.15% C, 0.5% Si, 0.1% Mn</td>
+        </tr>
+        <tr>
+          <td>Inconel 625</td>
+          <td>58.0 min</td>
+          <td>1.0 max</td>
+          <td>20.0 - 23.0</td>
+          <td>8.0 - 10.0</td>
+          <td>3.15 - 4.15</td>
+          <td>0.4 max</td>
+          <td>0.4 max</td>
+          <td>-</td>
+          <td>5.0 max</td>
+          <td>0.10% C, 0.5% Si, 0.5% Mn</td>
+        </tr>
+        <tr>
+          <td>Hastelloy X</td>
+          <td>47.5 - 52.0</td>
+          <td>0.5 - 2.5</td>
+          <td>20.5 - 23.0</td>
+          <td>8.0 - 10.0</td>
+          <td>-</td>
+          <td>0.15 max</td>
+          <td>0.5 max</td>
+          <td>-</td>
+          <td>17.0 - 20.0</td>
+          <td>0.10% C, 1.0% Mn, 1.0% Si</td>
+        </tr>
+        <tr>
+          <td>Hastelloy W</td>
+          <td>Balance</td>
+          <td>2.5 - 3.5</td>
+          <td>4.0 - 6.0</td>
+          <td>24.0 - 26.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>4.0 - 6.0</td>
+          <td>-</td>
+          <td>0.08% C, 1.0% Mn, 1.0% Si</td>
+        </tr>
+        <tr>
+          <td>L605</td>
+          <td>10.0 max</td>
+          <td>Balance</td>
+          <td>19.0 - 21.0</td>
+          <td>1.5</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>14.0 - 16.0</td>
+          <td>3.0 max</td>
+          <td>0.05 - 0.15% C, 1.0% Mn, 0.4% Si</td>
+        </tr>
+        <tr>
+          <td>Haynes 188</td>
+          <td>22.0</td>
+          <td>Balance</td>
+          <td>22.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>14.0</td>
+          <td>3.0 max</td>
+          <td>0.05 - 0.15% C, 0.3% Si, 0.5% Mn</td>
+        </tr>
+        <tr>
+          <td>Haynes 230</td>
+          <td>57.0</td>
+          <td>5.0</td>
+          <td>22.0</td>
+          <td>2.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>14.0</td>
+          <td>3.0 max</td>
+          <td>0.10% C, 0.5% Si, 0.5% Mn</td>
+        </tr>
+        <tr>
+          <td>AMS 4777</td>
+          <td>Balance</td>
+          <td>9.0 - 11.0</td>
+          <td>13.0 - 15.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>2.3 - 2.7</td>
+          <td>0.8 - 1.2</td>
+          <td>-</td>
+          <td>4.0 max</td>
+          <td>0.06 - 0.12% C, 0.5% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>AMS 4778</td>
+          <td>Balance</td>
+          <td>10.0 - 12.0</td>
+          <td>19.0 - 21.0</td>
+          <td>5.0 - 6.0</td>
+          <td>-</td>
+          <td>2.0 - 3.0</td>
+          <td>1.2 - 1.5</td>
+          <td>-</td>
+          <td>3.0 max</td>
+          <td>0.06% C, 1.0% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>Stellite 31</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>27.0 - 32.0</td>
+          <td>7.0 - 10.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>3.5 - 5.5</td>
+          <td>-</td>
+          <td>1.5% Si, 0.2% C</td>
+        </tr>
+        <tr>
+          <td>17-4 PH</td>
+          <td>3.0 - 5.0</td>
+          <td>-</td>
+          <td>15.0 - 17.5</td>
+          <td>-</td>
+          <td>0.15 - 0.45</td>
+          <td>0.9 - 1.3</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>3.0 - 5.0% Cu, 0.07% C, 1.0% Mn, 1.0% Si</td>
+        </tr>
+        <tr>
+          <td>Greek Ascoloy</td>
+          <td>-</td>
+          <td>-</td>
+          <td>12.0 - 14.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>1.8 - 2.2</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.10 - 0.15% C, 0.5% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>A286</td>
+          <td>24.0 - 27.0</td>
+          <td>1.0 max</td>
+          <td>13.5 - 16.0</td>
+          <td>1.0 - 1.5</td>
+          <td>-</td>
+          <td>1.9 - 2.3</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.08% C, 1.0% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>C263</td>
+          <td>Balance</td>
+          <td>5.0 - 7.0</td>
+          <td>19.0 - 21.0</td>
+          <td>5.6 - 6.1</td>
+          <td>-</td>
+          <td>2.0 - 2.3</td>
+          <td>0.6 max</td>
+          <td>-</td>
+          <td>-</td>
+          <td>0.06% C, 0.4% Si, 0.6% Mn</td>
+        </tr>
+        <tr>
+          <td>X-750</td>
+          <td>70.0</td>
+          <td>1.0 max</td>
+          <td>14.0 - 17.0</td>
+          <td>-</td>
+          <td>0.7 - 1.2</td>
+          <td>2.25 - 2.75</td>
+          <td>0.4 - 1.0</td>
+          <td>-</td>
+          <td>5.0 - 9.0</td>
+          <td>0.08% C, 1.0% Mn, 0.5% Si</td>
+        </tr>
+        <tr>
+          <td>CRES 308</td>
+          <td>-</td>
+          <td>-</td>
+          <td>19.0 - 21.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.08% C, 2.0% Mn, 0.75% Si</td>
+        </tr>
+        <tr>
+          <td>CRES 308L</td>
+          <td>-</td>
+          <td>-</td>
+          <td>19.0 - 21.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.03% C max, 2.0% Mn, 0.75% Si</td>
+        </tr>
+        <tr>
+          <td>CRES 410</td>
+          <td>-</td>
+          <td>-</td>
+          <td>11.5 - 13.5</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.08 - 0.15% C, 1.0% Mn, 1.0% Si</td>
+        </tr>
+        <tr>
+          <td>C276</td>
+          <td>Balance</td>
+          <td>2.5 max</td>
+          <td>14.5 - 16.5</td>
+          <td>15.0 - 17.0</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>3.0 - 4.5</td>
+          <td>4.0 - 7.0</td>
+          <td>0.01% C, 0.08% Si, 0.35% V</td>
+        </tr>
+    
+        <tr>
+          <td>4340</td>
+          <td>1.65 - 2.00</td>
+          <td>-</td>
+          <td>0.70 - 0.90</td>
+          <td>0.20 - 0.30</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.38 - 0.43% C, 0.6 - 0.8% Mn, 0.15 - 0.35% Si</td>
+        </tr>
+        <tr>
+          <td>4130</td>
+          <td>-</td>
+          <td>-</td>
+          <td>0.80 - 1.10</td>
+          <td>0.15 - 0.25</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Balance</td>
+          <td>0.28 - 0.33% C, 0.4 - 0.6% Mn, 0.15 - 0.35% Si</td>
+        </tr>
+      </table>
+            
+      
+</div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("input[type='number']").forEach(input => {
+                input.addEventListener("input", function () {
+                    if (this.value < 0) this.value = 0;
+                    if (this.value > 100) this.value = 100;
+                    filterTable();
+                });
+            });
+
+
+            document.getElementById("materialSearch").addEventListener("input", function () {
+                let searchValue = this.value.toLowerCase();
+                document.querySelectorAll("#data-table tr:not(:first-child)").forEach(row => {
+                    let material = row.cells[0].textContent.toLowerCase();
+                    row.style.display = material.includes(searchValue) ? "" : "none";
+                });
+            });
+
+        });
+
+        /*
+        function filterTable() {
+            let filters = document.querySelectorAll(".filter");
+            let rows = document.querySelectorAll("#data-table tr:not(:first-child)");
+            let sensitivity = parseFloat(document.getElementById("sensitivity").value) || 1;
+            
+            rows.forEach(row => {
+                let cells = row.getElementsByTagName("td");
+                let showRow = true;
+                
+                filters.forEach(filter => {
+                    let colIndex = filter.getAttribute("data-col");
+                    let filterValue = parseFloat(filter.value.trim());
+                    let cellValue = parseFloat(cells[colIndex].textContent.trim());
+                    
+                    if (!isNaN(filterValue)) {
+                        let lowerBound = filterValue - (filterValue * sensitivity / 100);
+                        let upperBound = filterValue + (filterValue * sensitivity / 100);
+                        if (cellValue < lowerBound || cellValue > upperBound) {
+                            showRow = false;
+                        }
+                    }
+                });
+                
+                row.style.display = showRow ? "" : "none";
+            });
+        }*/
+
+
+
+        function replaceBalanceText() {
+    let rows = document.querySelectorAll("#data-table tr:not(:first-child)");
+
+    rows.forEach(row => {
+        let cells = row.getElementsByTagName("td");
+        let totalSum = 0;
+
+        // Compute total numerical sum of row
+        for (let cell of cells) {
+            let cellText = cell.textContent.trim();
+            let cellNum = parseFloat(cellText);
+
+            if (!isNaN(cellNum)) {
+                totalSum += cellNum;
+            } else if (cellText.includes("-")) {
+                // Handle ranges by using their average for balance calculation
+                let [min, max] = cellText.split("-").map(num => parseFloat(num.trim()));
+                if (!isNaN(min) && !isNaN(max)) {
+                    totalSum += (min + max) / 2; // Average for balance calculation
+                }
+            }
+        }
+
+        // Calculate balance as 100 - total numerical sum of row and round to the nearest whole number
+        let balance = Math.round(100 - totalSum).toFixed(1);
+
+        // Replace all "BALANCE" or "Bal" cells with the calculated balance
+        for (let cell of cells) {
+            if (cell.textContent.trim().toLowerCase() === "balance" || cell.textContent.trim().toLowerCase() === "bal") {
+                cell.textContent = balance;
+            }
+        }
+    });
+}
+
+            function filterTable() {
+                let filters = document.querySelectorAll(".filter");
+                let rows = document.querySelectorAll("#data-table tr:not(:first-child)");
+                let sensitivity = parseFloat(document.getElementById("sensitivity").value) || 1;
+
+                rows.forEach(row => {
+                    let cells = row.getElementsByTagName("td");
+                    let showRow = true;
+
+                    filters.forEach(filter => {
+                        let colIndex = filter.getAttribute("data-col");
+                        let filterValue = filter.value.trim();
+                        let cellText = cells[colIndex].textContent.trim();
+                        let cellValue;
+
+                        if (cellText.includes("-")) {
+                            // Handle range format like "10-15" by using both min and max values for filtering
+                            let [min, max] = cellText.split("-").map(num => parseFloat(num.trim()));
+                            if (!isNaN(min) && !isNaN(max)) {
+                                cellValue = [min, max]; // Store range for filtering
+                            } else {
+                                cellValue = parseFloat(cellText); // Fallback to normal parsing
+                            }
+                        } else {
+                            cellValue = parseFloat(cellText);
+                        }
+
+                        if (!isNaN(parseFloat(filterValue))) {
+                            let lowerBound = parseFloat(filterValue) - (parseFloat(filterValue) * sensitivity / 100);
+                            let upperBound = parseFloat(filterValue) + (parseFloat(filterValue) * sensitivity / 100);
+
+                            if (Array.isArray(cellValue)) {
+                                // Filter using both min and max values of the range
+                                if (cellValue[1] < lowerBound || cellValue[0] > upperBound) {
+                                    showRow = false;
+                                }
+                            } else if (!isNaN(cellValue)) {
+                                if (cellValue < lowerBound || cellValue > upperBound) {
+                                    showRow = false;
+                                }
+                            }
+                        }
+                    });
+
+                    row.style.display = showRow ? "" : "none";
+                });
+            }
+
+
+            //double click row to copy data
+            document.querySelectorAll("#data-table tr").forEach(row => {
+                row.addEventListener("dblclick", function () {
+                    let cells = this.getElementsByTagName("td");
+                    let inputs = document.querySelectorAll("#query-table input");
+
+                    inputs.forEach((input, index) => {
+                        let cellText = cells[index] ? cells[index].textContent.trim() : "";
+
+                        // First column: copy as-is, Other columns: only copy if it's a number
+                        if (index === 0) {
+                            input.value = cellText; // Copy first column as-is
+                        } else {
+                            let cellValue = parseFloat(cellText);
+                            input.value = !isNaN(cellValue) ? cellValue : "";
+                        }
+                    });
+                });
+            });
+
+              //sort rows
+            let sortDirections = {}; // Store sort state per column
+
+            function sortTable(colIndex) {
+                let table = document.getElementById("data-table");
+                let rows = Array.from(table.rows).slice(1); // Exclude header row
+                let isAscending = !sortDirections[colIndex]; // Toggle sorting order
+
+                rows.sort((rowA, rowB) => {
+                    let cellA = rowA.cells[colIndex].textContent.trim();
+                    let cellB = rowB.cells[colIndex].textContent.trim();
+
+                    let valueA = parseCellValue(cellA);
+                    let valueB = parseCellValue(cellB);
+
+                    if (valueA > valueB) return isAscending ? -1 : 1;
+                    if (valueA < valueB) return isAscending ? 1 : -1;
+                    return 0;
+                });
+
+                // Toggle sort order for next click
+                sortDirections[colIndex] = isAscending;
+
+                // Reorder rows in the table
+                rows.forEach(row => table.appendChild(row));
+            }
+
+        function parseCellValue(cellText) {
+            if (cellText.toLowerCase() === "balance") return Number.NEGATIVE_INFINITY; // Balance always last
+            if (cellText.includes("-")) {
+                let [min, max] = cellText.split("-").map(num => parseFloat(num.trim()));
+                return (!isNaN(min) && !isNaN(max)) ? (min + max) / 2 : cellText; // Use average for sorting
+            }
+            let num = parseFloat(cellText);
+            return isNaN(num) ? cellText : num; // Return number if valid, else text
+        }
+
+  
+
+        //clear all inputs
+        function clearInputs() {
+            document.querySelectorAll("#query-table input").forEach(input => input.value = "");
+            document.querySelectorAll("#data-table tr").forEach(row => row.style.display = "");
+        }
+
+
+        //Highlight row on click
+        document.querySelectorAll("#data-table tr:not(:first-child)").forEach(row => {
+            row.addEventListener("click", function (event) {
+                let isHighlighted = this.classList.contains("highlight");
+
+                // Remove highlight from all rows
+                document.querySelectorAll("#data-table tr").forEach(r => r.classList.remove("highlight"));
+
+                // Toggle highlight on the clicked row
+                if (!isHighlighted) {
+                    this.classList.add("highlight");
+                }
+
+                // Stop click from propagating to the document listener
+                event.stopPropagation();
+            });
+        });
+
+        // Remove highlight when clicking outside the table
+        document.addEventListener("click", function () {
+            document.querySelectorAll("#data-table tr").forEach(row => row.classList.remove("highlight"));
+        });
+
+
+
+        window.onload = function() {
+            replaceBalanceText();
+        };
+
+    </script>
+</body>
+</html>
