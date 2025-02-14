@@ -12,10 +12,10 @@
         }
         header {
             text-align: center;
-            padding: 1.5rem;
+            padding: 1.2rem;
             background-color: #3674B5;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
         }
         .search-container {
@@ -56,7 +56,7 @@
             gap: 1rem;
         }
         .card {
-            width: 13%;
+            width: 12%;
             background-color: white;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 0.5rem;
@@ -65,7 +65,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            height: 14rem;
+            height: 12rem;
             justify-content: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-decoration: none;
@@ -80,7 +80,7 @@
         }
         .card img.small{
             margin-bottom: 10px;
-            width: 60px;
+            width: 50px;
         }
         .card p {
             font-size: 1rem;
@@ -113,48 +113,94 @@
         <button onclick="filterByTag('GE')">GE</button>
         <button onclick="filterByTag('Pratt & Whitney Military')">Pratt & Whitney Military</button>
         <button onclick="filterByTag('Pratt & Whitney Civilian')">Pratt & Whitney Civilian</button>
+        <button onclick="filterByTag('Pratt & Whitney Canada')">Pratt & Whitney Canada</button>
         <button onclick="filterByTag('Honeywell')">Honeywell</button>
+        <button onclick="filterByTag('Boeing')">Boeing</button>
     </div>
 
     <div class="container" id="manualContainer">
-        <!-- Card 1 -->
-        <a href="file:///C:/path/to/manual1.pdf" target="_blank" class="card" data-tag="IAE">
-            <img src="iae logo.webp" alt="Book Logo">
-            <p>Engine Manual 1</p>
-            <p style="font-size: 0.8rem; color: gray;">IAE</p>
-        </a>
-        <!-- Card 2 -->
+        
         <a href="file:///C:/path/to/manual2.pdf" target="_blank" class="card" data-tag="CFM">
             <img class="small" src="CFM logo.png" alt="Book Logo">
-            <p>CFM Inspection/Repair Manual</p>
+            <p>CFM56 Repair Manual</p>
             <p style="font-size: 0.8rem; color: gray;">CFM</p>
+        </a>
+        <a href="file:///C:/path/to/manual2.pdf" target="_blank" class="card" data-tag="CFM">
+            <img class="small" src="CFM logo.png" alt="Book Logo">
+            <p>LEAP Repair Manual</p>
+            <p style="font-size: 0.8rem; color: gray;">CFM</p>
+        </a>
+        <a href="file:///C:/path/to/manual2.pdf" target="_blank" class="card" data-tag="CFM">
+            <img class="small" src="CFM logo.png" alt="Book Logo">
+            <p>CFM56 LPT Blade Repair</p>
+            <p style="font-size: 0.8rem; color: gray;">CFM</p>
+        </a>
+        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Honeywell">
+            <img src="honeywell logo.webp" alt="Book Logo">
+            <p>F124 Repair Manual</p>
+            <p>T.O 2-111-1</p>
+            <p style="font-size: 0.8rem; color: gray;">Honeywell</p>
+        </a>
+        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Honeywell">
+            <img src="honeywell logo.webp" alt="Book Logo">
+            <p>APU</p>
+            <p>T.O 2-111-1</p>
+            <p style="font-size: 0.8rem; color: gray;">Honeywell</p>
         </a>
         <!-- Card 3 -->
         <a href="file:///C:/path/to/manual3.pdf" target="_blank" class="card" data-tag="GE">
             <img src="ge logo.webp" alt="Book Logo">
-            <p>Engine Manual 3</p>
+            <p>J79-J1E Engine Manual</p>
             <p style="font-size: 0.8rem; color: gray;">GE</p>
+        </a>
+        <a href="file:///C:/path/to/manual1.pdf" target="_blank" class="card" data-tag="IAE">
+            <img src="iae logo.webp" alt="Book Logo">
+            <p>V2500 Manual</p>
+            <p style="font-size: 0.8rem; color: gray;">IAE</p>
         </a>
         <!-- Card 4 -->
         <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Civilian">
             <img src="pratt-whitney-logo.svg" alt="Book Logo">
-            <p>Engine Manual 4</p>
+            <p>PW4000 Repair Manual</p>
             <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Civilian</p>
         </a>
         <!-- Card 5 -->
         <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Military">
             <img src="pratt-whitney-logo.svg" alt="Book Logo">
-            <p>Engine Manual 5</p>
+            <p>F100 Repair Manual</p>
             <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Military</p>
         </a>
-        <!-- Card 6 -->
-        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Honeywell">
-            <img src="honeywell logo.webp" alt="Book Logo">
+        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Military">
+            <img src="pratt-whitney-logo.svg" alt="Book Logo">
+            <p>J52 Repair Manual</p>
+            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Military</p>
+        </a>
+        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Military">
+            <img src="pratt-whitney-logo.svg" alt="Book Logo">
             <p>Standard Practice Manual (SPM)</p>
             <p>T.O 2-111-1</p>
-            <p style="font-size: 0.8rem; color: gray;">Honeywell</p>
+            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Military</p>
         </a>
-        <!-- Add more cards as needed -->
+        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Civilian">
+            <img src="pratt-whitney-logo.svg" alt="Book Logo">
+            <p>Standard Practice Manual (SPM)</p>
+            <p>70-24-52</p>
+            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Civilian</p>
+        </a>
+        <!-- Card 6 -->
+        
+        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Pratt & Whitney Canada">
+            <img src="pwc logo.webp" alt="Book Logo">
+            <p>PT6 Repair Manual</p>
+            <p>T.O 2-111-1</p>
+            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Canada</p>
+        </a>
+        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Boeing">
+            <img src="boeing logo.webp" alt="Book Logo">
+            <p>Boeing Repair Manual</p>
+            <p>T.O 2-111-1</p>
+            <p style="font-size: 0.8rem; color: gray;">Boeing</p>
+        </a>
     </div>
 
     <script>
