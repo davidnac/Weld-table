@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Engine Manuals</title>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #3674B5;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .search-container {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .search-container input {
+            width: 50%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .filter-buttons button {
+            padding: 0.5rem 1rem;
+            margin: 0.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #578FCA;
+            color: white;
+            font-size: 1rem;
+        }
+        .filter-buttons button:hover {
+            background-color: #493D9E;
+        }
+        .container {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .card {
+            width: 14%;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: 14rem;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+        .card img {
+            margin-bottom: 10px;
+            width: 80%;
+        }
+        .card img.small{
+            margin-bottom: 10px;
+            width: 60px;
+        }
+        .card p {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .card:link, .card:visited {
+            text-decoration: none;
+            color: inherit;
+        }
+        p{
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        Select Engine Manuals
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchBar" placeholder="Search manuals..." onkeyup="filterManuals()">
+    </div>
+
+    <div class="filter-buttons">
+        <button onclick="filterByTag('all')">Show All</button>
+        <button onclick="filterByTag('IAE')">IAE</button>
+        <button onclick="filterByTag('CFM')">CFM</button>
+        <button onclick="filterByTag('GE')">GE</button>
+        <button onclick="filterByTag('Pratt & Whitney Military')">Pratt & Whitney Military</button>
+        <button onclick="filterByTag('Pratt & Whitney Civilian')">Pratt & Whitney Civilian</button>
+        <button onclick="filterByTag('Honeywell')">Honeywell</button>
+    </div>
+
+    <div class="container" id="manualContainer">
+        <!-- Card 1 -->
+        <a href="file:///C:/path/to/manual1.pdf" target="_blank" class="card" data-tag="IAE">
+            <img src="iae logo.webp" alt="Book Logo">
+            <p>Engine Manual 1</p>
+            <p style="font-size: 0.8rem; color: gray;">IAE</p>
+        </a>
+        <!-- Card 2 -->
+        <a href="file:///C:/path/to/manual2.pdf" target="_blank" class="card" data-tag="CFM">
+            <img class="small" src="CFM logo.png" alt="Book Logo">
+            <p>CFM Inspection/Repair Manual</p>
+            <p style="font-size: 0.8rem; color: gray;">CFM</p>
+        </a>
+        <!-- Card 3 -->
+        <a href="file:///C:/path/to/manual3.pdf" target="_blank" class="card" data-tag="GE">
+            <img src="ge logo.webp" alt="Book Logo">
+            <p>Engine Manual 3</p>
+            <p style="font-size: 0.8rem; color: gray;">GE</p>
+        </a>
+        <!-- Card 4 -->
+        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Civilian">
+            <img src="pratt-whitney-logo.svg" alt="Book Logo">
+            <p>Engine Manual 4</p>
+            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Civilian</p>
+        </a>
+        <!-- Card 5 -->
+        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Military">
+            <img src="pratt-whitney-logo.svg" alt="Book Logo">
+            <p>Engine Manual 5</p>
+            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Military</p>
+        </a>
+        <!-- Card 6 -->
+        <a href="file:///C:/path/to/manual5.pdf" target="_blank" class="card" data-tag="Honeywell">
+            <img src="honeywell logo.webp" alt="Book Logo">
+            <p>Standard Practice Manual (SPM)</p>
+            <p>T.O 2-111-1</p>
+            <p style="font-size: 0.8rem; color: gray;">Honeywell</p>
+        </a>
+        <!-- Add more cards as needed -->
+    </div>
+
+    <script>
+        function filterManuals() {
+            let input = document.getElementById("searchBar").value.toLowerCase();
+            let cards = document.querySelectorAll(".card");
+            
+            cards.forEach(card => {
+                let cardText = card.innerText.toLowerCase(); // Get all text inside the card
+                if (cardText.includes(input)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function filterByTag(tag) {
+            let cards = document.querySelectorAll(".card");
+            cards.forEach(card => {
+                let cardTag = card.getAttribute("data-tag");
+                if (tag === 'all' || cardTag === tag) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
