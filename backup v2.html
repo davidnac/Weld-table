@@ -18,7 +18,7 @@
             gap: 20px;
         }
         table {
-            width: 90%;
+            width: 96%;
             border-collapse: collapse;
             background: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -66,22 +66,21 @@
             background-color: #e0f7fa;
             cursor: pointer;
         }
-        .clear-btn {
-            background-color: #FF4C4C;
+        .btn {
+            background-color: #3D8D7A;
             color: white;
             border: none;
             padding: 6px 15px;
             border-radius: 5px;
             cursor: pointer;
+            width: 160px;
+        }
+        .clear-btn {
+            background-color: #FF4C4C;
             width: 120px;
         }
         .search-btn {
             background-color: #73C7C7;
-            color: white;
-            border: none;
-            padding: 6px 15px;
-            border-radius: 5px;
-            cursor: pointer;
             width: 160px;
         }
         .clear-btn:hover {
@@ -91,6 +90,28 @@
           background-color: #FFD95F !important; /* Change color as needed */
           }
 
+          .custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    background-color: #45a049;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+
     </style>
 </head>
 <body>
@@ -99,8 +120,20 @@
     <div class="sensitivity-container">
         <label for="sensitivity">Sensitivity, %:</label>
         <input type="number" id="sensitivity" min="0" max="100" value="20">
-        <button class="clear-btn" onclick="clearInputs()">Clear All</button>
-        <button class="search-btn" onclick="filterTable()">Search Similar</button>
+        <button class="btn clear-btn" onclick="clearInputs()">Clear All</button>
+        <button class="btn search-btn" onclick="filterTable()">Search Similar</button>
+        <button class="btn" id="saveButton">Save Changes</button>
+        <button class="btn" id="exportCSV">Export to CSV</button>
+        <label for="importCSV" class="custom-file-upload">
+          <span>Choose a CSV file</span>
+          <input type="file" id="importCSV" />
+      </label>
+      <button class="btn clear-btn" onclick="saveHtmlToFile()">Save file</button>
+
+      
+      
+
+
     </div>
     
     <table id="query-table">
@@ -115,7 +148,21 @@
             <th>Aluminum</th>
             <th>Tungsten</th>
             <th>Iron</th>
-        </tr>
+            <th>Carbon</th>
+            <th>Manganese</th>
+            <th>Silicon</th>
+
+            <th>Tin</th>
+            <th>Vanadium</th>
+            <th>Zirconium</th>
+
+            <th>Boron</th>
+            <th>Silver</th>
+            <th>Copper</th>
+            <th>Zinc</th>
+          
+        
+          </tr>
       
         <tr>
             <td><input type="text" id="materialSearch" placeholder="Search material..."></td>
@@ -128,496 +175,1158 @@
             <td><input type="number" min="0" max="100" class="filter" data-col="7"></td>
             <td><input type="number" min="0" max="100" class="filter" data-col="8"></td>
             <td><input type="number" min="0" max="100" class="filter" data-col="9"></td>
-           
-        </tr>
+            <td><input type="number" min="0" max="100" class="filter" data-col="10"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="11"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="12"></td>
+
+            <td><input type="number" min="0" max="100" class="filter" data-col="13"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="14"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="15"></td>
+
+            <td><input type="number" min="0" max="100" class="filter" data-col="16"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="17"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="18"></td>
+            <td><input type="number" min="0" max="100" class="filter" data-col="19"></td>
+
+          
+          </tr>
     </table>
 
-    <table id="data-table">
-        <tr>
-          <th onclick="sortTable(0)">Material <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(1)">Nickel (Ni) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(2)">Cobalt (Co) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(3)">Chromium (Cr) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(4)">Molybdenum (Mo) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(5)">Niobium (Nb) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(6)">Titanium (Ti) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(7)">Aluminum (Al) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(8)">Tungsten (W) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(9)">Iron (Fe) % <span class="sort-icon">⇅</span></th>
-          <th onclick="sortTable(10)">Other Elements <span class="sort-icon">⇅</span></th>
-        </tr>
-        <tr>
-          <td>CRES 308</td>
-          <td>-</td>
-          <td>-</td>
-          <td>19.0 - 21.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.08% C, 2.0% Mn, 0.75% Si</td>
-        </tr>
-        <tr>
-          <td>CRES 308L</td>
-          <td>-</td>
-          <td>-</td>
-          <td>19.0 - 21.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.03% C max, 2.0% Mn, 0.75% Si</td>
-        </tr>
-        <tr>
-          <td>CRES 410</td>
-          <td>-</td>
-          <td>-</td>
-          <td>11.5 - 13.5</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.08 - 0.15% C, 1.0% Mn, 1.0% Si</td>
-        </tr>
-        <tr>
-          <td>CRES 304</td>
-          <td>8.0 - 10.5</td>
-          <td>-</td>
-          <td>18.0 - 20.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>2.0% Mn, 0.75% Si, 0.08% C</td>
-        </tr>
-        <tr>
-          <td>CRES 321</td>
-          <td>9.0 - 12.0</td>
-          <td>-</td>
-          <td>17.0 - 19.0</td>
-          <td>-</td>
-          <td>5 x (C + N) min / 0.70 max</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>2.0% Mn, 0.75% Si, 0.08% C</td>
-        </tr>
-        <tr>
-          <td>CRES 316</td>
-          <td>10.0 - 14.0</td>
-          <td>-</td>
-          <td>16.0 - 18.0</td>
-          <td>2.0 - 3.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>2.0% Mn, 0.75% Si, 0.08% C</td>
-        </tr>
-        <tr>
-          <td>CRES 347</td>
-          <td>9.0 - 12.0</td>
-          <td>-</td>
-          <td>17.0 - 19.0</td>
-          <td>-</td>
-          <td>10 x C min to 1.00 max</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>2.0% Mn, 0.75% Si, 0.08% C</td>
-        </tr>
-        
+      <table id="data-table">
+        <tbody>
+          <tr>
+            <th onclick="sortTable(0)">Material <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(1)">Nickel (Ni) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(2)">Cobalt (Co) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(3)">Chromium (Cr) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(4)">Molybdenum (Mo) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(5)">Niobium (Nb) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(6)">Titanium (Ti) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(7)">Aluminum (Al) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(8)">Tungsten (W) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(9)">Iron (Fe) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(10)">Carbon (C) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(11)">Manganese (Mn) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(12)">Silicon (Si) % <span class="sort-icon">⇅</span></th>
+
+            <th onclick="sortTable(12)">Tin (Sn) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(12)">Vanadium (V) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(12)">Zirconium (Zr) % <span class="sort-icon">⇅</span></th>
+
+            <th onclick="sortTable(12)">Boron (B) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(12)">Silver (Ag) % <span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(12)">Copper (Cu) %<span class="sort-icon">⇅</span></th>
+            <th onclick="sortTable(12)">Zinc (Zn) % <span class="sort-icon">⇅</span></th>
+
+            
+          </tr>
+          
+          
+          <tr>
+            <td>CRES 304</td>
+            <td>8.0 - 10.5</td>
+            <td>0</td>
+            <td>18.0 - 20.0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>72.0</td>
+            <td>0.08</td>
+            <td>2.0</td>
+            <td>0.75</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>CRES 308</td>
+            <td>0</td>
+            <td>0</td>
+            <td>19.0 - 21.0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>81.0</td>
+            <td>0.08</td>
+            <td>2.0</td>
+            <td>0.75</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>CRES 316</td>
+            <td>10.0 - 14.0</td>
+            <td>0</td>
+            <td>16.0 - 18.0</td>
+            <td>2.0 - 3.0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>70.0</td>
+            <td>0.08</td>
+            <td>2.0</td>
+            <td>0.75</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>CRES 321</td>
+            <td>9.0 - 12.0</td>
+            <td>0</td>
+            <td>17.0 - 19.0</td>
+            <td>0</td>
+            <td>5 x (C + N) min / 0.70 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>67.0</td>
+            <td>0.08</td>
+            <td>2.0</td>
+            <td>0.75</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+                   <tr>
+            <td>CRES 347</td>
+            <td>9.0 - 12.0</td>
+            <td>0</td>
+            <td>17.0 - 19.0</td>
+            <td>0</td>
+            <td>10 x C min to 1.00 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>62.0</td>
+            <td>0.08</td>
+            <td>2.0</td>
+            <td>0.75</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>CRES 410</td>
+            <td>0</td>
+            <td>0</td>
+            <td>11.5 - 13.5</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>88.0</td>
+            <td>0.08 - 0.15</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
           <tr>
             <td>René 41</td>
-            <td>Balance</td>
+            <td>54.0</td>
             <td>10.0 - 12.0</td>
             <td>18.0 - 20.0</td>
             <td>9.0 - 10.5</td>
-            <td>-</td>
+            <td>0</td>
             <td>3.0 - 3.3</td>
             <td>1.4 - 1.6</td>
-            <td>-</td>
+            <td>0</td>
             <td>5.0 max</td>
-            <td>0.05 - 0.12% C, 0.003 - 0.010% B</td>
+            <td>0.05 - 0.12</td>
+            <td>0.003 - 0.010</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
           <tr>
-            <td>René 77</td>
+            <td>Rene 77</td>
             <td>Balance</td>
-            <td>15.0</td>
-            <td>14.0</td>
-            <td>4.0</td>
-            <td>-</td>
-            <td>3.4</td>
-            <td>3.5</td>
-            <td>-</td>
-            <td>-</td>
-            <td>0.09% C, 0.015% B, 0.05% Zr</td>
+            <td>14-16</td>
+            <td>14-16</td>
+            <td>4-5</td>
+            <td>0</td>
+            <td>2.5-3.2</td>
+            <td>3.8-4.8</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0.08-0.15</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
           <tr>
-            <td>MAR-M 200</td>
-            <td>Balance</td>
-            <td>12.5</td>
-            <td>9.0</td>
-            <td>2.0</td>
-            <td>-</td>
-            <td>1.0</td>
-            <td>5.0</td>
-            <td>10.0</td>
-            <td>-</td>
-            <td>0.15% C, 0.015% B, 0.05% Zr</td>
+            <td>René 80</td>
+            <td>56.0</td>
+            <td>9.5 - 10.5</td>
+            <td>19.0 - 21.0</td>
+            <td>9.0 - 10.0</td>
+            <td>0</td>
+            <td>2.6 - 3.1</td>
+            <td>1.4 - 1.6</td>
+            <td>0</td>
+            <td>5.0 max</td>
+            <td>0.05 - 0.10</td>
+            <td>0.003 - 0.010</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
           <tr>
-            <td>Coast Metal 64</td>
-            <td>-</td>
-            <td>Balance</td>
-            <td>25.0</td>
-            <td>7.5</td>
-            <td>-</td>
-            <td>0.5</td>
-            <td>-</td>
-            <td>4.0</td>
-            <td>-</td>
-            <td>0.06% C, 0.5% Si, 0.6% Mn</td>
+            <td>Waspaloy</td>
+            <td>53.0 - 59.0</td>
+            <td>9.0 - 11.0</td>
+            <td>19.0 - 21.0</td>
+            <td>1.5 - 2.5</td>
+            <td>0</td>
+            <td>3.0 - 3.5</td>
+            <td>1.0 - 1.5</td>
+            <td>0</td>
+            <td>1.0 - 5.0</td>
+            <td>0.05 - 0.15</td>
+            <td>0.003 - 0.010</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
-          <tr>
-            <td>Tribaloy T-800</td>
-            <td>-</td>
-            <td>Balance</td>
-            <td>17.5</td>
-            <td>28.5</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>Balance</td>
-            <td>3.4% Si, 0.08% C </td>
-          </tr>
-          <tr>
-            <td>Stellite 31 (X40)</td>
-            <td>-</td>
-            <td>Balance</td>
-            <td>27.0 - 32.0</td>
-            <td>7.0 - 10.0</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>3.5 - 5.5</td>
-            <td>-</td>
-            <td>1.5% Si, 0.2% C</td>
-          </tr>
+          
           <tr>
             <td>Inconel 100</td>
             <td>Balance</td>
-            <td>-</td>
-            <td>10.0</td>
-            <td>3.0</td>
-            <td>-</td>
-            <td>4.7</td>
-            <td>5.5</td>
-            <td>-</td>
-            <td>-</td>
-            <td>0.18% C, 0.015% B, 0.06% Zr</td>
+            <td>15-16.5</td>
+            <td>9-11</td>
+            <td>3-4</td>
+            <td>0</td>
+            <td>4.3-4.7</td>
+            <td>4.8-5.2</td>
+            <td>0</td>
+            <td>≤1</td>
+            <td>0.17-0.23</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
           </tr>
-        <tr>
-          <td>Inconel 600</td>
-          <td>72.0</td>
-          <td>-</td>
-          <td>14.0 - 17.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>6.0 - 10.0</td>
-          <td>0.15% C, 1.0% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>Inconel 601</td>
-          <td>58.0 - 63.0</td>
-          <td>1.0 max</td>
-          <td>21.0 - 25.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>1.0 - 1.7</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.10% C, 1.5% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>Inconel 602</td>
-          <td>Balance</td>
-          <td>-</td>
-          <td>24.0 - 26.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>0.15 - 0.25</td>
-          <td>1.8 - 2.4</td>
-          <td>2.5 - 3.5</td>
-          <td>-</td>
-          <td>0.15% C, 0.5% Si, 0.1% Mn</td>
-        </tr>
-        <tr>
-          <td>Inconel 625</td>
-          <td>58.0 min</td>
-          <td>1.0 max</td>
-          <td>20.0 - 23.0</td>
-          <td>8.0 - 10.0</td>
-          <td>3.15 - 4.15</td>
-          <td>0.4 max</td>
-          <td>0.4 max</td>
-          <td>-</td>
-          <td>5.0 max</td>
-          <td>0.10% C, 0.5% Si, 0.5% Mn</td>
-        </tr>
-        <tr>
-          <td>AMS 5837</td>
-          <td>Balance</td>
-          <td>10.0</td>
-          <td>19.0 - 21.0</td>
-          <td>5.0 - 6.0</td>
-          <td>-</td>
-          <td>2.0 - 3.0</td>
-          <td>1.2 - 1.5</td>
-          <td>-</td>
-          <td>3.0 max</td>
-          <td>0.06% C, 1.0% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>Inconel 713</td>
-          <td>Balance</td>
-          <td>-</td>
-          <td>12.5</td>
-          <td>4.2</td>
-          <td>2.0</td>
-          <td>0.6</td>
-          <td>6.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>0.12% C, 0.01% B, 0.10% Zr</td>
-        </tr>
-        <tr>
-          <td>Inconel 718</td>
-          <td>Balance</td>
-          <td>-</td>
-          <td>17.0 - 21.0</td>
-          <td>2.8 - 3.3</td>
-          <td>4.75 - 5.5</td>
-          <td>0.65 - 1.15</td>
-          <td>0.2 - 0.8</td>
-          <td>-</td>
-          <td>5.0 max</td>
-          <td>0.08% C, 1.0% Mn, 0.35% Si</td>
-        </tr>
-        <tr>
-          <td>Hastelloy X</td>
-          <td>47.5 - 52.0</td>
-          <td>0.5 - 2.5</td>
-          <td>20.5 - 23.0</td>
-          <td>8.0 - 10.0</td>
-          <td>-</td>
-          <td>0.15 max</td>
-          <td>0.5 max</td>
-          <td>-</td>
-          <td>17.0 - 20.0</td>
-          <td>0.10% C, 1.0% Mn, 1.0% Si</td>
-        </tr>
-        <tr>
-          <td>Hastelloy W</td>
-          <td>Balance</td>
-          <td>2.5 - 3.5</td>
-          <td>4.0 - 6.0</td>
-          <td>24.0 - 26.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>4.0 - 6.0</td>
-          <td>-</td>
-          <td>0.08% C, 1.0% Mn, 1.0% Si</td>
-        </tr>
-        <tr>
-          <td>L605</td>
-          <td>10.0 max</td>
-          <td>Balance</td>
-          <td>19.0 - 21.0</td>
-          <td>1.5</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>14.0 - 16.0</td>
-          <td>3.0 max</td>
-          <td>0.05 - 0.15% C, 1.0% Mn, 0.4% Si</td>
-        </tr>
-        <tr>
-          <td>Haynes 188</td>
-          <td>22.0</td>
-          <td>Balance</td>
-          <td>22.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>14.0</td>
-          <td>3.0 max</td>
-          <td>0.05 - 0.15% C, 0.3% Si, 0.5% Mn</td>
-        </tr>
-        <tr>
-          <td>Haynes 230</td>
-          <td>57.0</td>
-          <td>5.0</td>
-          <td>22.0</td>
-          <td>2.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>14.0</td>
-          <td>3.0 max</td>
-          <td>0.10% C, 0.5% Si, 0.5% Mn</td>
-        </tr>
-        <tr>
-          <td>17-4 PH</td>
-          <td>3.0 - 5.0</td>
-          <td>-</td>
-          <td>15.0 - 17.5</td>
-          <td>-</td>
-          <td>0.15 - 0.45</td>
-          <td>0.9 - 1.3</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>3.0 - 5.0% Cu, 0.07% C, 1.0% Mn, 1.0% Si</td>
-        </tr>
-        <tr>
-          <td>X-750</td>
-          <td>70.0</td>
-          <td>1.0 max</td>
-          <td>14.0 - 17.0</td>
-          <td>-</td>
-          <td>0.7 - 1.2</td>
-          <td>2.25 - 2.75</td>
-          <td>0.4 - 1.0</td>
-          <td>-</td>
-          <td>5.0 - 9.0</td>
-          <td>0.08% C, 1.0% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>Greek Ascoloy</td>
-          <td>-</td>
-          <td>-</td>
-          <td>12.0 - 14.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>1.8 - 2.2</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.10 - 0.15% C, 0.5% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>A286</td>
-          <td>24.0 - 27.0</td>
-          <td>1.0 max</td>
-          <td>13.5 - 16.0</td>
-          <td>1.0 - 1.5</td>
-          <td>-</td>
-          <td>1.9 - 2.3</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.08% C, 1.0% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>C263</td>
-          <td>Balance</td>
-          <td>5.0 - 7.0</td>
-          <td>19.0 - 21.0</td>
-          <td>5.6 - 6.1</td>
-          <td>-</td>
-          <td>2.0 - 2.3</td>
-          <td>0.6 max</td>
-          <td>-</td>
-          <td>-</td>
-          <td>0.06% C, 0.4% Si, 0.6% Mn</td>
-        </tr>
-       
-        <tr>
-          <td>C276</td>
-          <td>Balance</td>
-          <td>2.5 max</td>
-          <td>14.5 - 16.5</td>
-          <td>15.0 - 17.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>3.0 - 4.5</td>
-          <td>4.0 - 7.0</td>
-          <td>0.01% C, 0.08% Si, 0.35% V</td>
-        </tr>
-        <tr>
-          <td>4340</td>
-          <td>1.65 - 2.00</td>
-          <td>-</td>
-          <td>0.70 - 0.90</td>
-          <td>0.20 - 0.30</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.38 - 0.43% C, 0.6 - 0.8% Mn, 0.15 - 0.35% Si</td>
-        </tr>
-        <tr>
-          <td>4130</td>
-          <td>-</td>
-          <td>-</td>
-          <td>0.80 - 1.10</td>
-          <td>0.15 - 0.25</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>Balance</td>
-          <td>0.28 - 0.33% C, 0.4 - 0.6% Mn, 0.15 - 0.35% Si</td>
-        </tr>
-        <tr>
-          <td>AMS 4777</td>
-          <td>Balance</td>
-          <td>9.0 - 11.0</td>
-          <td>13.0 - 15.0</td>
-          <td>-</td>
-          <td>-</td>
-          <td>2.3 - 2.7</td>
-          <td>0.8 - 1.2</td>
-          <td>-</td>
-          <td>4.0 max</td>
-          <td>0.06 - 0.12% C, 0.5% Mn, 0.5% Si</td>
-        </tr>
-        <tr>
-          <td>AMS 4778</td>
-          <td>Balance</td>
-          <td>10.0 - 12.0</td>
-          <td>19.0 - 21.0</td>
-          <td>5.0 - 6.0</td>
-          <td>-</td>
-          <td>2.0 - 3.0</td>
-          <td>1.2 - 1.5</td>
-          <td>-</td>
-          <td>3.0 max</td>
-          <td>0.06% C, 1.0% Mn, 0.5% Si</td>
-        </tr>
+          <tr>
+            <td>Inconel 600</td>
+            <td>72 min</td>
+            <td>0</td>
+            <td>14-17</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0.3</td>
+            <td>0.2-0.4</td>
+            <td>0</td>
+            <td>6-10</td>
+            <td>0.15 max</td>
+            <td>1 max</td>
+            <td>0.5 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Inconel 601</td>
+            <td>58-63</td>
+            <td>1 max</td>
+            <td>21-25</td>
+            <td>≤1</td>
+            <td>0</td>
+            <td>0.3-1.5</td>
+            <td>1-1.7</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.1 max</td>
+            <td>1 max</td>
+            <td>0.5 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Inconel 602</td>
+            <td>Balance</td>
+            <td>1.5</td>
+            <td>24-26</td>
+            <td>8.5-9</td>
+            <td>0</td>
+            <td>0.15-0.25</td>
+            <td>1.8-2.4</td>
+            <td>0</td>
+            <td>≤3</td>
+            <td>0.1 max</td>
+            <td>0.15</td>
+            <td>0.5 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Inconel 625</td>
+            <td>58 min</td>
+            <td>1 max</td>
+            <td>20-23</td>
+            <td>8-10</td>
+            <td>3.15-4.15</td>
+            <td>0.4 max</td>
+            <td>0.4 max</td>
+            <td>0</td>
+            <td>5 max</td>
+            <td>0.1 max</td>
+            <td>0.5 max</td>
+            <td>0.5 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Inconel 713</td>
+            <td>Balance</td>
+            <td>0.5 max</td>
+            <td>12.5-13.5</td>
+            <td>4.2-4.8</td>
+            <td>0</td>
+            <td>0.5-0.8</td>
+            <td>5.5-6.5</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.08-0.2</td>
+            <td>0.1 max</td>
+            <td>0.3 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Inconel 718</td>
+            <td>50-55</td>
+            <td>1 max</td>
+            <td>17-21</td>
+            <td>2.8-3.3</td>
+            <td>4.75-5.5</td>
+            <td>0.65-1.15</td>
+            <td>0.2-0.8</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.08 max</td>
+            <td>0.35 max</td>
+            <td>0.35 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Hastelloy X</td>
+            <td>47.5-52</td>
+            <td>1.5 max</td>
+            <td>20.5-23</td>
+            <td>8-10</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0.5 max</td>
+            <td>0</td>
+            <td>17-20</td>
+            <td>0.05-0.15</td>
+            <td>1 max</td>
+            <td>1 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Hastelloy W</td>
+            <td>Balance</td>
+            <td>5 max</td>
+            <td>4.5-7</td>
+            <td>24-28</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>4-6</td>
+            <td>5 max</td>
+            <td>0.05-0.15</td>
+            <td>1 max</td>
+            <td>0.2 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>L605</td>
+            <td>10 max</td>
+            <td>49-53</td>
+            <td>19-21</td>
+            <td>1-2</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>14-16</td>
+            <td>3 max</td>
+            <td>0.05-0.15</td>
+            <td>1 max</td>
+            <td>0.4 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Haynes 188</td>
+            <td>22</td>
+            <td>37</td>
+            <td>20-24</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>13-16</td>
+            <td>3 max</td>
+            <td>0.05-0.15</td>
+            <td>1.25 max</td>
+            <td>0.4 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Haynes 230</td>
+            <td>57</td>
+            <td>5</td>
+            <td>20-24</td>
+            <td>1.5-3</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>14 max</td>
+            <td>3 max</td>
+            <td>0.05-0.15</td>
+            <td>0.3-0.6</td>
+            <td>0.4 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>X-750</td>
+            <td>70</td>
+            <td>1 max</td>
+            <td>14-17</td>
+            <td>0.7-1.2</td>
+            <td>0.7-1.2</td>
+            <td>2.25-2.75</td>
+            <td>0.4-1</td>
+            <td>0</td>
+            <td>5-9</td>
+            <td>0.08 max</td>
+            <td>1 max</td>
+            <td>0.5 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Greek Ascoloy</td>
+            <td>0</td>
+            <td>0</td>
+            <td>12-14</td>
+            <td>0</td>
+            <td>0</td>
+            <td>2.75-3.25</td>
+            <td>0</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.15-0.2</td>
+            <td>0.5 max</td>
+            <td>1 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>17-4 PH</td>
+            <td>3-5</td>
+            <td>0</td>
+            <td>15-17.5</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0.15-0.45</td>
+            <td>0</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.07 max</td>
+            <td>1 max</td>
+            <td>1 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>15-5 PH</td>
+            <td>3.5-5.5</td>
+            <td>0</td>
+            <td>14-15.5</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0.9 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.07 max</td>
+            <td>1 max</td>
+            <td>1 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>A286</td>
+            <td>24-27</td>
+            <td>0</td>
+            <td>13.5-16</td>
+            <td>1-1.5</td>
+            <td>0</td>
+            <td>1.9-2.3</td>
+            <td>0.1-0.5</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.08 max</td>
+            <td>2 max</td>
+            <td>1 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>C263</td>
+            <td>Balance</td>
+            <td>20</td>
+            <td>19-21</td>
+            <td>5.6-6.1</td>
+            <td>0</td>
+            <td>2-2.4</td>
+            <td>0.6</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.04 max</td>
+            <td>0.6 max</td>
+            <td>0.4 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>C276</td>
+            <td>Balance</td>
+            <td>2.5 max</td>
+            <td>14.5-16.5</td>
+            <td>15-17</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>3-4.5</td>
+            <td>4-7</td>
+            <td>0.02 max</td>
+            <td>1 max</td>
+            <td>0.08 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Steel 4340</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0.7-0.9</td>
+            <td>0.2-0.3</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.38-0.43</td>
+            <td>0.6-0.8</td>
+            <td>0.15-0.3</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Steel 4130</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0.8-1.1</td>
+            <td>0.15-0.25</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>Balance</td>
+            <td>0.28-0.33</td>
+            <td>0.4-0.6</td>
+            <td>0.15-0.3</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Marm-200</td>
+            <td>Balance</td>
+            <td>10</td>
+            <td>9</td>
+            <td>2</td>
+            <td>0</td>
+            <td>5</td>
+            <td>2</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0.15</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Coast Metal 64</td>
+            <td>Balance</td>
+            <td>4-6</td>
+            <td>14-16</td>
+            <td>2-3</td>
+            <td>0</td>
+            <td>0.5-1</td>
+            <td>0.5 max</td>
+            <td>2-3</td>
+            <td>Balance</td>
+            <td>0.1 max</td>
+            <td>1 max</td>
+            <td>0.5 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Tribaloy 800</td>
+            <td>Balance</td>
+            <td>48</td>
+            <td>27</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>6</td>
+            <td>1 max</td>
+            <td>0.08 max</td>
+            <td>1 max</td>
+            <td>1 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Stellite 31 (X40)</td>
+            <td>10.5</td>
+            <td>Balance</td>
+            <td>26</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>7.5</td>
+            <td>3 max</td>
+            <td>0.05 max</td>
+            <td>1 max</td>
+            <td>1 max</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Titanium 8Al 1Mo 1V</td>
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>1</td> 
+            <td>0</td> 
+            <td>90</td>
+            <td>8</td> 
+            <td>0</td> 
+            <td>0</td>
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Titanium 6Al 4V ELI</td>
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>90</td> 
+            <td>6</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td>
+            <td>0</td>
+            <td>4</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Titanium 6Al 4V</td>
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>90</td> 
+            <td>6</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td>
+            <td>0</td>
+            <td>4</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Titanium 6Al 2Sn 4Zr 2Mo</td>
+            <td>0</td>
+            <td>0</td> 
+            <td>0</td> 
+            <td>2</td> 
+            <td>0</td>
+            <td>86</td> 
+            <td>6</td>
+            <td>0</td> 
+            <td>0</td>
+            <td>0</td>
+            <td>0</td> 
+            <td>0</td>
+            <td>2</td>
+            <td>0</td>
+            <td>4</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>Titanium 15V 3Cr 3Sn 3Al</td>
+            <td>0</td> 
+            <td>0</td>
+            <td>3</td> 
+            <td>0</td> 
+            <td>0</td>
+            <td>76</td> 
+            <td>3</td>
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td> 
+            <td>0</td>
+            <td>3</td>
+            <td>15</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </tbody>
       </table>
+      
+      
+
+
+
+
+
+
+
+
+      <table id="data-table">
+        <thead>
+            <tr>
+                <th>AWS</th>
+                <th>AMS</th>
+                <th>Nickel (Ni) %</th>
+                <th>Chromium (Cr) %</th>
+                <th>Silicon (Si) %</th>
+                <th>Boron (B) %</th>
+                <th>Carbon (C) %</th>
+                <th>Iron (Fe) %</th>
+                <th>Silver (Ag) %</th>
+                <th>Copper (Cu) %</th>
+                <th>Zinc (Zn) %</th>
+                <th>Solidus</th>
+                <th>Liquidus</th>
+         
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>BNi-5</td>
+                <td>4782</td>
+                <td>71 </td>
+                <td>19 </td>
+                <td>10 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="fahrenheit">1975 F 1079 C</span></td>
+                <td><span class="fahrenheit">2075 F 1135 C</span></td>
+             
+           
+          </tr>
+            <tr>
+                <td>BNi-1</td>
+                <td>4775</td>
+                <td>73 </td>
+                <td>14 </td>
+                <td>4.5 </td>
+                <td>3 </td>
+                <td>0.8 </td>
+                <td>4.5 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="fahrenheit">1790 F 977 C</span></td>
+                <td><span class="fahrenheit">1900 F 1038 C</span></td>
+          
             
+          </tr>
+            <tr>
+                <td>BNi-1a</td>
+                <td>4776</td>
+                <td>74 </td>
+                <td>14 </td>
+                <td>4.5 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>4.5 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="fahrenheit">1790 F 977 C</span></td>
+                <td><span class="fahrenheit">1970 F 1077 C</span></td>
+              
+            
+          </tr>
+            <tr>
+                <td>BNi-2</td>
+                <td>4777</td>
+                <td>82.375 </td>
+                <td>7 </td>
+                <td>4.5 </td>
+                <td>3.125 </td>
+                <td>0</td>
+                <td>3 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="fahrenheit">1780 F 971 C</span></td>
+                <td><span class="fahrenheit">1830 F 999 C</span></td>
+             
+            
+          </tr>
+            <tr>
+                <td>BNi-3</td>
+                <td>4778</td>
+                <td>92 </td>
+                <td>0</td>
+                <td>4.5 </td>
+                <td>3 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="fahrenheit">1800 F 982 C</span></td>
+                <td><span class="fahrenheit">1900 F 1038 C</span></td>
+             
+          
+          </tr>
+            <tr>
+                <td>BNi-4</td>
+                <td>4779</td>
+                <td>94.6 </td>
+                <td>0</td>
+                <td>3.5 </td>
+                <td>1.9 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="fahrenheit">1800 F 982 C</span></td>
+                <td><span class="fahrenheit">1950 F 1066 C</span></td>
+           
+        
+          </tr>
+            <tr>
+                <td>GE B50TF17 Class A</td>
+                <td>0</td>
+                <td>99.5 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="fahrenheit">-</span></td>
+                <td><span class="fahrenheit">-</span></td>
+             
+            
+          </tr>
+            <tr>
+                <td>GE B50TF17 Class B</td>
+                <td>0</td>
+                <td>99 </td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="fahrenheit">-</span></td>
+                <td><span class="fahrenheit">-</span></td>
+          
+        
+          </tr>
+            <tr>
+                <td>BAg-24</td>
+                <td>4788</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>50</td>
+                <td>20</td>
+                <td>28</td>
+                <td><span class="fahrenheit">1220 F 660 C</span></td>
+                <td><span class="fahrenheit">1305 F 707 C</span></td>
+            
+            
+            
+          </tr>
+            <tr>
+                <td>BAg-13</td>
+                <td>4772</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>54</td>
+                <td>40</td>
+                <td>5</td>
+                <td><span class="fahrenheit">1325 F 718 C</span></td>
+                <td><span class="fahrenheit">1575 F 857 C</span></td>
+             
+            
+          
+          </tr>
+            <tr>
+                <td>BAg-13a</td>
+                <td>4765</td>
+                <td>2</td>
+                <td>0</td>
+                <td></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>56</td>
+                <td>42</td>
+                <td>0</td>
+                <td><span class="fahrenheit">1420 F 771 C</span></td>
+                <td><span class="fahrenheit">1640 F 893 C</span></td>
+            
+            
+            
+          </tr>
+        </tbody>
+    </table>
       
 </div>
 
@@ -862,6 +1571,127 @@ function filterTable() {
             replaceBalanceText();
         };
 
+
+
+
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("saveButton").addEventListener("click", function () {
+        let materialName = document.getElementById("materialSearch").value.trim();
+        if (!materialName) {
+            alert("Please enter a material name.");
+            return;
+        }
+
+        let dataTable = document.getElementById("data-table").getElementsByTagName("tbody")[0];
+        let rows = dataTable.getElementsByTagName("tr");
+        let found = false;
+
+        // Get input values from query-table
+        let inputs = document.querySelectorAll("#query-table .filter");
+        let values = Array.from(inputs).map(input => input.value.trim() || "-");
+
+        for (let i = 1; i < rows.length; i++) {  // Start from 1 to skip headers
+            let row = rows[i];
+            let firstCell = row.cells[0];
+
+            if (firstCell.textContent.trim() === materialName) {
+                // ✅ Update existing row (ALL columns)
+                for (let j = 0; j < values.length; j++) {
+                    row.cells[j + 1].textContent = values[j];  // Skip material column
+                }
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            // ✅ Add new row
+            let newRow = dataTable.insertRow();
+            
+            // Insert material name
+            let nameCell = newRow.insertCell(0);
+            nameCell.textContent = materialName;
+
+            // Insert all values
+            values.forEach(value => {
+                let cell = newRow.insertCell();
+                cell.textContent = value;
+            });
+        }
+    });
+});
+
+document.getElementById("exportCSV").addEventListener("click", function () {
+    let dataTable = document.getElementById("data-table");
+    let rows = dataTable.getElementsByTagName("tr");
+    let csvContent = [];
+
+    for (let i = 0; i < rows.length; i++) {
+        let row = rows[i];
+        let cells = row.getElementsByTagName("th").length > 0 ? row.getElementsByTagName("th") : row.getElementsByTagName("td");
+        let rowData = Array.from(cells).map(cell => `"${cell.textContent.trim()}"`).join(",");
+        csvContent.push(rowData);
+    }
+
+    let csvBlob = new Blob([csvContent.join("\n")], { type: "text/csv" });
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(csvBlob);
+    link.download = "table-data.csv";
+    link.click();
+});
+
+document.getElementById("importCSV").addEventListener("change", function (event) {
+    let file = event.target.files[0];
+    if (!file) return;
+
+    let reader = new FileReader();
+    reader.onload = function (e) {
+        let csvData = e.target.result.split("\n").map(row => row.split(","));
+        let dataTable = document.getElementById("data-table").getElementsByTagName("tbody")[0];
+
+        dataTable.innerHTML = ""; // Clear old data
+
+        csvData.forEach((rowData, rowIndex) => {
+            let newRow = dataTable.insertRow();
+            rowData.forEach((cellData, cellIndex) => {
+                let cell = newRow.insertCell();
+                cell.textContent = cellData.replace(/"/g, ""); // Remove quotes from CSV
+            });
+        });
+    };
+    reader.readAsText(file);
+});
+
+
+function saveHtmlToFile() {
+    // Get the HTML content of the page
+    const htmlContent = document.documentElement.outerHTML;
+
+    // Create a Blob from the HTML content
+    const blob = new Blob([htmlContent], { type: 'text/plain' });
+
+    // Create an anchor element to trigger the download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'page.html';  // Name of the file to save
+
+    // Trigger the download
+    link.click();
+}
+
+
+
+
     </script>
 </body>
 </html>
+
+
+
+
