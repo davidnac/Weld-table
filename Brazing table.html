@@ -357,160 +357,311 @@
 
     <div class="table-container">
         <table id="dataTable2">
-       
-          <tr>
-              <th>Process Specification</th>
-              <th>Temperature</th>
-              <th>Brazing Method (1)</th>
-              <th>Atmosphere</th>
-              <th>Brazing Flux</th>
-              <th>Brazing Material</th>
-              <th>Nickel Plate Requirement (2)</th>
-          </tr>
-          <tr>
-              <td>Silver: AMS 2664 (PWA 84) Nonhardenable alloys or unhardened steels and alloys</td>
-              <td>1900°F (1038°C) Maximum</td>
-              <td>Induction, Furnace(3)</td>
-              <td>Protective</td>
-              <td>None</td>
-              <td>AMS 4765 (PWA 707)</td>
-              <td>For alloys per Paragraph 15.45.2, Paragraph 15.45.2.1</td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td>Vacuum</td>
-              <td>Vacuum</td>
-              <td>None</td>
-              <td></td>
-              <td></td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td>Induction, Torch</td>
-              <td>Air</td>
-              <td>AMS 3411 or PWA 809</td>
-              <td>AMS 4772</td>
-              <td></td>
-          </tr>
-          <tr>
-              <td>Silver: PWA85</td>
-              <td>1875°F (1024° C)</td>
-              <td>Induction, Furnace(4)</td>
-              <td>Protective</td>
-              <td>None</td>
-              <td>PWA 706 plus acrylic binder or PWA 715 plus acrylic binder or PS 142</td>
-              <td>For alloys per Paragraph 15.45.2, Paragraph 15.45.2.1</td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td>Vacuum</td>
-              <td>Vacuum (5)</td>
-              <td>None</td>
-              <td></td>
-              <td></td>
-          </tr>
-          <tr>
-              <td>Silver: AMS 2665 (Low Temp.)</td>
-              <td>1350°F (732°C) maximum</td>
-              <td>Induction, Torch</td>
-              <td>Air</td>
-              <td>AMS 3410</td>
-              <td>AMS 4770</td>
-              <td></td>
-          </tr>
-          <tr>
-              <td>Silver: AMS 2666 (High Temp.)</td>
-              <td>1875°F (1024°C) maximum</td>
-              <td>Furnace(3)(4)</td>
-              <td>Protective</td>
-              <td>None</td>
-              <td>AMS 4772</td>
-              <td></td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td>Induction, Torch</td>
-              <td>Air</td>
-              <td>AMS 3411</td>
-              <td></td>
-              <td></td>
-          </tr>
-          <tr>
-              <td>Gold-Ni kel: PWA 19</td>
-              <td>1850° F (1010°C) (hardenable alloys)</td>
-              <td>Furnace(4)</td>
-              <td>Protective</td>
-              <td>None</td>
-              <td>PWA 698 or PWA 718 or PS 109</td>
-              <td>For alloys per Paragraph 15.47.3, Paragraph 15.47.4</td>
-          </tr>
-          <tr>
-              <td></td>
-              <td>1800° to 1950° F (982° to 1066°C) (nonhardenable alloys)</td>
-              <td>Induction, Furnace</td>
-              <td>Protective</td>
-              <td>PWA 809 for Induction only</td>
-              <td></td>
-              <td></td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td>Vacuum</td>
-              <td>Vacuum (5)</td>
-              <td>None</td>
-              <td></td>
-              <td></td>
-          </tr>
-          <tr>
-              <td>Nickel-Phosphorus: PWA34</td>
-              <td>As specified</td>
-              <td>Furnace</td>
-              <td>Protective</td>
-              <td>None</td>
-              <td>Electroless nickel plate per SPOP 309</td>
-              <td></td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td>Vacuum</td>
-              <td>Vacuum (5)</td>
-              <td>None</td>
-              <td></td>
-              <td></td>
-          </tr>
-          <tr>
-              <td>Nickel: AMS 2675</td>
-              <td>As specified</td>
-              <td>Furnace</td>
-              <td>Protective</td>
-              <td>None</td>
-              <td>PWA 996, PWA 1181, AMS 4777, AMS 4778, AMS 4779, AMS 4782, or AMS 4783</td>
-              <td>For alloys per Paragraph 15.49.1.c.</td>
-          </tr>
-          <tr>
-              <td></td>
-              <td></td>
-              <td>Vacuum</td>
-              <td>Vacuum (5)</td>
-              <td>None</td>
-              <td></td>
-              <td></td>
-          </tr>
-      </table>
-      
-      <ul>
-        <li>(2) Parts prepared for brazing by nickel plating shall be given an 1825° F (996° C) prebraze diffusion treatment, except those to be furnace brazed.</p>
-        <li>(3) Tube assemblies to be brazed after installing silver plated nuts shall not be furnace brazed.</p>
-        <li>(4) Use only as part of a complete heat treatment, and when hardness of parts will not be reduced below acceptable limits. See Paragraph 15.45.7.</p>
-      </ul>
-   
-    
+            <thead>
+                
+                <tr>
+                    <th>Group</th>
+                    <th>AWS</th>
+                    <th>AMS</th>
+                    <th>Manufacturers Code</th>
+                    <th>Nickel (Ni) %</th>
+                    <th>Chromium (Cr) %</th>
+                    <th>Silicon (Si) %</th>
+                    <th>Boron (B) %</th>
+                    <th>Carbon (C) %</th>
+                    <th>Iron (Fe) %</th>
+                    <th>Silver (Ag) %</th>
+                    <th>Copper (Cu) %</th>
+                    <th>Zinc (Zn) %</th>
+                    <th>Tin (Sn) %</th>
+                    <th>Brazing Method (1)</th>
+                    <th>Atmosphere</th>
+                    <th>Brazing Flux</th>
+                    <th>Solidus</th>
+                    <th>Liquidus</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <tr>
+                        <td>Silver Alloy</td>
+                        <td>Silver Flo-55</td>
+                        <td>-</td>
+                        <td>CoMat-006-003</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>55</td>
+                        <td>21</td>
+                        <td>22</td>
+                        <td>2</td>
+                        <td>Induction, Torch</td>
+                        <td>Air</td>
+                        <td>Easy-flo Flux</td>
+                        <td>1220°F (660°C)</td>
+                        <td>1305°F (707°C)</td>
+                    </tr>
+                    <tr>
+                        <td>Silver Alloy</td>
+                        <td>BAg-7, Silver Flo-56</td>
+                        <td>4763</td>
+                        <td>CoMat-006-003a</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>56</td>
+                        <td>22</td>
+                        <td>17</td>
+                        <td>5</td>
+                        <td>Induction, Torch</td>
+                        <td>Air</td>
+                        <td>Easy-flo Flux</td>
+                        <td>1220°F (660°C)</td>
+                        <td>1305°F (707°C)</td>
+                    </tr>
+
+
+
+
+                    <tr>
+                        <td>Silver Alloy</td>
+                        <td>BAg-24</td>
+                        <td>4788</td>
+                        <td>-</td>
+                        <td>2</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>50</td>
+                        <td>20</td>
+                        <td>28</td>
+                        <td>-</td>
+                        <td>Induction, Torch</td>
+                        <td>Air</td>
+                        <td>AMS 3410</td>
+                        <td>1220°F (660°C)</td>
+                        <td>1305°F (707°C)</td>
+                    </tr>
+                    <tr>
+                        <td>Silver Alloy</td>
+                        <td>BAg-13</td>
+                        <td>4772</td>
+                        <td>-</td>
+                        <td>1</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>54</td>
+                        <td>40</td>
+                        <td>5</td>
+                        <td>-</td>
+                        <td>Induction, Torch</td>
+                        <td>Air</td>
+                        <td>AMS 3411</td>
+                        <td>1325°F (718°C)</td>
+                        <td>1575°F (857°C)</td>
+                    </tr>
+                    <tr>
+                        <td>Silver Alloy</td>
+                        <td>BAg-13a</td>
+                        <td>4765</td>
+                        <td>-</td>
+                        <td>2</td>
+                        <td>-</td>
+                        <td></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>56</td>
+                        <td>42</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>Induction, Torch</td>
+                        <td>Air</td>
+                        <td>AMS 3411</td>
+                        <td>1420°F (771°C)</td>
+                        <td>1640°F (893°C)</td>
+                    </tr>
+                    <td>Nickel Alloy</td>
+                    <td>BNi-5</td>
+                    <td>4782</td>
+                    <td>-</td>
+                    <td>71 </td>
+                    <td>19 </td>
+                    <td>10 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>Furnace</td>
+                    <td>Vacuum</td>
+                    <td>None</td>
+                    <td>1975°F (1079°C)</td>
+                    <td>2075°F (1135°C)</td>
+                </tr>
+                <tr>
+                    <td>Nickel Alloy</td>
+                    <td>BNi-1</td>
+                    <td>4775</td>
+                    <td>-</td>
+                    <td>73 </td>
+                    <td>14 </td>
+                    <td>4.5 </td>
+                    <td>3 </td>
+                    <td>0.8 </td>
+                    <td>4.5 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>Furnace</td>
+                    <td>Vacuum</td>
+                    <td>None</td>
+                    <td>1790°F (977°C)</td>
+                    <td>1900°F (1038°C)</td>
+                </tr>
+                <tr>
+                    <td>Nickel Alloy</td>
+                    <td>BNi-1a</td>
+                    <td>4776</td>
+                    <td>-</td>
+                    <td>74 </td>
+                    <td>14 </td>
+                    <td>4.5 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>4.5 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>Furnace</td>
+                    <td>Vacuum</td>
+                    <td>None</td>
+                    <td>1790°F (977°C)</td>
+                    <td>1970°F (1077°C)</td>
+                </tr>
+                <tr>
+                    <td>Nickel Alloy</td>
+                    <td>BNi-2</td>
+                    <td>4777</td>
+                    <td>-</td>
+                    <td>82.375 </td>
+                    <td>7 </td>
+                    <td>4.5 </td>
+                    <td>3.125 </td>
+                    <td>-</td>
+                    <td>3 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>Furnace</td>
+                    <td>Vacuum</td>
+                    <td>None</td>
+                    <td>1780°F (971°C)</td>
+                    <td>1830°F (999°C)</td>
+                </tr>
+                <tr>
+                    <td>Nickel Alloy</td>
+                    <td>BNi-3</td>
+                    <td>4778</td>
+                    <td>-</td>
+                    <td>92 </td>
+                    <td>-</td>
+                    <td>4.5 </td>
+                    <td>3 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>Furnace</td>
+                    <td>Vacuum</td>
+                    <td>None</td>
+                    <td>1800°F (982°C)</td>
+                    <td>1900°F (1038°C)</td>
+                </tr>
+                <tr>
+                    <td>Nickel Alloy</td>
+                    <td>BNi-4</td>
+                    <td>4779</td>
+                    <td>-</td>
+                    <td>94.6 </td>
+                    <td>-</td>
+                    <td>3.5 </td>
+                    <td>1.9 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>Furnace</td>
+                    <td>Vacuum</td>
+                    <td>None</td>
+                    <td>1800°F (982°C)</td>
+                    <td>1950°F (1066°C)</td>
+                </tr>
+                <tr>
+                    <td>Nickel Alloy</td>
+                    <td>GE B50TF17 Class A</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>99.5 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>Nickel Alloy</td>
+                    <td>GE B50TF17 Class B</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>99 </td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+               
+            </tbody>
+        </table>
 
     </div>
 
