@@ -31,7 +31,7 @@
       th,
       td {
         border: 1px solid #ddd;
-        padding: 9px;
+        padding: 9px 3px;
         text-align: center;
         font-size: 13px;
       }
@@ -52,6 +52,9 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         text-align: center;
+      }
+      .maxWide{
+        width: 150px;
       }
       .sensitivity-container {
         background: white;
@@ -160,7 +163,7 @@
       <table id="query-table">
         <tbody>
           <tr>
-            <th>Material</th>
+            <th class="maxWide">Material</th>
             <th>Nickel</th>
             <th>Cobalt</th>
             <th>Chromium</th>
@@ -187,7 +190,7 @@
           </tr>
 
           <tr>
-            <td>
+            <td class="maxWide">
               <input type="text" id="materialSearch" placeholder="Search material...">
             </td>
             <td>
@@ -1760,36 +1763,84 @@
 
 
       function formatTableNumbers() {
-    const table = document.getElementById("data-table");
-    const rows = table.getElementsByTagName("tr");
+          const table = document.getElementById("data-table");
+          const rows = table.getElementsByTagName("tr");
 
-    for (let i = 1; i < rows.length; i++) { // Skip header row
-        const cells = rows[i].getElementsByTagName("td");
+          for (let i = 1; i < rows.length; i++) { // Skip header row
+              const cells = rows[i].getElementsByTagName("td");
 
-        for (let j = 1; j < cells.length; j++) { // Skip first column (Material name)
-            let cellText = cells[j].innerText.trim();
-            
-            if (cellText === "-" || isNaN(cellText.replace(/[^0-9.-]/g, ''))) continue; // Skip dashes and non-numeric values
-            
-            // Handle ranges (e.g., "8.0 - 10.5")
-            if (cellText.includes("-")) {
-                let rangeParts = cellText.split("-").map(part => {
-                    let num = parseFloat(part.trim());
-                    return isNaN(num) ? part.trim() : num.toFixed(1);
-                });
-                cells[j].innerText = rangeParts.join(" - ");
-            } else {
-                let num = parseFloat(cellText);
-                if (!isNaN(num)) {
-                    cells[j].innerText = num.toFixed(1);
-                }
-            }
-        }
-    }
-}
+              for (let j = 1; j < cells.length; j++) { // Skip first column (Material name)
+                  let cellText = cells[j].innerText.trim();
+                  
+                  if (cellText === "-" || isNaN(cellText.replace(/[^0-9.-]/g, ''))) continue; // Skip dashes and non-numeric values
+                  
+                  // Handle ranges (e.g., "8.0 - 10.5")
+                  if (cellText.includes("-")) {
+                      let rangeParts = cellText.split("-").map(part => {
+                          let num = parseFloat(part.trim());
+                          return isNaN(num) ? part.trim() : num.toFixed(1);
+                      });
+                      cells[j].innerText = rangeParts.join(" - ");
+                  } else {
+                      let num = parseFloat(cellText);
+                      if (!isNaN(num)) {
+                          cells[j].innerText = num.toFixed(1);
+                      }
+                  }
+              }
+          }
+      }
 
-// Run function after page load
-document.addEventListener("DOMContentLoaded", formatTableNumbers);
+      // Run function after page load
+      //document.addEventListener("DOMContentLoaded", formatTableNumbers);
+
+
+      //Shrink header columns on click, to allow easier edit
+      document.addEventListener("DOMContentLoaded", function () {
+          const elementMap = {
+              "Nickel": "Ni",
+              "Cobalt": "Co",
+              "Chromium": "Cr",
+              "Molybdenum": "Mo",
+              "Niobium": "Nb",
+              "Titanium": "Ti",
+              "Aluminum": "Al",
+              "Tungsten": "W",
+              "Iron": "Fe",
+              "Carbon": "C",
+              "Manganese": "Mn",
+              "Silicon": "Si",
+              "Tin": "Sn",
+              "Vanadium": "V",
+              "Zirconium": "Zr",
+              "Boron": "B",
+              "Silver": "Ag",
+              "Copper": "Cu",
+              "Zinc": "Zn",
+              "Magnesium": "Mg"
+          };
+          
+          const tableHeaders = document.querySelectorAll("#query-table th");
+          
+          tableHeaders.forEach(header => {
+              header.addEventListener("click", function () {
+                  const fullName = this.textContent;
+                  
+                  if (elementMap[fullName]) {
+                      this.textContent = elementMap[fullName];
+                      this.style.width = "20px";
+
+                  } else {
+                      const shortName = Object.values(elementMap).find(short => short === fullName);
+                      if (shortName) {
+                          const longName = Object.keys(elementMap).find(key => elementMap[key] === shortName);
+                          this.textContent = longName;
+                      }
+                  }
+              });
+          });
+      });
+
 
     </script>
   
