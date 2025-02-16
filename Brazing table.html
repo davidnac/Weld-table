@@ -34,7 +34,7 @@
             margin: 5px;
         }
         .table-container {
-            width: 90%;
+            width: 95%;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
@@ -49,6 +49,7 @@
         }
         th, td {
             padding: 15px;
+            font-size: 15px;
         }
 
         table th:not(:last-child),
@@ -314,7 +315,6 @@
             document.getElementById('modal').style.display = 'none';
         }
 
-
     </script>
 </head>
 <body>
@@ -324,34 +324,7 @@
       <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
 
       <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
-
-      <select id="tableSelect" onchange="changeTable()">
-        <option value="dataTable2">Pratt & Whitney (Military)</option>
-      </select>
   </div>
-
-<!---
-    <div class="controls">
-      <div style="position: relative; display: inline-block;">
-
-          <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table..." 
-              style="padding-right: 30px;">
-          <span id="clearSearch" onclick="clearSearch()" style="
-              display: none;
-              position: absolute;
-              right: 10px;
-              top: 50%;
-              transform: translateY(-50%);
-              cursor: pointer;
-              font-size: 18px;
-              color: gray;
-          ">&times;</span>
-      </div>
-      <select id="tableSelect" onchange="changeTable()">
-          <option value="dataTable">United Welding</option>
-          <option value="dataTable2">Pratt & Whitney (Military)</option>
-      </select>
-  </div>-->
   
 
 
@@ -379,6 +352,7 @@
                     <th>Brazing Flux</th>
                     <th>Solidus</th>
                     <th>Liquidus</th>
+                    <th>Application</th>
                 </tr>
             </thead>
             <tbody>
@@ -387,7 +361,7 @@
                         <td>Silver Alloy</td>
                         <td>Silver Flo-55</td>
                         <td>-</td>
-                        <td>CoMat-006-003</td>
+                        <td>CoMat 06-003</td>
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
@@ -403,12 +377,13 @@
                         <td>Easy-flo Flux</td>
                         <td>1220°F (660°C)</td>
                         <td>1305°F (707°C)</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>Silver Alloy</td>
                         <td>BAg-7, Silver Flo-56</td>
                         <td>4763</td>
-                        <td>CoMat-006-003a</td>
+                        <td>CoMat 06-003a</td>
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
@@ -424,11 +399,8 @@
                         <td>Easy-flo Flux</td>
                         <td>1220°F (660°C)</td>
                         <td>1305°F (707°C)</td>
+                        <td>-</td>
                     </tr>
-
-
-
-
                     <tr>
                         <td>Silver Alloy</td>
                         <td>BAg-24</td>
@@ -446,9 +418,10 @@
                         <td>-</td>
                         <td>Induction, Torch</td>
                         <td>Air</td>
-                        <td>AMS 3410</td>
+                        <td>AMS 3410 (White)</td>
                         <td>1220°F (660°C)</td>
                         <td>1305°F (707°C)</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>Silver Alloy</td>
@@ -467,9 +440,10 @@
                         <td>-</td>
                         <td>Induction, Torch</td>
                         <td>Air</td>
-                        <td>AMS 3411</td>
+                        <td>AMS 3411 (Black)</td>
                         <td>1325°F (718°C)</td>
                         <td>1575°F (857°C)</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>Silver Alloy</td>
@@ -488,9 +462,10 @@
                         <td>-</td>
                         <td>Induction, Torch</td>
                         <td>Air</td>
-                        <td>AMS 3411</td>
+                        <td>AMS 3411 (Black)</td>
                         <td>1420°F (771°C)</td>
                         <td>1640°F (893°C)</td>
+                        <td>-</td>
                     </tr>
                     <td>Nickel Alloy</td>
                     <td>BNi-5</td>
@@ -511,6 +486,7 @@
                     <td>None</td>
                     <td>1975°F (1079°C)</td>
                     <td>2075°F (1135°C)</td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -532,6 +508,7 @@
                     <td>None</td>
                     <td>1790°F (977°C)</td>
                     <td>1900°F (1038°C)</td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -553,6 +530,7 @@
                     <td>None</td>
                     <td>1790°F (977°C)</td>
                     <td>1970°F (1077°C)</td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -574,6 +552,7 @@
                     <td>None</td>
                     <td>1780°F (971°C)</td>
                     <td>1830°F (999°C)</td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -595,6 +574,7 @@
                     <td>None</td>
                     <td>1800°F (982°C)</td>
                     <td>1900°F (1038°C)</td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -616,6 +596,7 @@
                     <td>None</td>
                     <td>1800°F (982°C)</td>
                     <td>1950°F (1066°C)</td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -637,6 +618,7 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -644,6 +626,7 @@
                     <td>-</td>
                     <td>-</td>
                     <td>99 </td>
+                    <td>-</td>
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
