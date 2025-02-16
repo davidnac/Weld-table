@@ -165,157 +165,7 @@
 
     </style>
 
-    <script>
-
-        window.onload = function() {
-            document.getElementById("tableSelect").selectedIndex = 0;
-            changeTable();
-        }
-
-        //highlight clicked rows
-        document.addEventListener("DOMContentLoaded", function() {
-            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
-
-            rows.forEach(row => {
-                row.addEventListener("click", function(event) {
-                    if (row.classList.contains("highlighted")) {
-                        row.classList.remove("highlighted");
-                    } else {
-                        rows.forEach(r => r.classList.remove("highlighted"));
-                        row.classList.add("highlighted");
-                    }
-                    event.stopPropagation();
-                });
-
-                  // Double-click event to call a function
-                  row.addEventListener("dblclick", function() {
-                    openModal(row);
-                });
-
-            });
-
-
-
-            document.addEventListener("click", function() {
-                rows.forEach(row => row.classList.remove("highlighted"));
-            });
-        });
-
-
-
-
-        function searchTable() {
-          let input = document.getElementById("search");
-          let searchValue = input.value.toLowerCase();
-          let clearBtn = document.getElementById("clearSearch");
-
-          // Show the clear button only if there is text in the search box
-          clearBtn.style.display = searchValue ? "block" : "none";
-
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
-
-          let rows = table.getElementsByTagName("tr");
-
-          for (let i = 1; i < rows.length; i++) {
-
-            if (rows[i].getElementsByTagName("th").length > 0) {
-                  continue; // Skip this row if it contains a <th> element
-              }
-
-              let cells = rows[i].getElementsByTagName("td");
-              let found = false;
-
-              for (let j = 0; j < cells.length; j++) {
-                  let cell = cells[j];
-                  let cellText = cell.textContent;
-
-                  // Clear previous highlights
-                  cell.innerHTML = cellText;
-
-                  // Highlight matching text if there's input
-                  if (searchValue && cellText.toLowerCase().includes(searchValue)) {
-                      let regex = new RegExp(`(${searchValue})`, "gi");
-                      cell.innerHTML = cellText.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
-                      found = true;
-                  }
-              }
-
-              // Show row if match is found, otherwise hide it
-              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
-          }
-      }
-
-
-      function clearSearch() {
-          let input = document.getElementById("search");
-          let clearBtn = document.getElementById("clearSearch");
-
-          // Clear the search input
-          input.value = "";
-          clearBtn.style.display = "none"; // Hide the clear button
-
-          // Reset the table to show all rows
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
-
-          let rows = table.getElementsByTagName("tr");
-          for (let i = 1; i < rows.length; i++) {
-              rows[i].style.display = ""; // Make all rows visible again
-
-              // Remove any highlighting
-              let cells = rows[i].getElementsByTagName("td");
-              for (let j = 0; j < cells.length; j++) {
-                  cells[j].innerHTML = cells[j].textContent;
-              }
-          }
-      }
-
-
-         function changeTable() {
-            let selectedTable = document.getElementById("tableSelect").value;
-            document.querySelectorAll("table").forEach(table => {
-                table.style.display = (table.id === selectedTable) ? "table" : "none";
-            });
-        }
-
-
-
-        function sortTable(n) {
-            let table = document.getElementById("dataTable");
-            let rows = Array.from(table.rows).slice(1);
-            let sortedRows = rows.sort((rowA, rowB) => {
-                let cellA = rowA.cells[n].textContent.trim().toLowerCase();
-                let cellB = rowB.cells[n].textContent.trim().toLowerCase();
-                return cellA.localeCompare(cellB);
-            });
-
-            sortedRows.forEach(row => table.appendChild(row));
-        }
-
-
-        function openModal(row) {
-            // Get the material name and the composition
-            let materialName = row.cells[1].textContent;
-            let composition = row.cells[4].textContent; // assuming the 6th column (index 5) holds the composition data
-
-            // Set the modal content header
-            let modalHeader = `Chemical Composition of ${materialName}`;
-
-            // Set the modal content
-            document.getElementById('modal-header').textContent = modalHeader;
-            document.getElementById('modal-content').textContent = composition;
-
-            // Show the modal
-            document.getElementById('modal').style.display = 'flex';
-        }
-
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-    </script>
+  
 </head>
 <body>
 
@@ -655,6 +505,8 @@
       <a href="https://aimtek.com/technical-data-sheets/" target="_blank">Aimtek</a>
       <a href="https://www.deloro.com/products/cladding-consumables/#!/cb43" target="_blank">Deloro</a>
       <a href="https://weldtool.com/products/" target="_blank">Weldtool</a>
+      <a href="https://www.jmmetaljoining.com/products/brazing-products" target="_blank">Johnson Matthey</a>
+
 
     </div>
 
@@ -667,5 +519,107 @@
         </div>
     </div>
 
+
+    <script>
+
+
+        //highlight clicked rows
+        document.addEventListener("DOMContentLoaded", function() {
+            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+
+            rows.forEach(row => {
+                row.addEventListener("click", function(event) {
+                    if (row.classList.contains("highlighted")) {
+                        row.classList.remove("highlighted");
+                    } else {
+                        rows.forEach(r => r.classList.remove("highlighted"));
+                        row.classList.add("highlighted");
+                    }
+                    event.stopPropagation();
+                });
+
+                  // Double-click event to call a function
+                  row.addEventListener("dblclick", function() {
+                    openModal(row);
+                });
+
+            });
+
+
+            document.addEventListener("click", function() {
+                rows.forEach(row => row.classList.remove("highlighted"));
+            });
+        });
+
+
+
+        function searchTable() {
+          let input = document.getElementById("search");
+          let searchValue = input.value.toLowerCase();
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Show the clear button only if there is text in the search box
+          clearBtn.style.display = searchValue ? "block" : "none";
+
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+
+          for (let i = 1; i < rows.length; i++) {
+
+            if (rows[i].getElementsByTagName("th").length > 0) {
+                  continue; // Skip this row if it contains a <th> element
+              }
+
+              let cells = rows[i].getElementsByTagName("td");
+              let found = false;
+
+              for (let j = 0; j < cells.length; j++) {
+                  let cell = cells[j];
+                  let cellText = cell.textContent;
+
+                  // Clear previous highlights
+                  cell.innerHTML = cellText;
+
+                  // Highlight matching text if there's input
+                  if (searchValue && cellText.toLowerCase().includes(searchValue)) {
+                      let regex = new RegExp(`(${searchValue})`, "gi");
+                      cell.innerHTML = cellText.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+                      found = true;
+                  }
+              }
+
+              // Show row if match is found, otherwise hide it
+              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+          }
+      }
+
+
+      function clearSearch() {
+          let input = document.getElementById("search");
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Clear the search input
+          input.value = "";
+          clearBtn.style.display = "none"; // Hide the clear button
+
+          // Reset the table to show all rows
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+          for (let i = 1; i < rows.length; i++) {
+              rows[i].style.display = ""; // Make all rows visible again
+
+              // Remove any highlighting
+              let cells = rows[i].getElementsByTagName("td");
+              for (let j = 0; j < cells.length; j++) {
+                  cells[j].innerHTML = cells[j].textContent;
+              }
+          }
+      }
+
+    </script>
 </body>
 </html>
