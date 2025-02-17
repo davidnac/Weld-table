@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Searchable Welding Wire Table</title>
+    <title>Searchable Brazing Table</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,7 +34,7 @@
             margin: 5px;
         }
         .table-container {
-            width: 95%;
+            width: 97%;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
@@ -161,11 +161,11 @@
           color: gray;
           padding-left: 6px;
        }
-      
+
 
     </style>
 
-  
+
 </head>
 <body>
 
@@ -175,30 +175,29 @@
 
       <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
   </div>
-  
+
 
 
     <div class="table-container">
         <table id="dataTable2">
             <thead>
-                
+
                 <tr>
                     <th>Group</th>
                     <th>AWS</th>
                     <th>AMS</th>
-                    <th>Manufacturers Code</th>
-                    <th>Nickel (Ni) %</th>
-                    <th>Chromium (Cr) %</th>
-                    <th>Silicon (Si) %</th>
-                    <th>Boron (B) %</th>
-                    <th>Carbon (C) %</th>
-                    <th>Iron (Fe) %</th>
-                    <th>Silver (Ag) %</th>
-                    <th>Copper (Cu) %</th>
-                    <th>Zinc (Zn) %</th>
-                    <th>Tin (Sn) %</th>
+                    <th>Other Codes</th>
+                    <th>Ni %</th>
+                    <th>Cr %</th>
+                    <th>Si %</th>
+                    <th>B %</th>
+                    <th>C %</th>
+                    <th>Fe %</th>
+                    <th>Ag %</th>
+                    <th>Cu %</th>
+                    <th>Zn %</th>
+                    <th>Sn %</th>
                     <th>Brazing Method (1)</th>
-                    <th>Atmosphere</th>
                     <th>Brazing Flux</th>
                     <th>Solidus</th>
                     <th>Liquidus</th>
@@ -206,12 +205,33 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+              <tr>
+                  <td>Silver Alloy</td>
+                  <td>BAg-1a</td>
+                  <td>4770</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>50</td>
+                  <td>15.5</td>
+                  <td>16.5</td>
+                  <td>-</td>
+                  <td>Induction, Torch</td>
+                  <td>AMS 3410 (White)</td>
+                  <td>1160°F (627°C)</td>
+                  <td>1175°F (635°C)</td>
+                  <td>Has 18% Cadmium</td>
+              </tr>
+
                     <tr>
                         <td>Silver Alloy</td>
                         <td>Silver Flo-55</td>
                         <td>-</td>
-                        <td>CoMat 06-003</td>
+                        <td>CoMat 03-006</td>
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
@@ -223,7 +243,6 @@
                         <td>22</td>
                         <td>2</td>
                         <td>Induction, Torch</td>
-                        <td>Air</td>
                         <td>Easy-flo Flux</td>
                         <td>1220°F (660°C)</td>
                         <td>1305°F (707°C)</td>
@@ -233,7 +252,7 @@
                         <td>Silver Alloy</td>
                         <td>BAg-7, Silver Flo-56</td>
                         <td>4763</td>
-                        <td>CoMat 06-003a</td>
+                        <td>CoMat 03-006a</td>
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
@@ -245,11 +264,13 @@
                         <td>17</td>
                         <td>5</td>
                         <td>Induction, Torch</td>
-                        <td>Air</td>
                         <td>Easy-flo Flux</td>
                         <td>1220°F (660°C)</td>
                         <td>1305°F (707°C)</td>
-                        <td>-</td>
+                        <td>
+                          a silver-based brazing alloy used for ferrous and non-ferrous alloys in joints requiring a low temperature, cadmium-free alloy, as in food handling equipment.
+                          a low temperature, free-flowing brazing filler metal with a slight tendency to liquate (separation into low and high melting constituents) if heated slowly through its melting range.
+                        </td>
                     </tr>
                     <tr>
                         <td>Silver Alloy</td>
@@ -267,11 +288,12 @@
                         <td>28</td>
                         <td>-</td>
                         <td>Induction, Torch</td>
-                        <td>Air</td>
                         <td>AMS 3410 (White)</td>
                         <td>1220°F (660°C)</td>
                         <td>1305°F (707°C)</td>
-                        <td>-</td>
+                        <td>
+                            Readily wets nickel and iron base alloys. It is recommended for joining 300 Series stainless steel and will retard interface corrosion in most exposures for which the base metals are suitable. However, for joints on cupro-nickel exposed to salt water at elevated temperatures, zinc-free alloys should be used to avoid joint failure by dezincification. Because this alloy is cadmium-free, it can be safely used on food handling equipment and hospital utensils. The presence of nickel in Silver Braze 50Ni2 aids in the joining of small tungsten carbide inserts in cutting tools. In addition, it offsets joint interface brittleness caused by diffusion of aluminum into the brazing alloy, when joining aluminum-bronze to steel. is very fluid at its flow point and will quickly fill long, narrow joints. Because it has the tendency to liquate (separation into low and high melting constituents) when heated slowly, this alloy should be heated quickly through its melting range. Its low flow point will minimize oxidation of the stainless steel during brazing. Flux is normally used.
+                        </td>
                     </tr>
                     <tr>
                         <td>Silver Alloy</td>
@@ -289,11 +311,13 @@
                         <td>5</td>
                         <td>-</td>
                         <td>Induction, Torch</td>
-                        <td>Air</td>
                         <td>AMS 3411 (Black)</td>
                         <td>1325°F (718°C)</td>
                         <td>1575°F (857°C)</td>
-                        <td>-</td>
+                        <td>
+                            Employed in numerous furnace brazing situation because of its low zinc content. The US Air Force specifies it for many jet engineer subassemblies. It is used for making joints that are subjected to elevated temperatures, ranging up to 700°F (370°C) particularly on stainless steel.
+                            an intermediate temperature silver brazing alloy with a rather long, 235°F (130°C) melting range. It has a tendency to liquate (Separation into low and high melting constituents) if heated slowly through its melting range. Therefore, it is preferable to use this alloy where the assembly can be heated rapidly to brazing temperature. The long melting range of this alloy is useful when wide gap joints are hand fed since semi-fluid alloys can be working across the gaps. Flux is recommended.
+                        </td>
                     </tr>
                     <tr>
                         <td>Silver Alloy</td>
@@ -311,11 +335,13 @@
                         <td>-</td>
                         <td>-</td>
                         <td>Induction, Torch</td>
-                        <td>Air</td>
                         <td>AMS 3411 (Black)</td>
                         <td>1420°F (771°C)</td>
                         <td>1640°F (893°C)</td>
-                        <td>-</td>
+                        <td>
+                            a zinc free brazing alloy commonly used in flux free brazing of stainless steels in dry hydrogen atmosphere. Silver Braze 56Ni2 shows advantages in flux free furnace brazing applications where zinc volatilization is objectionable.
+                            an intermediate temperature silver brazing alloy. It has a rather long melting range (220F/125C) so that it will tend to liquate (separate high from low melting phases) if it is heated slowly between the solidus and liquidus. However, the long melting range is useful when wide gap joints are brazed as it will bridge the gap and produce larger fillets than alloys with short melting ranges that are more fluid. Silver Braze 56Ni2 can be brazed by both torch and induction as well as under a protective atmosphere.
+                        </td>
                     </tr>
                     <td>Nickel Alloy</td>
                     <td>BNi-5</td>
@@ -331,8 +357,7 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
-                    <td>Furnace</td>
-                    <td>Vacuum</td>
+                    <td>Vacuum Furnace</td>
                     <td>None</td>
                     <td>1975°F (1079°C)</td>
                     <td>2075°F (1135°C)</td>
@@ -353,12 +378,14 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
-                    <td>Furnace</td>
-                    <td>Vacuum</td>
+                    <td>Vacuum Furnace</td>
                     <td>None</td>
                     <td>1790°F (977°C)</td>
                     <td>1900°F (1038°C)</td>
-                    <td>-</td>
+                    <td>
+                        a general purpose nickel-based brazing alloy suitable for brazing nickel, super alloys, stainless steels and other assemblies which require good joint strength at high temperatures with excellent corrosion and oxidation resistance. Some of the applications for this filler metal are highly stressed sheet metal components, jet engine parts, and assemblies used in corrosive conditions.
+                        a good choice for narrow, deep joints where tighter clearances are maintained. Tighter joint clearances along with the use of a minimal amount of braze alloy will limit potential erosion of the base components. When wetting to base metals which contain higher Al or Ti content in an inert atmosphere, nickel plating of the base metal is recommended. Dry reducing atmospheres or inert atmospheres are also recommended. When joining thinner, less ductile assemblies brazing should be conducted at the lower end of the braze range so along with fast heating and cooling cycles so as so minimize distortion.
+                    </td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -375,12 +402,14 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
-                    <td>Furnace</td>
-                    <td>Vacuum</td>
+                    <td>Vacuum Furnace</td>
                     <td>None</td>
                     <td>1790°F (977°C)</td>
                     <td>1970°F (1077°C)</td>
-                    <td>-</td>
+                    <td>
+                        a general purpose nickel brazing alloy which can be used for a wide variety of applications. This alloy is typically used for joining super alloys, stainless steels and alloys requiring good joint strength at high temperature while maintaining good corrosion and oxidation resistant characteristics. Due to the low carbon content AMS 4776 exhibits low carbide precipitation.
+                        xhibits good flow characteristics when clearance between 0.002in-0.005in (0.051 mm-0.127mm) are maintained. Minimizing joint clearance and the amount of material applied will limit the amount of erosion into the base metal. In atmosphere brazing, base metals containing more than 0.5% aluminum and/or titanium are often nickel-plated (0.0005inc. to 0.005in. thick depending upon brazing temperature and cycle), if difficulties in wetting and bonding are encountered. On thinner sections or less ductile base metals, brazing should be done at the low end of the brazing range with small clearance, fast heating/cooling cycles and minimum quantity of brazing alloy to minimize erosion.
+                    </td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -397,12 +426,14 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
-                    <td>Furnace</td>
-                    <td>Vacuum</td>
+                    <td>Vacuum Furnace</td>
                     <td>None</td>
                     <td>1780°F (971°C)</td>
                     <td>1830°F (999°C)</td>
-                    <td>-</td>
+                    <td>
+                        a nickel-chromium-silicon-boron-iron brazing alloy with low joining temperature. It provides high temperature joint strength plus oxidation, corrosion, and abrasion resistance on thick sections of stainless steel, ductile nickel, and cobalt base alloys. Typical applications would include structural members in jet engines, turbines, chemical processing and nuclear equipment (not exposed to radiation), requiring lower brazing/heat treatment temperatures.
+                        Fast heating should be employed to avoid liquation (melting and flow of only part of the brazing alloy). AMS 4777 will flow into long, narrow joints, particularly at the higher brazing temperature, in reducing atmospheres (- 60F dew point or lower) or inert atmospheres (-80F dew point or lower). In atmosphere brazing, base metals containing more than 0.5% aluminum and/or titanium are often nickel-plated (0.0005 in. to 0.0015 in. thick depending upon brazing temperature and cycle), if difficulties in wetting and bonding are encountered. On thinner sections or less ductile base metals, brazing should be done at the low end of the brazing range with small clearances, fast heating/cooling cycles, and a minimum quantity of brazing alloy. Recommended joint clearance at brazing temperature for AMS 4777 is 0.001 in. – 0.004 in. (0.03 mm – 0.10 mm).
+                    </td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -419,12 +450,14 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
-                    <td>Furnace</td>
-                    <td>Vacuum</td>
+                    <td>Vacuum Furnace</td>
                     <td>None</td>
                     <td>1800°F (982°C)</td>
                     <td>1900°F (1038°C)</td>
-                    <td>-</td>
+                    <td>
+                        a nickel-silicon-boron-iron brazing alloy powder with low joining temperature. It provides high temperature joint strength plus oxidation, corrosion, and abrasion resistance on thick sections of stainless steel, ductile nickel, and cobalt based alloys. Typical applications would include structural members in jet engines, turbines, chemical processing, and nuclear equipment (not exposed to radiation) requiring lower brazing/heat treatment temperatures.
+                        AMS 4778 will flow into long, narrow joints, in marginal atmospheres but will flow particularly well at the higher brazing temperature, in reducing atmospheres (-60F dew point or lower) or inert atmospheres (-80F dew point or lower). In atmosphere brazing, base metals containing more than 0.5% aluminum and/or titanium are often nickel-plated (0.0005 in. to 0.0015 in. thick depending upon brazing temperature and cycle), if difficulties in wetting and bonding are encountered. On thinner sections or less ductile base metals, brazing should be done at the low end of the brazing range with small clearances, fast heating/cooling cycles, and a minimum quantity of brazing alloy. Recommended joint clearance at brazing temperature for AMS 4778 is 0.000 in. – 0.002 in. (0.00 mm – 0.05 mm).
+                    </td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -441,12 +474,14 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
-                    <td>Furnace</td>
-                    <td>Vacuum</td>
+                    <td>Vacuum Furnace</td>
                     <td>None</td>
                     <td>1800°F (982°C)</td>
                     <td>1950°F (1066°C)</td>
-                    <td>-</td>
+                    <td>
+                        a nickel -silicon-boron-iron brazing alloy powder with low joining temperature. It provides high temperature joint strength plus oxidation, corrosion, and abrasion resistance on thick sections of stainless steel, ductile nickel, and cobalt base alloys. AMS 4779 exhibits lower base metal penetration compared to alloys like AMS 4777 and AMS 4778. Typical applications would include structural members in jet engines, turbines, chemical processing, and nuclear equipment (not exposed to radiation) requiring lower brazing/heat treatment temperatures.
+                        will flow into long, narrow joints, in marginal atmospheres but will flow particularly well at the higher brazing temperature, in reducing atmospheres (-60F dew point or lower) or inert atmospheres (-80F dew point or lower). In atmosphere brazing, base metals containing more than 0.5% aluminum and/or titanium are often nickel-plated (0.0005 in. to 0.0015 in. thick depending upon brazing temperature and cycle), if difficulties in wetting and bonding are encountered. On thinner sections or less ductile base metals, brazing should be done at the low end of the brazing range with small clearances, fast heating/cooling cycles, and a minimum quantity of brazing alloy. Recommended joint clearance at brazing temperature for AMS 4779 is 0.002 in. – 0.004 in. (0.05 mm – 0.10 mm). Recommended joint clearance at brazing temperature for AMS 4778 is 0.000 in. – 0.002 in. (0.00 mm – 0.05 mm).
+                    </td>
                 </tr>
                 <tr>
                     <td>Nickel Alloy</td>
@@ -454,7 +489,6 @@
                     <td>-</td>
                     <td>-</td>
                     <td>99.5 </td>
-                    <td>-</td>
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
@@ -490,9 +524,8 @@
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>
-                    <td>-</td>
                 </tr>
-               
+
             </tbody>
         </table>
 
@@ -505,6 +538,7 @@
       <a href="https://aimtek.com/technical-data-sheets/" target="_blank">Aimtek</a>
       <a href="https://www.deloro.com/products/cladding-consumables/#!/cb43" target="_blank">Deloro</a>
       <a href="https://weldtool.com/products/" target="_blank">Weldtool</a>
+      <a href="https://princeizant.com/metals/brazing-filler-metals" target="_blank">Prince & Izant</a>
       <a href="https://www.jmmetaljoining.com/products/brazing-products" target="_blank">Johnson Matthey</a>
 
 

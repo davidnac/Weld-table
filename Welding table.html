@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Searchable Welding Wire Table</title>
     <style>
+
+      @font-face {
+            font-family: 'Montserrat-Medium';
+            src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+            font-weight: 500; /* Medium weight */
+            font-style: normal;
+        }
         body {
             font-family: Arial, sans-serif;
+            font-family: 'Montserrat-Medium', sans-serif;
             margin: 20px;
             background-color: #f4f4f4;
             text-align: center;
         }
+
         h2 {
             margin-bottom: 25px;
             margin-top: 30px;
@@ -162,209 +171,6 @@
        }
 
     </style>
-
-    <script>
-
-        window.onload = function() {
-            document.getElementById("tableSelect").selectedIndex = 0;
-            changeTable();
-        }
-
-        //highlight clicked rows
-        document.addEventListener("DOMContentLoaded", function() {
-            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
-
-            rows.forEach(row => {
-                row.addEventListener("click", function(event) {
-                    if (row.classList.contains("highlighted")) {
-                        row.classList.remove("highlighted");
-                    } else {
-                        rows.forEach(r => r.classList.remove("highlighted"));
-                        row.classList.add("highlighted");
-                    }
-                    event.stopPropagation();
-                });
-
-                  // Double-click event to call a function
-                  row.addEventListener("dblclick", function() {
-                    openModal(row);
-                });
-
-            });
-
-
-
-            document.addEventListener("click", function() {
-                rows.forEach(row => row.classList.remove("highlighted"));
-            });
-        });
-
-
-
-        function searchTable() {
-          let input = document.getElementById("search");
-          let searchValue = input.value.toLowerCase();
-          let clearBtn = document.getElementById("clearSearch");
-
-          // Show the clear button only if there is text in the search box
-          clearBtn.style.display = searchValue ? "block" : "none";
-
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
-
-          let rows = table.getElementsByTagName("tr");
-
-          for (let i = 1; i < rows.length; i++) {
-
-            if (rows[i].getElementsByTagName("th").length > 0) {
-                  continue; // Skip this row if it contains a <th> element
-              }
-
-              let cells = rows[i].getElementsByTagName("td");
-              let found = false;
-
-              for (let j = 0; j < cells.length; j++) {
-                let cell = cells[j];
-                let cellText = cell.textContent;
-                let cellTextInnerHtml = cell.innerHTML;
-
-                // Clear previous highlights: remove all <span> elements and preserve their content
-                let spans = cell.querySelectorAll("span");
-                spans.forEach(span => {
-                    span.replaceWith(...span.childNodes); // Remove <span> and keep its children
-                      cellTextInnerHtml = cell.innerHTML;
-                });
-
-                // Highlight matching text if there's input
-                if (searchValue && cellText.toLowerCase().includes(searchValue)) {
-                    let regex = new RegExp(`(${searchValue})`, "gi");
-                    // Create a new HTML string with <span> for the matching text
-                    let highlightedHTML = cellTextInnerHtml.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
-                    // Replace the cell's HTML with the newly highlighted content
-                    cell.innerHTML = highlightedHTML;
-                    found = true;
-                }
-            }
-
-
-              // Show row if match is found, otherwise hide it
-              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
-          }
-      }
-
-
-        function clearSearch() {
-            let input = document.getElementById("search");
-            let clearBtn = document.getElementById("clearSearch");
-
-            // Clear the search input
-            input.value = "";
-            clearBtn.style.display = "none"; // Hide the clear button
-
-            // Reset the table to show all rows
-            let table = document.querySelector("table:not([style*='display: none'])");
-            if (!table) return;
-
-            let rows = table.getElementsByTagName("tr");
-            for (let i = 1; i < rows.length; i++) {
-                rows[i].style.display = ""; // Make all rows visible again
-
-                // Remove any highlighting from cells
-                let cells = rows[i].getElementsByTagName("td");
-                for (let j = 0; j < cells.length; j++) {
-                    let cell = cells[j];
-
-                    // Remove previous highlights: remove all <span> elements and preserve their content
-                    let spans = cell.querySelectorAll("span");
-                    spans.forEach(span => {
-                        span.replaceWith(...span.childNodes); // Remove <span> and keep its children
-                    });
-                }
-            }
-        }
-
-
-
-         function changeTable() {
-            let selectedTable = document.getElementById("tableSelect").value;
-            document.querySelectorAll("table").forEach(table => {
-                table.style.display = (table.id === selectedTable) ? "table" : "none";
-            });
-
-            let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
-
-            if (selectedTable === "dataTable2") {
-                ulElement.forEach(element => {
-                    element.style.display = 'block';
-                });
-            } else {
-              ulElement.forEach(element => {
-                    element.style.display = 'none';
-                });
-            }
-
-
-            searchTable();
-        }
-
-
-
-        function sortTable(col, tableName) {
-           let table = document.getElementById(tableName);
-
-           if (!table) {
-              console.error("Table not found");
-              return;
-          }
-
-           let headerRows = Array.from(table.rows).filter(row => row.getElementsByTagName("th").length > 0);
-           console.log(headerRows.length)
-
-          let rows = Array.from(table.rows).slice(headerRows.length); //remove header row
-
-          let sortedRows = rows.sort((rowA, rowB) => {
-              let cellA = rowA.cells[col];
-              let cellB = rowB.cells[col];
-
-              if (!cellA || !cellB) {
-                  console.warn("Column index out of bounds:", col);
-                  console.warn("Column index out of bounds:", rowA);
-                  console.warn("Column index out of bounds:", rowB);
-                  return 0; // Prevent sorting errors
-              }
-
-              let textA = cellA.textContent.trim().toLowerCase();
-              let textB = cellB.textContent.trim().toLowerCase();
-              return textA.localeCompare(textB);
-          });
-
-          sortedRows.forEach(row => table.appendChild(row));
-        }
-
-
-        function openModal(row) {
-            // Get the material name and the composition
-            let materialName = row.cells[1].textContent;
-            let composition = row.cells[4].textContent; // assuming the 6th column (index 5) holds the composition data
-
-            // Set the modal content header
-            let modalHeader = `Chemical Composition of ${materialName}`;
-
-            // Set the modal content
-            document.getElementById('modal-header').textContent = modalHeader;
-            document.getElementById('modal-content').textContent = composition;
-
-            // Show the modal
-            document.getElementById('modal').style.display = 'flex';
-        }
-
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-
-    </script>
 </head>
 <body>
 
@@ -488,7 +294,7 @@
                     <td>Aluminium Alloy</td>
                     <td>4043</td>
                     <td>4190</td>
-                    <td></td>
+                    <td>MSRR9500/32, CoMat 03-206</td>
                     <td>5.2Si</td>
                     <td>1xxx, 3xxx, 6xxx series alloys. 2014, 2219, 5005, 5050, 5052, 7005, 7039, N21. Al-Si, Al-Si-Mg casting alloys and combinations of above materials. Al - Lithium alloys. A413*, DTD372B, LM4, LM2, LM6, LM9, LM20, LM25, LM2</td>
                   </tr>
@@ -1743,7 +1549,7 @@
               </tr>
               <tr>
                 <td>5.7</td>
-                <td>Magnesium Alloys that contain thorium or rare earth elements</td> 
+                <td>Magnesium Alloys that contain thorium or rare earth elements</td>
                 <td>4396</td>
                 <td>-</td>
                 <td>-</td>
@@ -1992,6 +1798,8 @@
       <a href="https://www.deloro.com/products/cladding-consumables/#!/cb43" target="_blank">Deloro</a>
       <a href="https://weldtool.com/products/" target="_blank">Weldtool</a>
       <a href="https://princeizant.com/metals/brazing-filler-metals" target="_blank">Prince & Izant</a>
+      <a href="https://www.jmmetaljoining.com/products/brazing-products" target="_blank">Johnson Matthey</a>
+
 
 
     </div>
@@ -2005,5 +1813,207 @@
         </div>
     </div>
 
+    <script>
+
+        window.onload = function() {
+            document.getElementById("tableSelect").selectedIndex = 0;
+            changeTable();
+        }
+
+        //highlight clicked rows
+        document.addEventListener("DOMContentLoaded", function() {
+            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+
+            rows.forEach(row => {
+                row.addEventListener("click", function(event) {
+                    if (row.classList.contains("highlighted")) {
+                        row.classList.remove("highlighted");
+                    } else {
+                        rows.forEach(r => r.classList.remove("highlighted"));
+                        row.classList.add("highlighted");
+                    }
+                    event.stopPropagation();
+                });
+
+                  // Double-click event to call a function
+                  row.addEventListener("dblclick", function() {
+                    openModal(row);
+                });
+
+            });
+
+
+
+            document.addEventListener("click", function() {
+                rows.forEach(row => row.classList.remove("highlighted"));
+            });
+        });
+
+
+
+        function searchTable() {
+          let input = document.getElementById("search");
+          let searchValue = input.value.toLowerCase();
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Show the clear button only if there is text in the search box
+          clearBtn.style.display = searchValue ? "block" : "none";
+
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+
+          for (let i = 1; i < rows.length; i++) {
+
+            if (rows[i].getElementsByTagName("th").length > 0) {
+                  continue; // Skip this row if it contains a <th> element
+              }
+
+              let cells = rows[i].getElementsByTagName("td");
+              let found = false;
+
+              for (let j = 0; j < cells.length; j++) {
+                let cell = cells[j];
+                let cellText = cell.textContent;
+                let cellTextInnerHtml = cell.innerHTML;
+
+                // Clear previous highlights: remove all <span> elements and preserve their content
+                let spans = cell.querySelectorAll("span");
+                spans.forEach(span => {
+                    span.replaceWith(...span.childNodes); // Remove <span> and keep its children
+                      cellTextInnerHtml = cell.innerHTML;
+                });
+
+                // Highlight matching text if there's input
+                if (searchValue && cellText.toLowerCase().includes(searchValue)) {
+                    let regex = new RegExp(`(${searchValue})`, "gi");
+                    // Create a new HTML string with <span> for the matching text
+                    let highlightedHTML = cellTextInnerHtml.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+                    // Replace the cell's HTML with the newly highlighted content
+                    cell.innerHTML = highlightedHTML;
+                    found = true;
+                }
+            }
+
+
+              // Show row if match is found, otherwise hide it
+              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+          }
+      }
+
+
+        function clearSearch() {
+            let input = document.getElementById("search");
+            let clearBtn = document.getElementById("clearSearch");
+
+            // Clear the search input
+            input.value = "";
+            clearBtn.style.display = "none"; // Hide the clear button
+
+            // Reset the table to show all rows
+            let table = document.querySelector("table:not([style*='display: none'])");
+            if (!table) return;
+
+            let rows = table.getElementsByTagName("tr");
+            for (let i = 1; i < rows.length; i++) {
+                rows[i].style.display = ""; // Make all rows visible again
+
+                // Remove any highlighting from cells
+                let cells = rows[i].getElementsByTagName("td");
+                for (let j = 0; j < cells.length; j++) {
+                    let cell = cells[j];
+
+                    // Remove previous highlights: remove all <span> elements and preserve their content
+                    let spans = cell.querySelectorAll("span");
+                    spans.forEach(span => {
+                        span.replaceWith(...span.childNodes); // Remove <span> and keep its children
+                    });
+                }
+            }
+        }
+
+
+
+         function changeTable() {
+            let selectedTable = document.getElementById("tableSelect").value;
+            document.querySelectorAll("table").forEach(table => {
+                table.style.display = (table.id === selectedTable) ? "table" : "none";
+            });
+
+            let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
+
+            if (selectedTable === "dataTable2") {
+                ulElement.forEach(element => {
+                    element.style.display = 'block';
+                });
+            } else {
+              ulElement.forEach(element => {
+                    element.style.display = 'none';
+                });
+            }
+
+
+            searchTable();
+        }
+
+
+
+        function sortTable(col, tableName) {
+           let table = document.getElementById(tableName);
+
+           if (!table) {
+              console.error("Table not found");
+              return;
+          }
+
+           let headerRows = Array.from(table.rows).filter(row => row.getElementsByTagName("th").length > 0);
+           console.log(headerRows.length)
+
+          let rows = Array.from(table.rows).slice(headerRows.length); //remove header row
+
+          let sortedRows = rows.sort((rowA, rowB) => {
+              let cellA = rowA.cells[col];
+              let cellB = rowB.cells[col];
+
+              if (!cellA || !cellB) {
+                  console.warn("Column index out of bounds:", col);
+                  console.warn("Column index out of bounds:", rowA);
+                  console.warn("Column index out of bounds:", rowB);
+                  return 0; // Prevent sorting errors
+              }
+
+              let textA = cellA.textContent.trim().toLowerCase();
+              let textB = cellB.textContent.trim().toLowerCase();
+              return textA.localeCompare(textB);
+          });
+
+          sortedRows.forEach(row => table.appendChild(row));
+        }
+
+
+        function openModal(row) {
+            // Get the material name and the composition
+            let materialName = row.cells[1].textContent;
+            let composition = row.cells[4].textContent; // assuming the 6th column (index 5) holds the composition data
+
+            // Set the modal content header
+            let modalHeader = `Chemical Composition of ${materialName}`;
+
+            // Set the modal content
+            document.getElementById('modal-header').textContent = modalHeader;
+            document.getElementById('modal-content').textContent = composition;
+
+            // Show the modal
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+
+    </script>
 </body>
 </html>

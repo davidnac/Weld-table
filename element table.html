@@ -6,12 +6,19 @@
     <title>Searchable Welding Wire Table</title>
     <style>
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
+        @font-face {
+              font-family: 'Montserrat-Medium';
+              src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+              font-weight: 500; /* Medium weight */
+              font-style: normal;
+          }
+          body {
+              font-family: Arial, sans-serif;
+              font-family: 'Montserrat-Medium', sans-serif;
+              margin: 20px;
+              background-color: #f4f4f4;
+              text-align: center;
+          }
         h2 {
             margin-bottom: 25px;
             margin-top: 30px;
@@ -25,7 +32,7 @@
             height: 15px;
             text-align: center;
         }
-        
+
         .controls{
           display: flex;
           justify-content: center; /* Centers horizontally */
@@ -33,7 +40,7 @@
           margin-bottom: 20px;
           gap: 16px;
        }
-        
+
         .table-container {
             width: 98%;
             margin: 0 auto;
@@ -153,7 +160,7 @@
        h4{
          padding-left: 25px;
        }
-       
+
        .clearButton{
           display: none;
           cursor: pointer;
@@ -163,7 +170,7 @@
        }
 
        .btn {
-        background-color: #4caf50;
+        background-color: #578FCA;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -173,36 +180,16 @@
         font-size: 15px;
         font-weight: bold;
       }
+      .btn:hover{
+        background-color: #493D9E;
+      }
       .clear-btn {
         background-color: #ff4c4c;
         width: 120px;
       }
-      .search-btn {
-        background-color: #EFB036;
-        width: 160px;
-      }
-      .insert-btn {
-        background-color: #4635B1;
-      }
-      .save-btn {
-        background-color: #007bff;
-      }
       .clear-btn:hover {
         background-color: #cc0000;
       }
-      .search-btn:hover {
-        background-color: #F0A04B;
-      }
-      .insert-btn:hover {
-        background-color: #B771E5;
-      }
-      .save-btn:hover {
-        background-color: #3B6790;
-      }
-      .export-btn:hover {
-        background-color: #45a049;
-      }
-      
       .custom-file-upload {
         display: inline-block;
         padding: 8px 15px;
@@ -215,10 +202,16 @@
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
-
+      .export-btn{
+        background-color: #4caf50;
+      }
       .custom-file-upload:hover {
         background-color: #45a049;
       }
+      .export-btn:hover {
+        background-color: #45a049;
+      }
+
 
       input[type="file"] {
         display: none;
@@ -229,11 +222,11 @@
       .highlight {
         background-color: #ffd95f !important; /* Change color as needed */
       }
-      
+
 
     </style>
 
-    
+
 </head>
 <body>
 
@@ -251,7 +244,7 @@
           <input type="file" id="importCSV">
         </label>
   </div>
-  
+
 
      <div class="table-container query">
         <table id="query-table">
@@ -270,11 +263,11 @@
                 <th>Carbon</th>
                 <th>Manganese</th>
                 <th>Silicon</th>
-    
+
                 <th>Tin</th>
                 <th>Vanadium</th>
                 <th>Zirconium</th>
-    
+
                 <th>Boron</th>
                 <th>Silver</th>
                 <th>Copper</th>
@@ -282,7 +275,7 @@
                 <th>Magnesium</th>
               </tr>
             </thead>
-            
+
             <tbody>
               <tr>
                 <td class="maxWide">
@@ -324,7 +317,7 @@
                 <td>
                   <input type="number" min="0" max="100" class="filter" data-col="12">
                 </td>
-    
+
                 <td>
                   <input type="number" min="0" max="100" class="filter" data-col="13">
                 </td>
@@ -334,7 +327,7 @@
                 <td>
                   <input type="number" min="0" max="100" class="filter" data-col="15">
                 </td>
-    
+
                 <td>
                   <input type="number" min="0" max="100" class="filter" data-col="16">
                 </td>
@@ -358,8 +351,8 @@
     <div class="table-container">
         <table id="data-table">
             <thead>
-                
-                
+
+
           <tr>
             <th onclick="sortTable(0)">
               Material <span class="sort-icon">⇅</span>
@@ -427,11 +420,11 @@
               Magnesium (Mg) % <span class="sort-icon">⇅</span>
             </th>
           </tr>
-        
+
 
             </thead>
             <tbody>
-              
+
           <tr>
             <td>CRES 304</td>
             <td>8.0 - 10.5</td>
@@ -1171,22 +1164,22 @@
           </tr>
           <tr>
             <td>Coast Metal 64</td>
-            <td>75.0</td>
-            <td>4-6</td>
-            <td>14-16</td>
-            <td>2-3</td>
-            <td>-</td>
-            <td>0.5-1</td>
-            <td>0.5</td>
-            <td>2-3</td>
-            <td>75.0</td>
-            <td>0.1</td>
-            <td>1.0</td>
+            <td>5</td>
+            <td>43.6</td>
+            <td>28</td>
             <td>0.5</td>
             <td>-</td>
             <td>-</td>
             <td>-</td>
+            <td>21</td>
             <td>-</td>
+            <td>0.85</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>1</td>
+            <td>-</td>
+            <td>0.05</td>
             <td>-</td>
             <td>-</td>
             <td>-</td>
@@ -1194,18 +1187,18 @@
           </tr>
           <tr>
             <td>Tribaloy 800</td>
-            <td>15.0</td>
-            <td>48.0</td>
-            <td>27.0</td>
-            <td>1.0</td>
+            <td>-</td>
+            <td>50.6</td>
+            <td>17.5</td>
+            <td>28.5</td>
             <td>-</td>
             <td>-</td>
             <td>-</td>
-            <td>6.0</td>
-            <td>1.0</td>
-            <td>0.1</td>
-            <td>1.0</td>
-            <td>1.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>3.4</td>
             <td>-</td>
             <td>-</td>
             <td>-</td>
@@ -1399,35 +1392,56 @@
             <td>17.0</td>
             <td>-</td>
           </tr>
-        <tr>
-          <td>BAg-24 (AMS 4788)</td><td>2.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>50.0</td><td>20.0</td><td>28.0</td>  <td>-</td>
-          </tr>
-          <tr>
-            <td>BAg-13 (AMS 4772)</td><td>1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>54.0</td><td>40.0</td><td>5.0</td>  <td>-</td>
-          </tr>
-          <tr>
-            <td>BAg-13a (AMS 4765)</td><td>2.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>56.0</td><td>42.0</td><td>-</td>  <td>-</td>
-          </tr>
-          <tr>
-            <td>BNi-5 (AMS 4782)</td><td>71.0</td><td>-</td><td>19.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>10.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
-          </tr>
-          <tr>
-            <td>BNi-1 (AMS 4775)</td><td>73.0</td><td>-</td><td>14.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>0.8</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3.0</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
-          </tr>
-          <tr>
-            <td>BNi-1a (AMS 4776)</td><td>74.0</td><td>-</td><td>14.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
-          </tr>
-          <tr>
-            <td>BNi-2 (AMS 4777)</td><td>82.4</td><td>-</td><td>7.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>3.0</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3.1</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
-          </tr>
-          <tr>
-            <td>BNi-3 (AMS 4778)</td><td>92.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3.0</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
-          </tr>
-          <tr>
-            <td>BNi-4 (AMS 4779)</td><td>94.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>3.5</td><td>-</td><td>-</td><td>-</td><td>1.9</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
-          </tr>
-        <tr><td>Al 2024</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>93</td><td>-</td><td>0.5</td><td>-</td><td>-</td><td>0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.9</td><td>-</td><td>-</td></tr><tr><td>Al 6061</td><td>-</td><td>-</td><td>0.2</td><td>-</td><td>-</td><td>-</td><td>97.9</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.28</td><td>-</td><td>1</td></tr><tr><td>Al 7075</td><td>-</td><td>-</td><td>0.2</td><td>-</td><td>-</td><td>-</td><td>91</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1.4</td><td>5.6</td><td>2.1</td></tr><tr><td>Al A413</td><td>0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>94</td><td>-</td><td>-</td><td>-</td><td>0.35</td><td>12</td><td>0.15</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1</td><td>-</td><td>0.1</td></tr></tbody>
-              
+            <tr>
+              <td>BAg-24 (AMS 4788)</td><td>2.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>50.0</td><td>20.0</td><td>28.0</td>  <td>-</td>
+              </tr>
+              <tr>
+                <td>BAg-13 (AMS 4772)</td><td>1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>54.0</td><td>40.0</td><td>5.0</td>  <td>-</td>
+              </tr>
+              <tr>
+                <td>BAg-13a (AMS 4765)</td><td>2.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>56.0</td><td>42.0</td><td>-</td>  <td>-</td>
+              </tr>
+              <tr>
+                <td>BNi-5 (AMS 4782)</td><td>71.0</td><td>-</td><td>19.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>10.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
+              </tr>
+              <tr>
+                <td>BNi-1 (AMS 4775)</td><td>73.0</td><td>-</td><td>14.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>0.8</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3.0</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
+              </tr>
+              <tr>
+                <td>BNi-1a (AMS 4776)</td><td>74.0</td><td>-</td><td>14.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
+              </tr>
+              <tr>
+                <td>BNi-2 (AMS 4777)</td><td>82.4</td><td>-</td><td>7.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>3.0</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3.1</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
+              </tr>
+              <tr>
+                <td>BNi-3 (AMS 4778)</td><td>92.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3.0</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
+              </tr>
+              <tr>
+                <td>BNi-4 (AMS 4779)</td><td>94.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>3.5</td><td>-</td><td>-</td><td>-</td><td>1.9</td><td>-</td><td>-</td><td>-</td>  <td>-</td>
+              </tr>
+            <tr>
+              <td>Al 2024</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>93</td><td>-</td><td>0.5</td><td>-</td><td>-</td><td>0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.9</td><td>-</td><td>-</td>
+            </tr>
+              <tr>
+                <td>Al 6061</td><td>-</td><td>-</td><td>0.2</td><td>-</td><td>-</td><td>-</td><td>97.9</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.28</td><td>-</td><td>1</td>
+              </tr>
+              <tr>
+                <td>Al 7075</td><td>-</td><td>-</td><td>0.2</td><td>-</td><td>-</td><td>-</td><td>91</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1.4</td><td>5.6</td><td>2.1</td>
+              </tr>
+              <tr>
+                <td>Al A413</td><td>0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>94</td><td>-</td><td>-</td><td>-</td><td>0.35</td><td>12</td><td>0.15</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1</td><td>-</td><td>0.1</td>
+            </tr>
+            <tr>
+              <td>Al 4043</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>93.9</td><td>-</td><td>-</td><td>-</td><td>-</td><td>5.2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+            </tr>
+            <tr>
+              <td>Al 5052</td><td>-</td><td>-</td><td>0.25</td><td>-</td><td>-</td><td>-</td><td>97.2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>2.5</td>
+            </tr>
+            <tr>
+              <td>Al 5Si 1.3Cu 0.5Mg</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>93.2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1.3</td><td>-</td><td>0.5</td>
+            </tr>
+          </tbody>
+
             </tbody>
         </table>
 
@@ -1448,7 +1462,7 @@
 
 
         /*
-        
+
       document.addEventListener("DOMContentLoaded", function () {
 
         const pattern = /^(Balance|[0-9]{1,3}(\.\d+)?(-[0-9]{1,3}(\.\d+)?)?)$/;
@@ -1456,8 +1470,8 @@
 
         document.querySelectorAll("input[type='number']").forEach((input) => {
           input.addEventListener("input", function () {
-            
-            
+
+
             if (!pattern.test(input.textContent)){
               inputStatus = false;
             }
@@ -1468,13 +1482,13 @@
 
             if (input.textContent.includes('-')) {
                 let [min, max] = input.textContent.split('-').map(Number);
-                
+
                 // Adjust out-of-bound values
                 min = Math.max(0, Math.min(100, min));
                 max = Math.max(0, Math.min(100, max));
 
-                inputStatus = min < max ? `${min}-${max}` : false; 
-            } 
+                inputStatus = min < max ? `${min}-${max}` : false;
+            }
 
             let num = parseFloat(input.textContent);
 
@@ -1483,7 +1497,7 @@
             }else{
               alert("in valid input")
             }
-            
+
           });
         });
         */
@@ -1508,16 +1522,16 @@
             let filters = document.querySelectorAll(".filter");
             let rows = document.querySelectorAll("#data-table tr:not(:first-child)");
             let sensitivity = parseFloat(document.getElementById("sensitivity").value) || 1;
-            
+
             rows.forEach(row => {
                 let cells = row.getElementsByTagName("td");
                 let showRow = true;
-                
+
                 filters.forEach(filter => {
                     let colIndex = filter.getAttribute("data-col");
                     let filterValue = parseFloat(filter.value.trim());
                     let cellValue = parseFloat(cells[colIndex].textContent.trim());
-                    
+
                     if (!isNaN(filterValue)) {
                         let lowerBound = filterValue - (filterValue * sensitivity / 100);
                         let upperBound = filterValue + (filterValue * sensitivity / 100);
@@ -1526,7 +1540,7 @@
                         }
                     }
                 });
-                
+
                 row.style.display = showRow ? "" : "none";
             });
         }*/
@@ -1711,7 +1725,7 @@
           .forEach((row) => (row.style.display = ""));
       }
 
-      
+
 
       //Highlight row on click
       document.querySelectorAll("#data-table tbody tr:not(:first-child)")
@@ -1857,13 +1871,27 @@
         // Get the HTML content of the page
         const htmlContent = document.documentElement.outerHTML;
 
+                // Get today's date in dd/mm/yyyy format
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const year = today.getFullYear();
+        const dateStr = `${day}-${month}-${year}`;
+
+        // Use a default file name (you can change this if needed)
+        const fileName = `page_${dateStr}.html`;
+
+        // Add the DOCTYPE declaration before the HTML content
+        const doctype = `<!DOCTYPE html>\n`;
+        const fullHtmlContent = doctype + htmlContent;
+
         // Create a Blob from the HTML content
-        const blob = new Blob([htmlContent], { type: "text/plain" });
+        const blob = new Blob([fullHtmlContent], { type: "text/plain" });
 
         // Create an anchor element to trigger the download
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "page.html"; // Name of the file to save
+        link.download = fileName; // Name of the file to save
 
         // Trigger the download
         link.click();
@@ -1879,9 +1907,9 @@
 
               for (let j = 1; j < cells.length; j++) { // Skip first column (Material name)
                   let cellText = cells[j].innerText.trim();
-                  
+
                   if (cellText === "-" || isNaN(cellText.replace(/[^0-9.-]/g, ''))) continue; // Skip dashes and non-numeric values
-                  
+
                   // Handle ranges (e.g., "8.0 - 10.5")
                   if (cellText.includes("-")) {
                       let rangeParts = cellText.split("-").map(part => {
@@ -1927,13 +1955,13 @@
               "Zinc": "Zn",
               "Magnesium": "Mg"
           };
-          
+
           const tableHeaders = document.querySelectorAll("#query-table th");
-          
+
           tableHeaders.forEach(header => {
               header.addEventListener("click", function () {
                   const fullName = this.textContent;
-                  
+
                   if (elementMap[fullName]) {
                       this.textContent = elementMap[fullName];
                       this.style.width = "20px";
@@ -1949,7 +1977,7 @@
           });
       });
     </script>
-    
+
 
 </body>
 </html>
