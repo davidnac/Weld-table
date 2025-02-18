@@ -596,7 +596,7 @@
 
         function searchTable() {
           let input = document.getElementById("search");
-          let searchValue = input.value.toLowerCase();
+          let searchValue = input.value.trim();
           let clearBtn = document.getElementById("clearSearch");
 
           // Show the clear button only if there is text in the search box
@@ -608,9 +608,8 @@
           let rows = table.getElementsByTagName("tr");
 
           for (let i = 1; i < rows.length; i++) {
-
-            if (rows[i].getElementsByTagName("th").length > 0) {
-                  continue; // Skip this row if it contains a <th> element
+              if (rows[i].getElementsByTagName("th").length > 0) {
+                  continue; // Skip header rows
               }
 
               let cells = rows[i].getElementsByTagName("td");
@@ -618,23 +617,49 @@
 
               for (let j = 0; j < cells.length; j++) {
                   let cell = cells[j];
-                  let cellText = cell.textContent;
 
-                  // Clear previous highlights
-                  cell.innerHTML = cellText;
+                  // Clear previous highlights: remove all <span> elements and preserve their content
+                  cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
 
-                  // Highlight matching text if there's input
-                  if (searchValue && cellText.toLowerCase().includes(searchValue)) {
-                      let regex = new RegExp(`(${searchValue})`, "gi");
-                      cell.innerHTML = cellText.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+                  if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
+                      highlightTextInElement(cell, searchValue);
                       found = true;
                   }
               }
 
-              // Show row if match is found, otherwise hide it
+              // Show row if a match is found, otherwise hide it
               rows[i].style.display = searchValue ? (found ? "" : "none") : "";
           }
       }
+
+        // Recursive function to highlight text while preserving HTML structure
+        function highlightTextInElement(element, searchValue) {
+            let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+
+            function highlightNode(node) {
+                if (node.nodeType === 3) { // TEXT_NODE
+                    let parent = node.parentNode;
+                    let text = node.nodeValue;
+
+                    if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+                        let tempWrapper = document.createElement("span");
+                        tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+
+                        while (tempWrapper.firstChild) {
+                            parent.insertBefore(tempWrapper.firstChild, node);
+                        }
+                        parent.removeChild(node);
+                    }
+                } else {
+                    // Recursively process child nodes
+                    for (let i = node.childNodes.length - 1; i >= 0; i--) {
+                        highlightNode(node.childNodes[i]);
+                    }
+                }
+            }
+
+            highlightNode(element);
+        }
 
 
       function clearSearch() {
