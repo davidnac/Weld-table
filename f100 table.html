@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Brazing Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 25px;
+            margin-top: 30px;
+        }
+        input {
+            padding: 10px;
+            width: 25%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        select {
+            width: 15%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .table-container {
+            width: 98%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            height: 71vh; /* Fixed height of the table container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-bottom: 22px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            font-size: 15px;
+        }
+
+        table th:not(:last-child),
+        table td:not(:last-child) {
+            text-align: center;
+        }
+
+        /* Align the last column to the left */
+        table th:last-child,
+        table td:last-child {
+            text-align: left;
+        }
+
+        th {
+            background-color: #98D8EF;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            position: sticky;
+            top: 0; /* Make header sticky */
+            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .sort-icon {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        tr:hover {
+            background-color: #e0f7fa;
+            cursor: pointer;
+        }
+
+        /* Modal Styles */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+        }
+        .modal-header {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+        br {
+            display: block;
+            content: "";
+            margin-bottom: 10px; /* Adjust the space */
+        }
+        .highlighted {
+            background-color: #FFD95F !important;
+        }
+
+        .section a{
+          color: #3674B5;
+          margin-left: 12px;
+          margin-right: 12px;
+          text-align: center;
+          font-size: 14px;
+          text-transform: uppercase;
+          text-decoration: none;
+       }
+
+       ul {
+         list-style-type: none;
+         text-align: left;
+         padding-left: 25px; /* remove default padding */
+      }
+       li {
+         padding: 5px 0;
+         font-size: 13px;
+       }
+       h4{
+         padding-left: 25px;
+       }
+       .controls{
+          display: flex;
+          justify-content: center; /* Centers horizontally */
+          align-items: center;     /* Centers vertically */
+          margin-bottom: 10px;
+       }
+       .clearButton{
+          display: none;
+          cursor: pointer;
+          font-size: 26px;
+          color: gray;
+          padding-left: 6px;
+       }
+       a{
+         text-decoration: none;
+         color: black;
+       }
+
+
+    </style>
+
+
+</head>
+<body>
+
+    <h2>F100 Engine Manual Table</h2>
+    <div class="controls">
+      <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
+
+      <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
+  </div>
+
+
+
+    <div class="table-container">
+        <table id="dataTable2">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>TO</th>
+              <th>Title</th>
+              <th>F100 Engine Model</th>
+              <th>Rev</th>
+              <th>Rev Date</th>
+              <th>Basic Date</th>
+              <th>Status</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>1</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>2</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>3</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>4</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>5</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>6</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>7</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>8</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>9</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>10</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>11</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>12</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>13</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>14</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>15</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>16</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>17</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>18</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+              <tr>
+                  <td>19</td>
+                  <td><a  href="parts table.html" target="#">00-25-113-F100-ENG</a></td>
+                  <td>Critical alloys And precious metals Parts list</td>
+                  <td>All</td>
+                  <td>B</td>
+                  <td>01/04/2018</td>
+                  <td>15/02/1990</td>
+                  <td>-</td>
+                  <td>Installed on Aug 17, 2021</td>
+              </tr>
+          </tbody>
+        </table>
+
+    </div>
+
+    <script>
+
+        //highlight clicked rows
+        document.addEventListener("DOMContentLoaded", function() {
+            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+
+            rows.forEach(row => {
+                row.addEventListener("click", function(event) {
+                    if (row.classList.contains("highlighted")) {
+                        row.classList.remove("highlighted");
+                    } else {
+                        rows.forEach(r => r.classList.remove("highlighted"));
+                        row.classList.add("highlighted");
+                    }
+                    event.stopPropagation();
+                });
+
+                  // Double-click event to call a function
+                  row.addEventListener("dblclick", function() {
+                    openModal(row);
+                });
+
+            });
+
+
+            document.addEventListener("click", function() {
+                rows.forEach(row => row.classList.remove("highlighted"));
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+          const table = document.getElementById("dataTable2");
+
+          table.addEventListener("dblclick", function (event) {
+              let row = event.target.closest("tr");
+              if (row && row.parentNode.tagName === "TBODY") {
+                  let link = row.cells[1].querySelector("a"); // Get the <a> element in the second column
+                  if (link && link.href) {
+                      window.open(link.href, "_blank"); // Open link in a new tab
+                  }
+              }
+          });
+      });
+
+
+
+
+        function searchTable() {
+          let input = document.getElementById("search");
+          let searchValue = input.value.toLowerCase();
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Show the clear button only if there is text in the search box
+          clearBtn.style.display = searchValue ? "block" : "none";
+
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+
+          for (let i = 1; i < rows.length; i++) {
+
+            if (rows[i].getElementsByTagName("th").length > 0) {
+                  continue; // Skip this row if it contains a <th> element
+              }
+
+              let cells = rows[i].getElementsByTagName("td");
+              let found = false;
+
+              for (let j = 0; j < cells.length; j++) {
+                  let cell = cells[j];
+                  let cellText = cell.textContent;
+
+                  // Clear previous highlights
+                  cell.innerHTML = cellText;
+
+                  // Highlight matching text if there's input
+                  if (searchValue && cellText.toLowerCase().includes(searchValue)) {
+                      let regex = new RegExp(`(${searchValue})`, "gi");
+                      cell.innerHTML = cellText.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+                      found = true;
+                  }
+              }
+
+              // Show row if match is found, otherwise hide it
+              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+          }
+      }
+
+
+      function clearSearch() {
+          let input = document.getElementById("search");
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Clear the search input
+          input.value = "";
+          clearBtn.style.display = "none"; // Hide the clear button
+
+          // Reset the table to show all rows
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+          for (let i = 1; i < rows.length; i++) {
+              rows[i].style.display = ""; // Make all rows visible again
+
+              // Remove any highlighting
+              let cells = rows[i].getElementsByTagName("td");
+              for (let j = 0; j < cells.length; j++) {
+                  cells[j].innerHTML = cells[j].textContent;
+              }
+          }
+      }
+
+    </script>
+</body>
+</html>
