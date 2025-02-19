@@ -1858,35 +1858,52 @@ function sortTable(colIndex) {
           let csvBlob = new Blob([csvContent.join("\n")], { type: "text/csv" });
           let link = document.createElement("a");
           link.href = URL.createObjectURL(csvBlob);
-          link.download = "table-data.csv";
+          link.download = "materials database.csv";
           link.click();
         });
 
-      document.getElementById("importCSV").addEventListener("change", function (event) {
-          let file = event.target.files[0];
-          if (!file) return;
+        function loadCSVData(csvText) {
+                  let csvData = csvText.split("\n").map(row => row.split(","));
+                  let dataTable = document.getElementById("data-table").getElementsByTagName("tbody")[0];
 
-          let reader = new FileReader();
-          reader.onload = function (e) {
-            let csvData = e.target.result
-              .split("\n")
-              .map((row) => row.split(","));
-            let dataTable = document
-              .getElementById("data-table")
-              .getElementsByTagName("tbody")[0];
+                  dataTable.innerHTML = ""; // Clear old data
 
-            dataTable.innerHTML = ""; // Clear old data
+                  csvData.forEach(rowData => {
+                      let newRow = dataTable.insertRow();
+                      rowData.forEach(cellData => {
+                          let cell = newRow.insertCell();
+                          cell.textContent = cellData.replace(/"/g, ""); // Remove quotes from CSV
+                      });
+                  });
+              }
 
-            csvData.forEach((rowData, rowIndex) => {
-              let newRow = dataTable.insertRow();
-              rowData.forEach((cellData, cellIndex) => {
-                let cell = newRow.insertCell();
-                cell.textContent = cellData.replace(/"/g, ""); // Remove quotes from CSV
+              function checkForCSVFile() {
+                  fetch("materials database.csv")
+                      .then(response => {
+                          if (!response.ok) throw new Error("CSV file not found");
+                          return response.text();
+                      })
+                      .then(csvText => loadCSVData(csvText))
+                      .catch(error => console.log("Using existing table data:", error.message));
+              }
+
+              document.getElementById("importCSV").addEventListener("change", function (event) {
+                  let file = event.target.files[0];
+                  if (!file) return;
+
+                  let reader = new FileReader();
+                  reader.onload = function (e) {
+                      loadCSVData(e.target.result);
+                       event.target.value = ""; // Reset input so the same file can be selected again
+                  };
+                  reader.readAsText(file);
               });
-            });
-          };
-          reader.readAsText(file);
-        });
+
+              // Run on load
+              window.onload = checkForCSVFile;
+
+
+
 
       function saveHtmlToFile() {
         // Get the HTML content of the page
