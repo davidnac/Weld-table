@@ -13,11 +13,43 @@
             font-style: normal;
         }
 
+        :root{
+          --whiteColor: white;
+          }
+
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body[data-theme="light"]{
+        --lightblack: white;
+        --backgroundColor: #f4f4f4;
+        --tableHeader: #98D8EF;
+        --tableHover: #e0f7fa;
+        --tableSecondRow: #f9f9f9;
+        --textColor: black;
+        --tableContainer: white;
+        --highlightRow: #FFD95F;
+      }
+
+      body[data-theme="dark"]{
+        --lightblack: #26272b;
+        --backgroundColor: #26272b;
+        --tableHeader: #FF748B;
+        --tableHover: #7ED4AD;
+        --tableContainer: #26272b;
+        --tableSecondRow: #232327;
+        --textColor: #fff;
+        --highlightRow: #7ED4AD;
+      }
+
         body {
             font-family: 'Montserrat-Medium', sans-serif;
             margin: 20px;
-            background-color: #f4f4f4;
+            background-color: var(--backgroundColor);
             text-align: center;
+            color: var(--textColor);
         }
         h2 {
             margin-bottom: 25px;
@@ -44,7 +76,7 @@
         .table-container {
             width: 90%;
             margin: 0 auto;
-            background: white;
+            background-color: var(--tableContainer);
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             height: 71vh; /* Fixed height of the table container */
@@ -65,8 +97,8 @@
         }
 
         th {
-            background-color: #98D8EF;
-            color: white;
+            background-color: var(--tableHeader);
+            color: var(--whiteColor);
             text-align: left;
             cursor: pointer;
             position: sticky;
@@ -74,14 +106,14 @@
             z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
         }
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: var(--tableSecondRow);
         }
         .sort-icon {
             margin-left: 5px;
             font-size: 12px;
         }
         tr:hover {
-            background-color: #e0f7fa;
+            background-color: var(--tableHover);
         }
 
         /* Modal Styles */
@@ -97,7 +129,7 @@
             justify-content: center;
         }
         .modal-content {
-            background-color: white;
+            background-color: var(--lightblack);
             padding: 20px;
             border-radius: 10px;
             width: 50%;
@@ -124,18 +156,9 @@
             margin-bottom: 10px; /* Adjust the space */
         }
         .highlighted {
-            background-color: #FFD95F !important;
-        }
+            background-color: var(--highlightRow) !important;
 
-        .section a{
-          color: #3674B5;
-          margin-left: 12px;
-          margin-right: 12px;
-          text-align: center;
-          font-size: 14px;
-          text-transform: uppercase;
-          text-decoration: none;
-       }
+        }
 
        ul {
          list-style-type: none;
@@ -171,7 +194,7 @@
     </style>
 
 </head>
-<body>
+<body data-theme="light">
 
     <h2>Searchable Heat Treatments Table</h2>
     <div class="controls">
@@ -1730,7 +1753,7 @@
     </table>
 
     <div>
-      <h3>Notes</h3>
+      <h3>General Notes</h3>
         <ul>
           <li>1. Air cool - liquid quench not allowed.</li>
           <li>2. Air cool in Inert gas & Vaccum - parts shall be cooled to 1000ºF (538ºC) by back filing with forced argon or nitrogen. Cooling rates 17-25ºC/min to 538ºC.</li>
@@ -1739,24 +1762,27 @@
    </div>
 
    <div class="pwm">
-     <h3>Notes</h3>
+     <h3>Military Pratt & Whitney Notes</h3>
        <ul>
          <li>1. SPOP 465-1, SPOP 465-2 (Cycle No. 12, and 12A) or SPOP 469 (Cycle No. 16) can be used as an alternate to SPOP 458-1, SPOP 458-2 (Cycle No. 4, and 4A).</li>
          <li>2. SPOP 469 (Cycle No. 16) can be used as an alternate to SPOP 468, SPOP 472 (Cycle No. 15, and 15A).</li>
          <li>3. SPOP 482 (Cycle No. 22) can be used as an alternate to SPOP 463 (Cycle No. 10) for Hastelloy X.</li>
-
-         <li>1. Air cool - liquid quench not allowed.</li>
-         <li>2. Air cool in Inert gas & Vaccum - parts shall be cooled to 1000ºF (538ºC) by back filing with forced argon or nitrogen. Cooling rates 17-25ºC/min to 538ºC.</li>
-         <li>3. Air cool in Air Furnace - air cool or faster means the part shall be taken out of the furnace and cool in the air environment. Fans may be used to aid cooling.  Cooling rates 11-17ºC/min to 538ºC.</li>
-
-         <li class="cfm">1. Cycle 17 (Short age) was 17 developed to age dabber TIG seal teeth repairs. Aging with no prior solution treatment. It restores most of the physical properties of the welded area, and doesn’t overage the rest of the parent metal.</li>
+         <li>4. Relavent for the following Engines: F100, J52.</li>
        </ul>
   </div>
 
+  <div class="pwc">
+    <h3>Civilian Pratt & Whitney Notes</h3>
+      <ul>
+        <li>1. Relavent for the following Engines: PW4000.</li>
+      </ul>
+ </div>
+
   <div class="cfm">
-    <h3>Notes</h3>
+    <h3>CFM Notes</h3>
       <ul>
         <li>1. Cycle 17 (Short age) was 17 developed to age dabber TIG seal teeth repairs. Aging with no prior solution treatment. It restores most of the physical properties of the welded area, and doesn’t overage the rest of the parent metal.</li>
+        <li>2. Relavent for the following Engines: CFM56 - 3/5B/7B/7BE, LEAP - 1A/B.</li>
       </ul>
  </div>
 
@@ -1921,9 +1947,10 @@
           });
 
           let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
+          let pwclElement = document.querySelectorAll(".pwc"); // Change "myList" to your actual <ul> ID
           let clElement = document.querySelectorAll(".cfm"); // Change "myList" to your actual <ul> ID
 
-          if (selectedTable === "dataTable3") {
+          if (selectedTable === "dataTable2") {
               ulElement.forEach(element => {
                   element.style.display = 'block';
               });
@@ -1939,6 +1966,16 @@
               });
           } else {
             clElement.forEach(element => {
+                  element.style.display = 'none';
+              });
+          }
+
+          if (selectedTable === "dataTable3") {
+            pwclElement.forEach(element => {
+                  element.style.display = 'block';
+              });
+          } else {
+            pwclElement.forEach(element => {
                   element.style.display = 'none';
               });
           }
