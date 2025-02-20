@@ -1823,7 +1823,10 @@
 
 
               function loadCSVData(csvText) {
-                        let csvData = csvText.split("\n").map(row => row.split(","));
+
+                        let csvData = csvText.split("\n").map(row => row.split(","))
+                        .filter((row, index) => index > 0 && row.join("").trim() !== ""); // Skip the header row and empty rows
+
                         let dataTable = document.getElementById("data-table").getElementsByTagName("tbody")[0];
 
                         dataTable.innerHTML = ""; // Clear old data
