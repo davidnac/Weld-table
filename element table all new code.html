@@ -1587,7 +1587,7 @@
         let tbody = table.querySelector("tbody"); // Ensure tbody is selected
         let rows = Array.from(tbody.rows); // Get only tbody rows (skip the header)
 
-      
+
         // Default to descending order if first click, otherwise toggle
         if (sortDirections[colIndex] === undefined) {
             sortDirections[colIndex] = false; // Start with descending order
@@ -1769,7 +1769,7 @@
         });
 
 
-           
+
         document.getElementById("importCSV").addEventListener("change", function (event) {
                   let file = event.target.files[0];
                   if (!file) return;
@@ -1781,9 +1781,25 @@
                   };
                   reader.readAsText(file);
               });
-           
 
-                
+
+              function loadCSVData(csvText) {
+                        let csvData = csvText.split("\n").map(row => row.split(","));
+                        let dataTable = document.getElementById("data-table").getElementsByTagName("tbody")[0];
+
+                        dataTable.innerHTML = ""; // Clear old data
+
+                        csvData.forEach(rowData => {
+                            let newRow = dataTable.insertRow();
+                            rowData.forEach(cellData => {
+                                let cell = newRow.insertCell();
+                                cell.textContent = cellData.replace(/"/g, ""); // Remove quotes from CSV
+                            });
+                        });
+                    }
+
+
+
               //save new html file
       function saveHtmlToFile() {
         // Get the HTML content of the page
@@ -1870,7 +1886,7 @@
           if (input === firstColumn) return; // Skip validation for first column
 
           const value = input.value.trim();
-          const errorMessage = input.nextElementSibling; 
+          const errorMessage = input.nextElementSibling;
           const validNumberRegex = /^(\d{1,2}(\.\d+)?|100)$/; // Matches numbers from 0 to 100, including decimals
           const validRangeRegex = /^(\d{1,2}(\.\d+)?|100) *- *(\d{1,2}(\.\d+)?|100)$/; // Matches range like 1 - 2.5
           const validBal = /^Bal\.$/i; // Matches the word "Bal."
@@ -1893,7 +1909,7 @@
 
             cells.forEach(cell => {
                 if (cell.textContent.trim().toLowerCase() === 'bal.' || cell.textContent.trim().toLowerCase() === 'balance') {
-                   
+
                         // If not converted, calculate and replace it with the value
                         const row = cell.closest('tr');
                         const colIndex = Array.from(cell.parentElement.children).indexOf(cell);
