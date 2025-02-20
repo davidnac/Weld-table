@@ -1508,6 +1508,8 @@
 
           //search bar
         document.getElementById("materialSearch").addEventListener("input", function () {
+            
+            clearFilters();//clear filters before searching
             let searchValue = this.value.toLowerCase();
             document.querySelectorAll("#data-table tbody tr")
               .forEach((row) => {
@@ -1522,11 +1524,14 @@
 
       //filter table
       function filterTable() {
+
+        clearSearch(); // clear search bar before filtering
+
         let filters = document.querySelectorAll(".filter");
         let rows = document.querySelectorAll(
           "#data-table tbody tr"
         );
-        console.log(rows)
+       
         let sensitivity =
           parseFloat(document.getElementById("sensitivity").value) || 1;
 
@@ -1699,6 +1704,15 @@
 
               document.querySelectorAll("#data-table tr")
                 .forEach((row) => (row.style.display = ""));
+            }
+
+            function clearSearch(){
+              let searchBar = document.querySelector("#materialSearch");
+              searchBar.value = "";
+            }
+
+            function clearFilters(){
+              let elementFilters = document.querySelectorAll("#query-table .filter").forEach((element) => (element.value = ""));;
             }
 
 
