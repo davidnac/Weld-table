@@ -132,12 +132,33 @@
             background-color: var(--lightblack);
             padding: 20px;
             border-radius: 10px;
-            width: 50%;
+            width: 30%;
         }
         .modal-header {
             font-size: 24px;
             margin-bottom: 10px;
         }
+        .modal-content input{
+          width: 70%;
+          padding: 8px;
+          margin-left: 8px;
+        }
+
+        .modal-content button{
+            background-color: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;   
+            margin-top: 10px;     
+          }
+
+          .modal-content button:hover{
+            background-color: #218838;
+          }
+
         .close {
             color: #aaa;
             float: right;
@@ -1790,13 +1811,17 @@
 
 
     <!-- Modal -->
-    <div id="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="modal-header" class="modal-header"></div> <!-- Added modal header -->
-            <div id="modal-content"></div>
-        </div>
-    </div>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h2>Edit File Details</h2>
+          <label for="filePath">File Path:</label>
+          <input type="text" id="filePath"><br>
+          <label for="fileName">File Name:</label>
+          <input type="text" id="fileName" ><br>
+          <button onclick="saveChanges()">Save</button>
+      </div>
+  </div>
 
 
     <script>
@@ -2017,26 +2042,50 @@
       }
 
 
-      function openModal(row) {
-          // Get the material name and the composition
-          let materialName = row.cells[1].textContent;
-          let composition = row.cells[4].textContent; // assuming the 6th column (index 5) holds the composition data
-
-          // Set the modal content header
-          let modalHeader = `Chemical Composition of ${materialName}`;
-
-          // Set the modal content
-          document.getElementById('modal-header').textContent = modalHeader;
-          document.getElementById('modal-content').textContent = composition;
-
-          // Show the modal
-          document.getElementById('modal').style.display = 'flex';
-      }
 
 
-      function closeModal() {
-          document.getElementById('modal').style.display = 'none';
-      }
+      
+
+        function openModal(row) {
+            selectedRow = row;
+            let link = row.querySelector("a"); // Select the first <a> tag
+            let filePathInput = document.getElementById("filePath");
+            let fileNameInput = document.getElementById("fileName");
+            
+            if (link) {
+                let fullPath = link.href;
+                let fileName = fullPath.substring(fullPath.lastIndexOf("/") + 1);
+                let pathOnly = fullPath.substring(0, fullPath.lastIndexOf("/")) + "/";
+                
+                filePathInput.value = pathOnly;
+                fileNameInput.value = fileName;
+            }
+
+            document.getElementById("modal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        function saveChanges() {
+            if (selectedRow) {
+                let newPath = document.getElementById("filePath").value;
+                let newName = document.getElementById("fileName").value;
+                let link = selectedRow.querySelector("a");
+                let fileNameSpan = selectedRow.querySelector(".file-name");
+                
+                if (link) {
+                    link.href = newPath.endsWith("/") ? newPath + newName : newPath + "/" + newName;
+                }
+                if (fileNameSpan) {
+                    fileNameSpan.innerText = newName;
+                }
+            }
+
+            closeModal();
+        }
+
 
 
   </script>
