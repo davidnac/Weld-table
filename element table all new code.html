@@ -47,7 +47,7 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            height: 67vh; /* Fixed height of the table container */
+            height: 64vh; /* Fixed height of the table container */
             overflow-y: auto; /* Enable vertical scrolling */
             margin-bottom: 22px;
         }
@@ -69,6 +69,10 @@
             border-bottom: none;
         }
 
+        td{
+          position: relative; /* Ensure relative positioning for absolute elements */
+        }
+
         table th:not(:last-child),
         table td:not(:last-child) {
             text-align: center;
@@ -82,7 +86,7 @@
             cursor: pointer;
             position: sticky;
             top: 0; /* Make header sticky */
-            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+            z-index: 3; /* Ensure header stays above table content - was 1 i changed to 0 */
         }
         tr:nth-child(even) {
             background-color: #f9f9f9;
@@ -223,12 +227,40 @@
         background-color: #ffd95f !important; /* Change color as needed */
       }
 
+
       .error-message {
-          color: red;
-          font-size: 11px;
-          display: block;
-          margin-top: 2px;
+          color: white;
+          background-color: #d9534f;
+          font-size: 12px;
+          display: none; /* Hidden by default */
+          position: absolute;
+          left: 100%; /* Position to the right of input */
+          top: 50%;
+          transform: translateY(-50%); /* Center vertically */
+          margin-left: 0; /* Space between input and message */
+          padding: 6px 10px;
+          border-radius: 4px;
+          white-space: nowrap;
+          z-index: 10;
+      }
+
+      .error-message::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -3%; /* Attach the arrow to the left side of the message */
+          transform: translateY(-50%);
+          width: 0; 
+          height: 0; 
+          border-top: 9px solid transparent;
+          border-bottom: 9px solid transparent; 
+          border-right:9px solid #d9534f; 
         }
+
+      /* Show error message only when the "show" class is added */
+      .error-message.show {
+          display: inline-block;
+      }
 
     </style>
 
@@ -1654,11 +1686,18 @@
 
             //clear all inputs
             function clearInputs() {
-              document
-                .querySelectorAll("#query-table input")
-                .forEach((input) => (input.value = ""));
-              document
-                .querySelectorAll("#data-table tr")
+                document.querySelectorAll("#query-table input").forEach((input) => {
+                    input.value = "";
+                    
+                    // Clear error messages by removing the "show" class
+                    let errorMessage = input.nextElementSibling; // Get the associated error message span
+                    if (errorMessage && errorMessage.classList.contains("show")) {
+                        errorMessage.classList.remove("show"); // Hide the error message
+                    }
+                });
+
+
+              document.querySelectorAll("#data-table tr")
                 .forEach((row) => (row.style.display = ""));
             }
 
@@ -1892,12 +1931,12 @@
           const validBal = /^Bal\.$/i; // Matches the word "Bal."
 
           if (value === "" || validNumberRegex.test(value) || validRangeRegex.test(value) || validBal.test(value)) {
-            errorMessage.textContent = ""; // Clear error if valid
+            errorMessage.classList.remove("show"); // Hide when input is valid
             input.style.border = "1px solid #ccc";
             filterTable();
           } else {
             errorMessage.textContent = "Invalid input (0-100, range, or 'Bal.')";
-            input.style.border = "1px solid red";
+            errorMessage.classList.add("show"); // Show the error message
           }
         }
 
