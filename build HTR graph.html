@@ -17,8 +17,13 @@
         }
 
         .btn-container{
-            align-items: start;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 8px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
         }
 
         canvas {
@@ -44,20 +49,19 @@
             flex-direction: row;
         }
         
-
-        p{
+        p {
             display: inline-block;
+            width: 45%; /* To make them the same size and take up equal space */
             margin-left: 10px;
-            margin-top: 0;
+            margin-top: 10px;
             margin-bottom: 0;
             border: 1px solid black;
             border-radius: 5px;
             padding: 4px 14px;
-            width: 400px;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
         }
 
         .graphBtn{
-            margin-bottom: 25px;
             background-color: #3674B5;
         }
         input{
@@ -125,10 +129,29 @@
             }
 
             textarea{
-                height: 800px;
-                width: 500px;
-                padding: 40px;
+                width: 95%;
+                padding: 20px;
+                margin-bottom: 12px;
+                box-sizing: border-box; /* Ensures padding is inside the width/height */
+
+                border: 2px solid #ccc;
+                border-radius: 10px;
+                font-size: 14px;
+                font-family: 'Arial', sans-serif;
+                background-color: #f9f9f9;
+                color: #333;
+                transition: all 0.3s ease-in-out;
+                resize: vertical; /* Allow resizing the height of the textarea */
+                min-height: 140px; /* Use min-height if height doesn't apply */
+
             }
+
+            textarea:focus {
+            border-color: #6a5acd; /* Focus border color */
+            box-shadow: 0 0 8px rgba(106, 92, 205, 0.6); /* Focus shadow */
+            background-color: #fff; /* Focus background color */
+            outline: none; /* Remove default outline */
+        }
 
     </style>
 </head>
@@ -137,6 +160,10 @@
     <div class="card">
 
     <h3>Graph Builder</h3>
+
+    <label for="wordInputText">Copy table from HTR word file</label>
+    <textarea name="" id="wordInputText" onkeyup="importToTable()"></textarea>
+
     <table id="inputTable">
         <thead>
             <tr>
@@ -202,13 +229,17 @@
         <button class="graphBtn" onclick="updateAndCreateGraph()">Generate Graph</button>
         <button onclick="clearTextarea()">Clear Textarea</button>
         <button onclick="clearTable()">Clear Table</button>
+        <button class="copy" onclick="copyArrayToClipboard('temperatureDisplay')">Copy Data set to Clipboard</button>
     </div>
     
-    <textarea name="" id="wordInputText" onkeyup="importToTable()"></textarea>
 
     <div class="btn-container">
             
-        <div class="row">
+        <p id="temperatureDisplay" placeholder="xxx">Temperature array:</p>
+        <p id="timeDisplay">Time array:</p>
+
+<!--
+                <div class="row">
             <button class="copy" onclick="copyArrayToClipboard('temperatureDisplay')">Copy to Clipboard</button>
             <p id="temperatureDisplay" placeholder="xxx">Temperature array:</p>
         </div>
@@ -217,7 +248,7 @@
             <button class="copy" onclick="copyArrayToClipboard('timeDisplay')">Copy to Clipboard</button>
             <p id="timeDisplay">Time array:</p>
         </div>
-        
+    -->
     </div>
 
 
@@ -418,11 +449,15 @@ function getTableData() {
                 console.log(dataPointsTemp);
             console.log(dataPointsTime);
 
+            
+            arrayString = dataPointsTime.join('\t') + '\n' + dataPointsTemp.join('\t');
+
+            /*
                 if(id=='timeDisplay'){
                     arrayString = dataPointsTime.join('\t');
                 }else{
                     arrayString = dataPointsTemp.join('\t');
-                }
+                }*/
                 // Join array with tab separator for Excel compatibility
 
 
