@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature vs Time Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
+    <style>
+
+        canvas {
+            width: 45% !important;    /* 50% of the body width */
+            height: 45% !important;
+        }
+
+        button{
+            padding: 8px 14px;
+            border-radius: 5px;
+            background-color: #16C47F;
+            margin-top: 8px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover{
+            background-color: #118B50;
+        }
+
+        .class{
+            display: flex;
+            flex-direction: row;
+        }
+        
+
+        p{
+            display: inline-block;
+            margin-left: 10px;
+            margin-top: 0;
+            margin-bottom: 0;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 4px 14px;
+        }
+
+        .graphBtn{
+            margin-bottom: 25px;
+            background-color: #3674B5;
+        }
+        input{
+            width: 70px;
+            padding: 4px 8px;
+            text-align: center;
+            font-size: 13px;
+        }
+        th{
+            font-size: 14px;
+        }
+
+        #toast {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 17px;
+        }
+
+        #toast.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+        from {bottom: 0; opacity: 0;}
+        to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+            }
+
+            @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+            }
+
+            @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+            }
+
+    </style>
+</head>
+<body>
+
+    <h2>Time vs Temperature Graph Builder</h2>
+    <table id="inputTable">
+        <thead>
+            <tr>
+                <th>Heat up Temp</th>
+                <th>Heat up rate</th>
+                <th>Hold Temp</th>
+                <th>Hold time</th>
+                <th>Atmosphere</th>
+                <th>Cool temp</th>
+                <th>Cool rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" value="Room"></td>
+                <td><input type="number" required pattern="[0-9]+" value="10"></td>
+                <td><input type="number" required pattern="[0-9]+" value="538"></td>
+                <td><input type="number" required pattern="[0-9]+" value="20"></td>
+                <td><input type="text" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+            </tr>
+            <tr>
+                <td><input type="text" value="-"></td>
+                <td><input type="number" required pattern="[0-9]+" value="10"></td>
+                <td><input type="number" required pattern="[0-9]+" value="718"></td>
+                <td><input type="number" required pattern="[0-9]+" value="120"></td>
+                <td><input type="text" value="Argon"></td>
+                <td><input type="number" required pattern="[0-9]+" value="25"></td>
+                <td><input type="number" required pattern="[0-9]+" value="10"></td>
+            </tr>
+            <tr>
+                <td><input type="text" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                 <td><input type="number" required pattern="[0-9]+" value=""></td>
+                 <td><input type="text" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+            </tr>
+            <tr>
+                <td><input type="text" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                 <td><input type="number" required pattern="[0-9]+" value=""></td>
+                 <td><input type="text" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+            </tr>
+            <tr>
+                <td><input type="text" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                 <td><input type="number" required pattern="[0-9]+" value=""></td>
+                 <td><input type="text" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+                <td><input type="number" required pattern="[0-9]+" value=""></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="graphBtn" onclick="updateAndCreateGraph()">Generate Graph</button>
+
+    <div class="row">
+        <button class="copy" onclick="copyArrayToClipboard('temperatureDisplay')">Copy to Clipboard</button>
+        <p id="temperatureDisplay">Temperature array:</p>
+    </div>
+    
+    <div class="row">
+        <button class="copy" onclick="copyArrayToClipboard('timeDisplay')">Copy to Clipboard</button>
+        <p id="timeDisplay">Time array:</p>
+    </div>
+
+
+
+
+    <h2>Temperature vs Time</h2>
+    <canvas id="temperatureChart"></canvas> <!-- The canvas where the graph will be drawn -->
+
+
+    <div id="toast"></div>
+
+
+
+    <script>
+
+                let temperatureChart = null; // Global variable for the chart instance
+                let dataPointsTemp = [];
+                let dataPointsTime = [];
+
+                const canvas = document.getElementById("temperatureChart");
+
+
+
+
+function updateAndCreateGraph() {
+
+            const tableData = getTableData();
+            const { dataPointsTemp, dataPointsTime } = processTableData(tableData);
+            createGraph(dataPointsTemp, dataPointsTime);
+        }
+
+
+function getTableData() {
+            const tableData = [];
+            const rows = document.querySelectorAll("#inputTable tbody tr");
+            
+            rows.forEach(row => {
+                const rowData = [];
+                row.querySelectorAll("td input").forEach(input => {
+                    rowData.push(input.value === "room" ? 20 : input.value); // Replace "room" with 20
+                });
+                tableData.push(rowData);
+            });
+            
+            return tableData;
+        }
+
+
+
+        function processTableData(tableData) {
+    // Reset array for update
+    dataPointsTemp = [];
+    dataPointsTime = [];
+
+    const startProcessTemperature = 20;
+
+    const HoldTenpCol = 2;
+    const HeatRateCol = 1;
+    const HoldTimeCol = 3;
+    const CoolTempCol = 5;
+    const CoolRateCol = 6;
+
+    dataPointsTemp.push(startProcessTemperature); // Initial temperature is 20
+    dataPointsTime.push(0);  // Initial time is 0
+
+    let prevTemp = startProcessTemperature;
+    let prevTime = 0;
+    let para;
+    let newTemp2;
+    let coolRate;
+
+    for (let i = 0; i < tableData.length; i++) {
+        let newTemp1 = parseFloat(tableData[i][HoldTenpCol]);
+        let heatRate = parseFloat(tableData[i][HeatRateCol]);
+        let holdTime = parseFloat(tableData[i][HoldTimeCol]);
+
+        if (!isNaN(newTemp1) && !isNaN(holdTime)) {
+            let newTime1;
+
+            if (newTemp1 === newTemp2) {
+                newTime1 = prevTime + holdTime;
+            } else if(!isNaN(heatRate)) {
+                newTime1 = heatRate !== 0 ? (Math.abs(newTemp1 - prevTemp) / heatRate) + prevTime : prevTime;
+                newTime1 = Math.round(newTime1);
+            }
+                
+            /*
+            if(!isNaN(heatRate)){
+
+            }*/
+            dataPointsTemp.push(newTemp1);
+            dataPointsTime.push(newTime1);
+
+            newTime1 += holdTime;
+            newTime1 = Math.round(newTime1);
+
+            dataPointsTemp.push(newTemp1);
+            dataPointsTime.push(newTime1);
+
+            prevTemp = newTemp1;
+            prevTime = newTime1;
+        }
+
+        newTemp2 = parseFloat(tableData[i][CoolTempCol]);
+        coolRate = parseFloat(tableData[i][CoolRateCol]);
+        
+        if (!isNaN(newTemp2) && !isNaN(coolRate) && tableData[i][CoolTempCol] !== "-" && tableData[i][CoolRateCol] !== "-") {
+            let newTime2;
+            if (newTemp2 === newTemp1) {
+                newTime2 = prevTime + holdTime;
+            } else {
+                newTime2 = coolRate !== 0 ? (Math.abs(newTemp2 - prevTemp) / coolRate) + prevTime : prevTime;
+            }
+            newTime2 = Math.round(newTime2);
+
+            dataPointsTemp.push(newTemp2);
+            dataPointsTime.push(newTime2);
+
+            prevTemp = newTemp2;
+            prevTime = newTime2;
+        }
+    }
+
+    console.log(dataPointsTemp);
+    console.log(dataPointsTime);
+
+    para = document.querySelector('#temperatureDisplay');
+    para.textContent = dataPointsTemp;
+    para = document.querySelector('#timeDisplay');
+    para.textContent = dataPointsTime;
+
+    return { dataPointsTemp, dataPointsTime };
+}
+
+
+
+        /*
+        // Sample table data
+        let tableData = [
+           
+        ];
+
+        // Get the processed data
+        let result = processTableData(tableData);
+        let dataPointsTemp = result.dataPointsTemp;
+        let dataPointsTime = result.dataPointsTime;
+
+*/
+
+        function createGraph(dataPointsTemp, dataPointsTime) {
+                    
+        // Create a chart with Chart.js
+        const ctx = document.getElementById('temperatureChart').getContext('2d');
+
+
+        if (temperatureChart) {
+                // Update the existing chart instead of creating a new one
+                temperatureChart.data.labels = dataPointsTime;
+                temperatureChart.data.datasets[0].data = dataPointsTemp;
+                temperatureChart.update();
+            }else{
+                temperatureChart = new Chart(ctx, {
+            type: 'line', // Line chart
+            data: {
+                labels: dataPointsTime, // X-axis: time
+                datasets: [{
+                    label: 'Temperature', // Y-axis: temperature
+                    data: dataPointsTemp, // Y-values: temperature
+                    borderColor: 'rgba(75, 192, 192, 1)', // Line color
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
+                    fill: true,
+                    tension: 0.1 // Smooth lines
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Temperature (°C)'
+                        }
+                    }
+                }
+            }
+        });
+            }
+            
+    
+        }
+
+        function copyArrayToClipboard(id) {
+
+                let arrayString;
+                console.log(dataPointsTemp);
+            console.log(dataPointsTime);
+
+                if(id=='timeDisplay'){
+                    arrayString = dataPointsTime.join('\t');
+                }else{
+                    arrayString = dataPointsTemp.join('\t');
+                }
+                // Join array with tab separator for Excel compatibility
+
+
+
+                // Create a temporary textarea element to copy the text
+                const textarea = document.createElement('textarea');
+                textarea.value = arrayString;
+                document.body.appendChild(textarea);
+
+                // Select and copy the text from the textarea
+                textarea.select();
+                document.execCommand('copy');
+
+                // Remove the temporary textarea element
+                document.body.removeChild(textarea);
+
+                // Alert to inform user
+                showToast('Array copied to clipboard! Paste into Excel.');
+                }
+
+
+                //show toast message
+                function showToast(message) {
+                    var toast = document.getElementById("toast");
+                    toast.innerHTML = message;
+                    toast.classList.add("show");
+                    setTimeout(function(){ toast.classList.remove("show"); }, 3000); // 3000 milliseconds = 3 seconds
+                    }
+    </script>
+
+</body>
+</html>
