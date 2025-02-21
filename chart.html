@@ -7,24 +7,38 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
     <style>
 
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensures the body takes up at least the full viewport height */
+            margin: 0; /* Remove default body margin */
+        }
+
+        .btn-container{
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
         canvas {
-            width: 45% !important;    /* 50% of the body width */
+            width: 100% !important;    /* 50% of the body width */
             height: 45% !important;
         }
 
         button{
             padding: 8px 14px;
             border-radius: 5px;
-            background-color: #16C47F;
+            background-color: #4BC0C0;
             margin-top: 8px;
             color: white;
             border: none;
             cursor: pointer;
         }
         button:hover{
-            background-color: #118B50;
+            background-color: #16C47F;
         }
-
+        
         .class{
             display: flex;
             flex-direction: row;
@@ -39,6 +53,7 @@
             border: 1px solid black;
             border-radius: 5px;
             padding: 4px 14px;
+            width: 400px;
         }
 
         .graphBtn{
@@ -97,11 +112,25 @@
             to {bottom: 0; opacity: 0;}
             }
 
+            .card {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 25px;
+                height: 90vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+            }
+
     </style>
 </head>
 <body>
 
-    <h2>Time vs Temperature Graph Builder</h2>
+    <div class="card">
+
+    <h2>Graph Builder</h2>
     <table id="inputTable">
         <thead>
             <tr>
@@ -165,22 +194,26 @@
 
     <button class="graphBtn" onclick="updateAndCreateGraph()">Generate Graph</button>
 
-    <div class="row">
-        <button class="copy" onclick="copyArrayToClipboard('temperatureDisplay')">Copy to Clipboard</button>
-        <p id="temperatureDisplay">Temperature array:</p>
+    <div class="btn-container">
+            
+        <div class="row">
+            <button class="copy" onclick="copyArrayToClipboard('temperatureDisplay')">Copy to Clipboard</button>
+            <p id="temperatureDisplay" placeholder="xxx">Temperature array:</p>
+        </div>
+        
+        <div class="row">
+            <button class="copy" onclick="copyArrayToClipboard('timeDisplay')">Copy to Clipboard</button>
+            <p id="timeDisplay">Time array:</p>
+        </div>
+        
     </div>
-    
-    <div class="row">
-        <button class="copy" onclick="copyArrayToClipboard('timeDisplay')">Copy to Clipboard</button>
-        <p id="timeDisplay">Time array:</p>
-    </div>
-
 
 
 
     <h2>Temperature vs Time</h2>
     <canvas id="temperatureChart"></canvas> <!-- The canvas where the graph will be drawn -->
 
+    </div>
 
     <div id="toast"></div>
 
@@ -353,7 +386,7 @@ function getTableData() {
                     x: {
                         title: {
                             display: true,
-                            text: 'Time'
+                            text: 'Time (min)'
                         }
                     },
                     y: {
