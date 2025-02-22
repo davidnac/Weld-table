@@ -5,48 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shot Peening Intensity Curve</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        button{
+            padding: 8px 14px;
+            border-radius: 5px;
+            background-color: #4BC0C0;
+            margin-top: 8px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover{
+            background-color: #16C47F;
+        }
+        canvas {
+            width: 50% !important;    /* 50% of the body width */
+            height: 40% !important;
+        }
+        input{
+            width: 60px;
+            text-align: center;
+            padding: 3px 1px;
+        }
+        table{
+            margin-bottom: 10px;
+            margin-top: 18px;
+        }
+        th{
+            padding-right: 20px;
+        }
+
+    </style>
 </head>
 <body>
     <h2>Shot Peening Intensity Curve</h2>
+
     <label for="minIntensity">Min Intensity: </label>
-    <input type="number" id="minIntensity" value="3">
+    <input type="number" id="minIntensity" value="6">
+
     <label for="maxIntensity">Max Intensity: </label>
-    <input type="number" id="maxIntensity" value="7">
+    <input type="number" id="maxIntensity" value="8">
     
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Time (s)</th>
-                <th>Intensity (mmA)</th>
-            </tr>
-        </thead>
+    <table>
+        
         <tbody id="dataTable">
             <tr>
+                <th>Time (s)</th>
                 <td><input type="number" class="time-input" value="0"></td>
-                <td><input type="number" class="intensity-input" value="0"></td>
-            </tr>
-            <tr>
                 <td><input type="number" class="time-input" value="2"></td>
-                <td><input type="number" class="intensity-input" value="3.5"></td>
-            </tr>
-            <tr>
                 <td><input type="number" class="time-input" value="4"></td>
-                <td><input type="number" class="intensity-input" value="6"></td>
-            </tr>
-            <tr>
                 <td><input type="number" class="time-input" value="6"></td>
-                <td><input type="number" class="intensity-input" value="7"></td>
+                <td><input type="number" class="time-input" value="12"></td>
+                <td><input type="number" class="time-input" value="24"></td>
             </tr>
             <tr>
-                <td><input type="number" class="time-input" value="12"></td>
+                <th>Intensity (mmA)</th>
+                <td><input type="number" class="intensity-input" value="0"></td>
+                <td><input type="number" class="intensity-input" value="3.5"></td>
+                <td><input type="number" class="intensity-input" value="6"></td>
+                <td><input type="number" class="intensity-input" value="7"></td>
                 <td><input type="number" class="intensity-input" value="7.2"></td>
+                <td><input type="number" class="intensity-input" value="7.3"></td>
             </tr>
         </tbody>
     </table>
+
     <button onclick="updateChart()">Update Chart</button>
+
     <p>Intensity: <span id="saturationIntensity">N/A</span>, T = <span id="saturationTime">N/A</span>, 2T = <span id="doubleTime">N/A</span></p>
+    
     <canvas id="peeningChart"></canvas>
-    <script>
+   
+   <script>
         let chart;
         
         function getDataFromTable() {
@@ -97,24 +128,25 @@
                     datasets: [{
                         label: 'Shot Peening Intensity (mmA)',
                         data: intensityValues,
-                        borderColor: 'blue',
-                        borderWidth: 2,
-                        fill: false,
+                        borderColor: 'rgba(75, 192, 192, 1)', // Line color
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
+                        fill: true,
+                        borderWidth: 3,
                         pointRadius: 4,
                         tension: 0.2
                     },
                     {
                         label: 'Saturation Point',
                         data: saturationPoint ? [{ x: saturationPoint.time, y: saturationPoint.intensity }] : [],
-                        borderColor: 'red',
-                        pointRadius: 6,
-                        pointBackgroundColor: 'red',
+                        borderColor: '#D91656',
+                        pointRadius: 10,
+                        pointBackgroundColor: '#D91656',
                         type: 'scatter'
                     },
                     {
                         label: 'Min Intensity',
                         data: timeValues.map(() => minIntensity),
-                        borderColor: 'green',
+                        borderColor: '#D91656',
                         borderWidth: 1,
                         borderDash: [5, 5],
                         fill: false
@@ -122,7 +154,7 @@
                     {
                         label: 'Max Intensity',
                         data: timeValues.map(() => maxIntensity),
-                        borderColor: 'orange',
+                        borderColor: '#D91656',
                         borderWidth: 1,
                         borderDash: [5, 5],
                         fill: false
