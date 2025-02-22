@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Curve Fitting</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Curve Fitting</h1>
+  <canvas id="myChart" width="400" height="200"></canvas>
+
+  <p id="result"></p>
+  <p id="fitted"></p>
+
+
+  <script>
+    function curveFit(t, y) {
+      function exponentialGrowth(t, a, b) {
+        return a * (1 - Math.exp(-b * t));
+      }
+
+      function calculateResiduals(a, b) {
+        let residuals = 0;
+        for (let i = 0; i < t.length; i++) {
+          residuals += Math.pow(y[i] - exponentialGrowth(t[i], a, b), 2);
+        }
+        return residuals;
+      }
+
+      let a = Math.max(...y);
+      let b = 0.1;
+      const learningRate = 0.001;
+      const iterations = 10000;
+
+      for (let i = 0; i < iterations; i++) {
+        let da = 0;
+        let db = 0;
+
+        for (let j = 0; j < t.length; j++) {
+          const predicted = exponentialGrowth(t[j], a, b);
+          const error = y[j] - predicted;
+          da += error * (1 - Math.exp(-b * t[j]));
+          db += error * a * t[j] * Math.exp(-b * t[j]);
+        }
+
+        a += learningRate * da;
+        b += learningRate * db;
+      }
+
+      return { a: a, b: b };
+    }
+
+    function findTimePoints(t, y) {
+      const fittedParams = curveFit(t, y);
+      const a = fittedParams.a;
+      const b = fittedParams.b;
+
+      function exponentialGrowth(t) {
+        return a * (1 - Math.exp(-b * t));
+      }
+
+      let t1 = 0;
+      let foundT1 = false;
+
+      for (let i = 0; i < 1000; i++) {
+        const currentT = i * 0.01;
+        const y1 = exponentialGrowth(currentT);
+        if (y1 > 0) {
+          t1 = currentT;
+          foundT1 = true;
+          break;
+        }
+      }
+
+      if (!foundT1) {
+        return "Could not find a valid t1";
+      }
+
+      let t2 = 2 * t1;
+      let y1 = exponentialGrowth(t1);
+      let y2 = exponentialGrowth(t2);
+
+      if (y2 <= 1.1 * y1) {
+        return { t1: t1, t2: t2, y1: y1, y2: y2 };
+      } else {
+        for (let i = 0; i < 10000; i++) {
+          const currentT = i * 0.001;
+          const currentY1 = exponentialGrowth(currentT);
+          const currentY2 = exponentialGrowth(2 * currentT);
+          if (currentY2 <= 1.1 * currentY1 && currentY1 > 0) {
+            return { t1: currentT, t2: 2 * currentT, y1: currentY1, y2: currentY2 };
+          }
+        }
+        return "Could not find t1 and t2 where y2 <= 1.1*y1";
+      }
+    }
+
+    const t = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const y = [0, 0.63, 0.86, 0.95, 0.98, 0.99, 1, 1, 1, 1];
+
+    const fittedParams = curveFit(t, y);
+    console.log("Fitted a:", fittedParams.a);
+    console.log("Fitted b:", fittedParams.b);
+
+    const fittedY = t.map(val => fittedParams.a * (1 - Math.exp(-fittedParams.b * val)));
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: t,
+        datasets: [{
+          label: 'Original Data',
+          data: y,
+          borderColor: 'blue',
+          fill: false
+        }, {
+          label: 'Fitted Curve',
+          data: fittedY,
+          borderColor: 'red',
+          fill: false
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    const result = findTimePoints(t, y);
+    const resultElement = document.getElementById('result');
+    if (typeof result === 'object') {
+      resultElement.textContent = `t1: ${result.t1.toFixed(3)}, t2: ${result.t2.toFixed(3)}, y1: ${result.y1.toFixed(3)}, y2: ${result.y2.toFixed(3)}`;
+    } else {
+      resultElement.textContent = result;
+    }
+
+    const fitElement = document.getElementById('fitted');
+    fitElement.textContent = "Fitted a:"+ fittedParams.a + " Fitted b:" + fittedParams.b;
+
+  </script>
+</body>
+</html>
