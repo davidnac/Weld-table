@@ -68,6 +68,7 @@
     }
     label{
       margin-right: 6px;
+      white-space: pre-wrap;
     }
 
    
@@ -89,6 +90,9 @@
     }
     .margin-top{
       margin-top: 50px;
+    }
+    p{
+      white-space: pre-wrap;
     }
   
   </style>
@@ -137,13 +141,17 @@
 
     <h2>Results</h2>
     <p id="fitted"></p>
-    <p id="result"></p>
+    <p id="fittedr">R fit for eqation: R=0.99</p>
+    <p id="resultt1"></p>
+    <p id="resultt2"></p>
+    <p id="resulti1"></p>
+    <p id="resulti2"></p>
 
     <button onclick="updateChart()">Update Chart</button>
 
     <h2 class="margin-top">Additional data</h2>
     <div class="limit-container">
-      <label for="minIntensity"> Min Intensity:  </label>
+      <label for="minIntensity">Min Intensity:  </label>
       <input type="number" id="minIntensity" value="6">
     </div>
     
@@ -160,6 +168,9 @@
        y = I = Intensity
        t - time, sec    
        then find the saturation point, where I at T, is equal or less then 10% difference from I at 2T.
+
+       need to check if curve fir is at least R=97%
+       intensity out of bounds - mark in red
     */
 
 
@@ -213,7 +224,17 @@
 
       const result = findTimePoints(timeValues, intensityValues);
 
-      document.getElementById("result").textContent = `T: ${result.t1.toFixed(2)}, 2T: ${result.t2.toFixed(2)}, I(T): ${result.y1.toFixed(2)}, I(2T): ${result.y2.toFixed(2)}`;
+      let errorMessage = "";
+
+      if(result.y1 > maxIntensity || result.y1 < minIntensity){
+        errorMessage = "Intensity out of bounds";
+      }
+
+      document.getElementById("resultt1").textContent = `T: ${result.t1.toFixed(2)}`;
+      document.getElementById("resultt2").textContent = `2T: ${result.t2.toFixed(2)}`;
+      document.getElementById("resulti1").textContent = `I(T): ${result.y1.toFixed(2)}` + "    " + `${errorMessage}`;
+      document.getElementById("resulti2").textContent = `I(2T): ${result.y2.toFixed(2)}`;
+
       document.getElementById("fitted").textContent = `Fitted equation I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
 
       if (myChart) myChart.destroy();
