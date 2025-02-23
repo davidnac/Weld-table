@@ -1,176 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shot Peening Intensity Curve</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        button{
-            padding: 8px 14px;
-            border-radius: 5px;
-            background-color: #4BC0C0;
-            margin-top: 8px;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover{
-            background-color: #16C47F;
-        }
-        canvas {
-            width: 50% !important;    /* 50% of the body width */
-            height: 40% !important;
-        }
-        input{
-            width: 60px;
-            text-align: center;
-            padding: 3px 1px;
-        }
-        table{
-            margin-bottom: 10px;
-            margin-top: 18px;
-        }
-        th{
-            padding-right: 20px;
-        }
-
-    </style>
+  <title>Curve Fitting</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    button {
+      padding: 8px 14px;
+      border-radius: 5px;
+      background-color: #4BC0C0;
+      margin-top: 8px;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #16C47F;
+    }
+    canvas {
+      width: 50% !important;
+      height: 40% !important;
+    }
+    input {
+      width: 70px;
+      text-align: center;
+      padding: 3px 1px;
+    }
+    table {
+      margin-bottom: 10px;
+      margin-top: 18px;
+      margin-left: 12px;
+    }
+    th {
+      padding-right: 20px;
+    }
+  
+  </style>
 </head>
 <body>
-    <h2>Shot Peening Intensity Curve</h2>
 
-    <label for="minIntensity">Min Intensity: </label>
-    <input type="number" id="minIntensity" value="6">
+  <h2>Shot Peening Intensity Curve</h2>
 
-    <label for="maxIntensity">Max Intensity: </label>
-    <input type="number" id="maxIntensity" value="8">
-    
-    <table>
-        
-        <tbody id="dataTable">
-            <tr>
-                <th>Time (s)</th>
-                <td><input type="number" class="time-input" value="0"></td>
-                <td><input type="number" class="time-input" value="2"></td>
-                <td><input type="number" class="time-input" value="4"></td>
-                <td><input type="number" class="time-input" value="6"></td>
-                <td><input type="number" class="time-input" value="12"></td>
-                <td><input type="number" class="time-input" value="24"></td>
-            </tr>
-            <tr>
-                <th>Intensity (mmA)</th>
-                <td><input type="number" class="intensity-input" value="0"></td>
-                <td><input type="number" class="intensity-input" value="3.5"></td>
-                <td><input type="number" class="intensity-input" value="6"></td>
-                <td><input type="number" class="intensity-input" value="7"></td>
-                <td><input type="number" class="intensity-input" value="7.2"></td>
-                <td><input type="number" class="intensity-input" value="7.3"></td>
-            </tr>
-        </tbody>
-    </table>
+  <label for="minIntensity">Min Intensity: </label>
+  <input type="number" id="minIntensity" value="6">
+  <label for="maxIntensity">Max Intensity: </label>
+  <input type="number" id="maxIntensity" value="8">
 
-    <button onclick="updateChart()">Update Chart</button>
+  <table>
+    <tbody id="dataTable">
+      <tr>
+        <th>Time (sec)</th>
+        <td><input type="number" class="time-input" value="0"></td>
+        <td><input type="number" class="time-input" value="2"></td>
+        <td><input type="number" class="time-input" value="4"></td>
+        <td><input type="number" class="time-input" value="6"></td>
+        <td><input type="number" class="time-input" value="12"></td>
+        <td><input type="number" class="time-input" value="24"></td>
+        <td><input type="number" class="time-input" value=""></td>
+        <td><input type="number" class="time-input" value=""></td>
+      </tr>
 
-    <p>Intensity: <span id="saturationIntensity">N/A</span>, T = <span id="saturationTime">N/A</span>, 2T = <span id="doubleTime">N/A</span></p>
-    
-    <canvas id="peeningChart"></canvas>
-   
-   <script>
-        let chart;
-        
-        function getDataFromTable() {
-            const timeValues = Array.from(document.querySelectorAll('.time-input')).map(input => parseFloat(input.value));
-            const intensityValues = Array.from(document.querySelectorAll('.intensity-input')).map(input => parseFloat(input.value));
-            return { timeValues, intensityValues };
+      <tr>
+        <th>Intensity (mmA)</th>
+        <td><input type="number" class="intensity-input" value="0"></td>
+        <td><input type="number" class="intensity-input" value="3.5"></td>
+        <td><input type="number" class="intensity-input" value="6"></td>
+        <td><input type="number" class="intensity-input" value="7"></td>
+        <td><input type="number" class="intensity-input" value="7.2"></td>
+        <td><input type="number" class="intensity-input" value="7.3"></td>
+        <td><input type="number" class="intensity-input" value=""></td>
+        <td><input type="number" class="intensity-input" value=""></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button onclick="updateChart()">Update Chart</button>
+
+  <p id="result"></p>
+  <p id="fitted"></p>
+
+  <canvas id="myChart"></canvas>
+
+  <script>
+
+      /*
+       curve fitting y = a(1- exp(-b*t)) where t is time, y is intensity and find a and b constants. none linear regression problem
+       y = I = Intensity
+       t - time, sec    
+       then find the saturation point, where I at T, is equal or less then 10% difference from I at 2T.
+    */
+
+
+    let myChart;
+
+    function getDataFromTable() {
+      const timeValues = Array.from(document.querySelectorAll('.time-input')).map(input => parseFloat(input.value)).filter(value => !isNaN(value));;
+      const intensityValues = Array.from(document.querySelectorAll('.intensity-input')).map(input => parseFloat(input.value)).filter(value => !isNaN(value));;
+      return { timeValues, intensityValues };
+    }
+
+    function curveFit(t, y) {
+      let a = Math.max(...y), b = 0.1, learningRate = 0.001, iterations = 10000;
+      for (let i = 0; i < iterations; i++) {
+        let da = 0, db = 0;
+        for (let j = 0; j < t.length; j++) {
+          const predicted = a * (1 - Math.exp(-b * t[j]));
+          const error = y[j] - predicted;
+          da += error * (1 - Math.exp(-b * t[j]));
+          db += error * a * t[j] * Math.exp(-b * t[j]);
         }
-        
-        function findSaturationPoint(timeValues, intensityValues) {
-            for (let i = 0; i < timeValues.length - 1; i++) {
-                let t1 = timeValues[i];
-                let t2 = t1 * 2;
-                let I1 = intensityValues[i];
-                let I2Index = timeValues.findIndex(t => t >= t2);
-                if (I2Index !== -1) {
-                    let I2 = intensityValues[I2Index];
-                    if ((I2 - I1) / I1 <= 0.1) {
-                        return { intensity: I1.toFixed(2), time: t1, doubleTime: t2 };
-                    }
-                }
-            }
-            return null;
+        a += learningRate * da;
+        b += learningRate * db;
+      }
+      return { a, b };
+    }
+
+    function findTimePoints(t, y) {
+      const { a, b } = curveFit(t, y);
+      const t1 = Math.log(0.1) / -b;
+      const t2 = 2 * t1;
+      return { t1, t2, y1: a * (1 - Math.exp(-b * t1)), y2: a * (1 - Math.exp(-b * t2)) };
+    }
+
+    function updateChart() {
+      const { timeValues, intensityValues } = getDataFromTable();
+      const fittedParams = curveFit(timeValues, intensityValues);
+      const fittedY = timeValues.map(t => fittedParams.a * (1 - Math.exp(-fittedParams.b * t)));
+      const minIntensity = parseFloat(document.getElementById("minIntensity").value);
+      const maxIntensity = parseFloat(document.getElementById("maxIntensity").value);
+
+      const result = findTimePoints(timeValues, intensityValues);
+
+      document.getElementById("result").textContent = `T: ${result.t1.toFixed(3)}, 2T: ${result.t2.toFixed(3)}, I(T): ${result.y1.toFixed(3)}, I(2T): ${result.y2.toFixed(3)}`;
+      document.getElementById("fitted").textContent = `Fitted a: ${fittedParams.a}, Fitted b: ${fittedParams.b}`;
+
+      if (myChart) myChart.destroy();
+      myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: timeValues,
+          /* tension makes the graph more rounded, not bunch of straight lines*/
+          datasets: [
+            { label: 'Original Data', tension: 0.2, data: intensityValues, borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', fill: true },
+            { label: 'Fitted Curve', tension: 0.2, data: fittedY, borderColor: '#FFB200', fill: false },
+            { label: 'Min Intensity', data: timeValues.map(() => minIntensity), borderColor: '#D91656', borderDash: [5, 5], fill: false },
+            { label: 'Max Intensity', data: timeValues.map(() => maxIntensity), borderColor: '#D91656', borderDash: [5, 5], fill: false },
+            { label: 'Saturation Point', data: [{ x: result.t1, y: result.y1 }], borderColor: 'purple', pointRadius: 8, pointBackgroundColor: 'purple', fill: false, showLine: true },
+            { label: 'Saturation Line', data: [{ x: result.t1, y: minIntensity }, { x: result.t1, y: maxIntensity }], borderColor: 'purple', borderDash: [5, 5], fill: false, showLine: true }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {  title: { display: true, text: 'Peening Time (sec)' } , type: 'linear', position: 'bottom' },
+            y: { title: { display: true, text: 'Intensity (mmA)' } , beginAtZero: true }
+          }
         }
-        
-        function updateChart() {
-            const { timeValues, intensityValues } = getDataFromTable();
-            if (chart) chart.destroy();
-            
-            let saturationPoint = findSaturationPoint(timeValues, intensityValues);
-            if (saturationPoint) {
-                document.getElementById('saturationIntensity').textContent = saturationPoint.intensity;
-                document.getElementById('saturationTime').textContent = saturationPoint.time;
-                document.getElementById('doubleTime').textContent = saturationPoint.doubleTime;
-            } else {
-                document.getElementById('saturationIntensity').textContent = "N/A";
-                document.getElementById('saturationTime').textContent = "N/A";
-                document.getElementById('doubleTime').textContent = "N/A";
-            }
-            
-            let minIntensity = parseFloat(document.getElementById("minIntensity").value);
-            let maxIntensity = parseFloat(document.getElementById("maxIntensity").value);
-            const ctx = document.getElementById('peeningChart').getContext('2d');
-            
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: timeValues,
-                    datasets: [{
-                        label: 'Shot Peening Intensity (mmA)',
-                        data: intensityValues,
-                        borderColor: 'rgba(75, 192, 192, 1)', // Line color
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
-                        fill: true,
-                        borderWidth: 3,
-                        pointRadius: 4,
-                        tension: 0.2
-                    },
-                    {
-                        label: 'Saturation Point',
-                        data: saturationPoint ? [{ x: saturationPoint.time, y: saturationPoint.intensity }] : [],
-                        borderColor: '#D91656',
-                        pointRadius: 10,
-                        pointBackgroundColor: '#D91656',
-                        type: 'scatter'
-                    },
-                    {
-                        label: 'Min Intensity',
-                        data: timeValues.map(() => minIntensity),
-                        borderColor: '#D91656',
-                        borderWidth: 1,
-                        borderDash: [5, 5],
-                        fill: false
-                    },
-                    {
-                        label: 'Max Intensity',
-                        data: timeValues.map(() => maxIntensity),
-                        borderColor: '#D91656',
-                        borderWidth: 1,
-                        borderDash: [5, 5],
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: { title: { display: true, text: 'Peening Time (s)' } },
-                        y: { title: { display: true, text: 'Intensity (mmA)' } }
-                    }
-                }
-            });
-        }
-        
-        document.addEventListener("DOMContentLoaded", updateChart);
-    </script>
+      });
+    }
+
+    updateChart();
+  </script>
 </body>
 </html>
