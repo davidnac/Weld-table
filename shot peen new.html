@@ -209,6 +209,25 @@
       return { a, b };
     }
 
+    function calculateR2(t, y) {
+      const { a, b } = curveFit(t, y);
+      
+      // Compute predicted values
+      let yPred = t.map(ti => a * (1 - Math.exp(-b * ti)));
+
+      // Compute mean of actual y values
+      let yMean = y.reduce((sum, yi) => sum + yi, 0) / y.length;
+
+      // Compute SS_tot (Total Sum of Squares) and SS_res (Residual Sum of Squares)
+      let ssTot = y.reduce((sum, yi) => sum + Math.pow(yi - yMean, 2), 0);
+      let ssRes = y.reduce((sum, yi, index) => sum + Math.pow(yi - yPred[index], 2), 0);
+
+      // Compute R^2
+      let r2 = 1 - (ssRes / ssTot);
+      
+      return r2;
+    }
+
     function findTimePoints(t, y) {
       const { a, b } = curveFit(t, y);
       const t1 = Math.log(0.1) / -b;
@@ -219,6 +238,7 @@
     function updateChart() {
       const { timeValues, intensityValues } = getDataFromTable();
       const fittedParams = curveFit(timeValues, intensityValues);
+      const rValue = calculateR2(timeValues, intensityValues);
       const fittedY = timeValues.map(t => fittedParams.a * (1 - Math.exp(-fittedParams.b * t)));
       const minIntensity = parseFloat(document.getElementById("minIntensity").value);
       const maxIntensity = parseFloat(document.getElementById("maxIntensity").value);
@@ -235,6 +255,8 @@
       document.getElementById("resultt2").textContent = `2T: ${result.t2.toFixed(2)}`;
       document.getElementById("resulti1").textContent = `I(T): ${result.y1.toFixed(2)}` + "    " + `${errorMessage}`;
       document.getElementById("resulti2").textContent = `I(2T): ${result.y2.toFixed(2)}`;
+
+      document.getElementById("fittedr").textContent = `R^2: ${rValue.toFixed(2)}`;
 
       document.getElementById("fitted").textContent = `Fitted equation I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
 
