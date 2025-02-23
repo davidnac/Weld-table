@@ -5,60 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Engine Manuals</title>
     <style>
+
+        html{
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+        }
+
         body {
             background-color: #f3f4f6;
             color: #1f2937;
             font-family: Arial, sans-serif;
+            width: 100%;
+            height: 100%;
+            margin: 0;
         }
+
+        .body-container{
+            width: 100%;
+            height: 90%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
         header {
             text-align: center;
-            padding: 1.2rem;
+            padding: 20px;
             background-color: #3674B5;
             color: white;
             font-size: 1.4rem;
             font-weight: bold;
         }
-        .search-container {
-            text-align: center;
-            margin: 1rem 0;
-        }
-        .search-container input {
-            width: 50%;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .filter-buttons {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        .filter-buttons button {
-            padding: 0.5rem 1rem;
-            margin: 0.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #578FCA;
-            color: white;
-            font-size: 1rem;
-        }
-        .filter-buttons button:hover {
-            background-color: #493D9E;
-        }
-        .container {
-            max-width: 78rem;
-            height: 75vh;
-            margin: 0 auto;
-            padding: 1.5rem;
+      
+    
+        .card-container {
+            width: 60%;
+            padding: 16px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center; /* This centers the cards vertically */
-            gap: 1rem;
+            gap: 16px;
+            margin: 0;
         }
         .card {
-            width: 12%;
+            width: 170px;
             background-color: white;
 /*            background: linear-gradient(to right, #25c481, #25b7c4); */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -68,10 +62,11 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            height: 12rem;
+            height: 13rem;
             justify-content: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-decoration: none;
+            box-sizing: border-box;
         }
         .card:hover {
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
@@ -86,7 +81,7 @@
             width: 50px;
         }
         .card p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             margin-top: 0.5rem;
         }
@@ -105,29 +100,48 @@
         MRO MATERIALS LAB TOOLS
     </header>
 
+    <div class="body-container">
 
-    <div class="container" id="manualContainer">
+
+    <div class="card-container" id="manualContainer">
 
         <a href="manuals search.html" target="_blank" class="card" data-tag="CFM">
             <p>Manual Selection</p>
             <p style="font-size: 0.8rem; color: gray;">Browse engine Repair & Inspection Manuals</p>
         </a>
+
         <a href="Welding table.html" target="_blank" class="card" data-tag="CFM">
             <p>Welding Wire Selection</p>
             <p style="font-size: 0.8rem; color: gray;">Find the correct welding material</p>
         </a>
+
         <a href="Brazing table.html" target="_blank" class="card" data-tag="CFM">
             <p>Brazing Materials</p>
             <p style="font-size: 0.8rem; color: gray;">Brazing materials data and usage</p>
         </a>
+
         <a href="Heat treatments table.html" target="_blank" class="card" data-tag="CFM">
             <p>Heat Treatments Selction</p>
             <p style="font-size: 0.8rem; color: gray;">Find the correct heat treatment</p>
         </a>
+
         <a href="element table.html" target="_blank"class="card" data-tag="Honeywell">
             <p>Material Composition</p>
             <p style="font-size: 0.8rem; color: gray;">Find a material base on its elemnts composition</p>
         </a>
+
+        <a href="Shot peen.html" target="_blank"class="card" data-tag="Honeywell">
+            <p>Shot peen Solver</p>
+            <p style="font-size: 0.8rem; color: gray;">Shot peen curve Solver to find intensity and time</p>
+        </a>
+
+        <a href="build HTR graph.html" target="_blank"class="card" data-tag="Honeywell">
+            <p>HTR Graph builder</p>
+            <p style="font-size: 0.8rem; color: gray;">HTR Graph builder</p>
+        </a>
+
+    </div>
+</div>
 
 </body>
 </html>
