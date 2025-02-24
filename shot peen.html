@@ -41,7 +41,7 @@
       margin-top: 50px;
     }
     input {
-      width: 70px;
+      width: 60px;
       text-align: center;
       padding: 3px 1px;
     }
@@ -51,21 +51,30 @@
       margin-left: 12px;
       border-collapse: collapse;
       box-sizing: border-box;
-      border: solid 1px black;
-      border-radius: 10px;
+      border-radius: 7px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     th {
       padding: 6px 20px;
       text-align: left;
       font-size: 14px;
+      height: 50px;
+      box-sizing: border-box;
     }
     td{
-      border-left: solid 1px rgba(159, 154, 154, 0.39);
+      border: solid 1px rgba(159, 154, 154, 0.39);
     }
     td input{
-      padding: 6px 20px;
-      border: none;
+        width: 100%;
+        text-align: center;
+        font-size: 13px;
+        padding: 10px 10px;
+        box-sizing: border-box;
+        border: none;
+    }
+    td input:hover{
+       background-color: rgba(75, 192, 192, 0.2);
     }
     label{
       margin-right: 6px;
@@ -122,6 +131,7 @@
         <td><input type="number" class="time-input" value="24"></td>
         <td><input type="number" class="time-input" value=""></td>
         <td><input type="number" class="time-input" value=""></td>
+        <td><input type="number" class="time-input" value=""></td>
       </tr>
 
       <tr>
@@ -132,6 +142,7 @@
         <td><input type="number" class="intensity-input" value="7"></td>
         <td><input type="number" class="intensity-input" value="7.2"></td>
         <td><input type="number" class="intensity-input" value="7.3"></td>
+        <td><input type="number" class="intensity-input" value=""></td>
         <td><input type="number" class="intensity-input" value=""></td>
         <td><input type="number" class="intensity-input" value=""></td>
       </tr>
@@ -256,6 +267,9 @@
 
       if(result.y1 > maxIntensity || result.y1 < minIntensity){
         errorMessage = "Intensity out of bounds";
+        document.getElementById("resulti1").style.color = "#E50046"; // Mark in red
+      }else {
+        document.getElementById("resulti1").style.color = ""; // Reset color if valid
       }
 
       document.getElementById("resultt1").textContent = `T: ${result.t1.toFixed(2)}`;
@@ -263,7 +277,14 @@
       document.getElementById("resulti1").textContent = `I(T): ${result.y1.toFixed(2)}` + "    " + `${errorMessage}`;
       document.getElementById("resulti2").textContent = `I(2T): ${result.y2.toFixed(2)}`;
 
-      document.getElementById("fittedr").textContent = `R^2: ${rValue.toFixed(2)}`;
+      if (rValue < 0.98) {
+        errorMessage = "Low fit quality!";
+        document.getElementById("fittedr").style.color = "#E50046"; // Mark text in red
+      } else {
+          document.getElementById("fittedr").style.color = ""; // Reset color if valid
+      }
+
+      document.getElementById("fittedr").textContent = `R^2: ${rValue.toFixed(2)}` + "    " + `${errorMessage}`;
 
       document.getElementById("fitted").textContent = `Fitted equation I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
 
@@ -285,7 +306,7 @@
         options: {
           responsive: true,
           scales: {
-            x: {  title: { display: true, text: 'Peening Time (sec)',  font: { size: 14 } } , type: 'linear', position: 'bottom' },
+            x: {  title: { display: true, text: 'Peening Time (sec)',  font: { size: 14 } } , type: 'linear', position: 'bottom', beginAtZero: true },
             y: { title: { display: true, text: 'Intensity A(In)',  font: { size: 14 } } , beginAtZero: true }
           }
         }
