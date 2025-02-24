@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Searchable Brazing Table</title>
     <style>
+
+    @font-face {
+        font-family: 'Montserrat-Medium';
+        src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+    }
+
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat-Medium', sans-serif;
             margin: 20px;
             background-color: #f4f4f4;
             text-align: center;
@@ -52,6 +61,7 @@
             font-size: 15px;
         }
 
+
         table th:not(:last-child),
         table td:not(:last-child) {
             text-align: center;
@@ -61,6 +71,10 @@
         table th:last-child,
         table td:last-child {
             text-align: left;
+        }
+
+        table td:last-child {
+          font-size: 14px; /* Adjust the font size as needed */
         }
 
         th {
