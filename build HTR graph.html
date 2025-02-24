@@ -1,116 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Temperature vs Time Graph</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js CDN -->
     <style>
-
-    @font-face {
-        font-family: 'Montserrat-Medium';
-        src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
         font-weight: 500; /* Medium weight */
         font-style: normal;
-    }
+      }
 
-    body{
-      font-family: 'Montserrat-Medium', sans-serif;
-      display: flex;
-      flex-direction: row;
-      margin: 0;
-      height: 100vh;
-      width: 100%;
-      background-color: #f4f4f4;
-      padding: 35px;
-      box-sizing: border-box;
-    }
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        height: 100vh;
+        width: 100%;
+        background-color: #f4f4f4;
+        padding: 35px;
+        box-sizing: border-box;
+      }
 
-        .btn-container{
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-        }
+      .btn-container {
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
 
-        canvas {
-            width: 100% !important;    /* 50% of the body width */
-            height: 55% !important;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
+      canvas {
+        width: 100% !important; /* 50% of the body width */
+        height: 55% !important;
+        margin-top: 40px;
+        margin-bottom: 20px;
+      }
 
-        button{
-            padding: 10px 14px;
-            border-radius: 5px;
-            background-color: #4BC0C0;
-            margin-top: 12px;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover{
-            background-color: #16C47F;
-        }
+      button {
+        padding: 10px 14px;
+        border-radius: 5px;
+        background-color: #4bc0c0;
+        margin-top: 12px;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #16c47f;
+      }
 
-        .class{
-            display: flex;
-            flex-direction: row;
-        }
+      .class {
+        display: flex;
+        flex-direction: row;
+      }
 
-        p {
-            margin-left: 20px;
-            margin-top: 10px;
-            margin-bottom: 0;
-            padding: 4px 14px;
-            box-sizing: border-box; /* Ensures padding doesn't affect width */
-        }
+      p {
+        margin-left: 20px;
+        margin-top: 10px;
+        margin-bottom: 0;
+        padding: 4px 14px;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+      }
 
-        .graphBtn{
-            background-color: #3674B5;
-            margin-top: 0;
-        }
+      .graphBtn {
+        background-color: #3674b5;
+        margin-top: 0;
+      }
 
+      table {
+        margin-bottom: 0;
+        margin-top: 40px;
+        border-collapse: collapse;
+        box-sizing: border-box;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      tr:nth-child(odd) {
+        background-color: #f9f9f9;
+      }
 
-        table {
-          margin-bottom: 0;
-          margin-top: 40px;
-          border-collapse: collapse;
-          box-sizing: border-box;
-          border-radius: 10px;
-          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-        tr:nth-child(odd) {
-            background-color: #f9f9f9;
-        }
+      th {
+        padding: 6px 20px;
+        text-align: center;
+        font-size: 13px;
+        border-left: solid 1px rgba(159, 154, 154, 0.39);
+        background-color: rgba(75, 192, 192, 0.2);
+      }
+      td {
+        border: solid 1px rgba(159, 154, 154, 0.39);
+      }
+      td input {
+        width: 100%;
+        text-align: center;
+        font-size: 13px;
+        padding: 10px 10px;
+        box-sizing: border-box;
+        border: none;
+      }
 
-        th {
-          padding: 6px 20px;
-          text-align: center;
-          font-size: 13px;
-          border-left: solid 1px rgba(159, 154, 154, 0.39);
-          background-color: rgba(75, 192, 192, 0.2);
-        }
-        td{
-          border-left: solid 1px rgba(159, 154, 154, 0.39);
-        }
-        td input{
-          width: 70px;
-          text-align: center;
-          font-size: 13px;
-          padding: 12px 20px;
-          border: none;
-        }
+      td input:hover {
+        background-color: rgba(75, 192, 192, 0.2);
+      }
 
-        td input:hover{
-          background-color: rgba(75, 192, 192, 0.2);
-        }
-
-
-        #toast {
+      #toast {
         visibility: hidden;
         min-width: 250px;
         margin-left: -125px;
@@ -124,475 +123,438 @@
         left: 50%;
         bottom: 30px;
         font-size: 17px;
-        }
+      }
 
-        #toast.show {
+      #toast.show {
         visibility: visible;
         -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
         animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+
+      @-webkit-keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
         }
-
-        @-webkit-keyframes fadein {
-        from {bottom: 0; opacity: 0;}
-        to {bottom: 30px; opacity: 1;}
+        to {
+          bottom: 30px;
+          opacity: 1;
         }
+      }
 
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
-            }
-
-            @-webkit-keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-            }
-
-            @keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-            }
-
-            .card {
-                    border-radius: 10px;
-                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-                    padding: 30px;
-                    background-color: white;
-            }
-
-            .card-right{
-              margin-left: 20px;
-              width: 45%;
-            }
-            .card-left{
-              width: 55%;
-            }
-
-            textarea{
-                width: 100%;
-                padding: 20px;
-                margin-bottom: 0;
-                box-sizing: border-box; /* Ensures padding is inside the width/height */
-
-                border: 2px solid #ccc;
-                border-radius: 10px;
-                font-size: 14px;
-                font-family: 'Arial', sans-serif;
-                background-color: #f9f9f9;
-                color: #333;
-                transition: all 0.3s ease-in-out;
-                resize: vertical; /* Allow resizing the height of the textarea */
-                min-height: 160px; /* Use min-height if height doesn't apply */
-            }
-
-            textarea:focus {
-            border-color: #6a5acd; /* Focus border color */
-            box-shadow: 0 0 8px rgba(106, 92, 205, 0.6); /* Focus shadow */
-            background-color: #fff; /* Focus background color */
-            outline: none; /* Remove default outline */
+      @keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
         }
-
-        .graph-header-container { /* You can choose a more descriptive class name */
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+        to {
+          bottom: 30px;
+          opacity: 1;
         }
+      }
 
-        .copy{
-          margin: 0;
+      @-webkit-keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
         }
-        .cleat-btn{
-          background-color: #DE3163;
+        to {
+          bottom: 0;
+          opacity: 0;
         }
+      }
 
+      @keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+
+      .card {
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        background-color: white;
+      }
+
+      .card-right {
+        margin-left: 20px;
+        width: 45%;
+      }
+      .card-left {
+        width: 55%;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 20px;
+        margin-bottom: 0;
+        box-sizing: border-box; /* Ensures padding is inside the width/height */
+
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        font-size: 14px;
+        font-family: "Arial", sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        transition: all 0.3s ease-in-out;
+        resize: vertical; /* Allow resizing the height of the textarea */
+        min-height: 160px; /* Use min-height if height doesn't apply */
+      }
+
+      textarea:focus {
+        border-color: #6a5acd; /* Focus border color */
+        box-shadow: 0 0 8px rgba(106, 92, 205, 0.6); /* Focus shadow */
+        background-color: #fff; /* Focus background color */
+        outline: none; /* Remove default outline */
+      }
+
+      .graph-header-container {
+        /* You can choose a more descriptive class name */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .copy {
+        margin: 0;
+      }
+      .cleat-btn {
+        background-color: #de3163;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="card card-left">
+      <div class="graph-header-container">
+        <h2>Temperature vs Time Graph Builder</h2>
+        <button class="graphBtn" onclick="filterTable()">Generate Graph</button>
+      </div>
 
-
-    <div class="graph-header-container">
-      <h2>Temperature vs Time Graph Builder</h2>
-      <button class="graphBtn" onclick="updateAndCreateGraph()">Generate Graph</button>
-    </div>
-
-      <canvas id="temperatureChart"></canvas> <!-- The canvas where the graph will be drawn -->
+      <canvas id="temperatureChart"></canvas>
+      <!-- The canvas where the graph will be drawn -->
 
       <div class="graph-header-container">
         <h2>Data set points</h2>
-        <button class="copy" onclick="copyArrayToClipboard('temperatureDisplay')">Copy Data set to Clipboard</button>
+        <button class="copy" onclick="copyArrayToClipboard()">
+          Copy Data set to Clipboard
+        </button>
       </div>
 
       <p id="temperatureDisplay"></p>
       <p id="timeDisplay"></p>
-
     </div>
 
     <div class="card-right card">
-
-        <h2>Data Input</h2>
+      <h2>Data Input</h2>
 
       <label for="wordInputText"></label>
       <textarea name="" id="wordInputText" onkeyup="importToTable()"></textarea>
-      <button class="cleat-btn" onclick="clearTextarea()">Clear Textarea</button>
+      <button class="cleat-btn" onclick="clearTextarea()">
+        Clear Textarea
+      </button>
 
       <table id="inputTable">
-          <thead>
-              <tr>
-                  <th>Heat up Temp</th>
-                  <th>Heat up rate</th>
-                  <th>Hold Temp</th>
-                  <th>Hold time</th>
-                  <th>Atmosphere</th>
-                  <th>Cool rate</th>
-                  <th>Cool temp</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr>
-                  <td><input type="text" value="Room"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="10"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="538"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="20"></td>
-                  <td><input type="text" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-              </tr>
-              <tr>
-                  <td><input type="text" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="10"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="718"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="120"></td>
-                  <td><input type="text" value="Argon"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="25"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="10"></td>
-              </tr>
-              <tr>
-                  <td><input type="text" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                   <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                   <td><input type="text" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-              </tr>
-              <tr>
-                  <td><input type="text" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                   <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                   <td><input type="text" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-              </tr>
-              <tr>
-                  <td><input type="text" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                   <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                   <td><input type="text" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
-              </tr>
-          </tbody>
+        <thead>
+          <tr>
+            <th>Heat up Temp</th>
+            <th>Heat up rate</th>
+            <th>Hold Temp</th>
+            <th>Hold time</th>
+            <th>Atmosphere</th>
+            <th>Cool rate</th>
+            <th>Cool temp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" value="Room" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="10" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="538" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="120" /></td>
+            <td><input type="text" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="1" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="718" /></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="10" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="718" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="120" /></td>
+            <td><input type="text" value="Argon" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="10" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="20" /></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+          </tr>
+          <tr>
+            <td><input type="text" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+          </tr>
+        </tbody>
       </table>
 
       <button class="cleat-btn" onclick="clearTable()">Clear Table</button>
-
     </div>
-
-
-
 
     <div id="toast"></div>
 
     <script>
+      let temperatureChart = null; // Global variable for the chart instance
+      let times = [];
+      let temps = [];
+      const canvas = document.getElementById("temperatureChart");
 
-                let temperatureChart = null; // Global variable for the chart instance
-                let dataPointsTemp = [];
-                let dataPointsTime = [];
+      //convert from structure of word table to short table
+      function filterTable() {
+        // Get the table element
+        const tableData = [];
 
-                const canvas = document.getElementById("temperatureChart");
+        const rows = document.querySelectorAll("#inputTable tbody tr");
 
+        rows.forEach((row) => {
+          const rowData = [];
+          row.querySelectorAll("td input").forEach((input) => {
+            rowData.push(input.value); // Replace "room" with 20
+          });
+          tableData.push(rowData);
+        });
 
-function updateAndCreateGraph() {
+        console.log(tableData);
 
-            const tableData = getTableData();
-            const { dataPointsTemp, dataPointsTime } = processTableData(tableData);
-            createGraph(dataPointsTemp, dataPointsTime);
-        }
+        // Filter the table by removing columns 0 and 4 (indexes)
+        let filteredTable = tableData.map((row, rowIndex) => {
+          if (rowIndex === 0) {
+            // For the header row, remove columns 0 and 4
+            return row.filter((_, index) => index !== 0 && index !== 4);
+          } else {
+            // For the data rows, remove columns 0 and 4
+            return row.filter((_, index) => index !== 0 && index !== 4);
+          }
+        });
 
+        console.log(filteredTable);
+        let output = transformTable(filteredTable);
+        //console.log(output);
+        let dataPoints = calculateDataPoints(output);
+      }
 
-function getTableData() {
-            const tableData = [];
-            const rows = document.querySelectorAll("#inputTable tbody tr");
+      function transformTable(data) {
+        let transformedData = [["rate", "temp", "hold"]]; // New table starts with the correct headers
 
-            rows.forEach(row => {
-                const rowData = [];
-                row.querySelectorAll("td input").forEach(input => {
-                    rowData.push(input.value === "room" ? 20 : input.value); // Replace "room" with 20
-                });
-                tableData.push(rowData);
-            });
+        // Iterate through each row (excluding the header)
+        data.slice(0).forEach((row) => {
+          // First set: columns 0, 1, 2 (keep first column even if it's "")
+          let firstPart = row.slice(0, 3);
 
-            return tableData;
-        }
+          // Second set: columns 3, 4 (keep original order, pad to 3 columns)
+          let secondPart = row.slice(3).concat([""]).slice(0, 3);
 
+          // Add both parts to the new transformed data (only if not empty)
+          if (firstPart.some((cell) => cell !== "" && !isNaN(cell))) {
+            transformedData.push(firstPart);
+          }
+          if (secondPart.some((cell) => cell !== "" && !isNaN(cell))) {
+            transformedData.push(secondPart);
+          }
+        });
 
+        console.log(transformedData);
+        return transformedData;
+      }
 
-        function processTableData(tableData) {
-    // Reset array for update
-    dataPointsTemp = [];
-    dataPointsTime = [];
+      function calculateDataPoints(data) {
+        let headers = data[0]; // Extract headers
+        let rows = data.slice(1); // Extract data rows
 
-    const startProcessTemperature = 20;
+        let time = 0; // Initial time
+        let temp = 20; // Initial temperature
+        let dataPoints = [[time, temp]]; // Store (time, temp) pairs
 
-    const HoldTenpCol = 2;
-    const HeatRateCol = 1;
-    const HoldTimeCol = 3;
-    const CoolRateCol = 5;
-    const CoolTempCol = 6;
+        console.log(rows);
 
-    dataPointsTemp.push(startProcessTemperature); // Initial temperature is 20
-    dataPointsTime.push(0);  // Initial time is 0
+        rows.forEach((row) => {
+          let rate = null,
+            newTemp = null,
+            hold = 0;
 
-    let prevTemp = startProcessTemperature;
-    let prevTime = 0;
-    let para;
-    let newTemp2;
-    let coolRate;
-
-    for (let i = 0; i < tableData.length; i++) {
-        let newTemp1 = parseFloat(tableData[i][HoldTenpCol]);
-        let heatRate = parseFloat(tableData[i][HeatRateCol]);
-        let holdTime = parseFloat(tableData[i][HoldTimeCol]);
-
-        if (!isNaN(newTemp1) && !isNaN(holdTime)) {
-            let newTime1;
-
-            if (newTemp1 === newTemp2) {
-                newTime1 = prevTime + holdTime;
-            } else if(!isNaN(heatRate)) {
-                newTime1 = heatRate !== 0 ? (Math.abs(newTemp1 - prevTemp) / heatRate) + prevTime : prevTime;
-                newTime1 = Math.round(newTime1);
+          row.forEach((value, colIndex) => {
+            let header = headers[colIndex];
+            if (header === "rate" && value !== "" && value !== undefined) {
+              rate = parseFloat(value);
+              //console.log(rate);
+            } else if (
+              header === "temp" &&
+              value !== "" &&
+              value !== undefined
+            ) {
+              newTemp = parseFloat(value);
+              // console.log(newTemp);
+            } else if (
+              header === "hold" &&
+              value !== "" &&
+              value !== undefined
+            ) {
+              hold = parseFloat(value);
+              // console.log(hold);
             }
 
-            /*
-            if(!isNaN(heatRate)){
-
-            }*/
-            dataPointsTemp.push(newTemp1);
-            dataPointsTime.push(newTime1);
-
-            newTime1 += holdTime;
-            newTime1 = Math.round(newTime1);
-
-            dataPointsTemp.push(newTemp1);
-            dataPointsTime.push(newTime1);
-
-            prevTemp = newTemp1;
-            prevTime = newTime1;
-        }
-
-        newTemp2 = parseFloat(tableData[i][CoolTempCol]);
-        coolRate = parseFloat(tableData[i][CoolRateCol]);
-
-        if (!isNaN(newTemp2) && !isNaN(coolRate) && tableData[i][CoolTempCol] !== "-" && tableData[i][CoolRateCol] !== "-") {
-            let newTime2;
-            if (newTemp2 === newTemp1) {
-                newTime2 = prevTime + holdTime;
-            } else {
-                newTime2 = coolRate !== 0 ? (Math.abs(newTemp2 - prevTemp) / coolRate) + prevTime : prevTime;
+            console.log(dataPoints);
+            // If we have a rate and a new temperature, calculate the time
+            if (rate !== null && newTemp !== null && newTemp !== temp) {
+              let deltaTemp = Math.abs(newTemp - temp);
+              let rateTime = deltaTemp / rate; // Time = ΔT / rate
+              time += rateTime;
+              temp = newTemp;
+              time = Math.round(time);
+              dataPoints.push([time, temp]); // Store new data point
+              // console.log(dataPoints);
             }
-            newTime2 = Math.round(newTime2);
 
-            dataPointsTemp.push(newTemp2);
-            dataPointsTime.push(newTime2);
+            if (hold > 0) {
+              time += hold;
+              time = Math.round(time);
+              dataPoints.push([time, temp]); // Store hold point
+              // console.log(dataPoints);
+            }
+          });
+        });
+        drawChart(dataPoints);
+      }
 
-            prevTemp = newTemp2;
-            prevTime = newTime2;
-        }
-    }
+      function drawChart(dataPoints) {
+        times = dataPoints.map((point) => point[0]);
+        temps = dataPoints.map((point) => point[1]);
 
-    console.log(dataPointsTemp);
-    console.log(dataPointsTime);
+        para = document.querySelector("#temperatureDisplay");
+        para.textContent = "Temperature (°C): " + temps;
+        para = document.querySelector("#timeDisplay");
+        para.textContent = "Time (sec): " + times;
 
-    para = document.querySelector('#temperatureDisplay');
-    para.textContent = "Temperature (°C): " + dataPointsTemp;
-    para = document.querySelector('#timeDisplay');
-    para.textContent = "Time (sec): " + dataPointsTime;
-
-    return { dataPointsTemp, dataPointsTime };
-}
-
-
-
-        /*
-        // Sample table data
-        let tableData = [
-
-        ];
-
-        // Get the processed data
-        let result = processTableData(tableData);
-        let dataPointsTemp = result.dataPointsTemp;
-        let dataPointsTime = result.dataPointsTime;
-
-*/
-
-        function createGraph(dataPointsTemp, dataPointsTime) {
-
-        // Create a chart with Chart.js
-        const ctx = document.getElementById('temperatureChart').getContext('2d');
-
+        let ctx = document.getElementById("temperatureChart").getContext("2d");
 
         if (temperatureChart) {
-                // Update the existing chart instead of creating a new one
-                temperatureChart.data.labels = dataPointsTime;
-                temperatureChart.data.datasets[0].data = dataPointsTemp;
-                temperatureChart.update();
-            }else{
-                temperatureChart = new Chart(ctx, {
-            type: 'line', // Line chart
+          // Update the existing chart instead of creating a new one
+          temperatureChart.data.labels = times;
+          temperatureChart.data.datasets[0].data = temps;
+          temperatureChart.update();
+        } else {
+          temperatureChart = new Chart(ctx, {
+            type: "line",
             data: {
-                labels: dataPointsTime, // X-axis: time
-                datasets: [{
-                    label: 'Temperature', // Y-axis: temperature
-                    data: dataPointsTemp, // Y-values: temperature
-                    borderColor: 'rgba(75, 192, 192, 1)', // Line color
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
-                    fill: true,
-                    tension: 0.1 // Smooth lines
-                }]
+              labels: times,
+              datasets: [
+                {
+                  label: "Temperature (°C)",
+                  data: temps,
+                  borderWidth: 3,
+                  borderColor: "rgba(75, 192, 192, 1)", // Line color
+                  backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
+                  fill: true,
+                  tension: 0, // Smooth lines
+                },
+              ],
             },
             options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Time (min)'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Temperature (°C)'
-                        }
-                    }
-                }
-            }
+              scales: {
+                x: { title: { display: true, text: "Time (min)" } },
+                y: { title: { display: true, text: "Temperature (°C)" } },
+              },
+            },
+          });
+        }
+      }
+
+      function copyArrayToClipboard() {
+        let arrayString;
+
+        arrayString = times.join("\t") + "\n" + temps.join("\t");
+
+        // Create a temporary textarea element to copy the text
+        const textarea = document.createElement("textarea");
+        textarea.value = arrayString;
+        document.body.appendChild(textarea);
+
+        // Select and copy the text from the textarea
+        textarea.select();
+        document.execCommand("copy");
+
+        // Remove the temporary textarea element
+        document.body.removeChild(textarea);
+
+        // Alert to inform user
+        showToast("Array copied to clipboard! Paste into Excel.");
+      }
+
+      //show toast message
+      function showToast(message) {
+        var toast = document.getElementById("toast");
+        toast.innerHTML = message;
+        toast.classList.add("show");
+        setTimeout(function () {
+          toast.classList.remove("show");
+        }, 3000); // 3000 milliseconds = 3 seconds
+      }
+
+      function importToTable() {
+        // Get the text from the textarea
+        let inputText = document.getElementById("wordInputText").value;
+
+        // Split the text into an array (assuming values are separated by spaces or new lines)
+        let values = inputText.split(/\s+|\n|,/); // Supports space, newline, or comma separation
+
+        // Get all input fields inside the table row
+        let inputs = document.querySelectorAll("#inputTable tbody tr td input");
+
+        // Loop through inputs and insert corresponding values
+        inputs.forEach((input, index) => {
+          if (values[index] !== undefined) {
+            // Check if value is "NA" or "N/A" and replace it with "-"
+            let cleanedValue = values[index].trim().toUpperCase();
+            input.value =
+              cleanedValue === "NA" || cleanedValue === "N/A"
+                ? "-"
+                : values[index].trim();
+          }
         });
-            }
+      }
 
-           // exportToCSV(dataPointsTime, dataPointsTemp, filename = "scatter_plot.csv")
-        }
+      // Function to clear the textarea
+      function clearTextarea() {
+        document.getElementById("wordInputText").value = "";
+      }
 
-        function copyArrayToClipboard(id) {
-
-                let arrayString;
-                console.log(dataPointsTemp);
-            console.log(dataPointsTime);
-
-
-            arrayString = dataPointsTime.join('\t') + '\n' + dataPointsTemp.join('\t');
-
-            /*
-                if(id=='timeDisplay'){
-                    arrayString = dataPointsTime.join('\t');
-                }else{
-                    arrayString = dataPointsTemp.join('\t');
-                }*/
-                // Join array with tab separator for Excel compatibility
-
-
-
-                // Create a temporary textarea element to copy the text
-                const textarea = document.createElement('textarea');
-                textarea.value = arrayString;
-                document.body.appendChild(textarea);
-
-                // Select and copy the text from the textarea
-                textarea.select();
-                document.execCommand('copy');
-
-                // Remove the temporary textarea element
-                document.body.removeChild(textarea);
-
-                // Alert to inform user
-                showToast('Array copied to clipboard! Paste into Excel.');
-                }
-
-
-                //show toast message
-                function showToast(message) {
-                    var toast = document.getElementById("toast");
-                    toast.innerHTML = message;
-                    toast.classList.add("show");
-                    setTimeout(function(){ toast.classList.remove("show"); }, 3000); // 3000 milliseconds = 3 seconds
-                    }
-
-
-                    function importToTable() {
-    // Get the text from the textarea
-    let inputText = document.getElementById("wordInputText").value;
-
-    // Split the text into an array (assuming values are separated by spaces or new lines)
-    let values = inputText.split(/\s+|\n|,/);  // Supports space, newline, or comma separation
-
-    // Get all input fields inside the table row
-    let inputs = document.querySelectorAll("#inputTable tbody tr td input");
-
-    // Loop through inputs and insert corresponding values
-    inputs.forEach((input, index) => {
-        if (values[index] !== undefined) {
-             // Check if value is "NA" or "N/A" and replace it with "-"
-             let cleanedValue = values[index].trim().toUpperCase();
-             input.value = (cleanedValue === "NA" || cleanedValue === "N/A") ? "-" : values[index].trim();
-        }
-    });
-}
-
-
-
-// Function to clear the textarea
-function clearTextarea() {
-    document.getElementById("wordInputText").value = "";
-}
-
-// Function to clear all table input fields
-function clearTable() {
-    let inputs = document.querySelectorAll("#inputTable tbody tr td input");
-    inputs.forEach(input => input.value = "");
-}
-
-
-function exportToCSV(dataPointsTime, dataPointsTemp, filename = "scatter_plot.csv") {
-    if (dataPointsTime.length !== dataPointsTemp.length) {
-        console.error("Error: Arrays must have the same length!");
-        return;
-    }
-
-    // CSV Header
-    let csvContent = "Time (X),Temperature (Y)\n";
-
-    // Combine data points into CSV format
-    for (let i = 0; i < dataPointsTime.length; i++) {
-        csvContent += `${dataPointsTime[i]},${dataPointsTemp[i]}\n`;
-    }
-
-    // Create a Blob and trigger download
-    let blob = new Blob([csvContent], { type: "text/csv" });
-    let link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-
+      // Function to clear all table input fields
+      function clearTable() {
+        let inputs = document.querySelectorAll("#inputTable tbody tr td input");
+        inputs.forEach((input) => (input.value = ""));
+      }
     </script>
-
-</body>
+  </body>
 </html>
