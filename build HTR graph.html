@@ -7,14 +7,24 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->
     <style>
 
-        body{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh; /* Ensures the body takes up at least the full viewport height */
-            margin: 0; /* Remove default body margin */
-        }
+    @font-face {
+        font-family: 'Montserrat-Medium';
+        src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+    }
+
+    body{
+      font-family: 'Montserrat-Medium', sans-serif;
+      display: flex;
+      flex-direction: row;
+      margin: 0;
+      height: 100vh;
+      width: 100%;
+      background-color: #f4f4f4;
+      padding: 35px;
+      box-sizing: border-box;
+    }
 
         .btn-container{
             align-items: center;
@@ -28,14 +38,16 @@
 
         canvas {
             width: 100% !important;    /* 50% of the body width */
-            height: 40% !important;
+            height: 55% !important;
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
 
         button{
-            padding: 8px 14px;
+            padding: 10px 14px;
             border-radius: 5px;
             background-color: #4BC0C0;
-            margin-top: 8px;
+            margin-top: 12px;
             color: white;
             border: none;
             cursor: pointer;
@@ -43,36 +55,60 @@
         button:hover{
             background-color: #16C47F;
         }
-        
+
         .class{
             display: flex;
             flex-direction: row;
         }
-        
+
         p {
-            display: inline-block;
-            width: 45%; /* To make them the same size and take up equal space */
-            margin-left: 10px;
+            margin-left: 20px;
             margin-top: 10px;
             margin-bottom: 0;
-            border: 1px solid black;
-            border-radius: 5px;
             padding: 4px 14px;
             box-sizing: border-box; /* Ensures padding doesn't affect width */
         }
 
         .graphBtn{
             background-color: #3674B5;
+            margin-top: 0;
         }
-        input{
-            width: 70px;
-            padding: 4px 8px;
-            text-align: center;
-            font-size: 13px;
+
+
+        table {
+          margin-bottom: 0;
+          margin-top: 40px;
+          border-collapse: collapse;
+          box-sizing: border-box;
+          border-radius: 10px;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
-        th{
-            font-size: 14px;
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
         }
+
+        th {
+          padding: 6px 20px;
+          text-align: center;
+          font-size: 13px;
+          border-left: solid 1px rgba(159, 154, 154, 0.39);
+          background-color: rgba(75, 192, 192, 0.2);
+        }
+        td{
+          border-left: solid 1px rgba(159, 154, 154, 0.39);
+        }
+        td input{
+          width: 70px;
+          text-align: center;
+          font-size: 13px;
+          padding: 12px 20px;
+          border: none;
+        }
+
+        td input:hover{
+          background-color: rgba(75, 192, 192, 0.2);
+        }
+
 
         #toast {
         visibility: hidden;
@@ -117,21 +153,24 @@
             }
 
             .card {
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 25px;
-                height: 90vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
+                    border-radius: 10px;
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+                    padding: 30px;
+                    background-color: white;
+            }
+
+            .card-right{
+              margin-left: 20px;
+              width: 45%;
+            }
+            .card-left{
+              width: 55%;
             }
 
             textarea{
-                width: 95%;
+                width: 100%;
                 padding: 20px;
-                margin-bottom: 12px;
+                margin-bottom: 0;
                 box-sizing: border-box; /* Ensures padding is inside the width/height */
 
                 border: 2px solid #ccc;
@@ -142,8 +181,7 @@
                 color: #333;
                 transition: all 0.3s ease-in-out;
                 resize: vertical; /* Allow resizing the height of the textarea */
-                min-height: 140px; /* Use min-height if height doesn't apply */
-
+                min-height: 160px; /* Use min-height if height doesn't apply */
             }
 
             textarea:focus {
@@ -153,113 +191,120 @@
             outline: none; /* Remove default outline */
         }
 
+        .graph-header-container { /* You can choose a more descriptive class name */
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .copy{
+          margin: 0;
+        }
+        .cleat-btn{
+          background-color: #DE3163;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="card">
+    <div class="card card-left">
 
-    <h3>Graph Builder</h3>
 
-    <label for="wordInputText">Copy table from HTR word file</label>
-    <textarea name="" id="wordInputText" onkeyup="importToTable()"></textarea>
+    <div class="graph-header-container">
+      <h2>Temperature vs Time Graph Builder</h2>
+      <button class="graphBtn" onclick="updateAndCreateGraph()">Generate Graph</button>
+    </div>
 
-    <table id="inputTable">
-        <thead>
-            <tr>
-                <th>Heat up Temp</th>
-                <th>Heat up rate</th>
-                <th>Hold Temp</th>
-                <th>Hold time</th>
-                <th>Atmosphere</th>
-                <th>Cool temp</th>
-                <th>Cool rate</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="text" value="Room"></td>
-                <td><input type="text" required pattern="[0-9]+" value="10"></td>
-                <td><input type="text" required pattern="[0-9]+" value="538"></td>
-                <td><input type="text" required pattern="[0-9]+" value="20"></td>
-                <td><input type="text" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-            </tr>
-            <tr>
-                <td><input type="text" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="10"></td>
-                <td><input type="text" required pattern="[0-9]+" value="718"></td>
-                <td><input type="text" required pattern="[0-9]+" value="120"></td>
-                <td><input type="text" value="Argon"></td>
-                <td><input type="text" required pattern="[0-9]+" value="25"></td>
-                <td><input type="text" required pattern="[0-9]+" value="10"></td>
-            </tr>
-            <tr>
-                <td><input type="text" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                 <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                 <td><input type="text" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-            </tr>
-            <tr>
-                <td><input type="text" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                 <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                 <td><input type="text" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-            </tr>
-            <tr>
-                <td><input type="text" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                 <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                 <td><input type="text" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-                <td><input type="text" required pattern="[0-9]+" value="-"></td>
-            </tr>
-        </tbody>
-    </table>
+      <canvas id="temperatureChart"></canvas> <!-- The canvas where the graph will be drawn -->
 
-    <div class="btn-container">
-        <button class="graphBtn" onclick="updateAndCreateGraph()">Generate Graph</button>
-        <button onclick="clearTextarea()">Clear Textarea</button>
-        <button onclick="clearTable()">Clear Table</button>
+      <div class="graph-header-container">
+        <h2>Data set points</h2>
         <button class="copy" onclick="copyArrayToClipboard('temperatureDisplay')">Copy Data set to Clipboard</button>
-    </div>
-    
+      </div>
 
-    <div class="btn-container">
-            
-        <p id="temperatureDisplay" placeholder="xxx">Temperature array:</p>
-        <p id="timeDisplay">Time array:</p>
-
-<!--
-                <div class="row">
-            <button class="copy" onclick="copyArrayToClipboard('temperatureDisplay')">Copy to Clipboard</button>
-            <p id="temperatureDisplay" placeholder="xxx">Temperature array:</p>
-        </div>
-        
-        <div class="row">
-            <button class="copy" onclick="copyArrayToClipboard('timeDisplay')">Copy to Clipboard</button>
-            <p id="timeDisplay">Time array:</p>
-        </div>
-    -->
-    </div>
-
-
-    <h3>Temperature vs Time</h3>
-    <canvas id="temperatureChart"></canvas> <!-- The canvas where the graph will be drawn -->
+      <p id="temperatureDisplay"></p>
+      <p id="timeDisplay"></p>
 
     </div>
+
+    <div class="card-right card">
+
+        <h2>Data Input</h2>
+
+      <label for="wordInputText"></label>
+      <textarea name="" id="wordInputText" onkeyup="importToTable()"></textarea>
+      <button class="cleat-btn" onclick="clearTextarea()">Clear Textarea</button>
+
+      <table id="inputTable">
+          <thead>
+              <tr>
+                  <th>Heat up Temp</th>
+                  <th>Heat up rate</th>
+                  <th>Hold Temp</th>
+                  <th>Hold time</th>
+                  <th>Atmosphere</th>
+                  <th>Cool rate</th>
+                  <th>Cool temp</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td><input type="text" value="Room"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="10"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="538"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="20"></td>
+                  <td><input type="text" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+              </tr>
+              <tr>
+                  <td><input type="text" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="10"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="718"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="120"></td>
+                  <td><input type="text" value="Argon"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="25"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="10"></td>
+              </tr>
+              <tr>
+                  <td><input type="text" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                   <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                   <td><input type="text" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+              </tr>
+              <tr>
+                  <td><input type="text" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                   <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                   <td><input type="text" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+              </tr>
+              <tr>
+                  <td><input type="text" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                   <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                   <td><input type="text" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+                  <td><input type="text" required pattern="[0-9]+" value="-"></td>
+              </tr>
+          </tbody>
+      </table>
+
+      <button class="cleat-btn" onclick="clearTable()">Clear Table</button>
+
+    </div>
+
+
+
 
     <div id="toast"></div>
-
-
 
     <script>
 
@@ -281,7 +326,7 @@ function updateAndCreateGraph() {
 function getTableData() {
             const tableData = [];
             const rows = document.querySelectorAll("#inputTable tbody tr");
-            
+
             rows.forEach(row => {
                 const rowData = [];
                 row.querySelectorAll("td input").forEach(input => {
@@ -289,7 +334,7 @@ function getTableData() {
                 });
                 tableData.push(rowData);
             });
-            
+
             return tableData;
         }
 
@@ -305,8 +350,8 @@ function getTableData() {
     const HoldTenpCol = 2;
     const HeatRateCol = 1;
     const HoldTimeCol = 3;
-    const CoolTempCol = 5;
-    const CoolRateCol = 6;
+    const CoolRateCol = 5;
+    const CoolTempCol = 6;
 
     dataPointsTemp.push(startProcessTemperature); // Initial temperature is 20
     dataPointsTime.push(0);  // Initial time is 0
@@ -331,7 +376,7 @@ function getTableData() {
                 newTime1 = heatRate !== 0 ? (Math.abs(newTemp1 - prevTemp) / heatRate) + prevTime : prevTime;
                 newTime1 = Math.round(newTime1);
             }
-                
+
             /*
             if(!isNaN(heatRate)){
 
@@ -351,7 +396,7 @@ function getTableData() {
 
         newTemp2 = parseFloat(tableData[i][CoolTempCol]);
         coolRate = parseFloat(tableData[i][CoolRateCol]);
-        
+
         if (!isNaN(newTemp2) && !isNaN(coolRate) && tableData[i][CoolTempCol] !== "-" && tableData[i][CoolRateCol] !== "-") {
             let newTime2;
             if (newTemp2 === newTemp1) {
@@ -373,9 +418,9 @@ function getTableData() {
     console.log(dataPointsTime);
 
     para = document.querySelector('#temperatureDisplay');
-    para.textContent = dataPointsTemp;
+    para.textContent = "Temperature (°C): " + dataPointsTemp;
     para = document.querySelector('#timeDisplay');
-    para.textContent = dataPointsTime;
+    para.textContent = "Time (sec): " + dataPointsTime;
 
     return { dataPointsTemp, dataPointsTime };
 }
@@ -385,7 +430,7 @@ function getTableData() {
         /*
         // Sample table data
         let tableData = [
-           
+
         ];
 
         // Get the processed data
@@ -396,7 +441,7 @@ function getTableData() {
 */
 
         function createGraph(dataPointsTemp, dataPointsTime) {
-                    
+
         // Create a chart with Chart.js
         const ctx = document.getElementById('temperatureChart').getContext('2d');
 
@@ -439,7 +484,7 @@ function getTableData() {
             }
         });
             }
-            
+
            // exportToCSV(dataPointsTime, dataPointsTemp, filename = "scatter_plot.csv")
         }
 
@@ -449,7 +494,7 @@ function getTableData() {
                 console.log(dataPointsTemp);
             console.log(dataPointsTime);
 
-            
+
             arrayString = dataPointsTime.join('\t') + '\n' + dataPointsTemp.join('\t');
 
             /*
@@ -502,7 +547,7 @@ function getTableData() {
     inputs.forEach((input, index) => {
         if (values[index] !== undefined) {
              // Check if value is "NA" or "N/A" and replace it with "-"
-             let cleanedValue = values[index].trim().toUpperCase(); 
+             let cleanedValue = values[index].trim().toUpperCase();
              input.value = (cleanedValue === "NA" || cleanedValue === "N/A") ? "-" : values[index].trim();
         }
     });
