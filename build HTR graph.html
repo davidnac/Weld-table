@@ -6,6 +6,15 @@
     <title>Temperature vs Time Graph</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Chart.js CDN -->
+
+    <!--
+    If you download or clone the repository, you must build Chart.js to generate the dist files. 
+    Chart.js no longer comes with prebuilt release versions, so an alternative option to downloading the repo is strongly advised.
+    
+    <script src="chart.umd.min.js"></script>  Local Chart.js The full version with UMD support
+    <script src="chart.umd.js"></script> Local Chart.js Minified version
+    -->
+
     <style>
       @font-face {
         font-family: "Montserrat-Medium";
@@ -53,7 +62,20 @@
         cursor: pointer;
       }
       button:hover {
-        background-color: #16c47f;
+        background-color: #15b392;
+      }
+      .graphBtn {
+        background-color: #3674b5;
+        margin-top: 0;
+      }
+      .graphBtn:hover {
+        background-color: #003092;
+      }
+      .cleat-btn {
+        background-color: #de3163;
+      }
+      .cleat-btn:hover {
+        background-color: #cc2b52;
       }
 
       .class {
@@ -67,11 +89,6 @@
         margin-bottom: 0;
         padding: 4px 14px;
         box-sizing: border-box; /* Ensures padding doesn't affect width */
-      }
-
-      .graphBtn {
-        background-color: #3674b5;
-        margin-top: 0;
       }
 
       table {
@@ -208,8 +225,8 @@
       }
 
       textarea:focus {
-        border-color: #6a5acd; /* Focus border color */
-        box-shadow: 0 0 8px rgba(106, 92, 205, 0.6); /* Focus shadow */
+        border-color: rgba(75, 192, 192, 1); /* Focus border color */
+        box-shadow: 0 0 8px rgba(75, 192, 192, 0.2); /* Focus shadow */
         background-color: #fff; /* Focus background color */
         outline: none; /* Remove default outline */
       }
@@ -223,9 +240,6 @@
 
       .copy {
         margin: 0;
-      }
-      .cleat-btn {
-        background-color: #de3163;
       }
     </style>
   </head>
