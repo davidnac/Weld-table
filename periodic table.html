@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 5px;
+            max-width: 90vw;
+        }
+        .element {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            cursor: pointer;
+        }
+        .element:hover {
+            transform: translateY(-5px);
+            background-color: #e0e0e0;
+        }
+        .empty {
+            visibility: hidden;
+        }
+        .symbol {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .name {
+            font-size: 0.6em;
+        }
+        .element.selected {
+            background-color: #a0c4ff;
+            border-color: #007bff;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="table" id="periodic-table"></div>
+    <script>
+const elements = [
+    { symbol: "H", name: "Hydrogen", row: 1, col: 1 },
+    { symbol: "He", name: "Helium", row: 1, col: 18 },
+
+    { symbol: "Li", name: "Lithium", row: 2, col: 1 },
+    { symbol: "Be", name: "Beryllium", row: 2, col: 2 },
+    { symbol: "B", name: "Boron", row: 2, col: 13 },
+    { symbol: "C", name: "Carbon", row: 2, col: 14 },
+    { symbol: "N", name: "Nitrogen", row: 2, col: 15 },
+    { symbol: "O", name: "Oxygen", row: 2, col: 16 },
+    { symbol: "F", name: "Fluorine", row: 2, col: 17 },
+    { symbol: "Ne", name: "Neon", row: 2, col: 18 },
+
+    { symbol: "Na", name: "Sodium", row: 3, col: 1 },
+    { symbol: "Mg", name: "Magnesium", row: 3, col: 2 },
+    { symbol: "Al", name: "Aluminum", row: 3, col: 13 },
+    { symbol: "Si", name: "Silicon", row: 3, col: 14 },
+    { symbol: "P", name: "Phosphorus", row: 3, col: 15 },
+    { symbol: "S", name: "Sulfur", row: 3, col: 16 },
+    { symbol: "Cl", name: "Chlorine", row: 3, col: 17 },
+    { symbol: "Ar", name: "Argon", row: 3, col: 18 },
+
+    { symbol: "K", name: "Potassium", row: 4, col: 1 },
+    { symbol: "Ca", name: "Calcium", row: 4, col: 2 },
+    { symbol: "Sc", name: "Scandium", row: 4, col: 3 },
+    { symbol: "Ti", name: "Titanium", row: 4, col: 4 },
+    { symbol: "V", name: "Vanadium", row: 4, col: 5 },
+    { symbol: "Cr", name: "Chromium", row: 4, col: 6 },
+    { symbol: "Mn", name: "Manganese", row: 4, col: 7 },
+    { symbol: "Fe", name: "Iron", row: 4, col: 8 },
+    { symbol: "Co", name: "Cobalt", row: 4, col: 9 },
+    { symbol: "Ni", name: "Nickel", row: 4, col: 10 },
+    { symbol: "Cu", name: "Copper", row: 4, col: 11 },
+    { symbol: "Zn", name: "Zinc", row: 4, col: 12 },
+    { symbol: "Ga", name: "Gallium", row: 4, col: 13 },
+    { symbol: "Ge", name: "Germanium", row: 4, col: 14 },
+    { symbol: "As", name: "Arsenic", row: 4, col: 15 },
+    { symbol: "Se", name: "Selenium", row: 4, col: 16 },
+    { symbol: "Br", name: "Bromine", row: 4, col: 17 },
+    { symbol: "Kr", name: "Krypton", row: 4, col: 18 },
+    
+    { symbol: "Rb", name: "Rubidium", row: 5, col: 1 },
+    { symbol: "Sr", name: "Strontium", row: 5, col: 2 },
+    { symbol: "Y", name: "Yttrium", row: 5, col: 3 },
+    { symbol: "Zr", name: "Zirconium", row: 5, col: 4 },
+    { symbol: "Nb", name: "Niobium", row: 5, col: 5 },
+    { symbol: "Mo", name: "Molybdenum", row: 5, col: 6 },
+    { symbol: "Tc", name: "Technetium", row: 5, col: 7 },
+    { symbol: "Ru", name: "Ruthenium", row: 5, col: 8 },
+    { symbol: "Rh", name: "Rhodium", row: 5, col: 9 },
+    { symbol: "Pd", name: "Palladium", row: 5, col: 10 },
+    { symbol: "Ag", name: "Silver", row: 5, col: 11 },
+    { symbol: "Cd", name: "Cadmium", row: 5, col: 12 },
+    { symbol: "In", name: "Indium", row: 5, col: 13 },
+    { symbol: "Sn", name: "Tin", row: 5, col: 14 },
+    { symbol: "Sb", name: "Antimony", row: 5, col: 15 },
+    { symbol: "Te", name: "Tellurium", row: 5, col: 16 },
+    { symbol: "I", name: "Iodine", row: 5, col: 17 },
+    { symbol: "Xe", name: "Xenon", row: 5, col: 18 },
+
+    { symbol: "Cs", name: "Cesium", row: 6, col: 1 },
+    { symbol: "Ba", name: "Barium", row: 6, col: 2 },
+    { symbol: "La", name: "Lanthanum", row: 6, col: 3 },
+    { symbol: "Hf", name: "Hafnium", row: 6, col: 4 },
+    { symbol: "Ta", name: "Tantalum", row: 6, col: 5 },
+    { symbol: "W", name: "Tungsten", row: 6, col: 6 },
+    { symbol: "Re", name: "Rhenium", row: 6, col: 7 },
+    { symbol: "Os", name: "Osmium", row: 6, col: 8 },
+    { symbol: "Ir", name: "Iridium", row: 6, col: 9 },
+    { symbol: "Pt", name: "Platinum", row: 6, col: 10 },
+    { symbol: "Au", name: "Gold", row: 6, col: 11 },
+    { symbol: "Hg", name: "Mercury", row: 6, col: 12 },
+    { symbol: "Tl", name: "Thallium", row: 6, col: 13 },
+    { symbol: "Pb", name: "Lead", row: 6, col: 14 },
+    { symbol: "Bi", name: "Bismuth", row: 6, col: 15},
+    { symbol: "Po", name: "Polonium", row: 6, col: 16 },
+    { symbol: "At", name: "Astatine", row: 6, col: 17 },
+    { symbol: "Rn", name: "Radon", row: 6, col: 18 },
+
+    { symbol: "Ce", name: "Cerium", row: 8, col: 4 },
+    { symbol: "Pr", name: "Praseodymium", row: 8, col: 5 },
+    { symbol: "Nd", name: "Neodymium", row: 8, col: 6 },
+    { symbol: "Pm", name: "Promethium", row: 8, col: 7 },
+    { symbol: "Sm", name: "Samarium", row: 8, col: 8 },
+    { symbol: "Eu", name: "Europium", row: 8, col: 9 },
+    { symbol: "Gd", name: "Gadolinium", row: 8, col: 10 },
+    { symbol: "Tb", name: "Terbium", row: 8, col: 11 },
+    { symbol: "Dy", name: "Dysprosium", row: 8, col: 12 },
+    { symbol: "Ho", name: "Holmium", row: 8, col: 13 },
+    { symbol: "Er", name: "Erbium", row: 8, col: 14 },
+    { symbol: "Tm", name: "Thulium", row: 8, col: 15 },
+    { symbol: "Yb", name: "Ytterbium", row: 8, col: 16 },
+    { symbol: "Lu", name: "Lutetium", row: 8, col: 17 },
+
+    { symbol: "Th", name: "Thorium", row: 9, col: 4 },
+    { symbol: "Pa", name: "Protactinium", row: 9, col: 5 },
+    { symbol: "U", name: "Uranium", row: 9, col: 6 },
+    { symbol: "Np", name: "Neptunium", row: 9, col: 7 },
+    { symbol: "Pu", name: "Plutonium", row: 9, col: 8 },
+    { symbol: "Am", name: "Americium", row: 9, col: 9 },
+    { symbol: "Cm", name: "Curium", row: 9, col: 10 },
+    { symbol: "Bk", name: "Berkelium", row: 9, col: 11 },
+    { symbol: "Cf", name: "Californium", row: 9, col: 12 },
+    { symbol: "Es", name: "Einsteinium", row: 9, col: 13 },
+    { symbol: "Fm", name: "Fermium", row: 9, col: 14 },
+    { symbol: "Md", name: "Mendelevium", row: 9, col: 15 },
+    { symbol: "No", name: "Nobelium", row: 9, col: 16 },
+    { symbol: "Lr", name: "Lawrencium", row: 9, col: 17 }
+
+    ]
+
+        const selectedElements = new Set(["Ag", "Ni", "Co"]);
+        const table = document.getElementById("periodic-table");
+        
+        for (let row = 1; row <= 9; row++) {
+            for (let col = 1; col <= 18; col++) {
+                const element = elements.find(e => e.row === row && e.col === col);
+                const cell = document.createElement("div");
+                cell.classList.add("element");
+                cell.ondblclick = () => alert(`${element.name} (${element.symbol})`);
+
+                cell.onclick = () => {
+                    if (selectedElements.has(element.symbol)) {
+                        selectedElements.delete(element.symbol);
+                        cell.classList.remove("selected");
+                    } else {
+                        selectedElements.add(element.symbol);
+                        cell.classList.add("selected");
+                    }
+                    console.log("Selected Elements:", Array.from(selectedElements));
+                };
+
+                
+                if (element) {
+                    cell.innerHTML = `<div class='symbol'>${element.symbol}</div><div class='name'>${element.name}</div>`;
+
+                    if (selectedElements.has(element.symbol)) {
+                            cell.classList.add("selected");
+                        }
+                        
+                } else {
+                    cell.classList.add("empty");
+                }
+                table.appendChild(cell);
+            }
+        }
+
+        
+    </script>
+</body>
+</html>
