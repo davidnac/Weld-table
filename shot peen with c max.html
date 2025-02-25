@@ -194,6 +194,13 @@
        t - time, sec
        then find the saturation point, where I at T, is equal or less then 10% difference from I at 2T.
 
+       more options for curve fitting:
+       ***  y = a(1- exp(-b*(t^c)))
+       ***  y = a(1- exp(-b*(t^c)) + d*t)
+       ***  y = a*t/(b+t)
+
+       can check for more curve fitting options, check which has the best R fitting, and select that.
+
        need to check if curve fir is at least R=97%
        intensity out of bounds - mark in red
        min 4 data points in addition for (0,0), if not, request more.
@@ -342,8 +349,9 @@
 
       document.getElementById("fittedr").textContent = `R^2: ${rValue.toFixed(2)}` + "    " + `${errorMessage}`;
 
-      document.getElementById("fitted").textContent = `Fitted equation I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
-    //  document.getElementById("fitted").textContent = `Fitted equation $$I = ${fittedParams.a.toFixed(2)}(1 - \\exp(-${fittedParams.b.toFixed(2)}t))$$`;
+      //document.getElementById("fitted").textContent = `Fitted equation I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
+      document.getElementById("fitted").innerHTML = `Fitted equation: <span class="math-inline">\\( \\small I = ${fittedParams.a.toFixed(2)}(1 - \\exp(-${fittedParams.b.toFixed(2)}t)) \\)</span>`;
+
 
 
 
