@@ -1504,6 +1504,44 @@
 
     <script>
 
+
+///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
+
+          // Add event listener for clicks on the inputs
+        document.querySelectorAll('.filter').forEach(input => {
+          input.addEventListener('click', function() {
+            const td = this.closest('td');  // Find the <td> containing the input
+            const cellIndex = Array.from(td.parentElement.children).indexOf(td);  // Get column index
+  
+            //console.log(` Column: ${cellIndex}`);
+            const thText = document.querySelectorAll('table thead tr th')[cellIndex].textContent;
+            //console.log( thText);
+           const filterIndex = searchHeader(thText) 
+           console.log(filterIndex);
+          });
+        });
+
+        function searchHeader(thText) {
+          const headers = document.querySelectorAll('#data-table thead th');
+
+          for (let i = 0; i < headers.length; i++) {
+            if (headers[i].textContent.toLowerCase().includes(thText.toLowerCase())) {
+              return i;  // 1-based index of the header
+            }
+          }
+
+          return null; // Return null if no header is found
+        }
+
+///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
+
+
+
+
+
+
+
+
         document.addEventListener("DOMContentLoaded", function () {
 
           //search bar
@@ -1712,7 +1750,8 @@
             }
 
             function clearFilters(){
-              let elementFilters = document.querySelectorAll("#query-table .filter").forEach((element) => (element.value = ""));;
+              let elementFilters = document.querySelectorAll("#query-table .filter").forEach((element) => (element.value = ""));
+              let validationMessages = document.querySelectorAll("#query-table span").forEach((element) => (element.classList.remove("show")));
             }
 
 
