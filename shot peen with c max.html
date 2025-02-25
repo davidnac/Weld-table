@@ -160,13 +160,14 @@
 
   <div class="card-right card">
 
-    <h2>Results</h2>
+    <h2>Analysis</h2>
     <p id="fitted"></p>
     <p id="fittedr"></p>
     <p id="resultMax"></p>
 
     <div class="divider"></div>
 
+    <h2>Results</h2>
     <p id="resultt1"></p>
     <p id="resultt2"></p>
     <p id="resulti1"></p>
@@ -174,7 +175,9 @@
 
     <button onclick="updateChart()">Update Chart</button>
 
-    <h2 class="margin-top">Additional data</h2>
+    <div class="divider"></div>
+
+    <h2 class="margin-top">Additional input</h2>
     <div class="limit-container">
       <label for="minIntensity">Min Intensity:  </label>
       <input type="number" id="minIntensity" value="8">
@@ -225,6 +228,7 @@
       return { timeValues, intensityValues };
     }
 
+    /*exp option 1*/
     function curveFit(t, y) {
       let a = Math.max(...y), b = 0.1, learningRate = 0.001, iterations = 10000;
       for (let i = 0; i < iterations; i++) {
@@ -303,6 +307,8 @@
       return (a * (1 - Math.exp(-b * t))).toFixed(2);
     }
 
+    /*exp option 1*/
+
     function updateChart() {
       const { timeValues, intensityValues } = getDataFromTable();
       const fittedParams = curveFit(timeValues, intensityValues);
@@ -318,6 +324,7 @@
       const result = findTimePoints(timeValues, intensityValues);
 
       let errorMessage = "";
+      let warnningMessage = "";
 
       if(result.y1 > maxIntensity || result.y1 < minIntensity){
         errorMessage = "Intensity out of bounds";
@@ -340,17 +347,17 @@
 
       document.getElementById("resultMax").textContent = `Point of Max curvature: ${cMax}, ${iMax}`;
 
-      if (rValue < 0.98) {
-        errorMessage = "Low fit quality!";
+      if (rValue < 0.97) {
+        warnningMessage = "Low fit quality!";
         document.getElementById("fittedr").style.color = "#E50046"; // Mark text in red
       } else {
           document.getElementById("fittedr").style.color = ""; // Reset color if valid
       }
 
-      document.getElementById("fittedr").textContent = `R^2: ${rValue.toFixed(2)}` + "    " + `${errorMessage}`;
+      document.getElementById("fittedr").textContent = `R^2: ${rValue.toFixed(2)}` + "    " + `${warnningMessage}`;
 
-      //document.getElementById("fitted").textContent = `Fitted equation I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
-      document.getElementById("fitted").innerHTML = `Fitted equation: <span class="math-inline">\\( \\small I = ${fittedParams.a.toFixed(2)}(1 - \\exp(-${fittedParams.b.toFixed(2)}t)) \\)</span>`;
+      document.getElementById("fitted").textContent = `Fitted equation I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
+      //document.getElementById("fitted").innerHTML = `Fitted equation: <span class="math-inline">\\( \\small I = ${fittedParams.a.toFixed(2)}(1 - \\exp(-${fittedParams.b.toFixed(2)}t)) \\)</span>`;
 
 
 
@@ -362,8 +369,20 @@
           labels: timeValues,
           /* tension makes the graph more rounded, not bunch of straight lines*/
           datasets: [
-            { label: 'Original Data', tension: 0.2, data: intensityValues, borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', fill: true },
-            { label: 'Fitted Curve', tension: 0.2, data: fittedY, borderColor: '#FFB200', fill: false },
+            {
+              label: 'Original Data',
+              data: intensityValues,
+              borderColor: 'rgba(75, 192, 192, 0)', // Make line transparent
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              pointBackgroundColor: '#FFB200', // Keep dots visible
+              pointBorderColor: '#FFB200',
+              pointRadius: 5, // Adjust dot size
+              pointHoverRadius: 7,
+              tension: 0, // Ensure no curve
+              fill: false // No area fill
+            },
+           // { label: 'Original Data', tension: 0.2, data: intensityValues, borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', fill: true },
+            { label: 'Fitted Curve', tension: 0.2, data: fittedY, borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', fill: true },
             { label: 'Min Intensity', data: timeValues.map(() => minIntensity), borderColor: '#D91656', borderDash: [5, 5], fill: false },
             { label: 'Max Intensity', data: timeValues.map(() => maxIntensity), borderColor: '#D91656', borderDash: [5, 5], fill: false },
             { label: 'Saturation Point', data: [{ x: result.t1, y: result.y1 }], borderColor: 'purple', pointRadius: 8, pointBackgroundColor: 'purple', fill: false, showLine: true },
