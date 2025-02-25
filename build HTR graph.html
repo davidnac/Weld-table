@@ -97,7 +97,7 @@
         border-collapse: collapse;
         box-sizing: border-box;
         border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
       }
       tr:nth-child(odd) {
         background-color: #f9f9f9;
@@ -569,6 +569,9 @@
         let inputs = document.querySelectorAll("#inputTable tbody tr td input");
         inputs.forEach((input) => (input.value = ""));
       }
+
+      filterTable();
+      
     </script>
   </body>
 </html>

@@ -3,7 +3,6 @@
 <head>
   <title>Curve Fitting</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <style>
 
@@ -35,7 +34,7 @@
       cursor: pointer;
     }
     button:hover {
-      background-color: #16C47F;
+      background-color: #15b392;
     }
     canvas {
       width: 100% !important;
@@ -109,6 +108,19 @@
            border-top: 1px solid #ccc; /* Light gray line */
            margin: 20px 0; /* Add some space above and below the line */
        }
+       .graph-header-container {
+        /* You can choose a more descriptive class name */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .graph-header-container button{
+        margin: 0;
+      }
+      .resultText{
+        font-weight: 800;
+      }
 
   </style>
 </head>
@@ -116,7 +128,11 @@
 
 
   <div class="card-left card">
-    <h2>Shot Peening Intensity Curve</h2>
+    
+    <div class="graph-header-container">
+      <h2>Shot Peening Intensity Curve</h2>
+      <button onclick="updateChart()">Update Graph</button>
+    </div>
 
 
   <canvas id="myChart"></canvas>
@@ -173,11 +189,10 @@
     <p id="resulti1"></p>
     <p id="resulti2"></p>
 
-    <button onclick="updateChart()">Update Chart</button>
 
     <div class="divider"></div>
 
-    <h2 class="margin-top">Additional input</h2>
+    <h2>Additional input</h2>
     <div class="limit-container">
       <label for="minIntensity">Min Intensity:  </label>
       <input type="number" id="minIntensity" value="8">
@@ -340,12 +355,11 @@
         document.getElementById("resultt1").style.color = ""; // Reset color if valid
       }
 
-      document.getElementById("resultt1").textContent = `T: ${result.t1.toFixed(2)} Seconds`;
-      document.getElementById("resultt2").textContent = `2T: ${result.t2.toFixed(2)} Seconds`;
-      document.getElementById("resulti1").textContent = `I(T): ${result.y1.toFixed(2)} A(In)` + "    " + `${errorMessage}`;
-      document.getElementById("resulti2").textContent = `I(2T): ${result.y2.toFixed(2)} A(In)`;
+      document.getElementById("resultt1").innerHTML = `T: <span class="resultText">${result.t1.toFixed(2)} Seconds</span>`;
+      document.getElementById("resultt2").innerHTML = `2T: <span class="resultText">${result.t2.toFixed(2)} Seconds</span>`;
+      document.getElementById("resulti1").innerHTML = `I(T): <span class="resultText">${result.y1.toFixed(2)} A(In)` + "    " + `${errorMessage}</span>`;
+      document.getElementById("resulti2").innerHTML = `I(2T): <span class="resultText">${result.y2.toFixed(2)} A(In)</span>`;
 
-      document.getElementById("resultMax").textContent = `Point of Max curvature: ${cMax}, ${iMax}`;
 
       if (rValue < 0.97) {
         warnningMessage = "Low fit quality!";
@@ -354,11 +368,14 @@
           document.getElementById("fittedr").style.color = ""; // Reset color if valid
       }
 
-      document.getElementById("fittedr").textContent = `R^2: ${rValue.toFixed(2)}` + "    " + `${warnningMessage}`;
+    // document.getElementById("resultMax").textContent = `Point of Max curvature:  ${cMax}, ${iMax}`;
+      document.getElementById("resultMax").innerHTML = `Point of Max Curvature:  <span class="resultText">${cMax}, ${iMax}</span>`;
 
-      document.getElementById("fitted").textContent = `Fitted equation I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
-      //document.getElementById("fitted").innerHTML = `Fitted equation: <span class="math-inline">\\( \\small I = ${fittedParams.a.toFixed(2)}(1 - \\exp(-${fittedParams.b.toFixed(2)}t)) \\)</span>`;
+     // document.getElementById("fittedr").textContent = `R^2:  ${rValue.toFixed(2)}` + "    " + `${warnningMessage}`;
+      document.getElementById("fittedr").innerHTML = `R^2:  <span class="resultText">${rValue.toFixed(2)}` + "    " + `${warnningMessage}</span>`;
 
+     // document.getElementById("fitted").textContent = `Fitted equation:  I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))`;
+      document.getElementById("fitted").innerHTML = `Fitted equation: <span class="resultText">I = ${fittedParams.a.toFixed(2)}(1- exp(-${fittedParams.b.toFixed(2)}*t))</span>`;
 
 
 
