@@ -333,10 +333,10 @@
         document.getElementById("resultt1").style.color = ""; // Reset color if valid
       }
 
-      document.getElementById("resultt1").textContent = `T: ${result.t1.toFixed(2)}`;
-      document.getElementById("resultt2").textContent = `2T: ${result.t2.toFixed(2)}`;
-      document.getElementById("resulti1").textContent = `I(T): ${result.y1.toFixed(2)}` + "    " + `${errorMessage}`;
-      document.getElementById("resulti2").textContent = `I(2T): ${result.y2.toFixed(2)}`;
+      document.getElementById("resultt1").textContent = `T: ${result.t1.toFixed(2)} Seconds`;
+      document.getElementById("resultt2").textContent = `2T: ${result.t2.toFixed(2)} Seconds`;
+      document.getElementById("resulti1").textContent = `I(T): ${result.y1.toFixed(2)} A(In)` + "    " + `${errorMessage}`;
+      document.getElementById("resulti2").textContent = `I(2T): ${result.y2.toFixed(2)} A(In)`;
 
       document.getElementById("resultMax").textContent = `Point of Max curvature: ${cMax}, ${iMax}`;
 
@@ -374,7 +374,7 @@
           responsive: true,
           scales: {
             x: {  title: { display: true, text: 'Peening Time (sec)',  font: { size: 14 } } , type: 'linear', position: 'bottom', beginAtZero: true },
-            y: { title: { display: true, text: 'Intensity A(In)',  font: { size: 14 } } , beginAtZero: true }
+            y: { title: { display: true, text: 'Arc height - Intensity A(In)',  font: { size: 14 } } , beginAtZero: true }
           }
         }
       });
