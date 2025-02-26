@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Extract Temperatures and Build Table</title>
+</head>
+<body>
+
+<ul>
+  <li><strong>a.</strong> Put part in cold furnace.</li>
+  <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
+  <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
+  <li><strong>d.</strong> Increase to 1015±15°F (546±8°C) and hold for 2 hours.</li>
+  <li><strong>d.</strong> Increase to 1015±15°F (846±8°C)</li>
+  <li><strong>d.</strong> Hold for 3 hours</li>
+  <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 100°F (56°C) every 15 minutes.</li>
+  <li>hold for 1 hour</li>
+</ul>
+
+<script>
+function extractTemperaturesAndBuildTable() {
+  const list = document.querySelector("ul");
+  const items = list.querySelectorAll("li");
+
+  const tableData = [["rate", "temp", "hold"]];
+  let previousRow = null; // Store the previous row
+
+  items.forEach(item => {
+    let text = item.textContent;
+    text = text.replace(/cool|heat|increase|decrease/gi, "heat");
+
+    const tempRegex = /\((\d+)(?:±\d+)?(?:°[FC])\)/g;
+    let tempMatches = [];
+    let tempMatch;
+
+    while ((tempMatch = tempRegex.exec(text)) !== null) {
+      tempMatches.push(tempMatch[1]);
+    }
+
+    const holdRegex = /hold for (\d+) (minutes|hours)/i;
+    const holdMatch = holdRegex.exec(text);
+    let holdTime = "";
+
+    if (holdMatch) {
+      let holdValue = parseInt(holdMatch[1]);
+      const holdUnit = holdMatch[2].toLowerCase();
+
+      if (holdUnit === "hours") {
+        holdTime = (holdValue * 60).toString();
+      } else {
+        holdTime = holdValue.toString();
+      }
+    }
+
+    if (tempMatches.length > 0) {
+      let temp = tempMatches[0];
+      let rate = "";
+      if (tempMatches.length > 1) {
+        rate = tempMatches[1];
+      } else if (text.includes("heat") && !text.includes("rate")) {
+        rate = "10";
+      }
+      const newRow = [rate, temp, holdTime];
+      tableData.push(newRow);
+      previousRow = newRow; // Store current row as previous
+    } else if (holdMatch && !text.includes("heat") && !text.includes("cold") && !text.includes("rate")) {
+      // Row contains only hold
+      if (previousRow) {
+        previousRow[2] = holdTime; // Update the hold column of the previous row
+      }
+    }
+  });
+
+  console.log(tableData);
+}
+
+extractTemperaturesAndBuildTable();
+</script>
