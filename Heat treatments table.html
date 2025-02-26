@@ -250,7 +250,7 @@
             <ul>
               <li><strong>a.</strong> Heat to 1325±25°F (720±14°C).</li>
               <li><strong>b.</strong> Hold for 8 hours.</li>
-              <li><strong>c.</strong> Cool to 1150°F ±25°F (620°C ±14°C) at a rate of 1.6°F (0.9°C) per minute.</li>
+              <li><strong>c.</strong> Cool to 1150±25°F (620±14°C) at a rate of 1.6°F (0.9°C) per minute.</li>
               <li><strong>d.</strong> Hold for 8 hours.</li>
               <li><strong>e.</strong> Air-cool or equivalent to room temperature.</li>
             </ul>
@@ -488,7 +488,7 @@
             <ul>
               <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
               <li><strong>b.</strong> Hold for 2 hours.</li>
-              <li><strong>c.</strong> Introduce inert gas and cool to 1150°F ±25°F (620°C ±14°C).</li>
+              <li><strong>c.</strong> Introduce inert gas and cool to 1150±25°F (620±14°C).</li>
               <li><strong>d.</strong> Hold for 4 hours.</li>
               <li><strong>e.</strong> Air-cool or equivalent rate to room temperature.</li>
             </ul>
@@ -2021,7 +2021,8 @@
 
                 // Double-click event to call a function
                 row.addEventListener("dblclick", function() {
-                  openModal(row);
+                  //openModal(row);
+                  extractTemperaturesAndBuildTable(row)
               });
 
           });
@@ -2259,6 +2260,64 @@
             closeModal();
         }
 
+
+
+        function extractTemperaturesAndBuildTable(row) {
+          
+            const list = row.querySelector("ul");
+            const items = list.querySelectorAll("li");
+
+            const tableData = [["rate", "temp", "hold"]];
+            let previousRow = null; // Store the previous row
+
+            items.forEach(item => {
+              let text = item.textContent;
+              text = text.replace(/cool|heat|increase|decrease/gi, "heat");
+
+              const tempRegex = /\((\d+)(?:±\d+)?(?:°[FC])\)/g;
+              let tempMatches = [];
+              let tempMatch;
+
+              while ((tempMatch = tempRegex.exec(text)) !== null) {
+                tempMatches.push(tempMatch[1]);
+              }
+
+              const holdRegex = /hold for (\d+) (minutes|hours)/i;
+              const holdMatch = holdRegex.exec(text);
+              let holdTime = "";
+
+              if (holdMatch) {
+                let holdValue = parseInt(holdMatch[1]);
+                const holdUnit = holdMatch[2].toLowerCase();
+
+                if (holdUnit === "hours") {
+                  holdTime = (holdValue * 60).toString();
+                } else {
+                  holdTime = holdValue.toString();
+                }
+              }
+
+              if (tempMatches.length > 0) {
+                let temp = tempMatches[0];
+                let rate = "";
+                if (tempMatches.length > 1) {
+                  rate = tempMatches[1];
+                } else if (text.includes("heat") && !text.includes("rate")) {
+                  rate = "10";
+                }
+                const newRow = [rate, temp, holdTime];
+                tableData.push(newRow);
+                previousRow = newRow; // Store current row as previous
+              } else if (holdMatch && !text.includes("heat") && !text.includes("cold") && !text.includes("rate")) {
+                // Row contains only hold
+                if (previousRow) {
+                  previousRow[2] = holdTime; // Update the hold column of the previous row
+                }
+              }
+            });
+
+            console.log(tableData);
+          }
 
 
   </script>
