@@ -328,26 +328,26 @@
             <thead>
               <tr>
                 <th class="maxWide">Material</th>
-                <th>Nickel</th>
-                <th>Cobalt</th>
-                <th>Chromium</th>
-                <th>Molybdenum</th>
-                <th>Niobium</th>
-                <th>Titanium</th>
-                <th>Aluminum</th>
-                <th>Tungsten</th>
-                <th>Iron</th>
-                <th>Carbon</th>
-                <th>Manganese</th>
-                <th>Silicon</th>
-                <th>Tin</th>
-                <th>Vanadium</th>
-                <th>Zirconium</th>
-                <th>Boron</th>
-                <th>Silver</th>
-                <th>Copper</th>
-                <th>Zinc</th>
-                <th>Magnesium</th>
+                <th>Nickel (Ni)</th>
+                <th>Cobalt (Co)</th>
+                <th>Chromium (Cr)</th>
+                <th>Molybdenum (Mo)</th>
+                <th>Niobium (Nb)</th>
+                <th>Titanium (Ti)</th>
+                <th>Aluminum (Al)</th>
+                <th>Tungsten (W)</th>
+                <th>Iron (Fe)</th>
+                <th>Carbon (C)</th>
+                <th>Manganese (Mn)</th>
+                <th>Silicon (Si)</th>
+                <th>Tin (Sn)</th>
+                <th>Vanadium (V)</th>
+                <th>Zirconium (Zr)</th>
+                <th>Boron (B)</th>
+                <th>Silver (Ag)</th>
+                <th>Copper (Cu)</th>
+                <th>Zinc (Zn)</th>
+                <th>Magnesium (Mg)</th>
               </tr>
             </thead>
 
@@ -2178,7 +2178,7 @@
 
           ];
 
-        const selectedElements = new Set(["Ag", "Ni", "Co","Ti","V", "Cr","Nb","Mo","Al","Zn","Cu","Fe","Mn"]);
+        const selectedElements = new Set(["Ag", "Ni", "Co","Ti","V", "Cr","Nb","Mo","Al","Zn","Cu","Fe","Mn","W"]);
         const table = document.getElementById("periodic-table");
 
         for (let row = 1; row <= 9; row++) {
@@ -2222,14 +2222,57 @@
         };
 
         document.querySelector(".modal-content-periodic-table .close").onclick = () => {
+            hideUnselectedColumns("data-table");
+            hideUnselectedColumns("query-table");
             document.getElementById("modal-periodic-table").style.display = "none";
         };
 
         window.onclick = (event) => {
             if (event.target === document.getElementById("modal-periodic-table")) {
+                hideUnselectedColumns("data-table");
+                hideUnselectedColumns("query-table");
                 document.getElementById("modal-periodic-table").style.display = "none";
             }
         };
+
+
+        function hideUnselectedColumns(tableId) {
+            const table = document.getElementById(tableId);
+            if (!table) return;
+
+            const thead = table.querySelector("thead");
+            const tbody = table.querySelector("tbody");
+
+            if (!thead || !tbody) return;
+
+            const headers = thead.querySelectorAll("th");
+
+            headers.forEach((th, index) => {
+                // Extract element symbol from header text
+                const match = th.textContent.match(/\((\w+)\)/);
+                if (match) {
+                    const elementSymbol = match[1]; // Extracted symbol
+                    if (!selectedElements.has(elementSymbol)) {
+                        th.style.display = "none"; // Hide column header
+
+                        // Hide corresponding column cells in tbody
+                        tbody.querySelectorAll("tr").forEach(row => {
+                            const cells = row.querySelectorAll("td");
+                            if (cells[index]) {
+                                cells[index].style.display = "none";
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+      // Apply function to both tables when the page loads
+      document.addEventListener("DOMContentLoaded", () => {
+          hideUnselectedColumns("data-table");
+          hideUnselectedColumns("query-table");
+      });
+
 
     </script>
 
