@@ -99,40 +99,6 @@
             background-color: #e0f7fa;
         }
 
-        /* Modal Styles */
-        #modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 50%;
-        }
-        .modal-header {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-        }
         br {
             display: block;
             content: "";
@@ -250,17 +216,88 @@
           top: 50%;
           left: -3%; /* Attach the arrow to the left side of the message */
           transform: translateY(-50%);
-          width: 0; 
-          height: 0; 
+          width: 0;
+          height: 0;
           border-top: 9px solid transparent;
-          border-bottom: 9px solid transparent; 
-          border-right:9px solid #d9534f; 
+          border-bottom: 9px solid transparent;
+          border-right:9px solid #d9534f;
         }
 
       /* Show error message only when the "show" class is added */
       .error-message.show {
           display: inline-block;
       }
+
+
+      .modal-content-periodic-table .table {
+              display: grid;
+              grid-template-columns: repeat(18, 1fr);
+              column-gap: 5px;
+              row-gap: 5px;
+              margin-top: 30px;
+          }
+        .modal-content-periodic-table .element {
+              width: 55px;
+              height: 55px;
+              background: white;
+              border: 1px solid #ccc;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+              padding: 5px;
+              border-radius: 5px;
+              box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+              transition: transform 0.2s ease, background-color 0.2s ease;
+              cursor: pointer;
+          }
+          .modal-content-periodic-table .element:hover {
+              transform: translateY(-5px);
+              background-color: #e0e0e0;
+          }
+          .modal-content-periodic-table .empty {
+              visibility: hidden;
+          }
+          .modal-content-periodic-table .symbol {
+              font-size: 1.5em;
+              font-weight: bold;
+          }
+          .modal-content-periodic-table .name {
+              font-size: 0.6em;
+          }
+          .modal-content-periodic-table .element.selected {
+              background-color: #98D8EF;
+              border-color: #ffd95f;
+          }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 4;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content-periodic-table {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 100%;
+        min-height: 50vh;
+        position: relative;
+    }
+    .modal-content-periodic-table .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+        font-size: 30px;
+    }
 
     </style>
 
@@ -275,6 +312,7 @@
         <button class="btn clear-btn" onclick="clearInputs()">Clear All</button>
         <button class="btn toggle-btn" id="toggleButton" onclick="toggleBalanceValues()">Toggle Balances</button>
         <button class="btn search-btn" onclick="filterTable()">Search Similar</button>
+        <button class="btn PeriodicTableModal" >Open Periodic Table</button>
         <button class="btn insert-btn" id="saveButton">Insert to Table</button>
         <button class="btn save-btn" onclick="saveHtmlToFile()">Save file</button>
         <button class="btn export-btn" id="exportCSV">Export to CSV</button>
@@ -1502,6 +1540,13 @@
 
     </div>
 
+    <div id="modal-periodic-table" class="modal" style="display:none;">
+        <div class="modal-content-periodic-table">
+            <span class="close">&times;</span>
+            <div class="table" id="periodic-table"></div>
+        </div>
+    </div>
+
     <script>
 
 
@@ -1512,11 +1557,11 @@
           input.addEventListener('click', function() {
             const td = this.closest('td');  // Find the <td> containing the input
             const cellIndex = Array.from(td.parentElement.children).indexOf(td);  // Get column index
-  
+
             //console.log(` Column: ${cellIndex}`);
             const thText = document.querySelectorAll('table thead tr th')[cellIndex].textContent;
             //console.log( thText);
-           const filterIndex = searchHeader(thText) 
+           const filterIndex = searchHeader(thText)
            console.log(filterIndex);
           });
         });
@@ -1546,7 +1591,7 @@
 
           //search bar
         document.getElementById("materialSearch").addEventListener("input", function () {
-            
+
             clearFilters();//clear filters before searching
             let searchValue = this.value.toLowerCase();
             document.querySelectorAll("#data-table tbody tr")
@@ -1569,7 +1614,7 @@
         let rows = document.querySelectorAll(
           "#data-table tbody tr"
         );
-       
+
         let sensitivity =
           parseFloat(document.getElementById("sensitivity").value) || 1;
 
@@ -1731,7 +1776,7 @@
             function clearInputs() {
                 document.querySelectorAll("#query-table input").forEach((input) => {
                     input.value = "";
-                    
+
                     // Clear error messages by removing the "show" class
                     let errorMessage = input.nextElementSibling; // Get the associated error message span
                     if (errorMessage && errorMessage.classList.contains("show")) {
@@ -2019,6 +2064,172 @@
                     }
             });
         }
+
+        //////////////////MODAL CODE ////////////////////////////
+
+        const elements = [
+            { symbol: "H", name: "Hydrogen", row: 1, col: 1 },
+            { symbol: "He", name: "Helium", row: 1, col: 18 },
+
+            { symbol: "Li", name: "Lithium", row: 2, col: 1 },
+            { symbol: "Be", name: "Beryllium", row: 2, col: 2 },
+            { symbol: "B", name: "Boron", row: 2, col: 13 },
+            { symbol: "C", name: "Carbon", row: 2, col: 14 },
+            { symbol: "N", name: "Nitrogen", row: 2, col: 15 },
+            { symbol: "O", name: "Oxygen", row: 2, col: 16 },
+            { symbol: "F", name: "Fluorine", row: 2, col: 17 },
+            { symbol: "Ne", name: "Neon", row: 2, col: 18 },
+
+            { symbol: "Na", name: "Sodium", row: 3, col: 1 },
+            { symbol: "Mg", name: "Magnesium", row: 3, col: 2 },
+            { symbol: "Al", name: "Aluminum", row: 3, col: 13 },
+            { symbol: "Si", name: "Silicon", row: 3, col: 14 },
+            { symbol: "P", name: "Phosphorus", row: 3, col: 15 },
+            { symbol: "S", name: "Sulfur", row: 3, col: 16 },
+            { symbol: "Cl", name: "Chlorine", row: 3, col: 17 },
+            { symbol: "Ar", name: "Argon", row: 3, col: 18 },
+
+            { symbol: "K", name: "Potassium", row: 4, col: 1 },
+            { symbol: "Ca", name: "Calcium", row: 4, col: 2 },
+            { symbol: "Sc", name: "Scandium", row: 4, col: 3 },
+            { symbol: "Ti", name: "Titanium", row: 4, col: 4 },
+            { symbol: "V", name: "Vanadium", row: 4, col: 5 },
+            { symbol: "Cr", name: "Chromium", row: 4, col: 6 },
+            { symbol: "Mn", name: "Manganese", row: 4, col: 7 },
+            { symbol: "Fe", name: "Iron", row: 4, col: 8 },
+            { symbol: "Co", name: "Cobalt", row: 4, col: 9 },
+            { symbol: "Ni", name: "Nickel", row: 4, col: 10 },
+            { symbol: "Cu", name: "Copper", row: 4, col: 11 },
+            { symbol: "Zn", name: "Zinc", row: 4, col: 12 },
+            { symbol: "Ga", name: "Gallium", row: 4, col: 13 },
+            { symbol: "Ge", name: "Germanium", row: 4, col: 14 },
+            { symbol: "As", name: "Arsenic", row: 4, col: 15 },
+            { symbol: "Se", name: "Selenium", row: 4, col: 16 },
+            { symbol: "Br", name: "Bromine", row: 4, col: 17 },
+            { symbol: "Kr", name: "Krypton", row: 4, col: 18 },
+
+            { symbol: "Rb", name: "Rubidium", row: 5, col: 1 },
+            { symbol: "Sr", name: "Strontium", row: 5, col: 2 },
+            { symbol: "Y", name: "Yttrium", row: 5, col: 3 },
+            { symbol: "Zr", name: "Zirconium", row: 5, col: 4 },
+            { symbol: "Nb", name: "Niobium", row: 5, col: 5 },
+            { symbol: "Mo", name: "Molybdenum", row: 5, col: 6 },
+            { symbol: "Tc", name: "Technetium", row: 5, col: 7 },
+            { symbol: "Ru", name: "Ruthenium", row: 5, col: 8 },
+            { symbol: "Rh", name: "Rhodium", row: 5, col: 9 },
+            { symbol: "Pd", name: "Palladium", row: 5, col: 10 },
+            { symbol: "Ag", name: "Silver", row: 5, col: 11 },
+            { symbol: "Cd", name: "Cadmium", row: 5, col: 12 },
+            { symbol: "In", name: "Indium", row: 5, col: 13 },
+            { symbol: "Sn", name: "Tin", row: 5, col: 14 },
+            { symbol: "Sb", name: "Antimony", row: 5, col: 15 },
+            { symbol: "Te", name: "Tellurium", row: 5, col: 16 },
+            { symbol: "I", name: "Iodine", row: 5, col: 17 },
+            { symbol: "Xe", name: "Xenon", row: 5, col: 18 },
+
+            { symbol: "Cs", name: "Cesium", row: 6, col: 1 },
+            { symbol: "Ba", name: "Barium", row: 6, col: 2 },
+            { symbol: "La", name: "Lanthanum", row: 6, col: 3 },
+            { symbol: "Hf", name: "Hafnium", row: 6, col: 4 },
+            { symbol: "Ta", name: "Tantalum", row: 6, col: 5 },
+            { symbol: "W", name: "Tungsten", row: 6, col: 6 },
+            { symbol: "Re", name: "Rhenium", row: 6, col: 7 },
+            { symbol: "Os", name: "Osmium", row: 6, col: 8 },
+            { symbol: "Ir", name: "Iridium", row: 6, col: 9 },
+            { symbol: "Pt", name: "Platinum", row: 6, col: 10 },
+            { symbol: "Au", name: "Gold", row: 6, col: 11 },
+            { symbol: "Hg", name: "Mercury", row: 6, col: 12 },
+            { symbol: "Tl", name: "Thallium", row: 6, col: 13 },
+            { symbol: "Pb", name: "Lead", row: 6, col: 14 },
+            { symbol: "Bi", name: "Bismuth", row: 6, col: 15},
+            { symbol: "Po", name: "Polonium", row: 6, col: 16 },
+            { symbol: "At", name: "Astatine", row: 6, col: 17 },
+            { symbol: "Rn", name: "Radon", row: 6, col: 18 },
+
+            { symbol: "Ce", name: "Cerium", row: 8, col: 4 },
+            { symbol: "Pr", name: "Praseodymium", row: 8, col: 5 },
+            { symbol: "Nd", name: "Neodymium", row: 8, col: 6 },
+            { symbol: "Pm", name: "Promethium", row: 8, col: 7 },
+            { symbol: "Sm", name: "Samarium", row: 8, col: 8 },
+            { symbol: "Eu", name: "Europium", row: 8, col: 9 },
+            { symbol: "Gd", name: "Gadolinium", row: 8, col: 10 },
+            { symbol: "Tb", name: "Terbium", row: 8, col: 11 },
+            { symbol: "Dy", name: "Dysprosium", row: 8, col: 12 },
+            { symbol: "Ho", name: "Holmium", row: 8, col: 13 },
+            { symbol: "Er", name: "Erbium", row: 8, col: 14 },
+            { symbol: "Tm", name: "Thulium", row: 8, col: 15 },
+            { symbol: "Yb", name: "Ytterbium", row: 8, col: 16 },
+            { symbol: "Lu", name: "Lutetium", row: 8, col: 17 },
+
+            { symbol: "Th", name: "Thorium", row: 9, col: 4 },
+            { symbol: "Pa", name: "Protactinium", row: 9, col: 5 },
+            { symbol: "U", name: "Uranium", row: 9, col: 6 },
+            { symbol: "Np", name: "Neptunium", row: 9, col: 7 },
+            { symbol: "Pu", name: "Plutonium", row: 9, col: 8 },
+            { symbol: "Am", name: "Americium", row: 9, col: 9 },
+            { symbol: "Cm", name: "Curium", row: 9, col: 10 },
+            { symbol: "Bk", name: "Berkelium", row: 9, col: 11 },
+            { symbol: "Cf", name: "Californium", row: 9, col: 12 },
+            { symbol: "Es", name: "Einsteinium", row: 9, col: 13 },
+            { symbol: "Fm", name: "Fermium", row: 9, col: 14 },
+            { symbol: "Md", name: "Mendelevium", row: 9, col: 15 },
+            { symbol: "No", name: "Nobelium", row: 9, col: 16 },
+            { symbol: "Lr", name: "Lawrencium", row: 9, col: 17 }
+
+          ];
+
+        const selectedElements = new Set(["Ag", "Ni", "Co","Ti","V", "Cr","Nb","Mo","Al","Zn","Cu","Fe","Mn"]);
+        const table = document.getElementById("periodic-table");
+
+        for (let row = 1; row <= 9; row++) {
+            for (let col = 1; col <= 18; col++) {
+                const element = elements.find(e => e.row === row && e.col === col);
+                const cell = document.createElement("div");
+                cell.classList.add("element");
+                cell.ondblclick = () => alert(`${element.name} (${element.symbol})`);
+
+                cell.onclick = () => {
+                    if (selectedElements.has(element.symbol)) {
+                        selectedElements.delete(element.symbol);
+                        cell.classList.remove("selected");
+                    } else {
+                        selectedElements.add(element.symbol);
+                        cell.classList.add("selected");
+                    }
+                    console.log("Selected Elements:", Array.from(selectedElements));
+                };
+
+
+                if (element) {
+                    cell.innerHTML = `<div class='symbol'>${element.symbol}</div><div class='name'>${element.name}</div>`;
+
+                    if (selectedElements.has(element.symbol)) {
+                            cell.classList.add("selected");
+                        }
+
+                } else {
+                    cell.classList.add("empty");
+                }
+                table.appendChild(cell);
+            }
+        }
+
+
+
+        //FOR MODAL
+        document.querySelector(".PeriodicTableModal").onclick = () => {
+          document.getElementById("modal-periodic-table").style.display = "flex";
+        };
+
+        document.querySelector(".modal-content-periodic-table .close").onclick = () => {
+            document.getElementById("modal-periodic-table").style.display = "none";
+        };
+
+        window.onclick = (event) => {
+            if (event.target === document.getElementById("modal-periodic-table")) {
+                document.getElementById("modal-periodic-table").style.display = "none";
+            }
+        };
 
     </script>
 
