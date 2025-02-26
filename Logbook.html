@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Brazing Table</title>
+    <style>
+
+    @font-face {
+        font-family: 'Montserrat-Medium';
+        src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+    }
+
+
+        body {
+            font-family: 'Montserrat-Medium', sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 25px;
+            margin-top: 30px;
+        }
+        input {
+            padding: 10px;
+            width: 25%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input:focus{
+            border: solid 2px #98D8EF;
+            outline: none;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        select {
+            width: 15%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .table-container {
+            width: 96%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            height: 71vh; /* Fixed height of the table container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-bottom: 22px;
+            border-bottom: solid 2px #98D8EF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            
+        }
+        th, td {
+            padding: 15px;
+            font-size: 15px;
+        }
+
+
+        th {
+            text-align: center;
+            background-color: #98D8EF;
+            color: white;
+            cursor: pointer;
+            position: sticky;
+            top: 0; /* Make header sticky */
+            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .sort-icon {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+
+        
+        br {
+            display: block;
+            content: "";
+            margin-bottom: 10px; /* Adjust the space */
+        }
+        .highlighted {
+            background-color: #FFD95F !important;
+        }
+
+        .section a{
+          color: #3674B5;
+          margin-left: 12px;
+          margin-right: 12px;
+          text-align: center;
+          font-size: 14px;
+          text-transform: uppercase;
+          text-decoration: none;
+       }
+
+       ul {
+         list-style-type: none;
+         text-align: left;
+         padding-left: 25px; /* remove default padding */
+      }
+       li {
+         padding: 5px 0;
+         font-size: 13px;
+       }
+       h4{
+         padding-left: 25px;
+       }
+       .controls{
+          display: flex;
+          justify-content: center; /* Centers horizontally */
+          align-items: center;     /* Centers vertically */
+          margin-bottom: 10px;
+       }
+       .clearButton{
+          display: none;
+          cursor: pointer;
+          font-size: 26px;
+          color: gray;
+          padding-left: 6px;
+       }
+
+       button{
+        margin-left: 15px;
+        padding: 10px 16px;
+        color: white;
+        background-color: #3674B5;
+        border-radius: 5px;
+        border: none;
+       }
+       button:hover{
+        background-color: #578FCA;
+       }
+       .btn-delete{
+        background-color: #D70654;
+       }
+
+
+       .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 10px;
+            width: 55%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            text-align: left;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 20px;
+            column-gap: 50px;
+            align-items: center;
+        }
+        form label {
+            display: block;
+            font-weight: bold;
+        }
+        form input, form select {
+            width: 100%;
+            padding: 10px 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            background-color: #3674B5;
+            color: white;
+            border: none;
+            padding: 11px 15px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 15px;
+            margin-left: 0;
+        }
+        form button:hover {
+            background-color: #578FCA;
+        }    </style>
+
+
+</head>
+<body>
+
+    <h2>MRO Metallurgical Lab Logbook</h2>
+    <div class="controls">
+      <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
+
+      <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
+      <button id="openModal">Add Entry</button>
+      <button>Edit Entry</button>
+      <button  class="btn-delete">Delete Entry</button>
+
+      <button>Edit Operators</button>
+      <button>Edit Work types</button>
+  </div>
+
+
+
+    <div class="table-container">
+        <table id="dataTable2">
+            <thead>
+
+                <tr>
+                    <th>Work Number</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Operator</th>
+                    <th>Work Type</th>
+                    <th>Quantity</th>
+                    <th>Project/Engine Name</th>
+                    <th>Part Name</th>
+                    <th>Part Number</th>
+                    <th>Work Order</th>
+                    <th>Customer Department</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                  <td>73712</td>
+                  <td>26/02/2025</td>
+                  <td>26/02/2025</td>
+                  <td>David nachmani</td>
+                  <td>metallugraphy</td>
+                  <td>3</td>
+                  <td>CFM56</td>
+                  <td>Air seal</td>
+                  <td>72645</td>
+                  <td>5543342</td>
+                  <td>21e44</td>
+                  <td>none</td>          
+              </tr>
+            </tbody>
+        </table>
+
+    </div>
+   
+
+    <div id="inputModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="dataForm" class="form-grid" style="display: none;">
+                <label>Start Date: <input type="date" id="startDate"></label>
+                <label>End Date: <input type="date" id="endDate"></label>
+                <label>Operator: 
+                    <select id="operator"></select>
+                </label>
+                <label>Work Type: 
+                    <select id="workType"></select>
+                </label>
+                <label>Quantity: <input type="number" id="quantity"></label>
+                <label>Project/Engine Name: <input type="text" id="engineName"></label>
+                <label>Part Name: <input type="text" id="partName"></label>
+                <label>Part Number: <input type="text" id="partNumber"></label>
+                <label>Work Order: <input type="number" id="workOrder"></label>
+                <label>Customer Department: <input type="number" id="customerDept"></label>
+                <label>Comments: <input type="text" id="comments"></label>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+  
+
+
+    <script>
+
+       /*
+        edit and delete - hidden
+        when marking row - they appear
+        pressing them - opens modal with password
+        then modal for delete
+        edit - input modal with data placed there
+        csv import button
+        csv export button
+        */
+
+
+        //highlight clicked rows
+        document.addEventListener("DOMContentLoaded", function() {
+            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+
+            rows.forEach(row => {
+                row.addEventListener("click", function(event) {
+                    if (row.classList.contains("highlighted")) {
+                        row.classList.remove("highlighted");
+                    } else {
+                        rows.forEach(r => r.classList.remove("highlighted"));
+                        row.classList.add("highlighted");
+                    }
+                    event.stopPropagation();
+                });
+
+                  // Double-click event to call a function
+                  row.addEventListener("dblclick", function() {
+                    openModal(row);
+                });
+
+            });
+
+
+            document.addEventListener("click", function() {
+                rows.forEach(row => row.classList.remove("highlighted"));
+            });
+        });
+
+
+
+        function searchTable() {
+          let input = document.getElementById("search");
+          let searchValue = input.value.trim();
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Show the clear button only if there is text in the search box
+          clearBtn.style.display = searchValue ? "block" : "none";
+
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+
+          for (let i = 1; i < rows.length; i++) {
+              if (rows[i].getElementsByTagName("th").length > 0) {
+                  continue; // Skip header rows
+              }
+
+              let cells = rows[i].getElementsByTagName("td");
+              let found = false;
+
+              for (let j = 0; j < cells.length; j++) {
+                  let cell = cells[j];
+
+                  // Clear previous highlights: remove all <span> elements and preserve their content
+                  cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
+
+                  if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
+                      highlightTextInElement(cell, searchValue);
+                      found = true;
+                  }
+              }
+
+              // Show row if a match is found, otherwise hide it
+              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+          }
+      }
+
+        // Recursive function to highlight text while preserving HTML structure
+        function highlightTextInElement(element, searchValue) {
+            let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+
+            function highlightNode(node) {
+                if (node.nodeType === 3) { // TEXT_NODE
+                    let parent = node.parentNode;
+                    let text = node.nodeValue;
+
+                    if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+                        let tempWrapper = document.createElement("span");
+                        tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+
+                        while (tempWrapper.firstChild) {
+                            parent.insertBefore(tempWrapper.firstChild, node);
+                        }
+                        parent.removeChild(node);
+                    }
+                } else {
+                    // Recursively process child nodes
+                    for (let i = node.childNodes.length - 1; i >= 0; i--) {
+                        highlightNode(node.childNodes[i]);
+                    }
+                }
+            }
+
+            highlightNode(element);
+        }
+
+
+      function clearSearch() {
+          let input = document.getElementById("search");
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Clear the search input
+          input.value = "";
+          clearBtn.style.display = "none"; // Hide the clear button
+
+          // Reset the table to show all rows
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+          for (let i = 1; i < rows.length; i++) {
+              rows[i].style.display = ""; // Make all rows visible again
+
+              // Remove any highlighting
+              let cells = rows[i].getElementsByTagName("td");
+              for (let j = 0; j < cells.length; j++) {
+                  cells[j].innerHTML = cells[j].textContent;
+              }
+          }
+      }
+        const operators = ["David nachmani", "Oz avraham", "Doron gur", "Dima ganelin", "Uri baranes", "Sharon rad"];
+        const workTypes = ["Metallugraphy", "Hardness","Tensile/Shear", "SEM/EDS", "XRF"];
+        let defaultWorkNumber = 73678;
+
+        function getNextWorkNumber() {
+            let table = document.getElementById("dataTable2").getElementsByTagName('tbody')[0];
+            if (table.rows.length === 0) {
+                return defaultWorkNumber;
+            } else {
+                return parseInt(table.rows[table.rows.length - 2].cells[0].textContent) + 1;
+            }
+        }
+
+        function populateSelect(selectId, options) {
+            const select = document.getElementById(selectId);
+            select.innerHTML = "";
+            options.forEach(option => {
+                let opt = document.createElement("option");
+                opt.value = option;
+                opt.textContent = option;
+                select.appendChild(opt);
+            });
+        }
+
+        document.getElementById("openModal").onclick = function() {
+            document.getElementById("inputModal").style.display = "flex";
+            document.getElementById("dataForm").style.display = "grid";
+            populateSelect("operator", operators);
+            populateSelect("workType", workTypes);
+        };
+
+        document.getElementsByClassName("close")[0].onclick = function() {
+            document.getElementById("inputModal").style.display = "none";
+            document.getElementById("dataForm").style.display = "none";
+        };
+
+        window.onclick = function(event) {
+            if (event.target === document.getElementById("inputModal")) {
+                document.getElementById("inputModal").style.display = "none";
+                document.getElementById("dataForm").style.display = "none";
+            }
+        };
+
+        document.getElementById("dataForm").onsubmit = function(event) {
+            event.preventDefault();
+            let table = document.getElementById("dataTable2").getElementsByTagName('tbody')[0];
+            let newRow = table.insertRow();
+            let newCell = newRow.insertCell();
+            newCell.textContent = getNextWorkNumber();
+            let inputs = document.querySelectorAll("#dataForm input, #dataForm select");
+            inputs.forEach(input => {
+                let newCell = newRow.insertCell();
+                newCell.textContent = input.value;
+            });
+            document.getElementById("dataForm").reset();
+            document.getElementById("inputModal").style.display = "none";
+            document.getElementById("dataForm").style.display = "none";
+        };
+    </script>
+</body>
+</html>
