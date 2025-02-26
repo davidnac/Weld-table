@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Searchable Heat Treatments Table</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
 
         @font-face {
@@ -212,6 +214,12 @@
         height: 20px;
        }
 
+       canvas {
+        width: 50% !important; /* 50% of the body width */
+        height: 55% !important;
+        margin-top: 40px;
+        margin-bottom: 20px;
+      }
     </style>
 
 </head>
@@ -734,8 +742,8 @@
           <ul>
             <li><strong>a.</strong> Put part in cold furnace.</li>
             <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
-            <li><strong>d.</strong> Increase to 1015±15°F (546±8°C) and hold for 2 hours.</li>
+            <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
+            <li><strong>d.</strong> Heat to 1015±15°F (546±8°C) and hold for 2 hours.</li>
             <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
          </ul>
         </td>
@@ -780,9 +788,9 @@
             <ul>
               <li><strong>a.</strong> Put part in cold furnace.</li>
               <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-              <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
-              <li><strong>d.</strong> Increase to 1100°F (593°C) and hold for 30 minutes.</li>
-              <li><strong>e.</strong> Increase to 1300±25°F (704±13°C) and hold for 2 hours.</li>
+              <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
+              <li><strong>d.</strong> Heat to 1100°F (593°C) and hold for 30 minutes.</li>
+              <li><strong>e.</strong> Heat to 1300±25°F (704±13°C) and hold for 2 hours.</li>
               <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
           </ul>
         </td>
@@ -812,9 +820,9 @@
           <ul>
             <li><strong>a.</strong> Put part in cold furnace.</li>
             <li><strong>b.</strong> Heat to 700°F (371°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Increase to 1000°F (538°C) and hold for 30 minutes.</li>
-            <li><strong>d.</strong> Increase to 1300°F (704°C) and hold for 30 minutes.</li>
-            <li><strong>e.</strong> Increase to 1600±25°F (871±14°C) and hold for 2 hours.</li>
+            <li><strong>c.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
+            <li><strong>d.</strong> Heat to 1300°F (704°C) and hold for 30 minutes.</li>
+            <li><strong>e.</strong> Heat to 1600±25°F (871±14°C) and hold for 2 hours.</li>
             <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
         </ul>
       </td>
@@ -858,8 +866,8 @@
           <ul>
             <li><strong>a.</strong> Put part in cold furnace.</li>
             <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
-            <li><strong>d.</strong> Increase to 1050±15°F (565±°C) and hold for 2 hours.</li>
+            <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
+            <li><strong>d.</strong> Heat to 1050±15°F (565±°C) and hold for 2 hours.</li>
             <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
         </ul>
       </td>
@@ -889,9 +897,9 @@
           <ul>
             <li><strong>a.</strong> Put part in cold furnace.</li>
             <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Increase to 900°F (482°C) and hold for 30 minutes.</li>
-            <li><strong>d.</strong> Increase to 1000°F (538°C) and hold for 30 minutes.</li>
-            <li><strong>e.</strong> Increase to 1500±25°F (816±13°C) and hold for 4 hours.</li>
+            <li><strong>c.</strong> Heat to 900°F (482°C) and hold for 30 minutes.</li>
+            <li><strong>d.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
+            <li><strong>e.</strong> Heat to 1500±25°F (816±13°C) and hold for 4 hours.</li>
             <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
         </ul>
       </td>
@@ -997,9 +1005,9 @@
                 <ul>
                   <li><strong>a.</strong> Put part in cold furnace.</li>
                   <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                  <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
-                  <li><strong>d.</strong> Increase to 1000°F (538°C) and hold for 30 minutes.</li>
-                  <li><strong>e.</strong> Increase to 1350±25°F (732±14°C) and hold for 4 hours.</li>
+                  <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
+                  <li><strong>d.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
+                  <li><strong>e.</strong> Heat to 1350±25°F (732±14°C) and hold for 4 hours.</li>
                   <li><strong>f.</strong> Cool to 1200±25°F (649±14°C) at a max rate of 2°F (1°C) per minute and hold for for a total of 3 hours (including the cooling time from 732°C).</li>
                   <li><strong>g.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
               </ul>
@@ -1061,9 +1069,9 @@
             <ul>
               <li><strong>a.</strong> Put part in cold furnace.</li>
               <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-              <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
-              <li><strong>d.</strong> Increase to 1100°F (593°C) and hold for 30 minutes.</li>
-              <li><strong>e.</strong> Increase to 1300±25°F (704±13°C) and hold for 4 hours.</li>
+              <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
+              <li><strong>d.</strong> Heat to 1100°F (593°C) and hold for 30 minutes.</li>
+              <li><strong>e.</strong> Heat to 1300±25°F (704±13°C) and hold for 4 hours.</li>
               <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
           </ul>
         </td>
@@ -1108,7 +1116,7 @@
           <td>
               <ul>
                 <li><strong>a.</strong> Heat to 1975±25°F (1080±13°C) and hold for 30-240 minutes.</li>
-                <li><strong>b.</strong> Cool to bellow 1600°F (871°C) at a rate of 35°F (19°C) per minute or faster.</li>
+                <li><strong>b.</strong> Cool to 1600°F (871°C) at a rate of 35°F (19°C) per minute or faster.</li>
                 <li><strong>c.</strong> Subsequent cooling rates are optional.</li>
             </ul>
           </td>
@@ -1170,8 +1178,8 @@
         <ul>
           <li><strong>a.</strong> Put part in cold furnace.</li>
           <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-          <li><strong>c.</strong> Increase to 900°F (482°C) and hold for 30 minutes.</li>
-          <li><strong>d.</strong> Increase to 1150±25°F (621±14°C) and hold for 2 hours.</li>
+          <li><strong>c.</strong> Heat to 900°F (482°C) and hold for 30 minutes.</li>
+          <li><strong>d.</strong> Heat to 1150±25°F (621±14°C) and hold for 2 hours.</li>
           <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
           <li><strong>Note:</strong> Subsequent Cooling rates are optional</li>
       </ul>
@@ -1350,7 +1358,7 @@
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1975±25°F (1079±13°C) and hold for 1 hour.</li>
-              <li><strong>b.</strong> Decrease the temperature at a rate of 35°F (20°C) per minute, to 1000°F (538°C).</li>
+              <li><strong>b.</strong> Cool to 1000°F (538°C) at a rate of 35°F (20°C) per minute, .</li>
               <li><strong>c.</strong> Subsequent cooling rate is optional.</li>
               <li><strong>Note:</strong> Heating rate is optional.</li>
            </ul>
@@ -1400,8 +1408,8 @@
               <ul>
                 <li><strong>a.</strong> Put part in cold furnace.</li>
                 <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
-                <li><strong>d.</strong> Increase to 1015° ±15°F (546±8°C) and hold for 2 hours.</li>
+                <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
+                <li><strong>d.</strong> Heat to 1015° ±15°F (546±8°C) and hold for 2 hours.</li>
                 <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
              </ul>
            </td>
@@ -1431,7 +1439,7 @@
                   <ul>
                     <li><strong>a.</strong> Put part in cold furnace.</li>
                     <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                    <li><strong>c.</strong> Increase to 900±15° (482±8°C) and hold for 4 hours.</li>
+                    <li><strong>c.</strong> Heat to 900±15° (482±8°C) and hold for 4 hours.</li>
                     <li><strong>d.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
                 </ul>
               </td>
@@ -1463,8 +1471,8 @@
                   <ul>
                     <li><strong>a.</strong> Put part in cold furnace.</li>
                     <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                    <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes. Increase to 1100°F (593°C) and hold for 30 minutes.</li>
-                    <li><strong>d.</strong> Increase to 1300° ±25°F (704° ±15°C) and hold for 2 hours.</li>
+                    <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes. Heat to 1100°F (593°C) and hold for 30 minutes.</li>
+                    <li><strong>d.</strong> Heat to 1300° ±25°F (704° ±15°C) and hold for 2 hours.</li>
                     <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
                 </ul>
               </td>
@@ -1496,9 +1504,9 @@
                   <ul>
                     <li><strong>a.</strong> Put part in cold furnace.</li>
                     <li><strong>b.</strong> Heat to 700°F (371°C) and hold for 30 minutes.</li>
-                    <li><strong>c.</strong> Increase to 1000°F (538°C) and hold for 30 minutes.</li>
-                    <li><strong>d.</strong> Increase to 1300°F (704°C) and hold for 30 minutes.</li>
-                    <li><strong>e.</strong> Increase to 1600±25°F (871±14°C) and hold for 2 hours.</li>
+                    <li><strong>c.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
+                    <li><strong>d.</strong> Heat to 1300°F (704°C) and hold for 30 minutes.</li>
+                    <li><strong>e.</strong> Heat to 1600±25°F (871±14°C) and hold for 2 hours.</li>
                     <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
                  </ul>
               </td>
@@ -1530,7 +1538,7 @@
                   <ul>
                     <li><strong>a.</strong> Put part in cold furnace.</li>
                     <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                    <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
+                    <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
                 </ul>
               </td>
           <td></td>
@@ -1561,8 +1569,8 @@
                 <ul>
                   <li><strong>a.</strong> Put part in cold furnace.</li>
                   <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                  <li><strong>c.</strong> Increase to 800°F (427°C) and hold for 30 minutes.</li>
-                  <li><strong>d.</strong> Increase to 995° to 1025°F (535° to 552°C) and hold for 30 minutes.</li>
+                  <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
+                  <li><strong>d.</strong> Heat to 995° to 1025°F (535° to 552°C) and hold for 30 minutes.</li>
                   <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
               </ul>
             </td>
@@ -1741,8 +1749,8 @@
               <td>
                 <ul>
                   <li><strong>a.</strong> Heat to 1975±25°F (1079±13°C) and hold for 30-240 minutes.</li>
-                  <li><strong>b.</strong> Cool to bellow 1600°F (871°C) at a rate of 35°F (19°C) per minute or faster.</li>
-                  <li><strong>c.</strong> For vacuum: cool to bellow 500F (260C) with dry argon.</li>
+                  <li><strong>b.</strong> Cool to 1600°F (871°C) at a rate of 35°F (19°C) per minute or faster.</li>
+                  <li><strong>c.</strong> For vacuum: cool to 500°F (260°C) with dry argon.</li>
                 </ul>
               </td>
           <td>-</td>
@@ -1809,8 +1817,8 @@
               <ul>
                 <li><strong>a.</strong> Put part in cold furnace.</li>
                 <li><strong>b.</strong> Heat to 1750±25°F (954±13°C) and hold for 1 hour.</li>
-                <li><strong>c.</strong> Cool to bellow 1100°F (593°C) at a rate of 35°F (19°C) per minute or faster.</li>
-                <li><strong>d.</strong> Cool to bellow 1000°F (538°C) at a rate of 15°F (8°C) per minute or faster.</li>
+                <li><strong>c.</strong> Cool to 1100°F (593°C) at a rate of 35°F (19°C) per minute or faster.</li>
+                <li><strong>d.</strong> Cool to 1000°F (538°C) at a rate of 15°F (8°C) per minute or faster.</li>
                 <li><strong>e.</strong> Air cool.</li>
                 <li><strong>f.</strong> Heat to 1400±25°F (760±13°C) and hold for 5 hour.</li>
                 <li><strong>g.</strong> Furnace cool to 1200±25°F (649°C) at a rate of 1.67±0.42°F (0.93±0.23°C) per minute.</li>
@@ -1982,6 +1990,7 @@
 
 </div>
 
+<canvas id="temperatureChart"></canvas>
 
     <!-- Modal -->
     <div id="modal" class="modal">
@@ -2260,6 +2269,13 @@
             closeModal();
         }
 
+        /*------------------------graph from text-------------------------------*/
+
+      let temperatureChart = null; // Global variable for the chart instance
+      let times = [];
+      let temps = [];
+
+      const canvas = document.getElementById("temperatureChart");
 
 
         function extractTemperaturesAndBuildTable(row) {
@@ -2317,8 +2333,108 @@
             });
 
             console.log(tableData);
+            calculateDataPoints(tableData)
           }
 
+
+
+
+          function calculateDataPoints(data) {
+            let headers = data[0]; // Extract headers
+            let rows = data.slice(1); // Extract data rows
+
+            let time = 0; // Initial time
+            let temp = 20; // Initial temperature
+            let dataPoints = [[time, temp]]; // Store (time, temp) pairs
+
+            console.log(rows);
+
+            rows.forEach((row) => {
+              let rate = null,
+                newTemp = null,
+                hold = 0;
+
+              row.forEach((value, colIndex) => {
+                let header = headers[colIndex];
+                if (header === "rate" && value !== "" && value !== undefined) {
+                  rate = parseFloat(value);
+                  //console.log(rate);
+                } else if (
+                  header === "temp" &&
+                  value !== "" &&
+                  value !== undefined
+                ) {
+                  newTemp = parseFloat(value);
+                  // console.log(newTemp);
+                } else if (
+                  header === "hold" &&
+                  value !== "" &&
+                  value !== undefined
+                ) {
+                  hold = parseFloat(value);
+                  // console.log(hold);
+                }
+
+                console.log(dataPoints);
+                // If we have a rate and a new temperature, calculate the time
+                if (rate !== null && newTemp !== null && newTemp !== temp) {
+                  let deltaTemp = Math.abs(newTemp - temp);
+                  let rateTime = deltaTemp / rate; // Time = ΔT / rate
+                  time += rateTime;
+                  temp = newTemp;
+                  time = Math.round(time);
+                  dataPoints.push([time, temp]); // Store new data point
+                  // console.log(dataPoints);
+                }
+
+                if (hold > 0) {
+                  time += hold;
+                  time = Math.round(time);
+                  dataPoints.push([time, temp]); // Store hold point
+                  // console.log(dataPoints);
+                }
+              });
+            });
+            drawChart(dataPoints);
+          }
+
+          function drawChart(dataPoints) {
+            times = dataPoints.map((point) => point[0]);
+            temps = dataPoints.map((point) => point[1]);
+
+            let ctx = document.getElementById("temperatureChart").getContext("2d");
+
+            if (temperatureChart) {
+              // Update the existing chart instead of creating a new one
+              temperatureChart.data.labels = times;
+              temperatureChart.data.datasets[0].data = temps;
+              temperatureChart.update();
+            } else {
+              temperatureChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                  labels: times,
+                  datasets: [
+                    {
+                      label: "Temperature (°C)",
+                      data: temps,
+                      borderWidth: 3,
+                      borderColor: "rgba(75, 192, 192, 1)", // Line color
+                      backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
+                      fill: true,
+                      tension: 0, // Smooth lines
+                    },
+                  ],
+                },
+                options: {
+                  scales: {
+                    x: { title: { display: true, text: "Time (min)" } },
+                    y: { title: { display: true, text: "Temperature (°C)" } },
+                  },
+                },
+              });
+            }
+          }
 
   </script>
 
