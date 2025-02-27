@@ -60,7 +60,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            
+
         }
         th, td {
             padding: 15px;
@@ -88,7 +88,7 @@
             background-color: #e0f7fa;
         }
 
-        
+
         br {
             display: block;
             content: "";
@@ -225,8 +225,8 @@
 
       <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
       <button id="openModal">Add Entry</button>
-      <button>Edit Entry</button>
-      <button  class="btn-delete">Delete Entry</button>
+      <button id="editEntry" style="display: none;">Edit Entry</button>
+      <button id="deleteEntry" class="btn-delete" style="display: none;">Delete Entry</button>
 
       <button>Edit Operators</button>
       <button>Edit Work types</button>
@@ -266,13 +266,13 @@
                   <td>72645</td>
                   <td>5543342</td>
                   <td>21e44</td>
-                  <td>none</td>          
+                  <td>none</td>
               </tr>
             </tbody>
         </table>
 
     </div>
-   
+
 
     <div id="inputModal" class="modal">
         <div class="modal-content">
@@ -280,10 +280,10 @@
             <form id="dataForm" class="form-grid" style="display: none;">
                 <label>Start Date: <input type="date" id="startDate"></label>
                 <label>End Date: <input type="date" id="endDate"></label>
-                <label>Operator: 
+                <label>Operator:
                     <select id="operator"></select>
                 </label>
-                <label>Work Type: 
+                <label>Work Type:
                     <select id="workType"></select>
                 </label>
                 <label>Quantity: <input type="number" id="quantity"></label>
@@ -297,7 +297,7 @@
             </form>
         </div>
     </div>
-  
+
 
 
     <script>
@@ -314,34 +314,128 @@
         input auto fill suggest
         */
 
+        document.addEventListener("DOMContentLoaded", function () {
+            let tableBody = document.querySelector("#dataTable2 tbody");
+            let editButton = document.getElementById("editEntry");
+            let deleteButton = document.getElementById("deleteEntry");
+            let openModalButton = document.getElementById("openModal");
+            let modal = document.getElementById("inputModal");
+            let form = document.getElementById("dataForm");
+            let selectedRow = null;
 
-        //highlight clicked rows
-        document.addEventListener("DOMContentLoaded", function() {
-            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+            function highlightRow(row) {
+                document.querySelectorAll("#dataTable2 tbody tr").forEach(r => r.classList.remove("highlighted"));
+                row.classList.add("highlighted");
+                editButton.style.display = "inline-block";
+                deleteButton.style.display = "inline-block";
+                selectedRow = row;
+            }
 
-            rows.forEach(row => {
-                row.addEventListener("click", function(event) {
-                    if (row.classList.contains("highlighted")) {
-                        row.classList.remove("highlighted");
-                    } else {
-                        rows.forEach(r => r.classList.remove("highlighted"));
-                        row.classList.add("highlighted");
-                    }
+            function attachRowListeners(row) {
+                row.addEventListener("click", function (event) {
+                    highlightRow(row);
                     event.stopPropagation();
                 });
+            }
 
-                  // Double-click event to call a function
-                  row.addEventListener("dblclick", function() {
-                    openModal(row);
-                });
+            // Attach listeners to existing rows
+            document.querySelectorAll("#dataTable2 tbody tr").forEach(attachRowListeners);
 
+            // Open Edit Modal and Populate Data
+            editButton.addEventListener("click", function (event) {
+            if (!selectedRow) return;
+
+            let cells = selectedRow.getElementsByTagName("td");
+            let inputs = form.querySelectorAll("input, select");
+
+            inputs.forEach((input, index) => {
+                if (input.tagName === "SELECT") {
+                    // Set select dropdown value correctly
+                    let optionExists = [...input.options].some(option => option.value === cells[index]?.textContent);
+                    if (optionExists) {
+                        input.value = cells[index]?.textContent;
+                    }
+                } else {
+                    input.value = cells[index]?.textContent || ""; // Set text inputs
+                }
             });
 
-
-            document.addEventListener("click", function() {
-                rows.forEach(row => row.classList.remove("highlighted"));
-            });
+            modal.style.display = "flex";
+            event.stopPropagation();
         });
+
+
+            // Open Modal for Adding New Row (Clear Form)
+            openModalButton.addEventListener("click", function () {
+                form.reset(); // Clear form for new entry
+                modal.style.display = "flex";
+                selectedRow = null;
+            });
+
+            // Save Data (New Row or Edit Existing)
+            form.onsubmit = function (event) {
+                event.preventDefault();
+                let inputs = form.querySelectorAll("input, select");
+
+                if (selectedRow) {
+                    // Editing Existing Row
+                    let cells = selectedRow.getElementsByTagName("td");
+                    inputs.forEach((input, index) => {
+                        if (cells[index]) {
+                            cells[index].textContent = input.value;
+                        }
+                    });
+                } else {
+                    // Adding New Row
+                    let newRow = tableBody.insertRow();
+                    let newCell = newRow.insertCell();
+                    newCell.textContent = getNextWorkNumber();
+
+                    inputs.forEach(input => {
+                        let newCell = newRow.insertCell();
+                        newCell.textContent = input.value;
+                    });
+
+                    attachRowListeners(newRow); // Attach click listener to new row
+                }
+
+                modal.style.display = "none";
+            };
+
+            // Delete Row
+            deleteButton.addEventListener("click", function (event) {
+                if (selectedRow) {
+                    selectedRow.remove();
+                    editButton.style.display = "none";
+                    deleteButton.style.display = "none";
+                    selectedRow = null;
+                }
+                event.stopPropagation();
+            });
+
+            // Click Outside to Remove Highlight & Hide Buttons
+            document.addEventListener("click", function (event) {
+                if (!event.target.closest("table") && !event.target.closest(".controls") && !event.target.closest(".modal")) {
+                    document.querySelectorAll("#dataTable2 tbody tr").forEach(row => row.classList.remove("highlighted"));
+                    editButton.style.display = "none";
+                    deleteButton.style.display = "none";
+                    selectedRow = null;
+                }
+            });
+
+            // Close Modal
+            document.querySelector(".close").addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+
+            window.onclick = function (event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            };
+        });
+
+
 
 
 
@@ -436,6 +530,9 @@
               }
           }
       }
+
+
+
         const operators = ["David nachmani", "Oz avraham", "Doron gur", "Dima ganelin", "Uri baranes", "Sharon rad"];
         const workTypes = ["Metallugraphy", "Hardness","Tensile/Shear", "SEM/EDS", "XRF", "NDT", "Chemistry"];
         let defaultWorkNumber = 73678;
