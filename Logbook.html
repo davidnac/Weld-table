@@ -189,6 +189,10 @@
             column-gap: 50px;
             align-items: center;
         }
+        .modal-content h3{
+          margin-bottom: 30px;
+          margin-top: 0;
+        }
         form label {
             display: block;
             font-weight: bold;
@@ -210,10 +214,12 @@
             font-size: 16px;
             margin-top: 15px;
             margin-left: 0;
+            margin-right: 0;
         }
         form button:hover {
             background-color: #578FCA;
         }    </style>
+
 
 
 </head>
@@ -256,8 +262,8 @@
             <tbody>
               <tr>
                   <td>73712</td>
-                  <td>26/02/2025</td>
-                  <td>26/02/2025</td>
+                  <td>02-26-2025</td>
+                  <td>02-27-2025</td>
                   <td>David nachmani</td>
                   <td>Metallugraphy</td>
                   <td>3</td>
@@ -277,10 +283,11 @@
     <div id="inputModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-
+            <h3>data</h3>
             <form id="dataForm" class="form-grid" style="display: none;">
                 <label>Start Date: <input type="date" id="startDate"></label>
-                <label>End Date: <input type="date" id="endDate"></label>
+                <label>End Date:
+                  <input type="date" id="endDate"></label>
                 <label>Operator:
                     <select id="operator"></select>
                 </label>
@@ -323,6 +330,7 @@
         let modal = document.getElementById("inputModal");
         let form = document.getElementById("dataForm");
         let selectedRow = null;
+        let WorkNumber = 123;
 
         function highlightRow(row) {
             document.querySelectorAll("#dataTable2 tbody tr").forEach(r => r.classList.remove("highlighted"));
@@ -348,6 +356,10 @@
             populateSelect("workType", workTypes);
             if (!isEdit) {
                 form.reset();
+                let header = document.querySelector(".modal-content h3");
+                WorkNumber = getNextWorkNumber();
+                console.log(WorkNumber);
+                header.textContent = `Work No. ${WorkNumber}`;
             }
         }
 
@@ -357,6 +369,9 @@
 
             let cells = selectedRow.getElementsByTagName("td");
             let inputs = form.querySelectorAll("input, select");
+            let header = document.querySelector(".modal-content h3");
+            WorkNumber = cells[0].textContent;
+            header.textContent = `Work No. ${WorkNumber}`;
 
             inputs.forEach((input, index) => {
                 if (input.tagName === "SELECT") {
@@ -366,6 +381,8 @@
                     }
                 } else {
                     input.value = cells[index]?.textContent || "";
+                    console.log(input)
+                    console.log(cells[index]?.textContent)
                 }
             });
 
@@ -385,16 +402,19 @@
             let inputs = form.querySelectorAll("input, select");
 
             if (selectedRow) {
+              //edit row
                 let cells = selectedRow.getElementsByTagName("td");
+                cells[0].textContent = WorkNumber;
                 inputs.forEach((input, index) => {
-                    if (cells[index]) {
-                        cells[index].textContent = input.value;
+                    if (cells[index+1]) {
+                        cells[index+1].textContent = input.value;
                     }
                 });
             } else {
+              //new row
                 let newRow = tableBody.insertRow();
                 let newCell = newRow.insertCell();
-                newCell.textContent = getNextWorkNumber();
+                newCell.textContent = WorkNumber;
 
                 inputs.forEach(input => {
                     let newCell = newRow.insertCell();
@@ -538,7 +558,7 @@
 
 
 
-        const operators = ["David nachmani", "Oz avraham", "Doron gur", "Dima ganelin", "Uri baranes", "Sharon rad"];
+        const operators = ["David nachmani", "Oz avraham", "Doron gur", "Dima ganelin", "Uri baranes", "Sharon rad", "Michael kab"];
         const workTypes = ["Metallugraphy", "Hardness","Tensile/Shear", "SEM/EDS", "XRF", "NDT", "Chemistry"];
         let defaultWorkNumber = 73678;
 
@@ -547,7 +567,7 @@
             if (table.rows.length === 0) {
                 return defaultWorkNumber;
             } else {
-                return parseInt(table.rows[table.rows.length - 2].cells[0].textContent) + 1;
+                return parseInt(table.rows[table.rows.length - 1].cells[0].textContent) + 1;
             }
         }
 
@@ -581,21 +601,6 @@
             }
         };
 
-        document.getElementById("dataForm").onsubmit = function(event) {
-            event.preventDefault();
-            let table = document.getElementById("dataTable2").getElementsByTagName('tbody')[0];
-            let newRow = table.insertRow();
-            let newCell = newRow.insertCell();
-            newCell.textContent = getNextWorkNumber();
-            let inputs = document.querySelectorAll("#dataForm input, #dataForm select");
-            inputs.forEach(input => {
-                let newCell = newRow.insertCell();
-                newCell.textContent = input.value;
-            });
-            document.getElementById("dataForm").reset();
-            document.getElementById("inputModal").style.display = "none";
-            document.getElementById("dataForm").style.display = "none";
-        };
     </script>
 </body>
 </html>
