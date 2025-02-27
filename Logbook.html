@@ -277,6 +277,7 @@
     <div id="inputModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
+
             <form id="dataForm" class="form-grid" style="display: none;">
                 <label>Start Date: <input type="date" id="startDate"></label>
                 <label>End Date: <input type="date" id="endDate"></label>
@@ -315,34 +316,43 @@
         */
 
         document.addEventListener("DOMContentLoaded", function () {
-            let tableBody = document.querySelector("#dataTable2 tbody");
-            let editButton = document.getElementById("editEntry");
-            let deleteButton = document.getElementById("deleteEntry");
-            let openModalButton = document.getElementById("openModal");
-            let modal = document.getElementById("inputModal");
-            let form = document.getElementById("dataForm");
-            let selectedRow = null;
+        let tableBody = document.querySelector("#dataTable2 tbody");
+        let editButton = document.getElementById("editEntry");
+        let deleteButton = document.getElementById("deleteEntry");
+        let openModalButton = document.getElementById("openModal");
+        let modal = document.getElementById("inputModal");
+        let form = document.getElementById("dataForm");
+        let selectedRow = null;
 
-            function highlightRow(row) {
-                document.querySelectorAll("#dataTable2 tbody tr").forEach(r => r.classList.remove("highlighted"));
-                row.classList.add("highlighted");
-                editButton.style.display = "inline-block";
-                deleteButton.style.display = "inline-block";
-                selectedRow = row;
+        function highlightRow(row) {
+            document.querySelectorAll("#dataTable2 tbody tr").forEach(r => r.classList.remove("highlighted"));
+            row.classList.add("highlighted");
+            editButton.style.display = "inline-block";
+            deleteButton.style.display = "inline-block";
+            selectedRow = row;
+        }
+
+        function attachRowListeners(row) {
+            row.addEventListener("click", function (event) {
+                highlightRow(row);
+                event.stopPropagation();
+            });
+        }
+
+        document.querySelectorAll("#dataTable2 tbody tr").forEach(attachRowListeners);
+
+        function openModal(isEdit = false) {
+            modal.style.display = "flex";
+            form.style.display = "grid"; // Always show the form
+            populateSelect("operator", operators);
+            populateSelect("workType", workTypes);
+            if (!isEdit) {
+                form.reset();
             }
+        }
 
-            function attachRowListeners(row) {
-                row.addEventListener("click", function (event) {
-                    highlightRow(row);
-                    event.stopPropagation();
-                });
-            }
-
-            // Attach listeners to existing rows
-            document.querySelectorAll("#dataTable2 tbody tr").forEach(attachRowListeners);
-
-            // Open Edit Modal and Populate Data
-            editButton.addEventListener("click", function (event) {
+        // Open Edit Modal and Populate Data
+        editButton.addEventListener("click", function (event) {
             if (!selectedRow) return;
 
             let cells = selectedRow.getElementsByTagName("td");
@@ -350,90 +360,85 @@
 
             inputs.forEach((input, index) => {
                 if (input.tagName === "SELECT") {
-                    // Set select dropdown value correctly
                     let optionExists = [...input.options].some(option => option.value === cells[index]?.textContent);
                     if (optionExists) {
                         input.value = cells[index]?.textContent;
                     }
                 } else {
-                    input.value = cells[index]?.textContent || ""; // Set text inputs
+                    input.value = cells[index]?.textContent || "";
                 }
             });
 
-            modal.style.display = "flex";
+            openModal(true); // Open in edit mode
             event.stopPropagation();
         });
 
-
-            // Open Modal for Adding New Row (Clear Form)
-            openModalButton.addEventListener("click", function () {
-                form.reset(); // Clear form for new entry
-                modal.style.display = "flex";
-                selectedRow = null;
-            });
-
-            // Save Data (New Row or Edit Existing)
-            form.onsubmit = function (event) {
-                event.preventDefault();
-                let inputs = form.querySelectorAll("input, select");
-
-                if (selectedRow) {
-                    // Editing Existing Row
-                    let cells = selectedRow.getElementsByTagName("td");
-                    inputs.forEach((input, index) => {
-                        if (cells[index]) {
-                            cells[index].textContent = input.value;
-                        }
-                    });
-                } else {
-                    // Adding New Row
-                    let newRow = tableBody.insertRow();
-                    let newCell = newRow.insertCell();
-                    newCell.textContent = getNextWorkNumber();
-
-                    inputs.forEach(input => {
-                        let newCell = newRow.insertCell();
-                        newCell.textContent = input.value;
-                    });
-
-                    attachRowListeners(newRow); // Attach click listener to new row
-                }
-
-                modal.style.display = "none";
-            };
-
-            // Delete Row
-            deleteButton.addEventListener("click", function (event) {
-                if (selectedRow) {
-                    selectedRow.remove();
-                    editButton.style.display = "none";
-                    deleteButton.style.display = "none";
-                    selectedRow = null;
-                }
-                event.stopPropagation();
-            });
-
-            // Click Outside to Remove Highlight & Hide Buttons
-            document.addEventListener("click", function (event) {
-                if (!event.target.closest("table") && !event.target.closest(".controls") && !event.target.closest(".modal")) {
-                    document.querySelectorAll("#dataTable2 tbody tr").forEach(row => row.classList.remove("highlighted"));
-                    editButton.style.display = "none";
-                    deleteButton.style.display = "none";
-                    selectedRow = null;
-                }
-            });
-
-            // Close Modal
-            document.querySelector(".close").addEventListener("click", function () {
-                modal.style.display = "none";
-            });
-
-            window.onclick = function (event) {
-                if (event.target === modal) {
-                    modal.style.display = "none";
-                }
-            };
+        // Open Modal for Adding New Row (Clear Form)
+        openModalButton.addEventListener("click", function () {
+            openModal(false); // Open in add mode
+            selectedRow = null;
         });
+
+        // Save Data (New Row or Edit Existing)
+        form.onsubmit = function (event) {
+            event.preventDefault();
+            let inputs = form.querySelectorAll("input, select");
+
+            if (selectedRow) {
+                let cells = selectedRow.getElementsByTagName("td");
+                inputs.forEach((input, index) => {
+                    if (cells[index]) {
+                        cells[index].textContent = input.value;
+                    }
+                });
+            } else {
+                let newRow = tableBody.insertRow();
+                let newCell = newRow.insertCell();
+                newCell.textContent = getNextWorkNumber();
+
+                inputs.forEach(input => {
+                    let newCell = newRow.insertCell();
+                    newCell.textContent = input.value;
+                });
+
+                attachRowListeners(newRow);
+            }
+
+            modal.style.display = "none";
+        };
+
+        // Delete Row
+        deleteButton.addEventListener("click", function (event) {
+            if (selectedRow) {
+                selectedRow.remove();
+                editButton.style.display = "none";
+                deleteButton.style.display = "none";
+                selectedRow = null;
+            }
+            event.stopPropagation();
+        });
+
+        // Click Outside to Remove Highlight & Hide Buttons
+        document.addEventListener("click", function (event) {
+            if (!event.target.closest("table") && !event.target.closest(".controls") && !event.target.closest(".modal")) {
+                document.querySelectorAll("#dataTable2 tbody tr").forEach(row => row.classList.remove("highlighted"));
+                editButton.style.display = "none";
+                deleteButton.style.display = "none";
+                selectedRow = null;
+            }
+        });
+
+        // Close Modal
+        document.querySelector(".close").addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    });
 
 
 
