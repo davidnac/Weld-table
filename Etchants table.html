@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Etchants Table</title>
+    <style>
+
+    @font-face {
+        font-family: 'Montserrat-Medium';
+        src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+    }
+
+
+        body {
+            font-family: 'Montserrat-Medium', sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 25px;
+            margin-top: 30px;
+        }
+        input {
+            padding: 10px;
+            width: 25%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        select {
+            width: 15%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .table-container {
+            width: 90%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            height: 71vh; /* Fixed height of the table container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-bottom: 22px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+
+        th {
+            background-color: #98D8EF;
+            color: white;
+            cursor: pointer;
+            position: sticky;
+            top: 0; /* Make header sticky */
+            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .sort-icon {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+
+
+        br {
+            display: block;
+            content: "";
+            margin-bottom: 10px; /* Adjust the space */
+        }
+        .highlighted {
+            background-color: #FFD95F !important;
+        }
+
+        .section a{
+          color: #3674B5;
+          margin-left: 12px;
+          margin-right: 12px;
+          text-align: center;
+          font-size: 14px;
+          text-transform: uppercase;
+          text-decoration: none;
+       }
+
+       ul {
+         list-style-type: none;
+         text-align: left;
+         padding-left: 25px; /* remove default padding */
+      }
+       li {
+         padding: 5px 0;
+         font-size: 13px;
+       }
+       h4{
+         padding-left: 25px;
+       }
+       .controls{
+          display: flex;
+          justify-content: center; /* Centers horizontally */
+          align-items: center;     /* Centers vertically */
+          margin-bottom: 10px;
+       }
+       .clearButton{
+          display: none;
+          cursor: pointer;
+          font-size: 26px;
+          color: gray;
+          padding-left: 6px;
+       }
+
+
+    </style>
+
+
+</head>
+<body>
+
+    <h2>Searchable ASTM E407 Etchants Table</h2>
+    <div class="controls">
+      <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
+
+      <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
+  </div>
+
+
+
+    <div class="table-container">
+        <table id="dataTable2">
+      <thead>
+          <tr>
+              <th>Etchant No.</th>
+              <th>Name</th>
+              <th>Chemical</th>
+              <th>ml</th>
+              <th>Usage</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>-</td>
+              <td>2% HF</td>
+              <td>Hf<br>Water</td>
+              <td>2<br>98</td>
+              <td>Titanium Alpha case etch</td>
+          </tr>
+
+          <tr>
+              <td>187</td>
+              <td>Kroll</td>
+              <td>Hf<br>HNO3<br>Water</td>
+              <td>10<br>30<br>50</td>
+              <td>Titanium alloys</td>
+          </tr>
+
+          <tr>
+              <td>109</td>
+              <td>-</td>
+              <td>HCl<br>HNO3<br>CuCl2<br>Water</td>
+              <td>50<br>25<br>1g<br>150</td>
+              <td>Nonstainless maraging steels</td>
+          </tr>
+
+
+          <tr>
+              <td>3</td>
+              <td>Kellers</td>
+              <td>Hf<br>HCl<br>HNO3<br>Water</td>
+              <td>2<br>3<br>5<br>190</td>
+              <td>Aluminium alloys</td>
+          </tr>
+
+          <tr>
+              <td>-</td>
+              <td>-</td>
+              <td>HCl<br>Oxalic acid</td>
+              <td>190<br>10g</td>
+              <td>Haynes 230</td>
+          </tr>
+
+          <tr>
+              <td>74</td>
+              <td>Nital</td>
+              <td>HNO3<br>Ethanol or Methanol 95%</td>
+              <td>4<br>100</td>
+              <td>Iron base steel / Cast iron, non-heat treated or welded steels</td>
+          </tr>
+
+          <tr>
+              <td>76</td>
+              <td>Picral</td>
+              <td>Picric acid<br>Ethanol or Methanol 95%<</td>
+              <td>4g<br>100</td>
+              <td></td>
+          </tr>
+
+          <tr>
+              <td>80</td>
+              <td>Viellas</td>
+              <td>HCl<br>Picric acid<br>Ethanol or Methanol 95%</td>
+              <td>5<br>1g<br>100</td>
+              <td>-</td>
+          </tr>
+
+          <tr>
+              <td>79</td>
+              <td>Fry`s</td>
+              <td>Hf<br>HCl<br>CuCl2<br>Water</td>
+              <td>2<br>40<br>5g<br>30</td>
+              <td>Aluminium alloys</td>
+          </tr>
+          <tr>
+
+              <td></td>
+              <td></td>
+          </tr>
+
+          <tr>
+              <td>94</td>
+              <td>Kallings</td>
+              <td>HCl<br>CuCl2<br>Ethanol or Methanol 95%</td>
+              <td>100<br>5g<br>100</td>
+              <td>Nickel alloys, Stainless steel - see welds</td>
+          </tr>
+
+          <tr>
+              <td>-</td>
+              <td>Carpenters</td>
+              <td>FeCl3<br>CuCl2<br>Hydrochoric acid<br>Nitric acid<br>Ethanol or Methanol 95%</td>
+              <td>8.5g<br>2.4g<br>122<br>6<br>122<</td>
+              <td>300 Series Stainless Steel</td>
+          </tr>
+
+          <tr>
+              <td>-</td>
+              <td>Adlers</td>
+              <td>Copper ammonium chloride<br>FeCl3<br>Hydrochoric acid<br>Water</td>
+              <td>9g<br>45g<br>150<br>75</td>
+              <td>300 Series Stainless Steel</td>
+          </tr>
+
+          <tr>
+              <td>20</td>
+              <td>-</td>
+              <td>H2O2 30%<br>HCl</td>
+              <td>5<br>100</td>
+              <td>Cobalt alloys (CM64, T800)</td>
+          </tr>
+
+      </tbody>
+  </table>
+
+    </div>
+
+
+    <script>
+
+
+        //highlight clicked rows
+        document.addEventListener("DOMContentLoaded", function() {
+            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+
+            rows.forEach(row => {
+                row.addEventListener("click", function(event) {
+                    if (row.classList.contains("highlighted")) {
+                        row.classList.remove("highlighted");
+                    } else {
+                        rows.forEach(r => r.classList.remove("highlighted"));
+                        row.classList.add("highlighted");
+                    }
+                    event.stopPropagation();
+                });
+
+                  // Double-click event to call a function
+                  row.addEventListener("dblclick", function() {
+                    openModal(row);
+                });
+
+            });
+
+
+            document.addEventListener("click", function() {
+                rows.forEach(row => row.classList.remove("highlighted"));
+            });
+        });
+
+
+
+        function searchTable() {
+          let input = document.getElementById("search");
+          let searchValue = input.value.trim();
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Show the clear button only if there is text in the search box
+          clearBtn.style.display = searchValue ? "block" : "none";
+
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+
+          for (let i = 1; i < rows.length; i++) {
+              if (rows[i].getElementsByTagName("th").length > 0) {
+                  continue; // Skip header rows
+              }
+
+              let cells = rows[i].getElementsByTagName("td");
+              let found = false;
+
+              for (let j = 0; j < cells.length; j++) {
+                  let cell = cells[j];
+
+                  // Clear previous highlights: remove all <span> elements and preserve their content
+                  cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
+
+                  if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
+                      highlightTextInElement(cell, searchValue);
+                      found = true;
+                  }
+              }
+
+              // Show row if a match is found, otherwise hide it
+              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+          }
+      }
+
+        // Recursive function to highlight text while preserving HTML structure
+        function highlightTextInElement(element, searchValue) {
+            let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+
+            function highlightNode(node) {
+                if (node.nodeType === 3) { // TEXT_NODE
+                    let parent = node.parentNode;
+                    let text = node.nodeValue;
+
+                    if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+                        let tempWrapper = document.createElement("span");
+                        tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+
+                        while (tempWrapper.firstChild) {
+                            parent.insertBefore(tempWrapper.firstChild, node);
+                        }
+                        parent.removeChild(node);
+                    }
+                } else {
+                    // Recursively process child nodes
+                    for (let i = node.childNodes.length - 1; i >= 0; i--) {
+                        highlightNode(node.childNodes[i]);
+                    }
+                }
+            }
+
+            highlightNode(element);
+        }
+
+
+      function clearSearch() {
+          let input = document.getElementById("search");
+          let clearBtn = document.getElementById("clearSearch");
+
+          // Clear the search input
+          input.value = "";
+          clearBtn.style.display = "none"; // Hide the clear button
+
+          // Reset the table to show all rows
+          let table = document.querySelector("table:not([style*='display: none'])");
+          if (!table) return;
+
+          let rows = table.getElementsByTagName("tr");
+          for (let i = 1; i < rows.length; i++) {
+              rows[i].style.display = ""; // Make all rows visible again
+
+              // Remove any highlighting
+              let cells = rows[i].getElementsByTagName("td");
+              for (let j = 0; j < cells.length; j++) {
+                  cells[j].innerHTML = cells[j].textContent;
+              }
+          }
+      }
+
+    </script>
+</body>
+</html>
