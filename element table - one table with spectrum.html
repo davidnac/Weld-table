@@ -1691,13 +1691,16 @@
     let row = event.target.closest("tr");
     if (!row) return; // Ensure row is valid
 
-    console.log(row);
     let spectral = [];
     let headers = document.querySelector("#data-table thead").rows[0].cells;
+    let materialName = "";
+
 
     Array.from(row.cells).forEach((cell, colIndex) => {  
-        if (colIndex === 0) return; // Skip the first column (index 0)
-
+        if (colIndex === 0){
+          materialName = cell.textContent;
+          return; // Skip the first column (index 0)
+        } 
         let value = parseFloat(cell.textContent.trim());
         console.log(value)
         if (!isNaN(value)) {
@@ -1717,6 +1720,7 @@
     drawChart(spectral);
 
     // Open modal
+    document.querySelector("#modal-spectral-table h3").textContent = materialName;
     document.getElementById("modal-spectral-table").style.display = "flex";
 
 });
