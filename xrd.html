@@ -11,7 +11,7 @@
             text-align: center;
         }
         canvas {
-            max-width: 800px;
+            width: 50% !important;
             margin: auto;
         }
         table {
@@ -28,6 +28,11 @@
             margin-top: 10px;
             padding: 5px 10px;
         }
+        input{
+            width: 100px;
+            text-align: center;
+            padding: 6px 8px;
+        }
     </style>
 </head>
 <body>
@@ -36,93 +41,143 @@
     <canvas id="xrdChart"></canvas>
     
     <table>
-        <tr>
-            <th>2θ (Degrees)</th>
-            <th>Intensity</th>
-            <th>hkl</th>
-        </tr>
         <tbody id="dataTable">
-            <tr><td><input type="number" value="25.6"></td><td><input type="number" value="100"></td><td>(012)</td></tr>
-            <tr><td><input type="number" value="35.1"></td><td><input type="number" value="80"></td><td>(104)</td></tr>
-            <tr><td><input type="number" value="37.8"></td><td><input type="number" value="90"></td><td>(110)</td></tr>
-            <tr><td><input type="number" value="43.3"></td><td><input type="number" value="70"></td><td>(113)</td></tr>
-            <tr><td><input type="number" value="52.5"></td><td><input type="number" value="60"></td><td>(024)</td></tr>
-            <tr><td><input type="number" value="57.5"></td><td><input type="number" value="50"></td><td>(116)</td></tr>
-            <tr><td><input type="number" value="66.6"></td><td><input type="number" value="40"></td><td>(214)</td></tr>
-            <tr><td><input type="number" value="76.9"></td><td><input type="number" value="30"></td><td>(300)</td></tr>
+            <tr>
+                <th>2θ (Degrees)</th>
+                <td><input type="number" value="25.6"></td>
+                <td><input type="number" value="35.1"></td>
+                <td><input type="number" value="37.8"></td>
+                <td><input type="number" value="43.3"></td>
+                <td><input type="number" value="52.5"></td>
+                <td><input type="number" value="57.5"></td>
+                <td><input type="number" value="66.6"></td>
+                <td><input type="number" value="76.9"></td>
+            </tr>
+            <tr>
+                <th>Intensity</th>
+                <td><input type="number" value="100"></td>
+                <td><input type="number" value="80"></td>
+                <td><input type="number" value="90"></td>
+                <td><input type="number" value="70"></td>
+                <td><input type="number" value="60"></td>
+                <td><input type="number" value="50"></td>
+                <td><input type="number" value="40"></td>
+                <td><input type="number" value="30"></td>
+            </tr>
+            <tr>
+                <th>hkl</th>
+                <td>(012)</td>
+                <td>(104)</td>
+                <td>(110)</td>
+                <td>(113)</td>
+                <td>(024)</td>
+                <td>(116)</td>
+                <td>(214)</td>
+                <td>(300)</td>
+            </tr>
         </tbody>
     </table>
+    
     <button onclick="updateChart()">Update Spectrum</button>
     
     <script>
-        function updateChart() {
-            const ctx = document.getElementById("xrdChart").getContext("2d");
-            const tableRows = document.querySelectorAll("#dataTable tr");
-            let peaks = [], intensities = [], hklLabels = [];
-            
-            tableRows.forEach(row => {
-                const cells = row.querySelectorAll("td input");
-                const hkl = row.cells[2].textContent;
-                
-                peaks.push(parseFloat(cells[0].value));
-                intensities.push(parseFloat(cells[1].value));
-                hklLabels.push(hkl);
+       function updateChart() {
+    const ctx = document.getElementById("xrdChart").getContext("2d");
+    const tableRows = document.querySelectorAll("#dataTable tr");
+    let peaks = [], intensities = [], hklLabels = [];
+    
+    // Iterate over each row and extract the necessary data
+    tableRows.forEach((row, rowIndex) => {
+        const cells = row.querySelectorAll("td input"); // Get the input elements
+        const header = row.querySelector("th").textContent; // Get the header (2θ, Intensity, or hkl)
+
+        if (header === "2θ (Degrees)") {
+            // Extract 2θ (Degrees) values
+            cells.forEach((cell, index) => {
+                peaks.push(parseFloat(cell.value));
             });
-            
-            const peakData = peaks.map((theta, index) => (
-                [{ x: theta, y: 0 }, { x: theta, y: intensities[index] }, { x: theta, y: 0 }]
-            )).flat();
-            
-            if (window.myChart) {
-                window.myChart.destroy();
-            }
-            
-            window.myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'XRD Intensity',
-                        data: peakData,
-                        borderColor: 'blue',
-                        borderWidth: 2,
-                        pointRadius: 0,
-                        fill: false,
-                        showLine: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    if (context.raw.y === 0) return '';
-                                    const index = peaks.indexOf(context.raw.x);
-                                    return `2θ: ${context.raw.x}°, Intensity: ${context.raw.y}, hkl: ${hklLabels[index]}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: '2θ (Degrees)'
-                            },
-                            type: 'linear'
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Intensity (Arbitrary Units)'
-                            }
+        } else if (header === "Intensity") {
+            // Extract intensity values
+            cells.forEach((cell, index) => {
+                intensities.push(parseFloat(cell.value));
+            });
+        } else if (header === "hkl") {
+            // Extract hkl labels
+            cells.forEach((cell, index) => {
+                hklLabels.push(cell.textContent);
+            });
+        }
+    });
+
+    const peakData = peaks.map((theta, index) => {
+        const width = 0.5; // half width (total width = 5 degrees)
+        const leftX = theta - width;
+        const rightX = theta + width;
+        
+        // Return data for the peak with its width at zero intensity, but only one point at the peak intensity
+        return [
+            { x: leftX, y: 0 }, // left side at zero intensity
+            { x: theta, y: intensities[index] }, // peak at maximum intensity
+            { x: rightX, y: 0 } // right side at zero intensity
+        ];
+    }).flat();
+    
+    // Destroy the previous chart if it exists
+    if (window.myChart) {
+        window.myChart.destroy();
+    }
+    
+    // Create a new chart
+    window.myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'XRD Intensity',
+                data: peakData,
+                borderColor: "rgba(75, 192, 192, 1)", // Line color
+                backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
+                fill: true,
+                borderWidth: 2,
+                pointRadius: 0,
+                showLine: true,
+                tension: 0.05, // Smooth lines
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            if (context.raw.y === 0) return '';
+                            const index = peaks.indexOf(context.raw.x);
+                            return `2θ: ${context.raw.x}°, Intensity: ${context.raw.y}, hkl: ${hklLabels[index]}`;
                         }
                     }
                 }
-            });
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: '2θ (Degrees)'
+                    },
+                    type: 'linear'
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Intensity (Arbitrary Units)'
+                    }
+                }
+            }
         }
-        
-        document.addEventListener("DOMContentLoaded", updateChart);
-    </script>
+    });
+}
+
+document.addEventListener("DOMContentLoaded", updateChart);
+
+       
+       </script>
 </body>
 </html>
