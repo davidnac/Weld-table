@@ -2039,116 +2039,118 @@
 
         //////////////////MODAL CODE ////////////////////////////
 
-        const elements = [
-            { symbol: "H", name: "Hydrogen", row: 1, col: 1 },
-            { symbol: "He", name: "Helium", row: 1, col: 18 },
+          const elements = [
+            { symbol: "H", name: "Hydrogen", row: 1, col: 1},
+            { symbol: "He", name: "Helium", row: 1, col: 18},
 
-            { symbol: "Li", name: "Lithium", row: 2, col: 1 },
-            { symbol: "Be", name: "Beryllium", row: 2, col: 2 },
-            { symbol: "B", name: "Boron", row: 2, col: 13 },
-            { symbol: "C", name: "Carbon", row: 2, col: 14 },
-            { symbol: "N", name: "Nitrogen", row: 2, col: 15 },
-            { symbol: "O", name: "Oxygen", row: 2, col: 16 },
-            { symbol: "F", name: "Fluorine", row: 2, col: 17 },
-            { symbol: "Ne", name: "Neon", row: 2, col: 18 },
+            { symbol: "Li", name: "Lithium", row: 2, col: 1  ,Ka: 0.054 },
+            { symbol: "Be", name: "Beryllium", row: 2, col: 2  ,Ka: 0.108 },
+            { symbol: "B", name: "Boron", row: 2, col: 13  ,Ka: 0.183 },
+            { symbol: "C", name: "Carbon", row: 2, col: 14  ,Ka: 0.277 },
+            { symbol: "N", name: "Nitrogen", row: 2, col: 15  ,Ka: 0.392 },
+            { symbol: "O", name: "Oxygen", row: 2, col: 16  ,Ka: 0.525 },
+            { symbol: "F", name: "Fluorine", row: 2, col: 17  ,Ka: 0.677 },
+            { symbol: "Ne", name: "Neon", row: 2, col: 18  ,Ka: 0.849 },
 
-            { symbol: "Na", name: "Sodium", row: 3, col: 1 },
-            { symbol: "Mg", name: "Magnesium", row: 3, col: 2 },
-            { symbol: "Al", name: "Aluminum", row: 3, col: 13 },
-            { symbol: "Si", name: "Silicon", row: 3, col: 14 },
-            { symbol: "P", name: "Phosphorus", row: 3, col: 15 },
-            { symbol: "S", name: "Sulfur", row: 3, col: 16 },
-            { symbol: "Cl", name: "Chlorine", row: 3, col: 17 },
-            { symbol: "Ar", name: "Argon", row: 3, col: 18 },
+            { symbol: "Na", name: "Sodium", row: 3, col: 1  ,Ka: 1.041 },
+            { symbol: "Mg", name: "Magnesium", row: 3, col: 2  ,Ka: 1.254 },
+            { symbol: "Al", name: "Aluminum", row: 3, col: 13  ,Ka: 1.486 },
+            { symbol: "Si", name: "Silicon", row: 3, col: 14  ,Ka: 1.740 },
+            { symbol: "P", name: "Phosphorus", row: 3, col: 15  ,Ka: 2.013 },
+            { symbol: "S", name: "Sulfur", row: 3, col: 16  ,Ka: 2.307 },
+            { symbol: "Cl", name: "Chlorine", row: 3, col: 17  ,Ka: 2.622 },
+            { symbol: "Ar", name: "Argon", row: 3, col: 18  ,Ka: 2.957 },
 
-            { symbol: "K", name: "Potassium", row: 4, col: 1 },
-            { symbol: "Ca", name: "Calcium", row: 4, col: 2 },
-            { symbol: "Sc", name: "Scandium", row: 4, col: 3 },
-            { symbol: "Ti", name: "Titanium", row: 4, col: 4 },
-            { symbol: "V", name: "Vanadium", row: 4, col: 5 },
-            { symbol: "Cr", name: "Chromium", row: 4, col: 6 },
-            { symbol: "Mn", name: "Manganese", row: 4, col: 7 },
-            { symbol: "Fe", name: "Iron", row: 4, col: 8 },
-            { symbol: "Co", name: "Cobalt", row: 4, col: 9 },
-            { symbol: "Ni", name: "Nickel", row: 4, col: 10 },
-            { symbol: "Cu", name: "Copper", row: 4, col: 11 },
-            { symbol: "Zn", name: "Zinc", row: 4, col: 12 },
-            { symbol: "Ga", name: "Gallium", row: 4, col: 13 },
-            { symbol: "Ge", name: "Germanium", row: 4, col: 14 },
-            { symbol: "As", name: "Arsenic", row: 4, col: 15 },
-            { symbol: "Se", name: "Selenium", row: 4, col: 16 },
-            { symbol: "Br", name: "Bromine", row: 4, col: 17 },
-            { symbol: "Kr", name: "Krypton", row: 4, col: 18 },
+            { symbol: "K", name: "Potassium", row: 4, col: 1  ,Ka: 3.314 },
+            { symbol: "Ca", name: "Calcium", row: 4, col: 2  ,Ka: 3.692 },
+            { symbol: "Sc", name: "Scandium", row: 4, col: 3  ,Ka: 4.090 },
+            { symbol: "Ti", name: "Titanium", row: 4, col: 4  ,Ka: 4.510 },
+            { symbol: "V", name: "Vanadium", row: 4, col: 5  ,Ka: 4.949 },
+            { symbol: "Cr", name: "Chromium", row: 4, col: 6  ,Ka: 5.415 },
+            { symbol: "Mn", name: "Manganese", row: 4, col: 7  ,Ka: 5.898 },
+            { symbol: "Fe", name: "Iron", row: 4, col: 8  ,Ka: 6.404 },
+            { symbol: "Co", name: "Cobalt", row: 4, col: 9  ,Ka: 6.925 },
+            { symbol: "Ni", name: "Nickel", row: 4, col: 10  ,Ka: 7.472 },
+            { symbol: "Cu", name: "Copper", row: 4, col: 11  ,Ka: 8.047, La: 0.930 },
+            { symbol: "Zn", name: "Zinc", row: 4, col: 12  ,Ka: 8.638, La: 1.012 },
+            { symbol: "Ga", name: "Gallium", row: 4, col: 13  ,Ka: 9.251, La: 1.098 },
+            { symbol: "Ge", name: "Germanium", row: 4, col: 14  ,Ka: 9.875, La: 1.188 },
+            { symbol: "As", name: "Arsenic", row: 4, col: 15  ,Ka: 10.543, La: 1.282 },
+            { symbol: "Se", name: "Selenium", row: 4, col: 16  ,Ka: 11.222, La: 1.379 },
+            { symbol: "Br", name: "Bromine", row: 4, col: 17  ,Ka: 11.924, La: 1.480 },
+            { symbol: "Kr", name: "Krypton", row: 4, col: 18  ,Ka: 12.648, La: 1.584 },
 
-            { symbol: "Rb", name: "Rubidium", row: 5, col: 1 },
-            { symbol: "Sr", name: "Strontium", row: 5, col: 2 },
-            { symbol: "Y", name: "Yttrium", row: 5, col: 3 },
-            { symbol: "Zr", name: "Zirconium", row: 5, col: 4 },
-            { symbol: "Nb", name: "Niobium", row: 5, col: 5 },
-            { symbol: "Mo", name: "Molybdenum", row: 5, col: 6 },
-            { symbol: "Tc", name: "Technetium", row: 5, col: 7 },
-            { symbol: "Ru", name: "Ruthenium", row: 5, col: 8 },
-            { symbol: "Rh", name: "Rhodium", row: 5, col: 9 },
-            { symbol: "Pd", name: "Palladium", row: 5, col: 10 },
-            { symbol: "Ag", name: "Silver", row: 5, col: 11 },
-            { symbol: "Cd", name: "Cadmium", row: 5, col: 12 },
-            { symbol: "In", name: "Indium", row: 5, col: 13 },
-            { symbol: "Sn", name: "Tin", row: 5, col: 14 },
-            { symbol: "Sb", name: "Antimony", row: 5, col: 15 },
-            { symbol: "Te", name: "Tellurium", row: 5, col: 16 },
-            { symbol: "I", name: "Iodine", row: 5, col: 17 },
-            { symbol: "Xe", name: "Xenon", row: 5, col: 18 },
+            { symbol: "Rb", name: "Rubidium", row: 5, col: 1  ,Ka: 13.394, La: 1.692 },
+            { symbol: "Sr", name: "Strontium", row: 5, col: 2  ,Ka: 14.165, La: 1.804 },
+            { symbol: "Y", name: "Yttrium", row: 5, col: 3  ,Ka: 14.959, La: 1.918 },
+            { symbol: "Zr", name: "Zirconium", row: 5, col: 4  ,Ka: 15.775, La: 2.036 },
+            { symbol: "Nb", name: "Niobium", row: 5, col: 5  ,Ka: 16.615, La: 2.157 },
+            { symbol: "Mo", name: "Molybdenum", row: 5, col: 6  ,Ka: 17.479, La: 2.282 },
+            { symbol: "Tc", name: "Technetium", row: 5, col: 7  ,Ka: 18.367, La: 2.410 },
+            { symbol: "Ru", name: "Ruthenium", row: 5, col: 8  ,Ka: 19.279, La: 2.541 },
+            { symbol: "Rh", name: "Rhodium", row: 5, col: 9  ,Ka: 20.216, La: 2.676 },
+            { symbol: "Pd", name: "Palladium", row: 5, col: 10  ,Ka: 21.177, La: 2.814 },
+            { symbol: "Ag", name: "Silver", row: 5, col: 11  ,Ka: 22.163, La: 2.956 },
+            { symbol: "Cd", name: "Cadmium", row: 5, col: 12  ,Ka: 23.173, La: 3.101 },
+            { symbol: "In", name: "Indium", row: 5, col: 13  ,Ka: 24.208, La: 3.250 },
+            { symbol: "Sn", name: "Tin", row: 5, col: 14  ,Ka: 25.271, La: 3.402 },
+            { symbol: "Sb", name: "Antimony", row: 5, col: 15  ,Ka: 26.360, La: 3.559 },
+            { symbol: "Te", name: "Tellurium", row: 5, col: 16  ,Ka: 27.476, La: 3.719 },
+            { symbol: "I", name: "Iodine", row: 5, col: 17  ,Ka: 28.620, La: 3.882 },
+            { symbol: "Xe", name: "Xenon", row: 5, col: 18  ,Ka: 29.791, La: 4.048 },
 
-            { symbol: "Cs", name: "Cesium", row: 6, col: 1 },
-            { symbol: "Ba", name: "Barium", row: 6, col: 2 },
-            { symbol: "La", name: "Lanthanum", row: 6, col: 3 },
-            { symbol: "Hf", name: "Hafnium", row: 6, col: 4 },
-            { symbol: "Ta", name: "Tantalum", row: 6, col: 5 },
-            { symbol: "W", name: "Tungsten", row: 6, col: 6 },
-            { symbol: "Re", name: "Rhenium", row: 6, col: 7 },
-            { symbol: "Os", name: "Osmium", row: 6, col: 8 },
-            { symbol: "Ir", name: "Iridium", row: 6, col: 9 },
-            { symbol: "Pt", name: "Platinum", row: 6, col: 10 },
-            { symbol: "Au", name: "Gold", row: 6, col: 11 },
-            { symbol: "Hg", name: "Mercury", row: 6, col: 12 },
-            { symbol: "Tl", name: "Thallium", row: 6, col: 13 },
-            { symbol: "Pb", name: "Lead", row: 6, col: 14 },
-            { symbol: "Bi", name: "Bismuth", row: 6, col: 15},
-            { symbol: "Po", name: "Polonium", row: 6, col: 16 },
-            { symbol: "At", name: "Astatine", row: 6, col: 17 },
-            { symbol: "Rn", name: "Radon", row: 6, col: 18 },
+            { symbol: "Cs", name: "Cesium", row: 6, col: 1  ,Ka: 30.989, La: 4.218 },
+            { symbol: "Ba", name: "Barium", row: 6, col: 2  ,Ka: 32.214, La: 4.391 },
+            { symbol: "La", name: "Lanthanum", row: 6, col: 3  ,Ka: 33.467, La: 4.567, Lb: 4.95 },
+            { symbol: "Hf", name: "Hafnium", row: 6, col: 4  ,Ka: 65.11, La: 7.89, Lb: 9.03 },
+            { symbol: "Ta", name: "Tantalum", row: 6, col: 5  ,Ka: 67.08, La: 8.15, Lb: 9.35 },
+            { symbol: "W", name: "Tungsten", row: 6, col: 6  ,Ka: 69.06, La: 8.40, Lb: 9.67 },
+            { symbol: "Re", name: "Rhenium", row: 6, col: 7  ,Ka: 71.08, La: 8.66, Lb: 10.00 },
+            { symbol: "Os", name: "Osmium", row: 6, col: 8  ,Ka: 73.12, La: 8.93, Lb: 10.33 },
+            { symbol: "Ir", name: "Iridium", row: 6, col: 9  ,Ka: 75.18, La: 9.20, Lb: 10.67 },
+            { symbol: "Pt", name: "Platinum", row: 6, col: 10  ,Ka: 77.25, La: 9.47, Lb: 11.01 },
+            { symbol: "Au", name: "Gold", row: 6, col: 11  ,Ka: 79.33, La: 9.71, Lb: 11.36 },
+            { symbol: "Hg", name: "Mercury", row: 6, col: 12  ,Ka: 81.43, La: 9.99, Lb: 11.72 },
+            { symbol: "Tl", name: "Thallium", row: 6, col: 13  ,Ka: 83.54, La: 10.26, Lb: 12.08 },
+            { symbol: "Pb", name: "Lead", row: 6, col: 14  ,Ka: 85.67, La: 10.55, Lb: 12.45 },
+            { symbol: "Bi", name: "Bismuth", row: 6, col: 15  ,Ka: 87.82, La: 10.84, Lb: 12.82 },
+            { symbol: "Po", name: "Polonium", row: 6, col: 16  ,Ka: 90.00, La: 11.13, Lb: 13.20 },
+            { symbol: "At", name: "Astatine", row: 6, col: 17  ,Ka: 92.20, La: 11.43, Lb: 13.59 },
+            { symbol: "Rn", name: "Radon", row: 6, col: 18  ,Ka: 94.42, La: 11.74, Lb: 13.98 },
 
-            { symbol: "Ce", name: "Cerium", row: 8, col: 4 },
-            { symbol: "Pr", name: "Praseodymium", row: 8, col: 5 },
-            { symbol: "Nd", name: "Neodymium", row: 8, col: 6 },
-            { symbol: "Pm", name: "Promethium", row: 8, col: 7 },
-            { symbol: "Sm", name: "Samarium", row: 8, col: 8 },
-            { symbol: "Eu", name: "Europium", row: 8, col: 9 },
-            { symbol: "Gd", name: "Gadolinium", row: 8, col: 10 },
-            { symbol: "Tb", name: "Terbium", row: 8, col: 11 },
-            { symbol: "Dy", name: "Dysprosium", row: 8, col: 12 },
-            { symbol: "Ho", name: "Holmium", row: 8, col: 13 },
-            { symbol: "Er", name: "Erbium", row: 8, col: 14 },
-            { symbol: "Tm", name: "Thulium", row: 8, col: 15 },
-            { symbol: "Yb", name: "Ytterbium", row: 8, col: 16 },
-            { symbol: "Lu", name: "Lutetium", row: 8, col: 17 },
+            { symbol: "Ce", name: "Cerium", row: 8, col: 4  ,Ka: 34.72, La: 4.84, Lb: 5.27 },
+            { symbol: "Pr", name: "Praseodymium", row: 8, col: 5  ,Ka: 35.99, La: 5.01, Lb: 5.46 },
+            { symbol: "Nd", name: "Neodymium", row: 8, col: 6  ,Ka: 37.28, La: 5.19, Lb: 5.66 },
+            { symbol: "Pm", name: "Promethium", row: 8, col: 7  ,Ka: 38.59, La: 5.37, Lb: 5.86 },
+            { symbol: "Sm", name: "Samarium", row: 8, col: 8  ,Ka: 39.92, La: 5.55, Lb: 6.06 },
+            { symbol: "Eu", name: "Europium", row: 8, col: 9  ,Ka: 41.27, La: 5.74, Lb: 6.27 },
+            { symbol: "Gd", name: "Gadolinium", row: 8, col: 10  ,Ka: 42.64, La: 5.93, Lb: 6.48 },
+            { symbol: "Tb", name: "Terbium", row: 8, col: 11  ,Ka: 44.03, La: 6.12, Lb: 6.69 },
+            { symbol: "Dy", name: "Dysprosium", row: 8, col: 12  ,Ka: 45.44, La: 6.32, Lb: 6.91 },
+            { symbol: "Ho", name: "Holmium", row: 8, col: 13  ,Ka: 46.87, La: 6.52, Lb: 7.13 },
+            { symbol: "Er", name: "Erbium", row: 8, col: 14  ,Ka: 48.32, La: 6.72, Lb: 7.36 },
+            { symbol: "Tm", name: "Thulium", row: 8, col: 15  ,Ka: 49.79, La: 6.93, Lb: 7.59 },
+            { symbol: "Tm", name: "Thulium", row: 8, col: 15  ,Ka: 49.79, La: 6.93, Lb: 7.59 },
+            { symbol: "Yb", name: "Ytterbium", row: 8, col: 16  ,Ka: 51.28, La: 7.14, Lb: 7.82 },
+            { symbol: "Lu", name: "Lutetium", row: 8, col: 17  ,Ka: 52.79, La: 7.35, Lb: 8.05 },
 
-            { symbol: "Th", name: "Thorium", row: 9, col: 4 },
-            { symbol: "Pa", name: "Protactinium", row: 9, col: 5 },
-            { symbol: "U", name: "Uranium", row: 9, col: 6 },
-            { symbol: "Np", name: "Neptunium", row: 9, col: 7 },
-            { symbol: "Pu", name: "Plutonium", row: 9, col: 8 },
-            { symbol: "Am", name: "Americium", row: 9, col: 9 },
-            { symbol: "Cm", name: "Curium", row: 9, col: 10 },
-            { symbol: "Bk", name: "Berkelium", row: 9, col: 11 },
-            { symbol: "Cf", name: "Californium", row: 9, col: 12 },
-            { symbol: "Es", name: "Einsteinium", row: 9, col: 13 },
-            { symbol: "Fm", name: "Fermium", row: 9, col: 14 },
-            { symbol: "Md", name: "Mendelevium", row: 9, col: 15 },
-            { symbol: "No", name: "Nobelium", row: 9, col: 16 },
-            { symbol: "Lr", name: "Lawrencium", row: 9, col: 17 }
+            { symbol: "Th", name: "Thorium", row: 9, col: 4  ,Ka: 98.44, La: 12.37, Lb: 14.78, Ma: 2.01 },
+            { symbol: "Pa", name: "Protactinium", row: 9, col: 5  ,Ka: 100.86, La: 12.69, Lb: 15.19, Ma: 2.09 },
+            { symbol: "U", name: "Uranium", row: 9, col: 6  ,Ka: 103.35, La: 13.02, Lb: 15.60, Ma: 2.17 },
+            { symbol: "Np", name: "Neptunium", row: 9, col: 7  ,Ka: 105.89, La: 13.35, Lb: 16.01, Ma: 2.25 },
+            { symbol: "Pu", name: "Plutonium", row: 9, col: 8  ,Ka: 108.47, La: 13.68, Lb: 16.43, Ma: 2.33 },
+            { symbol: "Am", name: "Americium", row: 9, col: 9  ,Ka: 111.10, La: 14.02, Lb: 16.85, Ma: 2.41 },
+            { symbol: "Cm", name: "Curium", row: 9, col: 10  ,Ka: 113.78, La: 14.36, Lb: 17.28, Ma: 2.49 },
+            { symbol: "Bk", name: "Berkelium", row: 9, col: 11  ,Ka: 116.51, La: 14.71, Lb: 17.71, Ma: 2.57 },
+            { symbol: "Cf", name: "Californium", row: 9, col: 12  ,Ka: 119.28, La: 15.06, Lb: 18.15, Ma: 2.66 },
+            { symbol: "Es", name: "Einsteinium", row: 9, col: 13  ,Ka: 122.10, La: 15.41, Lb: 18.59, Ma: 2.74 },
+            { symbol: "Fm", name: "Fermium", row: 9, col: 14  ,Ka: 124.97, La: 15.77, Lb: 19.03, Ma: 2.83 },
+            { symbol: "Md", name: "Mendelevium", row: 9, col: 15  ,Ka: 127.89, La: 16.13, Lb: 19.48, Ma: 2.91 },
+            { symbol: "No", name: "Nobelium", row: 9, col: 16  ,Ka: 130.86, La: 16.50, Lb: 19.93, Ma: 3.00 },
+            { symbol: "Lr", name: "Lawrencium", row: 9, col: 17  ,Ka: 133.88, La: 16.87, Lb: 20.39, Ma: 3.09 }
+  ];
 
-          ];
+
 
         const selectedElements = new Set(["Ag", "Ni", "Co","Ti","V", "Cr","Nb","Mo","Al","Zn","Cu","Fe","Mn","W"]);
         const table = document.getElementById("periodic-table");
@@ -2195,13 +2197,11 @@
 
         document.querySelector(".modal-content-periodic-table .close").onclick = () => {
             hideUnselectedColumns("data-table");
-            hideUnselectedColumns("data-table");
             document.getElementById("modal-periodic-table").style.display = "none";
         };
 
         window.onclick = (event) => {
             if (event.target === document.getElementById("modal-periodic-table")) {
-                hideUnselectedColumns("data-table");
                 hideUnselectedColumns("data-table");
                 document.getElementById("modal-periodic-table").style.display = "none";
             }
@@ -2209,35 +2209,52 @@
 
 
         function hideUnselectedColumns(tableId) {
-            const table = document.getElementById(tableId);
-            if (!table) return;
+    const table = document.getElementById(tableId);
+    if (!table) return;
 
-            const thead = table.querySelector("thead");
-            const tbody = table.querySelector("tbody");
+    const thead = table.querySelector("thead");
+    const tbody = table.querySelector("tbody");
 
-            if (!thead || !tbody) return;
+    if (!thead || !tbody) return;
 
-            const headers = thead.querySelectorAll("th td");
+    const headers = thead.querySelectorAll("th");
+    const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
 
-            headers.forEach((th, index) => {
-                // Extract element symbol from header text
-                const match = th.textContent.match(/\((\w+)\)/);
-                if (match) {
-                    const elementSymbol = match[1]; // Extracted symbol
-                    if (!selectedElements.has(elementSymbol)) {
-                        th.style.display = "none"; // Hide column header
+    headers.forEach((th, index) => {
+        // Extract text from <th>
+        const text = th.textContent.trim();
 
-                        // Hide corresponding column cells in tbody
-                        tbody.querySelectorAll("tr").forEach(row => {
-                            const cells = row.querySelectorAll("td");
-                            if (cells[index]) {
-                                cells[index].style.display = "none";
-                            }
+        // Extract element symbol from header text
+        const match = text.match(/\((\w+)\)/);
+        if (match) {
+            const elementSymbol = match[1]; // Extracted symbol
+            if (!selectedElements.has(elementSymbol)) {
+                // Hide the <th>
+                th.style.display = "none";
+
+                // Hide corresponding <td> in <thead> (if present)
+                if (theadCells[index]) {
+                    theadCells[index].style.display = "none";
+                }
+
+                // Hide corresponding column cells in tbody
+                tbody.querySelectorAll("tr").forEach(row => {
+                    const cells = row.querySelectorAll("td");
+                    if (cells[index]) {
+                        cells[index].style.display = "none";
+
+                        // Hide any inputs or elements inside the <td>
+                        cells[index].querySelectorAll("*").forEach(child => {
+                            child.style.display = "none";
                         });
                     }
-                }
-            });
+                });
+            }
         }
+    });
+}
+
+
 
       // Apply function to both tables when the page loads
       document.addEventListener("DOMContentLoaded", () => {
