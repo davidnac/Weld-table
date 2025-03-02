@@ -275,6 +275,7 @@
               background-color: #98D8EF;
               border-color: #ffd95f;
           }
+
       .modal {
         display: none;
         position: fixed;
@@ -303,15 +304,30 @@
         cursor: pointer;
         font-size: 30px;
     }
+    .modal-content-spectral-table {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%; /* Adjust for responsiveness */
+    max-width: 60%; /* Prevent it from being too large */
+    min-height: 50vh;
+    position: relative;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content-spectral-table .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 30px;
+}
     .maxWide{
       min-width: 180px;
     }
 
     canvas{
       width: 100% !important; /* 50% of the body width */
-      height: 60% !important;
-      margin-top: 40px;
-      margin-bottom: 20px;
     }
 
     </style>
@@ -1521,15 +1537,24 @@
 
     </div>
 
-    <canvas id="myChart"></canvas>
-
-
+    
     <div id="modal-periodic-table" class="modal" style="display:none;">
+
         <div class="modal-content-periodic-table">
+          <h3>Element selection</h3>
             <span class="close">&times;</span>
             <div class="table" id="periodic-table"></div>
         </div>
     </div>
+
+
+    <div id="modal-spectral-table" class="modal" style="display:none;">
+      <div class="modal-content-spectral-table">
+        <h3>Material EDS Spectral</h3>
+          <span class="close">&times;</span>
+          <canvas id="myChart"></canvas>
+      </div>
+  </div>
 
     <script>
 
@@ -1662,25 +1687,41 @@
       }
 
 
-      //double click row to copy data
-      document.querySelectorAll("#data-table tr").forEach((row) => {
-        row.addEventListener("dblclick", function () {
-          let cells = this.getElementsByTagName("td");
-          let inputs = document.querySelectorAll("#data-table input");
+      document.querySelector("#data-table tbody").addEventListener("dblclick", function (event) {
+    let row = event.target.closest("tr");
+    if (!row) return; // Ensure row is valid
 
-          inputs.forEach((input, index) => {
-            let cellText = cells[index] ? cells[index].textContent.trim() : "";
+    console.log(row);
+    let spectral = [];
+    let headers = document.querySelector("#data-table thead").rows[0].cells;
 
-            // First column: copy as-is, Other columns: only copy if it's a number
-            if (index === 0) {
-              input.value = cellText; // Copy first column as-is
-            } else {
-              let cellValue = parseFloat(cellText);
-              input.value = !isNaN(cellValue) ? cellValue : "";
+    Array.from(row.cells).forEach((cell, colIndex) => {  
+        if (colIndex === 0) return; // Skip the first column (index 0)
+
+        let value = parseFloat(cell.textContent.trim());
+        console.log(value)
+        if (!isNaN(value)) {
+            let elementName = headers[colIndex].textContent.trim();
+            console.log(elementName)
+            let element = elements.find(e => elementName.includes(e.name));
+            console.log(element)
+            if (element) {
+                element.wt = value;
+                spectral.push({ ...element });
+                element.wt = 100;
             }
-          });
-        });
-      });
+        }
+    });
+
+    console.log("Spectral Array:", spectral);
+    drawChart(spectral);
+
+    // Open modal
+    document.getElementById("modal-spectral-table").style.display = "flex";
+
+});
+
+
 
 
       let sortDirections = {}; // Store sort directions for each column
@@ -1956,7 +1997,7 @@
       }
 
 
-
+/*
       //Shrink header columns on click, to allow easier edit
       document.addEventListener("DOMContentLoaded", function () {
           const elementMap = {
@@ -2002,7 +2043,7 @@
               });
           });
       });
-
+*/
 
       //validation input
       function validateInput(input) {
@@ -2220,71 +2261,85 @@
         };
 
 
-        function hideUnselectedColumns(tableId) {
-    const table = document.getElementById(tableId);
-    if (!table) return;
+             //FOR SPECTRAL MODAL
+      
 
-    const thead = table.querySelector("thead");
-    const tbody = table.querySelector("tbody");
+        document.querySelector("#modal-spectral-table .close").onclick = () => {
+            hideUnselectedColumns("data-table");
+            document.getElementById("modal-spectral-table").style.display = "none";
+        };
 
-    if (!thead || !tbody) return;
-
-    const headers = thead.querySelectorAll("th");
-    const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
-
-    headers.forEach((th, index) => {
-        // Extract text from <th>
-        const text = th.textContent.trim();
-
-        // Extract element symbol from header text
-        const match = text.match(/\((\w+)\)/);
-        if (match) {
-            const elementSymbol = match[1]; // Extracted symbol
-            if (!selectedElements.has(elementSymbol)) {
-                // Hide the <th>
-                th.style.display = "none";
-
-                // Hide corresponding <td> in <thead> (if present)
-                if (theadCells[index]) {
-                    theadCells[index].style.display = "none";
-                }
-
-                // Hide corresponding column cells in tbody
-                tbody.querySelectorAll("tr").forEach(row => {
-                    const cells = row.querySelectorAll("td");
-                    if (cells[index]) {
-                        cells[index].style.display = "none";
-
-                        // Hide any inputs or elements inside the <td>
-                        cells[index].querySelectorAll("*").forEach(child => {
-                            child.style.display = "none";
-                        });
-                    }
-                });
+        window.onclick = (event) => {
+            if (event.target === document.getElementById("modal-spectral-table")) {
+                document.getElementById("modal-spectral-table").style.display = "none";
             }
-        }
-    });
-}
+        };
 
-      // Apply function to both tables when the page loads
+
+
+
+        function hideUnselectedColumns(tableId) {
+          const table = document.getElementById(tableId);
+          if (!table) return;
+
+          const thead = table.querySelector("thead");
+          const tbody = table.querySelector("tbody");
+
+          if (!thead || !tbody) return;
+
+          const headers = thead.querySelectorAll("th");
+          const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
+
+          headers.forEach((th, index) => {
+              // Extract text from <th>
+              const text = th.textContent.trim();
+
+              // Extract element symbol from header text
+              const match = text.match(/\((\w+)\)/);
+              if (match) {
+                  const elementSymbol = match[1]; // Extracted symbol
+                  if (!selectedElements.has(elementSymbol)) {
+                      // Hide the <th>
+                      th.style.display = "none";
+
+                      // Hide corresponding <td> in <thead> (if present)
+                      if (theadCells[index]) {
+                          theadCells[index].style.display = "none";
+                      }
+
+                      // Hide corresponding column cells in tbody
+                      tbody.querySelectorAll("tr").forEach(row => {
+                          const cells = row.querySelectorAll("td");
+                          if (cells[index]) {
+                              cells[index].style.display = "none";
+
+                              // Hide any inputs or elements inside the <td>
+                              cells[index].querySelectorAll("*").forEach(child => {
+                                  child.style.display = "none";
+                              });
+                          }
+                      });
+                  }
+              }
+          });
+      }
+
+
       document.addEventListener("DOMContentLoaded", () => {
           hideUnselectedColumns("data-table");
       });
 
 
-
-
-
-
-
-
+              let spectralChart = null;
               const ctx = document.getElementById('myChart').getContext('2d');
 
+             
               function drawChart(elements) {
-                        const yMax = 120000;
+                        const yMax = 100000;
                         const datasets = elements.map(element => {
                             const Ka = element.Ka;
-                            const delta = 0.13 / 2;
+                            const peakWidth = 130; //130 eV
+                            const delta = (130/1000) / 2;
                             const intensity = (element.wt / 100) * yMax;
 
                             return {
@@ -2304,33 +2359,41 @@
                             };
                         });
 
-                        new Chart(ctx, {
-                            type: 'line',
-                            data: { datasets },
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    x: {
-                                        type: 'linear',
-                                        position: 'bottom',
-                                        title: { display: true, text: 'KeV' },
-                                        min: 0,
-                                        max: 12,
-                                        ticks: {
-                                            stepSize: 2,
-                                            callback: function(value) {
-                                                return Number.isInteger(value) ? value.toString() : "";
-                                            }
-                                        }
-                                    },
-                                    y: {
-                                        beginAtZero: true,
-                                        max: yMax,
-                                        title: { display: true, text: 'cps/eV' }
-                                    }
-                                }
+                        if (spectralChart) {
+                          // Update the existing chart instead of creating a new one
+                          spectralChart.data.datasets = datasets; // Assign datasets correctly
+                          spectralChart.update();
+                            }else{
+                              spectralChart =  new Chart(ctx, {
+                                  type: 'line',
+                                  data: { datasets },
+                                  options: {
+                                      responsive: true,
+                                      scales: {
+                                          x: {
+                                              type: 'linear',
+                                              position: 'bottom',
+                                              title: { display: true, text: 'KeV' },
+                                              min: 0,
+                                              max: 12,
+                                              ticks: {
+                                                  stepSize: 2,
+                                                  callback: function(value) {
+                                                      return Number.isInteger(value) ? value.toString() : "";
+                                                  }
+                                              }
+                                          },
+                                          y: {
+                                              beginAtZero: true,
+                                              max: yMax,
+                                              title: { display: true, text: 'cps/eV' }
+                                          }
+                                      }
+                                  }
+                              });
+
                             }
-                        });
+                       
                     }
 
 
@@ -2340,8 +2403,8 @@
             ];
 
 // for selected material, go through columns, if has value, get average and set by name the wt to value
-            elements1[0].wt = 20;
-            drawChart(elements1);
+           // elements1[0].wt = 20;
+           // drawChart(elements1);
           </script>
       </body>
       </html>
