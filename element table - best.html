@@ -167,24 +167,30 @@
       }
       .custom-file-upload {
         display: inline-block;
-        padding: 10px 16px;
-        background-color: #4caf50;
-        color: white;
+        padding: 8px 12px;
+        background-color: none;
+        color: #4caf50;
+        border: solid 2px #4caf50;
         font-size: 13px;
         text-align: center;
-        border-radius: 5px;
-        border: none;
+        border-radius: 6px;
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
       .export-btn{
-        background-color: #4caf50;
+        padding: 8px 12px;
+        background-color: none;
+        color: #4caf50;
+        border: solid 2px #4caf50;
+        border-radius: 6px;
       }
       .custom-file-upload:hover {
         background-color: #45a049;
+        color: white;
       }
       .export-btn:hover {
         background-color: #45a049;
+        color: white;
       }
 
 
@@ -356,8 +362,10 @@
       <div>
         <!--<label for="sensitivity">Sensitivity, %:</label>-->
         <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15">
-        <button class="btn save-btn" onclick="saveHtmlToFile()">Save file</button>
-        <button class="btn export-btn" id="exportCSV">Export to CSV</button>
+
+        <button class="export-btn" id="exportCSV">
+          Export to CSV
+        </button>
 
         <label for="importCSV" class="custom-file-upload">
           <span>Import a CSV file</span>
@@ -368,30 +376,34 @@
       <h3>Find a Material By it's Chemical Composition</h3>
 
       <div>
+
         <button class="svg-button" onclick="clearInputs()">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
             <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
         </button>
 
         <button class="svg-button" id="toggleButton" onclick="toggleBalanceValues()">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
             <path d="m560-200 160-160-56-56-64 62v-166h-80v166l-64-62-56 56 160 160ZM360-440h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
         </button>
 
         <button class="svg-button" onclick="copyHighlightedRowToInput()">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
           <path d="M80-200v-80h400v80H80Zm0-200v-80h200v80H80Zm0-200v-80h200v80H80Zm744 400L670-354q-24 17-52.5 25.5T560-320q-83 0-141.5-58.5T360-520q0-83 58.5-141.5T560-720q83 0 141.5 58.5T760-520q0 29-8.5 57.5T726-410l154 154-56 56ZM560-400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"/></svg>
         </button>
         <!--<button class="btn PeriodicTableModal">Open Periodic Table</button>-->
         <button class="svg-button PeriodicTableModal">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
             <path d="M80-80v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-360v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-640v-240h520v240H80Zm560 0v-240h240v240H640ZM240-240Zm200 0h80-80Zm280 0ZM240-440v-80 80Zm240-40Zm240 40v-80 80Zm0-280ZM160-160h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80ZM160-440h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80Zm0-280h80v-80h-80v80Z"/>
           </svg>
        </button>
-
         <button class="svg-button" id="saveButton" onclick="toggleTableEdit()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
               <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v200h-80v-40H200v400h280v80H200Zm0-560h560v-80H200v80Zm0 0v-80 80ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
+       </button>
+       <button class="svg-button" onclick="saveHtmlToFile()">
+         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="##0099ff"><path d="M0 0h24v24H0z" fill="none"/>
+           <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
        </button>
       </div>
   </div>
