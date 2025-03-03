@@ -26,17 +26,22 @@
             align-items: center;
             background-color: #3674B5;
             padding: 15px 30px;
+
+            width: 94%;
+            margin: 15px auto;
             margin-bottom: 50px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .navbar .logo {
             font-size: 24px;
             font-weight: bold;
-            color: white;
+            color: #1F497D;
             text-transform: uppercase;
         }
 
-        .
          .icons {
             display: flex;
             gap: 15px;
@@ -61,10 +66,11 @@
 
         input {
             padding: 10px;
-            width: 300px; /* Width of the search bar */
+            width: 400px; /* Width of the search bar */
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: rgb(244, 244, 244);
         }
 
         .controls {
@@ -188,23 +194,49 @@
           color: gray;
           padding-left: 6px;
        }
+       .svg-button{
+        border: none;
+        cursor: pointer;
+        background-color: white !important;
+        fill: #1F497D ;
+        transform: scale(1.2);
+        margin-left: 3px;
+        margin-right: 3px;
+        }
+        .svg-button:hover{
+        fill: #0473bd;
+        }
+        img{
+            height: 40px;
+            width: auto;
+        }
+        .logo-container{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
     <div class="navbar">
-        <div class="logo">Brazing Selection Table</div>
+        <div class="logo-container">
+            <img src="Images/IAI logo.webp" alt="Book Logo">
+            <div class="logo">Brazing Table</div>
+        </div>
 
         <div>
-        <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
-        <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
+            <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
+           <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
         </div>
 
         <div class="icons">
-            <span class="icon">🏠</span>
-            <span class="icon">🔍</span>
-            <span class="icon">⚙️</span>
+            <button id="clearSearch" class="svg-button" onclick="clearSearch()" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1F497D">
+                  <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
+              </button>
         </div>
     </div>
 

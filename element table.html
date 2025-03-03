@@ -2394,67 +2394,67 @@
 
 
         function hideUnselectedColumns(tableId) {
-    const table = document.getElementById(tableId);
-    if (!table) return;
+          const table = document.getElementById(tableId);
+          if (!table) return;
 
-    const thead = table.querySelector("thead");
-    const tbody = table.querySelector("tbody");
+          const thead = table.querySelector("thead");
+          const tbody = table.querySelector("tbody");
 
-    if (!thead || !tbody) return;
+          if (!thead || !tbody) return;
 
-    const headers = thead.querySelectorAll("th");
-    const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
+          const headers = thead.querySelectorAll("th");
+          const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
 
-    headers.forEach((th, index) => {
-        // Extract text from <th>
-        const text = th.textContent.trim();
+          headers.forEach((th, index) => {
+              // Extract text from <th>
+              const text = th.textContent.trim();
 
-        // Extract element symbol from header text
-        const match = text.match(/\((\w+)\)/);
-        if (match) {
-            const elementSymbol = match[1]; // Extracted symbol
-            if (!selectedElements.has(elementSymbol)) {
-                // Hide the <th>
-                th.style.display = "none";
+              // Extract element symbol from header text
+              const match = text.match(/\((\w+)\)/);
+              if (match) {
+                  const elementSymbol = match[1]; // Extracted symbol
+                  if (!selectedElements.has(elementSymbol)) {
+                      // Hide the <th>
+                      th.style.display = "none";
 
-                // Hide corresponding <td> in <thead> (if present)
-                if (theadCells[index]) {
-                    theadCells[index].style.display = "none";
-                }
+                      // Hide corresponding <td> in <thead> (if present)
+                      if (theadCells[index]) {
+                          theadCells[index].style.display = "none";
+                      }
 
-                // Hide corresponding column cells in tbody
-                tbody.querySelectorAll("tr").forEach(row => {
-                    const cells = row.querySelectorAll("td");
-                    if (cells[index]) {
-                        cells[index].style.display = "none";
+                      // Hide corresponding column cells in tbody
+                      tbody.querySelectorAll("tr").forEach(row => {
+                          const cells = row.querySelectorAll("td");
+                          if (cells[index]) {
+                              cells[index].style.display = "none";
 
-                        // Hide any inputs or elements inside the <td>
-                        cells[index].querySelectorAll("*").forEach(child => {
-                            child.style.display = "none";
-                        });
-                    }
-                });
-            } else {
-                // If the element is selected, make the column visible
-                th.style.display = "";
-                if (theadCells[index]) {
-                    theadCells[index].style.display = "";
-                }
-                tbody.querySelectorAll("tr").forEach(row => {
-                    const cells = row.querySelectorAll("td");
-                    if (cells[index]) {
-                        cells[index].style.display = "";
+                              // Hide any inputs or elements inside the <td>
+                              cells[index].querySelectorAll("*").forEach(child => {
+                                  child.style.display = "none";
+                              });
+                          }
+                      });
+                  } else {
+                      // If the element is selected, make the column visible
+                      th.style.display = "";
+                      if (theadCells[index]) {
+                          theadCells[index].style.display = "";
+                      }
+                      tbody.querySelectorAll("tr").forEach(row => {
+                          const cells = row.querySelectorAll("td");
+                          if (cells[index]) {
+                              cells[index].style.display = "";
 
-                        // Show any inputs or elements inside the <td>
-                        cells[index].querySelectorAll("*").forEach(child => {
-                            child.style.display = "";
-                        });
-                    }
-                });
-            }
-        }
-    });
-}
+                              // Show any inputs or elements inside the <td>
+                              cells[index].querySelectorAll("*").forEach(child => {
+                                  child.style.display = "";
+                              });
+                          }
+                      });
+                  }
+              }
+          });
+      }
 
 
 
@@ -2467,6 +2467,8 @@
               const ctx = document.getElementById('myChart').getContext('2d');
 
 
+              let maxKa = [];
+
               function drawChart(elements) {
                         const yMax = 100000;
                         const datasets = elements.map(element => {
@@ -2474,6 +2476,7 @@
                             const peakWidth = 130; //130 eV
                             const delta = (130/1000) / 2;
                             const intensity = (element.wt / 100) * yMax;
+                            maxKa.push(Ka);
 
                             return {
                                 label: `${element.symbol} - ${element.name}`,
@@ -2508,7 +2511,7 @@
                                               position: 'bottom',
                                               title: { display: true, text: 'KeV' },
                                               min: 0,
-                                              max: 12,
+                                              max: getMaxValue(maxKa*1.1),
                                               ticks: {
                                                   stepSize: 2,
                                                   callback: function(value) {
@@ -2529,13 +2532,23 @@
 
                     }
 
+                    function getMaxValue(arr) {
+                        if (!Array.isArray(arr) || arr.length === 0) {
+                          return undefined; // Or throw an error, depending on desired behavior
+                        }
+
+                        let max = arr[0]; // Assume the first element is the max
+
+                        for (let i = 1; i < arr.length; i++) {
+                          if (arr[i] > max) {
+                            max = arr[i];
+                          }
+                        }
+
+                        return max;
+                      }
 
           </script>
-      </body>
+        </body>
       </html>
 
-    </script>
-
-
-</body>
-</html>
