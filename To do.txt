@@ -1,10 +1,5 @@
 elements table
 
-check data col = 3 is working/ replace
-
-change button icons, justify content space in between
-edit button - content////=true
-calculate bal before spectrum
 load data from csv
 password modal
 
@@ -14,7 +9,6 @@ edit operators
 edit work types
 edit log fields and types
 password modal
-
 
 
 XRD
