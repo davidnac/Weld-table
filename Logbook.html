@@ -35,9 +35,7 @@
             border: solid 2px #98D8EF;
             outline: none;
         }
-        .controls {
-            margin-bottom: 20px;
-        }
+
         select {
             width: 15%;
             padding: 10px;
@@ -66,7 +64,6 @@
             padding: 15px;
             font-size: 15px;
         }
-
 
         th {
             text-align: center;
@@ -122,9 +119,12 @@
        }
        .controls{
           display: flex;
-          justify-content: center; /* Centers horizontally */
+          justify-content: space-between;; /* Centers horizontally */
           align-items: center;     /* Centers vertically */
-          margin-bottom: 10px;
+
+          width: 96%;
+          margin: 0 auto;
+          margin-bottom: 20px;
        }
        .clearButton{
           display: none;
@@ -135,13 +135,14 @@
        }
 
        button{
-        margin-left: 15px;
+        margin-left: 5px;
         padding: 10px 16px;
         color: white;
         background-color: #3674B5;
         border-radius: 5px;
         border: none;
         cursor: pointer;
+        font-family: 'Montserrat-Medium', sans-serif;
        }
        button:hover{
         background-color: #578FCA;
@@ -218,7 +219,8 @@
         }
         form button:hover {
             background-color: #578FCA;
-        }    </style>
+        }
+      </style>
 
 
 
@@ -229,13 +231,14 @@
     <div class="controls">
       <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
 
-      <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
-      <button id="openModal">Add Entry</button>
-      <button id="editEntry" style="display: none;">Edit Entry</button>
-      <button id="deleteEntry" class="btn-delete" style="display: none;">Delete Entry</button>
-
-      <button>Edit Operators</button>
-      <button>Edit Work types</button>
+    <div>
+        <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
+        <button id="openModal">Add Entry</button>
+        <button>Edit Operators</button>
+        <button>Edit Work types</button>
+        <button id="editEntry" style="display: none;">Edit Entry</button>
+        <button id="deleteEntry" class="btn-delete" style="display: none;">Delete Entry</button>
+     </div>
   </div>
 
 
