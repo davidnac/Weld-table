@@ -1,0 +1,2529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Welding Wire Table</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        @font-face {
+              font-family: 'Montserrat-Medium';
+              src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+              font-weight: 500; /* Medium weight */
+              font-style: normal;
+          }
+          body {
+              font-family: 'Montserrat-Medium', sans-serif;
+              margin: 20px;
+              background-color: #f4f4f4;
+              text-align: center;
+          }
+        h2 {
+            margin-bottom: 25px;
+            margin-top: 30px;
+        }
+        input {
+            padding: 6px 0;
+            width:90%;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 15px;
+            text-align: center;
+        }
+        input:focus{
+            border: solid 2px #98D8EF;
+            outline: none;
+        }
+
+        .controls{
+          display: flex;
+          justify-content: space-between;; /* Centers horizontally */
+          align-items: center;     /* Centers vertically */
+          gap: 10px;
+          margin: 0 20px 25px;
+          margin-bottom: 60px;
+       }
+
+        .table-container {
+            width: 98%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            height: 75vh; /* Fixed height of the table container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-bottom: 22px;
+            border-bottom: solid 2px #98D8EF;
+        }
+
+        .table-container.query{
+            height: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px 7px;
+            font-size: 14px;
+            border-left: 1px solid #ddd; /* Adds left border */
+            border-right: 1px solid #ddd; /* Adds right border */
+            border-top: none; /* Removes top border */
+            border-bottom: none;
+        }
+
+        td{
+          position: relative; /* Ensure relative positioning for absolute elements */
+        }
+
+        table th:not(:last-child),
+        table td:not(:last-child) {
+            text-align: center;
+        }
+
+        th {
+            background-color: #0473bd;
+            color: white;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            position: sticky;
+            top: 0; /* Make header sticky */
+            z-index: 3; /* Ensure header stays above table content - was 1 i changed to 0 */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .sort-icon {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+
+        br {
+            display: block;
+            content: "";
+            margin-bottom: 10px; /* Adjust the space */
+        }
+        .highlighted {
+            background-color: #FFD95F !important;
+        }
+
+        .section a{
+          color: #3674B5;
+          margin-left: 12px;
+          margin-right: 12px;
+          text-align: center;
+          font-size: 14px;
+          text-transform: uppercase;
+          text-decoration: none;
+       }
+
+       ul {
+         list-style-type: none;
+         text-align: left;
+         padding-left: 25px; /* remove default padding */
+      }
+       li {
+         padding: 5px 0;
+         font-size: 13px;
+       }
+       h4{
+         padding-left: 25px;
+       }
+
+       .clearButton{
+          display: none;
+          cursor: pointer;
+          font-size: 26px;
+          color: gray;
+          padding-left: 6px;
+       }
+
+       .btn {
+        padding: 10px 16px;
+        color: white;
+        background-color: #3674B5;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-family: 'Montserrat-Medium', sans-serif;
+      }
+      .btn:hover{
+        background-color: #578FCA;
+      }
+      .clear-btn {
+        background-color: #ff4c4c;
+        width: 120px;
+      }
+      .clear-btn:hover {
+        background-color: #cc0000;
+      }
+      .custom-file-upload {
+        display: inline-block;
+        padding: 10px 16px;
+        background-color: #4caf50;
+        color: white;
+        font-size: 13px;
+        text-align: center;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .export-btn{
+        background-color: #4caf50;
+      }
+      .custom-file-upload:hover {
+        background-color: #45a049;
+      }
+      .export-btn:hover {
+        background-color: #45a049;
+      }
+
+
+      input[type="file"] {
+        display: none;
+      }
+      input.small{
+        width: 130px;
+        height: 40px;
+        padding: 10px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      .highlight {
+        background-color: #ffd95f !important; /* Change color as needed */
+      }
+
+
+      .error-message {
+          color: white;
+          background-color: #d9534f;
+          font-size: 12px;
+          display: none; /* Hidden by default */
+          position: absolute;
+          left: 100%; /* Position to the right of input */
+          top: 50%;
+          transform: translateY(-50%); /* Center vertically */
+          margin-left: 0; /* Space between input and message */
+          padding: 6px 10px;
+          border-radius: 4px;
+          white-space: nowrap;
+          z-index: 10;
+      }
+
+      .error-message::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -3%; /* Attach the arrow to the left side of the message */
+          transform: translateY(-50%);
+          width: 0;
+          height: 0;
+          border-top: 9px solid transparent;
+          border-bottom: 9px solid transparent;
+          border-right:9px solid #d9534f;
+        }
+
+      /* Show error message only when the "show" class is added */
+      .error-message.show {
+          display: inline-block;
+      }
+
+
+      .modal-content-periodic-table .table {
+              display: grid;
+              grid-template-columns: repeat(18, 1fr);
+              column-gap: 5px;
+              row-gap: 5px;
+              margin-top: 30px;
+          }
+        .modal-content-periodic-table .element {
+              width: 55px;
+              height: 55px;
+              background: white;
+              border: 1px solid #ccc;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+              padding: 5px;
+              border-radius: 5px;
+              box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+              transition: transform 0.2s ease, background-color 0.2s ease;
+              cursor: pointer;
+          }
+          .modal-content-periodic-table .element:hover {
+              transform: translateY(-5px);
+              background-color: #e0e0e0;
+          }
+          .modal-content-periodic-table .empty {
+              visibility: hidden;
+          }
+          .modal-content-periodic-table .symbol {
+              font-size: 1.5em;
+              font-weight: bold;
+          }
+          .modal-content-periodic-table .name {
+              font-size: 0.6em;
+          }
+          .modal-content-periodic-table .element.selected {
+              background-color: #98D8EF;
+              border-color: #ffd95f;
+          }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 4;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content-periodic-table {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 100%;
+        min-height: 50vh;
+        position: relative;
+    }
+    .modal-content-periodic-table .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+        font-size: 30px;
+    }
+    .modal-content-spectral-table {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%; /* Adjust for responsiveness */
+    max-width: 60%; /* Prevent it from being too large */
+    min-height: 50vh;
+    position: relative;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content-spectral-table .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 30px;
+}
+    .maxWide{
+      min-width: 180px;
+    }
+
+    canvas{
+      width: 100% !important; /* 50% of the body width */
+    }
+    .svg-button{
+      border: none;
+      cursor: pointer;
+      background-color: rgb(244, 244, 244) !important;
+      fill: #0099ff;
+      transform: scale(1.2);
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+    .svg-button:hover{
+      fill: #0473bd;
+    }
+
+    </style>
+
+
+</head>
+<body>
+
+    <div class="controls">
+      <div>
+        <!--<label for="sensitivity">Sensitivity, %:</label>-->
+        <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15">
+        <button class="btn save-btn" onclick="saveHtmlToFile()">Save file</button>
+        <button class="btn export-btn" id="exportCSV">Export to CSV</button>
+
+        <label for="importCSV" class="custom-file-upload">
+          <span>Import a CSV file</span>
+          <input type="file" id="importCSV">
+        </label>
+      </div>
+
+      <h3>Find a Material By it's Chemical Composition</h3>
+
+      <div>
+        <button class="svg-button" onclick="clearInputs()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+            <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
+        </button>
+
+        <button class="svg-button" id="toggleButton" onclick="toggleBalanceValues()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+            <path d="m560-200 160-160-56-56-64 62v-166h-80v166l-64-62-56 56 160 160ZM360-440h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+        </button>
+
+        <button class="svg-button" onclick="copyHighlightedRowToInput()">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+          <path d="M80-200v-80h400v80H80Zm0-200v-80h200v80H80Zm0-200v-80h200v80H80Zm744 400L670-354q-24 17-52.5 25.5T560-320q-83 0-141.5-58.5T360-520q0-83 58.5-141.5T560-720q83 0 141.5 58.5T760-520q0 29-8.5 57.5T726-410l154 154-56 56ZM560-400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"/></svg>
+        </button>
+        <!--<button class="btn PeriodicTableModal">Open Periodic Table</button>-->
+        <button class="svg-button PeriodicTableModal">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+            <path d="M80-80v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-360v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-640v-240h520v240H80Zm560 0v-240h240v240H640ZM240-240Zm200 0h80-80Zm280 0ZM240-440v-80 80Zm240-40Zm240 40v-80 80Zm0-280ZM160-160h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80ZM160-440h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80Zm0-280h80v-80h-80v80Z"/>
+          </svg>
+       </button>
+
+        <button class="svg-button" id="saveButton" onclick="toggleTableEdit()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="##0099ff">
+              <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v200h-80v-40H200v400h280v80H200Zm0-560h560v-80H200v80Zm0 0v-80 80ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
+       </button>
+      </div>
+  </div>
+
+
+
+    <div class="table-container">
+        <table id="data-table">
+            <thead>
+
+          <tr>
+            <th onclick="sortTable(0)">
+              Material <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(1)">
+              Nickel (Ni) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(2)">
+              Cobalt (Co) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(3)">
+              Chromium (Cr) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(4)">
+              Molybdenum (Mo) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(5)">
+              Niobium (Nb) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(6)">
+              Titanium (Ti) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(7)">
+              Aluminum (Al) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(8)">
+              Tungsten (W) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(9)">
+              Iron (Fe) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(10)">
+              Carbon (C) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(11)">
+              Manganese (Mn) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(12)">
+              Silicon (Si) % <span class="sort-icon">⇅</span>
+            </th>
+
+            <th onclick="sortTable(13)">
+              Tin (Sn) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(14)">
+              Vanadium (V) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(15)">
+              Zirconium (Zr) % <span class="sort-icon">⇅</span>
+            </th>
+
+            <th onclick="sortTable(16)">
+              Boron (B) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(17)">
+              Silver (Ag) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(18)">
+              Copper (Cu) %<span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(19)">
+              Zinc (Zn) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(20)">
+              Magnesium (Mg) % <span class="sort-icon">⇅</span>
+            </th>
+          </tr>
+
+          <tr>
+            <td class="maxWide">
+              <input type="text" id="materialSearch" placeholder="Search material...">
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter"  oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+          </tr>
+
+            </thead>
+            <tbody>
+
+          <tr>
+            <td contenteditable="false">CRES 304</td>
+            <td contenteditable="false">8.0 - 10.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">18.0 - 20.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">Bal.</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">0.8</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">CRES 308</td>
+            <td contenteditable="false">11.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">19.0 - 21.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">Bal.</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">0.8</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">CRES 316</td>
+            <td contenteditable="false">10.0 - 14.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">16.0 - 18.0</td>
+            <td contenteditable="false">2.0 - 3.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">Bal.</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">0.8</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">CRES 321</td>
+            <td contenteditable="false">9.0 - 12.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">17.0 - 19.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">Bal.</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">0.8</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">CRES 347</td>
+            <td contenteditable="false">9.0 - 12.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">17.0 - 19.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">10.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">62.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">0.8</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">CRES 410</td>
+            <td contenteditable="false">0.75</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">11.5 - 13.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">88.0</td>
+            <td contenteditable="false">0.08 - 0.15</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">René 41</td>
+            <td contenteditable="false">54.0</td>
+            <td contenteditable="false">10.0 - 12.0</td>
+            <td contenteditable="false">18.0 - 20.0</td>
+            <td contenteditable="false">9.0 - 10.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">3.0 - 3.3</td>
+            <td contenteditable="false">1.4 - 1.6</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">0.05 - 0.12</td>
+            <td contenteditable="false">0.003 - 0.010</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Rene 77</td>
+            <td contenteditable="false">62.0</td>
+            <td contenteditable="false">14-16</td>
+            <td contenteditable="false">14-16</td>
+            <td contenteditable="false">4-5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">2.5-3.2</td>
+            <td contenteditable="false">3.8-4.8</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.08-0.15</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">René 80</td>
+            <td contenteditable="false">56.0</td>
+            <td contenteditable="false">9.5 - 10.5</td>
+            <td contenteditable="false">19.0 - 21.0</td>
+            <td contenteditable="false">9.0 - 10.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">2.6 - 3.1</td>
+            <td contenteditable="false">1.4 - 1.6</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">0.05 - 0.10</td>
+            <td contenteditable="false">0.003 - 0.010</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Waspaloy</td>
+            <td contenteditable="false">53.0 - 59.0</td>
+            <td contenteditable="false">9.0 - 11.0</td>
+            <td contenteditable="false">19.0 - 21.0</td>
+            <td contenteditable="false">1.5 - 2.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">3.0 - 3.5</td>
+            <td contenteditable="false">1.0 - 1.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">1.0 - 5.0</td>
+            <td contenteditable="false">0.05 - 0.15</td>
+            <td contenteditable="false">0.003 - 0.010</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+
+          <tr>
+            <td contenteditable="false">Inconel 100</td>
+            <td contenteditable="false">64.0</td>
+            <td contenteditable="false">15-16.5</td>
+            <td contenteditable="false">9-11</td>
+            <td contenteditable="false">3-4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">4.3-4.7</td>
+            <td contenteditable="false">4.8-5.2</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">≤1</td>
+            <td contenteditable="false">0.17-0.23</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Inconel 600</td>
+            <td contenteditable="false">72.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">14-17</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.3</td>
+            <td contenteditable="false">0.2-0.4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">6-10</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Inconel 601</td>
+            <td contenteditable="false">58-63</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">21-25</td>
+            <td contenteditable="false">≤1</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.3-1.5</td>
+            <td contenteditable="false">1-1.7</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">17.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Inconel 602</td>
+            <td contenteditable="false">63.0</td>
+            <td contenteditable="false">1.5</td>
+            <td contenteditable="false">24.0-26.0</td>
+            <td contenteditable="false">8.5-9</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.15-0.25</td>
+            <td contenteditable="false">1.8-2.4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">≤3</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Inconel 625</td>
+            <td contenteditable="false">58.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">20-23</td>
+            <td contenteditable="false">8-10</td>
+            <td contenteditable="false">3.15-4.15</td>
+            <td contenteditable="false">0.4</td>
+            <td contenteditable="false">0.4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Inconel 713</td>
+            <td contenteditable="false">76.0</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">12.5-13.5</td>
+            <td contenteditable="false">4.2-4.8</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.5-0.8</td>
+            <td contenteditable="false">5.5-6.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">76.0</td>
+            <td contenteditable="false">0.08-0.2</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">0.3</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Inconel 718</td>
+            <td contenteditable="false">50.0-55.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">17.0-21.0</td>
+            <td contenteditable="false">2.8-3.3</td>
+            <td contenteditable="false">4.75-5.5</td>
+            <td contenteditable="false">0.65-1.15</td>
+            <td contenteditable="false">0.2-0.8</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">23.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">0.3</td>
+            <td contenteditable="false">0.3</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Hastelloy X</td>
+            <td contenteditable="false">47.5-52.0</td>
+            <td contenteditable="false">1.5</td>
+            <td contenteditable="false">20.5-23</td>
+            <td contenteditable="false">8-10</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">17.0-20.0</td>
+            <td contenteditable="false">0.05-0.15</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Hastelloy W</td>
+            <td contenteditable="false">56.0</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">4.5-7</td>
+            <td contenteditable="false">24.0-28.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">4.0-6.0</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">0.05-0.15</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">0.2</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">L605</td>
+            <td contenteditable="false">10.0</td>
+            <td contenteditable="false">49.0-53.0</td>
+            <td contenteditable="false">19-21</td>
+            <td contenteditable="false">1.0-2.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">14.0-16.0</td>
+            <td contenteditable="false">3.0</td>
+            <td contenteditable="false">0.05-0.15</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">0.4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Haynes 188</td>
+            <td contenteditable="false">22.0</td>
+            <td contenteditable="false">37.0</td>
+            <td contenteditable="false">20.0-24.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">13.0-16.0</td>
+            <td contenteditable="false">3.0</td>
+            <td contenteditable="false">0.05-0.15</td>
+            <td contenteditable="false">1.3</td>
+            <td contenteditable="false">0.4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Haynes 230</td>
+            <td contenteditable="false">57.0</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">20.0-24.0</td>
+            <td contenteditable="false">1.5-3</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">14.0</td>
+            <td contenteditable="false">3.0</td>
+            <td contenteditable="false">0.05-0.15</td>
+            <td contenteditable="false">0.3-0.6</td>
+            <td contenteditable="false">0.4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">X-750</td>
+            <td contenteditable="false">70.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">14.0-17.0</td>
+            <td contenteditable="false">0.7-1.2</td>
+            <td contenteditable="false">0.7-1.2</td>
+            <td contenteditable="false">2.25-2.75</td>
+            <td contenteditable="false">0.4-1</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">5-9</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Greek Ascoloy</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">12.0-14.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">2.75-3.25</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">84.0</td>
+            <td contenteditable="false">0.15-0.2</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">17-4 PH</td>
+            <td contenteditable="false">3.0-5.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">15.0-17.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.15-0.45</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">63.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">15-5 PH</td>
+            <td contenteditable="false">3.5-5.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">14.0-15.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.9</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">65.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">A286</td>
+            <td contenteditable="false">24.0-27.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">13.5-16</td>
+            <td contenteditable="false">1.0-1.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">1.9-2.3</td>
+            <td contenteditable="false">0.1-0.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">56.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">C263</td>
+            <td contenteditable="false">52.0</td>
+            <td contenteditable="false">20.0</td>
+            <td contenteditable="false">19-21</td>
+            <td contenteditable="false">5.6-6.1</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">2-2.4</td>
+            <td contenteditable="false">0.6</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">52.0</td>
+            <td contenteditable="false">0.0</td>
+            <td contenteditable="false">0.6</td>
+            <td contenteditable="false">0.4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">C276</td>
+            <td contenteditable="false">60.0</td>
+            <td contenteditable="false">2.5</td>
+            <td contenteditable="false">14.5-16.5</td>
+            <td contenteditable="false">15-17</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">3-4.5</td>
+            <td contenteditable="false">4-7</td>
+            <td contenteditable="false">0.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Steel 4340</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.7-0.9</td>
+            <td contenteditable="false">0.2-0.3</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">98.0</td>
+            <td contenteditable="false">0.38-0.43</td>
+            <td contenteditable="false">0.6-0.8</td>
+            <td contenteditable="false">0.15-0.3</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Steel 4130</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.8-1.1</td>
+            <td contenteditable="false">0.15-0.25</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">98.0</td>
+            <td contenteditable="false">0.28-0.33</td>
+            <td contenteditable="false">0.4-0.6</td>
+            <td contenteditable="false">0.15-0.3</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Marm-200</td>
+            <td contenteditable="false">72.0</td>
+            <td contenteditable="false">10.0</td>
+            <td contenteditable="false">9.0</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Coast Metal 64</td>
+            <td contenteditable="false">5</td>
+            <td contenteditable="false">43.6</td>
+            <td contenteditable="false">28</td>
+            <td contenteditable="false">0.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">21</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.85</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">1</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">0.05</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Tribaloy 800</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">50.6</td>
+            <td contenteditable="false">17.5</td>
+            <td contenteditable="false">28.5</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">3.4</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Stellite 31 (X40)</td>
+            <td contenteditable="false">10.5</td>
+            <td contenteditable="false">51.0</td>
+            <td contenteditable="false">26.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">7.5</td>
+            <td contenteditable="false">3.0</td>
+            <td contenteditable="false">0.1</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Titanium 8Al 1Mo 1V</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">90.0</td>
+            <td contenteditable="false">8.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">1.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Titanium 6Al 4V ELI</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">90.0</td>
+            <td contenteditable="false">6.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">4.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Titanium 6Al 4V</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">90.0</td>
+            <td contenteditable="false">6.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">4.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Titanium 6Al 2Sn 4Zr 2Mo</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">86.0</td>
+            <td contenteditable="false">6.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">4.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Titanium 15V 3Cr 3Sn 3Al</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">3.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">76.0</td>
+            <td contenteditable="false">3.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">3.0</td>
+            <td contenteditable="false">15.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Silver Flo 55</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">2.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">55.0</td>
+            <td contenteditable="false">21.0</td>
+            <td contenteditable="false">22.0</td>
+            <td contenteditable="false">-</td>
+          </tr>
+          <tr>
+            <td contenteditable="false">Silver Flo 56 (AMS 4763)</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">5.0</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">-</td>
+            <td contenteditable="false">56.0</td>
+            <td contenteditable="false">22.0</td>
+            <td contenteditable="false">17.0</td>
+            <td contenteditable="false">-</td>
+          </tr>
+            <tr>
+              <td contenteditable="false">BAg-24 (AMS 4788)</td><td contenteditable="false">2.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">50.0</td><td contenteditable="false">20.0</td><td contenteditable="false">28.0</td>  <td contenteditable="false">-</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">BAg-13 (AMS 4772)</td><td contenteditable="false">1.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">54.0</td><td contenteditable="false">40.0</td><td contenteditable="false">5.0</td>  <td contenteditable="false">-</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">BAg-13a (AMS 4765)</td><td contenteditable="false">2.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">56.0</td><td contenteditable="false">42.0</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">BNi-5 (AMS 4782)</td><td contenteditable="false">71.0</td><td contenteditable="false">-</td><td contenteditable="false">19.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">10.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">BNi-1 (AMS 4775)</td><td contenteditable="false">73.0</td><td contenteditable="false">-</td><td contenteditable="false">14.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">0.8</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">BNi-1a (AMS 4776)</td><td contenteditable="false">74.0</td><td contenteditable="false">-</td><td contenteditable="false">14.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">BNi-2 (AMS 4777)</td><td contenteditable="false">82.4</td><td contenteditable="false">-</td><td contenteditable="false">7.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.1</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">BNi-3 (AMS 4778)</td><td contenteditable="false">92.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">BNi-4 (AMS 4779)</td><td contenteditable="false">94.6</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">1.9</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
+              </tr>
+            <tr>
+              <td contenteditable="false">Al 2024</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">93</td><td contenteditable="false">-</td><td contenteditable="false">0.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.9</td><td contenteditable="false">-</td><td contenteditable="false">-</td>
+            </tr>
+              <tr>
+                <td contenteditable="false">Al 6061</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">97.9</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.6</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.28</td><td contenteditable="false">-</td><td contenteditable="false">1</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">Al 7075</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">91</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.6</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">1.4</td><td contenteditable="false">5.6</td><td contenteditable="false">2.1</td>
+              </tr>
+              <tr>
+                <td contenteditable="false">Al A413</td><td contenteditable="false">0.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">94</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.35</td><td contenteditable="false">12</td><td contenteditable="false">0.15</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">1</td><td contenteditable="false">-</td><td contenteditable="false">0.1</td>
+            </tr>
+            <tr>
+              <td contenteditable="false">Al 4043</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">93.9</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">5.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>
+            </tr>
+            <tr>
+              <td contenteditable="false">Al 5052</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.25</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">97.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">2.5</td>
+            </tr>
+            <tr>
+              <td contenteditable="false">Al 5Si 1.3Cu 0.5Mg</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">93.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">1.3</td><td contenteditable="false">-</td><td contenteditable="false">0.5</td>
+            </tr>
+          </tbody>
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+    <div id="modal-periodic-table" class="modal" style="display:none;">
+
+        <div class="modal-content-periodic-table">
+          <h3>Element selection</h3>
+            <span class="close">&times;</span>
+            <div class="table" id="periodic-table"></div>
+        </div>
+    </div>
+
+
+    <div id="modal-spectral-table" class="modal" style="display:none;">
+      <div class="modal-content-spectral-table">
+        <h3>Material EDS Spectral</h3>
+          <span class="close">&times;</span>
+          <canvas id="myChart"></canvas>
+      </div>
+  </div>
+
+    <script>
+
+
+///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
+
+          // Add event listener for clicks on the inputs
+        document.querySelectorAll('.filter').forEach(input => {
+          input.addEventListener('click', function() {
+            const td = this.closest('td');  // Find the <td contenteditable="false"> containing the input
+            const cellIndex = Array.from(td.parentElement.children).indexOf(td);  // Get column index
+
+            //console.log(` Column: ${cellIndex}`);
+            const thText = document.querySelectorAll('table thead tr th')[cellIndex].textContent;
+            //console.log( thText);
+           const filterIndex = searchHeader(thText)
+           console.log(filterIndex);
+          });
+        });
+
+        function searchHeader(thText) {
+          const headers = document.querySelectorAll('#data-table thead th');
+
+          for (let i = 0; i < headers.length; i++) {
+            if (headers[i].textContent.toLowerCase().includes(thText.toLowerCase())) {
+              return i;  // 1-based index of the header
+            }
+          }
+
+          return null; // Return null if no header is found
+        }
+
+///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
+
+
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+          //search bar
+        document.getElementById("materialSearch").addEventListener("input", function () {
+
+            clearFilters();//clear filters before searching
+            let searchValue = this.value.toLowerCase();
+            document.querySelectorAll("#data-table tbody tr")
+              .forEach((row) => {
+                let material = row.cells[0].textContent.toLowerCase();
+                row.style.display = material.includes(searchValue)
+                  ? ""
+                  : "none";
+              });
+          });
+       });
+
+
+      //filter table
+      function filterTable() {
+
+        clearSearch(); // clear search bar before filtering
+
+        let filters = document.querySelectorAll(".filter");
+
+        let rows = document.querySelectorAll(
+          "#data-table tbody tr"
+        );
+
+        let sensitivity = parseFloat(document.getElementById("sensitivity").value) || 1;
+
+        rows.forEach((row) => {
+          let cells = row.getElementsByTagName("td");
+          let showRow = true;
+
+          filters.forEach((filter) => {
+            let cell = filter.closest('td'); // Get the closest <td> element
+            let row = cell.parentElement;   // Get the row (<tr>) containing the <td>
+            let colIndex = Array.from(row.children).indexOf(cell); // Get the column index
+
+          //  let colIndex = filter.getAttribute("data-col");
+            let filterValue = filter.value.trim();
+            let cellText = cells[colIndex].textContent.trim();
+
+            // If filter is empty, ignore filtering for this column
+            if (filterValue === "") return;
+
+            // Ignore rows where the cell is just "-"
+            if (cellText === "-") {
+              showRow = false;
+              return;
+            }
+
+            let cellValue;
+            if (cellText.includes("-")) {
+              // Handle range values like "10 - 14"
+              let [min, max] = cellText
+                .split("-")
+                .map((num) => parseFloat(num.trim()));
+              if (!isNaN(min) && !isNaN(max)) {
+                cellValue = [min, max]; // Store range for filtering
+              } else {
+                cellValue = parseFloat(cellText); // Fallback in case of malformed data
+              }
+            } else {
+              cellValue = parseFloat(cellText);
+            }
+
+            // Ensure valid number input
+            if (!isNaN(parseFloat(filterValue))) {
+              let lowerBound =
+                parseFloat(filterValue) -
+                (parseFloat(filterValue) * sensitivity) / 100;
+              let upperBound =
+                parseFloat(filterValue) +
+                (parseFloat(filterValue) * sensitivity) / 100;
+
+
+
+              if (Array.isArray(cellValue)) {
+                // Filter using both min and max values of the range
+                if (cellValue[1] < lowerBound || cellValue[0] > upperBound) {
+                  showRow = false;
+
+                }
+              } else if (!isNaN(cellValue)) {
+                if (cellValue < lowerBound || cellValue > upperBound) {
+                  showRow = false;
+
+                }
+              }
+            }
+          });
+
+          row.style.display = showRow ? "" : "none";
+        });
+      }
+
+
+      document.querySelector("#data-table tbody").addEventListener("dblclick", function (event) {
+          let row = event.target.closest("tr");
+          if (!row) return; // Ensure row is valid
+
+          let spectral = [];
+          let headers = document.querySelector("#data-table thead").rows[0].cells;
+          let materialName = "";
+
+
+          Array.from(row.cells).forEach((cell, colIndex) => {
+              if (colIndex === 0){
+                materialName = cell.textContent;
+                return; // Skip the first column (index 0)
+              }
+              //let value = parseFloat(cell.textContent.trim());
+              let value = parseCellValue(cell.textContent,row,colIndex);
+              console.log(value)
+              if (!isNaN(value) && value>0) {
+                  let elementName = headers[colIndex].textContent.trim();
+                  console.log(elementName)
+                  let element = elements.find(e => elementName.includes(e.name));
+                  console.log(element)
+                  if (element) {
+                      element.wt = value;
+                      spectral.push({ ...element });
+                      element.wt = 100;
+                  }
+              }
+          });
+
+    console.log("Spectral Array:", spectral);
+    drawChart(spectral);
+
+    // Open modal
+    document.querySelector("#modal-spectral-table h3").textContent = materialName;
+    document.getElementById("modal-spectral-table").style.display = "flex";
+
+});
+
+
+
+
+      let sortDirections = {}; // Store sort directions for each column
+
+      //sort columns
+      function sortTable(colIndex) {
+        let table = document.getElementById("data-table");
+        let tbody = table.querySelector("tbody"); // Ensure tbody is selected
+        let rows = Array.from(tbody.rows); // Get only tbody rows (skip the header)
+
+
+        // Default to descending order if first click, otherwise toggle
+        if (sortDirections[colIndex] === undefined) {
+            sortDirections[colIndex] = false; // Start with descending order
+        } else {
+            sortDirections[colIndex] = !sortDirections[colIndex]; // Toggle order on next click
+        }
+
+        let isAscending = sortDirections[colIndex];
+
+        rows.sort((rowA, rowB) => {
+            let cellA = rowA.cells[colIndex].textContent.trim();
+            let cellB = rowB.cells[colIndex].textContent.trim();
+
+            let valueA = parseCellValue(cellA, rowA, colIndex);
+            let valueB = parseCellValue(cellB, rowB, colIndex);
+
+            return isAscending ? valueA - valueB : valueB - valueA;
+        });
+
+            // Clear tbody and reappend sorted rows
+            tbody.innerHTML = "";
+            rows.forEach(row => tbody.appendChild(row));
+    }
+
+
+        // Parse cell value to handle ranges and other types of values
+        function parseCellValue(value, row = null, colIndex = null) {
+            value = value.trim();
+
+            if (value === "-") return 0; // "-" is treated as zero
+
+            if (value.toLowerCase() === "bal." || value.toLowerCase() === "balance") {
+                return calculateBalance(row, colIndex); // Compute balance dynamically
+            }
+
+            // Remove all spaces from the range
+            let cleanValue = value.replace(/\s+/g, '');
+
+            // Check if the value is a range (e.g., "9.0-12.0")
+            if (cleanValue.includes('-') && /^[0-9]+(\.[0-9]+)?-[0-9]+(\.[0-9]+)?$/.test(cleanValue)) {
+                let parts = cleanValue.split('-').map(Number);
+                // Calculate and return the average of the two values in the range
+                return (parts[0] + parts[1]) / 2; // Average of range
+            }
+
+            // For regular numbers or any other text
+            return parseFloat(value) || 0; // Convert to number, default to 0
+        }
+
+        // Calculate balance from row by summing other cell values
+        function calculateBalance(row, colIndex) {
+            let total = 0;
+            for (let i = 0; i < row.cells.length; i++) {
+                if (i !== colIndex) { // Exclude balance column itself
+                    let cellValue = row.cells[i].textContent.trim();
+                    let numValue = parseCellValue(cellValue); // Parse each cell's value
+                    total += numValue;
+                }
+            }
+            return 100 - total; // Balance is 100 - SUM(other values)
+        }
+
+
+
+            //clear all inputs
+            function clearInputs() {
+                document.querySelectorAll("#data-table input").forEach((input) => {
+                    input.value = "";
+
+                    // Clear error messages by removing the "show" class
+                    let errorMessage = input.nextElementSibling; // Get the associated error message span
+                    if (errorMessage && errorMessage.classList.contains("show")) {
+                        errorMessage.classList.remove("show"); // Hide the error message
+                    }
+                });
+
+
+              document.querySelectorAll("#data-table tr")
+                .forEach((row) => (row.style.display = ""));
+            }
+
+            function clearSearch(){
+              let searchBar = document.querySelector("#materialSearch");
+              searchBar.value = "";
+            }
+
+            function clearFilters(){
+              let elementFilters = document.querySelectorAll("#data-table .filter").forEach((element) => (element.value = ""));
+              let validationMessages = document.querySelectorAll("#data-table span").forEach((element) => (element.classList.remove("show")));
+            }
+
+
+
+            //Highlight row on click
+            document.querySelectorAll("#data-table tbody tr")
+              .forEach((row) => {
+                row.addEventListener("click", function (event) {
+                  let isHighlighted = this.classList.contains("highlight");
+
+                  // Remove highlight from all rows
+                  document.querySelectorAll("#data-table tbody tr")
+                    .forEach((r) => r.classList.remove("highlight"));
+
+                  // Toggle highlight on the clicked row
+                  if (!isHighlighted) {
+                    this.classList.add("highlight");
+                  }
+
+                  // Stop click from propagating to the document listener
+                  event.stopPropagation();
+                });
+              });
+
+
+/*
+
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("saveButton")
+          .addEventListener("click", function () {
+            let materialName = document
+              .getElementById("materialSearch")
+              .value.trim();
+            if (!materialName) {
+              alert("Please enter a material name.");
+              return;
+            }
+
+            let dataTable = document
+              .getElementById("data-table")
+              .getElementsByTagName("tbody")[0];
+            let rows = dataTable.getElementsByTagName("tr");
+            let found = false;
+
+            // Get input values from data-table
+            let inputs = document.querySelectorAll("#data-table .filter");
+            let values = Array.from(inputs).map(
+              (input) => input.value.trim() || "-"
+            );
+
+            for (let i = 1; i < rows.length; i++) {
+              // Start from 1 to skip headers
+              let row = rows[i];
+              let firstCell = row.cells[0];
+
+              if (firstCell.textContent.trim() === materialName) {
+                // ✅ Update existing row (ALL columns)
+                for (let j = 0; j < values.length; j++) {
+                  row.cells[j + 1].textContent = values[j]; // Skip material column
+                }
+                found = true;
+                break;
+              }
+            }
+
+            if (!found) {
+              // ✅ Add new row
+              let newRow = dataTable.insertRow();
+
+              // Insert material name
+              let nameCell = newRow.insertCell(0);
+              nameCell.textContent = materialName;
+
+              // Insert all values
+              values.forEach((value) => {
+                let cell = newRow.insertCell();
+                cell.textContent = value;
+              });
+            }
+          });
+      });*/
+
+
+      //export table to csv
+      document.getElementById("exportCSV").addEventListener("click", function () {
+          let dataTable = document.getElementById("data-table");
+          let rows = dataTable.getElementsByTagName("tr");
+          let csvContent = [];
+
+          for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+            let cells =
+              row.getElementsByTagName("th").length > 0
+                ? row.getElementsByTagName("th")
+                : row.getElementsByTagName("td");
+            let rowData = Array.from(cells)
+              .map((cell) => `"${cell.textContent.trim()}"`)
+              .join(",");
+            csvContent.push(rowData);
+          }
+
+          let csvBlob = new Blob([csvContent.join("\n")], { type: "text/csv" });
+          let link = document.createElement("a");
+          link.href = URL.createObjectURL(csvBlob);
+          link.download = "materials database.csv";
+          link.click();
+        });
+
+
+
+        document.getElementById("importCSV").addEventListener("change", function (event) {
+                  let file = event.target.files[0];
+                  if (!file) return;
+
+                  let reader = new FileReader();
+                  reader.onload = function (e) {
+                      loadCSVData(e.target.result);
+                       event.target.value = ""; // Reset input so the same file can be selected again
+                  };
+                  reader.readAsText(file);
+              });
+
+
+              function loadCSVData(csvText) {
+
+                        let csvData = csvText.split("\n").map(row => row.split(","))
+                        .filter((row, index) => index > 0 && row.join("").trim() !== ""); // Skip the header row and empty rows
+
+                        let dataTable = document.getElementById("data-table").getElementsByTagName("tbody")[0];
+
+                        dataTable.innerHTML = ""; // Clear old data
+
+                        csvData.forEach(rowData => {
+                            let newRow = dataTable.insertRow();
+                            rowData.forEach(cellData => {
+                                let cell = newRow.insertCell();
+                                cell.textContent = cellData.replace(/"/g, ""); // Remove quotes from CSV
+                            });
+                        });
+                    }
+
+
+
+              //save new html file
+      function saveHtmlToFile() {
+        // Get the HTML content of the page
+        const htmlContent = document.documentElement.outerHTML;
+
+                // Get today's date in dd/mm/yyyy format
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const year = today.getFullYear();
+        const dateStr = `${day}-${month}-${year}`;
+
+        // Use a default file name (you can change this if needed)
+        const fileName = `page_${dateStr}.html`;
+
+        // Add the DOCTYPE declaration before the HTML content
+        const doctype = `<!DOCTYPE html>\n`;
+        const fullHtmlContent = doctype + htmlContent;
+
+        // Create a Blob from the HTML content
+        const blob = new Blob([fullHtmlContent], { type: "text/plain" });
+
+        // Create an anchor element to trigger the download
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName; // Name of the file to save
+
+        // Trigger the download
+        link.click();
+      }
+
+
+/*
+      //Shrink header columns on click, to allow easier edit
+      document.addEventListener("DOMContentLoaded", function () {
+          const elementMap = {
+              "Nickel": "Ni",
+              "Cobalt": "Co",
+              "Chromium": "Cr",
+              "Molybdenum": "Mo",
+              "Niobium": "Nb",
+              "Titanium": "Ti",
+              "Aluminum": "Al",
+              "Tungsten": "W",
+              "Iron": "Fe",
+              "Carbon": "C",
+              "Manganese": "Mn",
+              "Silicon": "Si",
+              "Tin": "Sn",
+              "Vanadium": "V",
+              "Zirconium": "Zr",
+              "Boron": "B",
+              "Silver": "Ag",
+              "Copper": "Cu",
+              "Zinc": "Zn",
+              "Magnesium": "Mg"
+          };
+
+          const tableHeaders = document.querySelectorAll("#data-table th");
+
+          tableHeaders.forEach(header => {
+              header.addEventListener("click", function () {
+                  const fullName = this.textContent;
+
+                  if (elementMap[fullName]) {
+                      this.textContent = elementMap[fullName];
+                      this.style.width = "20px";
+
+                  } else {
+                      const shortName = Object.values(elementMap).find(short => short === fullName);
+                      if (shortName) {
+                          const longName = Object.keys(elementMap).find(key => elementMap[key] === shortName);
+                          this.textContent = longName;
+                      }
+                  }
+              });
+          });
+      });
+*/
+
+      //validation input
+      function validateInput(input) {
+
+          const cell = input.closest('td'); // Get the closest <td> element
+          const row = cell.parentElement;   // Get the row (<tr>) containing the <td>
+          const columnIndex = Array.from(row.children).indexOf(cell); // Get the column index
+
+          const firstColumn = input.closest("tr").querySelector("td:first-child input"); // First column input
+          if (input === firstColumn) return; // Skip validation for first column
+
+          const value = input.value.trim();
+          const errorMessage = input.nextElementSibling;
+          const validNumberRegex = /^(\d{1,2}(\.\d+)?|100)$/; // Matches numbers from 0 to 100, including decimals
+          const validRangeRegex = /^(\d{1,2}(\.\d+)?|100) *- *(\d{1,2}(\.\d+)?|100)$/; // Matches range like 1 - 2.5
+          const validBal = /^Bal\.$/i; // Matches the word "Bal."
+
+          if (value === "" || validNumberRegex.test(value) || validRangeRegex.test(value) || validBal.test(value)) {
+            errorMessage.classList.remove("show"); // Hide when input is valid
+            input.style.border = "1px solid #ccc";
+            filterTable();
+          } else {
+            errorMessage.textContent = "Invalid input (0-100, range, or 'Bal.')";
+            errorMessage.classList.add("show"); // Show the error message
+          }
+        }
+
+
+        // Function to toggle between "Bal." and the calculated value in the table
+        function toggleBalanceValues() {
+            const table = document.querySelector('#data-table'); // Assuming you're working with a table element
+            const cells = table.querySelectorAll('td');
+
+            cells.forEach(cell => {
+                if (cell.textContent.trim().toLowerCase() === 'bal.' || cell.textContent.trim().toLowerCase() === 'balance') {
+
+                        // If not converted, calculate and replace it with the value
+                        const row = cell.closest('tr');
+                        const colIndex = Array.from(cell.parentElement.children).indexOf(cell);
+                        const balance = calculateBalance(row, colIndex);
+                        cell.textContent = balance.toFixed(2); // Assuming balance is a number to 2 decimal places
+                        cell.setAttribute('data-converted', 'true'); // Mark this cell as converted
+
+                }else if (cell.hasAttribute('data-converted')) {
+                        // If already converted, revert it back to "Bal."
+                        cell.textContent = "Bal.";
+                        cell.removeAttribute('data-converted'); // Remove the marker
+                    }
+            });
+        }
+
+        function toggleTableEdit() {
+          const table = document.getElementById("data-table");
+          if (!table) return;
+
+          const cells = table.querySelectorAll("tbody td");
+
+          cells.forEach(cell => {
+              const isEditable = cell.getAttribute("contenteditable") === "true";
+              cell.setAttribute("contenteditable", !isEditable);
+          });
+      }
+
+      function copyHighlightedRowToInput() {
+          const table = document.getElementById("data-table");
+          if (!table) return;
+
+          const highlightedRow = table.querySelector("tbody tr.highlight");
+          if (!highlightedRow) return;
+
+          const inputRow = table.querySelector("thead tr:nth-child(2)");
+          if (!inputRow) return;
+
+          const highlightedCells = highlightedRow.querySelectorAll("td");
+          const inputCells = inputRow.querySelectorAll("input");
+
+          highlightedCells.forEach((cell, index) => {
+              const numericValue = parseFloat(cell.textContent);
+              if (!isNaN(numericValue) && inputCells[index]) {
+                  inputCells[index].value = numericValue;
+              } else if (inputCells[index]) {
+                  inputCells[index].value = ""; // Clear if not numeric
+              }
+          });
+
+          filterTable();
+      }
+
+
+
+
+        //////////////////MODAL CODE ////////////////////////////
+
+          const elements = [
+            { symbol: "H", name: "Hydrogen", row: 1, col: 1, wt:100},
+            { symbol: "He", name: "Helium", row: 1, col: 18, wt:100},
+
+            { symbol: "Li", name: "Lithium", row: 2, col: 1  , wt:100, Ka: 0.054 },
+            { symbol: "Be", name: "Beryllium", row: 2, col: 2  , wt:100, Ka: 0.108 },
+            { symbol: "B", name: "Boron", row: 2, col: 13  , wt:100, Ka: 0.183 },
+            { symbol: "C", name: "Carbon", row: 2, col: 14  , wt:100, Ka: 0.277 },
+            { symbol: "N", name: "Nitrogen", row: 2, col: 15  , wt:100, Ka: 0.392 },
+            { symbol: "O", name: "Oxygen", row: 2, col: 16  , wt:100, Ka: 0.525 },
+            { symbol: "F", name: "Fluorine", row: 2, col: 17  , wt:100, Ka: 0.677 },
+            { symbol: "Ne", name: "Neon", row: 2, col: 18  , wt:100, Ka: 0.849 },
+
+            { symbol: "Na", name: "Sodium", row: 3, col: 1  , wt:100, Ka: 1.041 },
+            { symbol: "Mg", name: "Magnesium", row: 3, col: 2  , wt:100, Ka: 1.254 },
+            { symbol: "Al", name: "Aluminum", row: 3, col: 13  , wt:100, Ka: 1.486 },
+            { symbol: "Si", name: "Silicon", row: 3, col: 14  , wt:100, Ka: 1.740 },
+            { symbol: "P", name: "Phosphorus", row: 3, col: 15  , wt:100, Ka: 2.013 },
+            { symbol: "S", name: "Sulfur", row: 3, col: 16  , wt:100, Ka: 2.307 },
+            { symbol: "Cl", name: "Chlorine", row: 3, col: 17  , wt:100, Ka: 2.622 },
+            { symbol: "Ar", name: "Argon", row: 3, col: 18  , wt:100, Ka: 2.957 },
+
+            { symbol: "K", name: "Potassium", row: 4, col: 1  , wt:100, Ka: 3.314 },
+            { symbol: "Ca", name: "Calcium", row: 4, col: 2  , wt:100, Ka: 3.692 },
+            { symbol: "Sc", name: "Scandium", row: 4, col: 3  , wt:100, Ka: 4.090 },
+            { symbol: "Ti", name: "Titanium", row: 4, col: 4  , wt:100, Ka: 4.510 },
+            { symbol: "V", name: "Vanadium", row: 4, col: 5  , wt:100, Ka: 4.949 },
+            { symbol: "Cr", name: "Chromium", row: 4, col: 6  , wt:100, Ka: 5.415 },
+            { symbol: "Mn", name: "Manganese", row: 4, col: 7  , wt:100, Ka: 5.898 },
+            { symbol: "Fe", name: "Iron", row: 4, col: 8  , wt:100, Ka: 6.404 },
+            { symbol: "Co", name: "Cobalt", row: 4, col: 9  , wt:100, Ka: 6.925 },
+            { symbol: "Ni", name: "Nickel", row: 4, col: 10  , wt:100, Ka: 7.472 },
+            { symbol: "Cu", name: "Copper", row: 4, col: 11  , wt:100, Ka: 8.047, La: 0.930 },
+            { symbol: "Zn", name: "Zinc", row: 4, col: 12  , wt:100, Ka: 8.638, La: 1.012 },
+            { symbol: "Ga", name: "Gallium", row: 4, col: 13  , wt:100, Ka: 9.251, La: 1.098 },
+            { symbol: "Ge", name: "Germanium", row: 4, col: 14  , wt:100, Ka: 9.875, La: 1.188 },
+            { symbol: "As", name: "Arsenic", row: 4, col: 15  , wt:100, Ka: 10.543, La: 1.282 },
+            { symbol: "Se", name: "Selenium", row: 4, col: 16  , wt:100, Ka: 11.222, La: 1.379 },
+            { symbol: "Br", name: "Bromine", row: 4, col: 17  , wt:100, Ka: 11.924, La: 1.480 },
+            { symbol: "Kr", name: "Krypton", row: 4, col: 18  , wt:100, Ka: 12.648, La: 1.584 },
+
+            { symbol: "Rb", name: "Rubidium", row: 5, col: 1  , wt:100, Ka: 13.394, La: 1.692 },
+            { symbol: "Sr", name: "Strontium", row: 5, col: 2  , wt:100, Ka: 14.165, La: 1.804 },
+            { symbol: "Y", name: "Yttrium", row: 5, col: 3  , wt:100, Ka: 14.959, La: 1.918 },
+            { symbol: "Zr", name: "Zirconium", row: 5, col: 4  , wt:100, Ka: 15.775, La: 2.036 },
+            { symbol: "Nb", name: "Niobium", row: 5, col: 5  , wt:100, Ka: 16.615, La: 2.157 },
+            { symbol: "Mo", name: "Molybdenum", row: 5, col: 6  , wt:100, Ka: 17.479, La: 2.282 },
+            { symbol: "Tc", name: "Technetium", row: 5, col: 7  , wt:100, Ka: 18.367, La: 2.410 },
+            { symbol: "Ru", name: "Ruthenium", row: 5, col: 8  , wt:100, Ka: 19.279, La: 2.541 },
+            { symbol: "Rh", name: "Rhodium", row: 5, col: 9  , wt:100, Ka: 20.216, La: 2.676 },
+            { symbol: "Pd", name: "Palladium", row: 5, col: 10  , wt:100, Ka: 21.177, La: 2.814 },
+            { symbol: "Ag", name: "Silver", row: 5, col: 11  , wt:100, Ka: 22.163, La: 2.956 },
+            { symbol: "Cd", name: "Cadmium", row: 5, col: 12  , wt:100, Ka: 23.173, La: 3.101 },
+            { symbol: "In", name: "Indium", row: 5, col: 13  , wt:100, Ka: 24.208, La: 3.250 },
+            { symbol: "Sn", name: "Tin", row: 5, col: 14  , wt:100, Ka: 25.271, La: 3.402 },
+            { symbol: "Sb", name: "Antimony", row: 5, col: 15  , wt:100, Ka: 26.360, La: 3.559 },
+            { symbol: "Te", name: "Tellurium", row: 5, col: 16  , wt:100, Ka: 27.476, La: 3.719 },
+            { symbol: "I", name: "Iodine", row: 5, col: 17  , wt:100, Ka: 28.620, La: 3.882 },
+            { symbol: "Xe", name: "Xenon", row: 5, col: 18  , wt:100, Ka: 29.791, La: 4.048 },
+
+            { symbol: "Cs", name: "Cesium", row: 6, col: 1  , wt:100, Ka: 30.989, La: 4.218 },
+            { symbol: "Ba", name: "Barium", row: 6, col: 2  , wt:100, Ka: 32.214, La: 4.391 },
+            { symbol: "La", name: "Lanthanum", row: 6, col: 3  , wt:100, Ka: 33.467, La: 4.567, Lb: 4.95 },
+            { symbol: "Hf", name: "Hafnium", row: 6, col: 4  , wt:100, Ka: 65.11, La: 7.89, Lb: 9.03 },
+            { symbol: "Ta", name: "Tantalum", row: 6, col: 5  , wt:100, Ka: 67.08, La: 8.15, Lb: 9.35 },
+            { symbol: "W", name: "Tungsten", row: 6, col: 6  , wt:100, Ka: 69.06, La: 8.40, Lb: 9.67 },
+            { symbol: "Re", name: "Rhenium", row: 6, col: 7  , wt:100, Ka: 71.08, La: 8.66, Lb: 10.00 },
+            { symbol: "Os", name: "Osmium", row: 6, col: 8  , wt:100, Ka: 73.12, La: 8.93, Lb: 10.33 },
+            { symbol: "Ir", name: "Iridium", row: 6, col: 9  , wt:100, Ka: 75.18, La: 9.20, Lb: 10.67 },
+            { symbol: "Pt", name: "Platinum", row: 6, col: 10  , wt:100, Ka: 77.25, La: 9.47, Lb: 11.01 },
+            { symbol: "Au", name: "Gold", row: 6, col: 11  , wt:100, Ka: 79.33, La: 9.71, Lb: 11.36 },
+            { symbol: "Hg", name: "Mercury", row: 6, col: 12  , wt:100, Ka: 81.43, La: 9.99, Lb: 11.72 },
+            { symbol: "Tl", name: "Thallium", row: 6, col: 13  , wt:100, Ka: 83.54, La: 10.26, Lb: 12.08 },
+            { symbol: "Pb", name: "Lead", row: 6, col: 14  , wt:100, Ka: 85.67, La: 10.55, Lb: 12.45 },
+            { symbol: "Bi", name: "Bismuth", row: 6, col: 15  , wt:100, Ka: 87.82, La: 10.84, Lb: 12.82 },
+            { symbol: "Po", name: "Polonium", row: 6, col: 16  , wt:100, Ka: 90.00, La: 11.13, Lb: 13.20 },
+            { symbol: "At", name: "Astatine", row: 6, col: 17  , wt:100, Ka: 92.20, La: 11.43, Lb: 13.59 },
+            { symbol: "Rn", name: "Radon", row: 6, col: 18  , wt:100, Ka: 94.42, La: 11.74, Lb: 13.98 },
+
+            { symbol: "Ce", name: "Cerium", row: 8, col: 4  , wt:100, Ka: 34.72, La: 4.84, Lb: 5.27 },
+            { symbol: "Pr", name: "Praseodymium", row: 8, col: 5  , wt:100, Ka: 35.99, La: 5.01, Lb: 5.46 },
+            { symbol: "Nd", name: "Neodymium", row: 8, col: 6  , wt:100, Ka: 37.28, La: 5.19, Lb: 5.66 },
+            { symbol: "Pm", name: "Promethium", row: 8, col: 7  , wt:100, Ka: 38.59, La: 5.37, Lb: 5.86 },
+            { symbol: "Sm", name: "Samarium", row: 8, col: 8  , wt:100, Ka: 39.92, La: 5.55, Lb: 6.06 },
+            { symbol: "Eu", name: "Europium", row: 8, col: 9  , wt:100, Ka: 41.27, La: 5.74, Lb: 6.27 },
+            { symbol: "Gd", name: "Gadolinium", row: 8, col: 10  , wt:100, Ka: 42.64, La: 5.93, Lb: 6.48 },
+            { symbol: "Tb", name: "Terbium", row: 8, col: 11  , wt:100, Ka: 44.03, La: 6.12, Lb: 6.69 },
+            { symbol: "Dy", name: "Dysprosium", row: 8, col: 12  , wt:100, Ka: 45.44, La: 6.32, Lb: 6.91 },
+            { symbol: "Ho", name: "Holmium", row: 8, col: 13  , wt:100, Ka: 46.87, La: 6.52, Lb: 7.13 },
+            { symbol: "Er", name: "Erbium", row: 8, col: 14  , wt:100, Ka: 48.32, La: 6.72, Lb: 7.36 },
+            { symbol: "Tm", name: "Thulium", row: 8, col: 15  , wt:100, Ka: 49.79, La: 6.93, Lb: 7.59 },
+            { symbol: "Tm", name: "Thulium", row: 8, col: 15  , wt:100, Ka: 49.79, La: 6.93, Lb: 7.59 },
+            { symbol: "Yb", name: "Ytterbium", row: 8, col: 16  , wt:100, Ka: 51.28, La: 7.14, Lb: 7.82 },
+            { symbol: "Lu", name: "Lutetium", row: 8, col: 17  , wt:100, Ka: 52.79, La: 7.35, Lb: 8.05 },
+
+            { symbol: "Th", name: "Thorium", row: 9, col: 4  , wt:100, Ka: 98.44, La: 12.37, Lb: 14.78, Ma: 2.01 },
+            { symbol: "Pa", name: "Protactinium", row: 9, col: 5  , wt:100, Ka: 100.86, La: 12.69, Lb: 15.19, Ma: 2.09 },
+            { symbol: "U", name: "Uranium", row: 9, col: 6  , wt:100, Ka: 103.35, La: 13.02, Lb: 15.60, Ma: 2.17 },
+            { symbol: "Np", name: "Neptunium", row: 9, col: 7  , wt:100, Ka: 105.89, La: 13.35, Lb: 16.01, Ma: 2.25 },
+            { symbol: "Pu", name: "Plutonium", row: 9, col: 8  , wt:100, Ka: 108.47, La: 13.68, Lb: 16.43, Ma: 2.33 },
+            { symbol: "Am", name: "Americium", row: 9, col: 9  , wt:100, Ka: 111.10, La: 14.02, Lb: 16.85, Ma: 2.41 },
+            { symbol: "Cm", name: "Curium", row: 9, col: 10  , wt:100, Ka: 113.78, La: 14.36, Lb: 17.28, Ma: 2.49 },
+            { symbol: "Bk", name: "Berkelium", row: 9, col: 11  , wt:100, Ka: 116.51, La: 14.71, Lb: 17.71, Ma: 2.57 },
+            { symbol: "Cf", name: "Californium", row: 9, col: 12  , wt:100, Ka: 119.28, La: 15.06, Lb: 18.15, Ma: 2.66 },
+            { symbol: "Es", name: "Einsteinium", row: 9, col: 13  , wt:100, Ka: 122.10, La: 15.41, Lb: 18.59, Ma: 2.74 },
+            { symbol: "Fm", name: "Fermium", row: 9, col: 14  , wt:100, Ka: 124.97, La: 15.77, Lb: 19.03, Ma: 2.83 },
+            { symbol: "Md", name: "Mendelevium", row: 9, col: 15  , wt:100, Ka: 127.89, La: 16.13, Lb: 19.48, Ma: 2.91 },
+            { symbol: "No", name: "Nobelium", row: 9, col: 16  , wt:100, Ka: 130.86, La: 16.50, Lb: 19.93, Ma: 3.00 },
+            { symbol: "Lr", name: "Lawrencium", row: 9, col: 17  , wt:100, Ka: 133.88, La: 16.87, Lb: 20.39, Ma: 3.09 }
+  ];
+
+
+
+        const selectedElements = new Set(["Ag", "Ni", "Co","Ti","V", "Cr","Nb","Mo","Al","Zn","Cu","Fe","Mn","W"]);
+        const table = document.getElementById("periodic-table");
+
+        for (let row = 1; row <= 9; row++) {
+            for (let col = 1; col <= 18; col++) {
+                const element = elements.find(e => e.row === row && e.col === col);
+                const cell = document.createElement("div");
+                cell.classList.add("element");
+                cell.ondblclick = () => alert(`${element.name} (${element.symbol})`);
+
+                cell.onclick = () => {
+                    if (selectedElements.has(element.symbol)) {
+                        selectedElements.delete(element.symbol);
+                        cell.classList.remove("selected");
+                    } else {
+                        selectedElements.add(element.symbol);
+                        cell.classList.add("selected");
+                    }
+                    console.log("Selected Elements:", Array.from(selectedElements));
+                };
+
+
+                if (element) {
+                    cell.innerHTML = `<div class='symbol'>${element.symbol}</div><div class='name'>${element.name}</div>`;
+
+                    if (selectedElements.has(element.symbol)) {
+                            cell.classList.add("selected");
+                        }
+
+                } else {
+                    cell.classList.add("empty");
+                }
+                table.appendChild(cell);
+            }
+        }
+
+
+
+        //FOR MODAL
+        document.querySelector(".PeriodicTableModal").onclick = () => {
+          document.getElementById("modal-periodic-table").style.display = "flex";
+        };
+
+        document.querySelector(".modal-content-periodic-table .close").onclick = () => {
+            hideUnselectedColumns("data-table");
+            document.getElementById("modal-periodic-table").style.display = "none";
+        };
+
+        window.onclick = (event) => {
+            if (event.target === document.getElementById("modal-periodic-table")) {
+                hideUnselectedColumns("data-table");
+                document.getElementById("modal-periodic-table").style.display = "none";
+            }
+        };
+
+
+             //FOR SPECTRAL MODAL
+
+
+        document.querySelector("#modal-spectral-table .close").onclick = () => {
+            hideUnselectedColumns("data-table");
+            document.getElementById("modal-spectral-table").style.display = "none";
+        };
+
+        window.onclick = (event) => {
+            if (event.target === document.getElementById("modal-spectral-table")) {
+                document.getElementById("modal-spectral-table").style.display = "none";
+            }
+        };
+
+
+
+
+        function hideUnselectedColumns(tableId) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+
+    const thead = table.querySelector("thead");
+    const tbody = table.querySelector("tbody");
+
+    if (!thead || !tbody) return;
+
+    const headers = thead.querySelectorAll("th");
+    const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
+
+    headers.forEach((th, index) => {
+        // Extract text from <th>
+        const text = th.textContent.trim();
+
+        // Extract element symbol from header text
+        const match = text.match(/\((\w+)\)/);
+        if (match) {
+            const elementSymbol = match[1]; // Extracted symbol
+            if (!selectedElements.has(elementSymbol)) {
+                // Hide the <th>
+                th.style.display = "none";
+
+                // Hide corresponding <td> in <thead> (if present)
+                if (theadCells[index]) {
+                    theadCells[index].style.display = "none";
+                }
+
+                // Hide corresponding column cells in tbody
+                tbody.querySelectorAll("tr").forEach(row => {
+                    const cells = row.querySelectorAll("td");
+                    if (cells[index]) {
+                        cells[index].style.display = "none";
+
+                        // Hide any inputs or elements inside the <td>
+                        cells[index].querySelectorAll("*").forEach(child => {
+                            child.style.display = "none";
+                        });
+                    }
+                });
+            } else {
+                // If the element is selected, make the column visible
+                th.style.display = "";
+                if (theadCells[index]) {
+                    theadCells[index].style.display = "";
+                }
+                tbody.querySelectorAll("tr").forEach(row => {
+                    const cells = row.querySelectorAll("td");
+                    if (cells[index]) {
+                        cells[index].style.display = "";
+
+                        // Show any inputs or elements inside the <td>
+                        cells[index].querySelectorAll("*").forEach(child => {
+                            child.style.display = "";
+                        });
+                    }
+                });
+            }
+        }
+    });
+}
+
+
+
+      document.addEventListener("DOMContentLoaded", () => {
+          hideUnselectedColumns("data-table");
+      });
+
+
+              let spectralChart = null;
+              const ctx = document.getElementById('myChart').getContext('2d');
+
+
+              function drawChart(elements) {
+                        const yMax = 100000;
+                        const datasets = elements.map(element => {
+                            const Ka = element.Ka;
+                            const peakWidth = 130; //130 eV
+                            const delta = (130/1000) / 2;
+                            const intensity = (element.wt / 100) * yMax;
+
+                            return {
+                                label: `${element.symbol} - ${element.name}`,
+                                data: [
+                                    { x: Ka - delta, y: 0 },
+                                    { x: Ka, y: intensity },
+                                    { x: Ka + delta, y: 0 }
+                                ],
+
+                                borderWidth: 2,
+                                pointRadius: 1,
+                                fill: true,
+                                borderColor: "rgba(75, 192, 192, 1)", // Line color
+                                backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
+                                tension: 0.8
+                            };
+                        });
+
+                        if (spectralChart) {
+                          // Update the existing chart instead of creating a new one
+                          spectralChart.data.datasets = datasets; // Assign datasets correctly
+                          spectralChart.update();
+                            }else{
+                              spectralChart =  new Chart(ctx, {
+                                  type: 'line',
+                                  data: { datasets },
+                                  options: {
+                                      responsive: true,
+                                      scales: {
+                                          x: {
+                                              type: 'linear',
+                                              position: 'bottom',
+                                              title: { display: true, text: 'KeV' },
+                                              min: 0,
+                                              max: 12,
+                                              ticks: {
+                                                  stepSize: 2,
+                                                  callback: function(value) {
+                                                      return Number.isInteger(value) ? value.toString() : "";
+                                                  }
+                                              }
+                                          },
+                                          y: {
+                                              beginAtZero: true,
+                                              max: yMax,
+                                              title: { display: true, text: 'cps/eV' }
+                                          }
+                                      }
+                                  }
+                              });
+
+                            }
+
+                    }
+
+
+          </script>
+      </body>
+      </html>
+
+    </script>
+
+
+</body>
+</html>
