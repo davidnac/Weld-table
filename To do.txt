@@ -1,14 +1,3 @@
-elements table
-
-load data from csv
-password modal
-
-logbook
-
-edit operators
-edit work types
-edit log fields and types
-password modal
-
+put search that doesnt break html into etchants code
 
 XRD
