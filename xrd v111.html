@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XRD Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f4f4f4; }
+        input, button { margin: 10px 0; padding: 8px; }
+    </style>
+</head>
+<body>
+    <h2>X-ray Diffraction Analysis</h2>
+    <label>Enter 2θ angles (comma-separated):</label>
+    <input type="text" id="anglesInput" value="137.41,116.372,98.937" placeholder="e.g., 20,30,40">
+    <button onclick="analyzeXRD()">Analyze</button>
+
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>2θ (°)</th>
+                <th>d (Å)</th>
+                <th>1/d²</th>
+                <th>Ratio</th>
+                <th>hkl</th>
+                <th>a (Å)</th>
+                <th>FCC</th>
+                <th>BCC</th>
+                <th>SC</th>
+                <th>HCP</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function braggLaw(theta, wavelength = 1.5406) {
+            let thetaRad = (theta / 2) * (Math.PI / 180);
+            return wavelength / (2 * Math.sin(thetaRad));
+        }
+
+        function structureFactors(hkl) {
+            let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
+            if (sumHkl2 === 0) return; // Skip (0,0,0) which is invalid
+            return {
+                FCC: sumHkl2 % 4 === 0 ? '✔' : '✘',
+                BCC: sumHkl2 % 2 === 0 ? '✔' : '✘',
+                SC: sumHkl2 > 0 ? '✔' : '✘', // Simple cubic allows any (h,k,l) > 0
+                HCP: (sumHkl2 === 3 || sumHkl2 === 4 || sumHkl2 === 8) ? '✔' : '✘' // Common for HCP
+            };
+        }
+
+        function analyzeXRD() {
+            let anglesInput = document.getElementById("anglesInput").value;
+            let angles = anglesInput.split(",").map(a => parseFloat(a.trim())).filter(a => !isNaN(a));
+            let tbody = document.querySelector("#resultsTable tbody");
+            tbody.innerHTML = "";
+
+            if (angles.length < 3) {
+                alert("Please enter at least 3 angles.");
+                return;
+            }
+
+            let dValues = angles.map(theta => ({
+                theta,
+                d: braggLaw(theta)
+            }));
+            console.log("Computed d-values:", dValues);
+
+            dValues.sort((a, b) => b.d - a.d);
+            let dInverseSquares = dValues.map(entry => 1 / (entry.d ** 2));
+            console.log("Computed 1/d² values:", dInverseSquares);
+
+            let baseValue = dInverseSquares[0];
+            let multiplier = findCommonMultiplier(dInverseSquares.map(val => val / baseValue));
+            console.log("Base Value:", baseValue);
+            console.log("Multiplier Found:", multiplier);
+
+            let ratios = dInverseSquares.map(val => Math.round((val / baseValue) * multiplier));
+            console.log("Final Ratios:", ratios);
+
+            let millerIndices = ratios.map(ratio => getMillerIndices(ratio));
+            console.log("Miller Indices Found:", millerIndices);
+
+            dValues.forEach((entry, index) => {
+                let hkl = millerIndices[index];
+                let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
+                if (sumHkl2 === 0) return; // Skip invalid (0,0,0)
+                let aCalc = sumHkl2 > 0 ? entry.d * Math.sqrt(sumHkl2) : "-";
+                let structFlags = structureFactors(hkl);
+                let row = `<tr>
+                    <td>${entry.theta.toFixed(2)}</td>
+                    <td>${entry.d.toFixed(4)}</td>
+                    <td>${dInverseSquares[index].toFixed(6)}</td>
+                    <td>${ratios[index]}</td>
+                    <td>(${hkl.join('')})</td>
+                    <td>${aCalc !== "-" ? aCalc.toFixed(4) : "-"}</td>
+                    <td>${structFlags.FCC}</td>
+                    <td>${structFlags.BCC}</td>
+                    <td>${structFlags.SC}</td>
+                    <td>${structFlags.HCP}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function findCommonMultiplier(ratios) {
+            let n = 1;
+            while (true) {
+                let scaledRatios = ratios.map(r => r * n);
+                if (scaledRatios.every(r => Math.abs(r - Math.round(r)) < 0.01)) {
+                    return n;
+                }
+                n++;
+            }
+        }
+
+        function getMillerIndices(ratio) {
+            const ratioMap = {
+                1: [1, 0, 0],
+                2: [1, 1, 0],
+                3: [1, 1, 1],
+                4: [2, 0, 0],
+                6: [2, 1, 0],
+                8: [2, 2, 0],
+                9: [3, 1, 0]
+            };
+            return ratioMap[ratio] || [0, 0, 0];
+        }
+    </script>
+</body>
+</html>

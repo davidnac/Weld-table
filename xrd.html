@@ -33,13 +33,17 @@
             text-align: center;
             padding: 6px 8px;
         }
+        #anglesInput{
+          width: 300px;
+        }
+        
     </style>
 </head>
 <body>
     <h1>XRD Diffraction Analysis</h1>
     <p>Example spectrum for Aluminum Oxide (Al<sub>2</sub>O<sub>3</sub>)</p>
     <canvas id="xrdChart"></canvas>
-    
+
     <table>
         <tbody id="dataTable">
             <tr>
@@ -77,14 +81,14 @@
             </tr>
         </tbody>
     </table>
-    
+
     <button onclick="updateChart()">Update Spectrum</button>
 
     <h2>X-ray Diffraction Analysis</h2>
     <label>Enter 2θ angles (comma-separated):</label>
     <input type="text" id="anglesInput" placeholder="e.g., 20,30,40">
     <button onclick="analyzeXRD()">Analyze</button>
-    
+
     <table id="resultsTable">
         <thead>
             <tr>
@@ -96,17 +100,19 @@
                 <th>a (Å)</th>
                 <th>FCC</th>
                 <th>BCC</th>
+                <th>SC</th>
+                <th>HCP</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
-    
+
     <script>
        function updateChart() {
     const ctx = document.getElementById("xrdChart").getContext("2d");
     const tableRows = document.querySelectorAll("#dataTable tr");
     let peaks = [], intensities = [], hklLabels = [];
-    
+
     // Iterate over each row and extract the necessary data
     tableRows.forEach((row, rowIndex) => {
         const cells = row.querySelectorAll("td input"); // Get the input elements
@@ -134,7 +140,7 @@
         const width = 0.5; // half width (total width = 5 degrees)
         const leftX = theta - width;
         const rightX = theta + width;
-        
+
         // Return data for the peak with its width at zero intensity, but only one point at the peak intensity
         return [
             { x: leftX, y: 0 }, // left side at zero intensity
@@ -142,12 +148,12 @@
             { x: rightX, y: 0 } // right side at zero intensity
         ];
     }).flat();
-    
+
     // Destroy the previous chart if it exists
     if (window.myChart) {
         window.myChart.destroy();
     }
-    
+
     // Create a new chart
     window.myChart = new Chart(ctx, {
         type: 'line',
@@ -206,9 +212,12 @@ function braggLaw(theta, wavelength = 1.5406) {
 
         function structureFactors(hkl) {
             let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
+            if (sumHkl2 === 0) return; // Skip (0,0,0) which is invalid
             return {
                 FCC: sumHkl2 % 4 === 0 ? '✔' : '✘',
-                BCC: sumHkl2 % 2 === 0 ? '✔' : '✘'
+                BCC: sumHkl2 % 2 === 0 ? '✔' : '✘',
+                SC: sumHkl2 > 0 ? '✔' : '✘', // Simple cubic allows any (h,k,l) > 0
+                HCP: (sumHkl2 === 3 || sumHkl2 === 4 || sumHkl2 === 8) ? '✔' : '✘' // Common for HCP
             };
         }
 
@@ -217,26 +226,28 @@ function braggLaw(theta, wavelength = 1.5406) {
             let angles = anglesInput.split(",").map(a => parseFloat(a.trim())).filter(a => !isNaN(a));
             let tbody = document.querySelector("#resultsTable tbody");
             tbody.innerHTML = "";
-            
+
             if (angles.length < 3) {
                 alert("Please enter at least 3 angles.");
                 return;
             }
-            
+
             // Step 1: Compute d-values and 1/d²
             let dValues = angles.map(theta => ({
                 theta,
                 d: braggLaw(theta)
             }));
-            
+
             dValues.sort((a, b) => b.d - a.d);
             let dInverseSquares = dValues.map(entry => 1 / (entry.d ** 2));
-            
+
             // Step 2: Compute ratios
+            // Step 2: Find common multiplier to make all ratios integers
             let baseValue = dInverseSquares[0];
-            let ratios = dInverseSquares.map(val => findClosestIntegerRatio(val / baseValue));
+            let multiplier = findCommonMultiplier(dInverseSquares.map(val => val / baseValue));
+            let ratios = dInverseSquares.map(val => Math.round((val / baseValue) * multiplier));
             let millerIndices = ratios.map(ratio => getMillerIndices(ratio));
-            
+
             // Step 3: Populate table
             dValues.forEach((entry, index) => {
                 let hkl = millerIndices[index];
@@ -255,21 +266,23 @@ function braggLaw(theta, wavelength = 1.5406) {
                     <td>${aCalc !== "-" ? aCalc.toFixed(4) : "-"}</td>
                     <td>${structFlags.FCC}</td>
                     <td>${structFlags.BCC}</td>
+                    <td>${structFlags.SC}</td>
+                    <td>${structFlags.HCP}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
         }
 
-        function findClosestIntegerRatio(value) {
-            let n = 1;
-            while (true) {
-                let testVal = value * n;
-                if (Math.abs(testVal - Math.round(testVal)) < 0.01) {
-                    return Math.round(testVal);
+        function findCommonMultiplier(ratios) {
+                let n = 1;
+                while (true) {
+                    let scaledRatios = ratios.map(r => r * n);
+                    if (scaledRatios.every(r => Math.abs(r - Math.round(r)) < 0.01)) {
+                        return n;
+                    }
+                    n++;
                 }
-                n++;
             }
-        }
 
         function getMillerIndices(ratio) {
             const ratioMap = {
@@ -277,23 +290,25 @@ function braggLaw(theta, wavelength = 1.5406) {
                 2: [1, 1, 0],
                 3: [1, 1, 1],
                 4: [2, 0, 0],
-                6: [2, 1, 0],
+                5: [2, 1, 0],
+                6: [2, 1, 1],
                 8: [2, 2, 0],
-                9: [3, 1, 0],
-                10: [2, 2, 2],
-                11: [3, 2, 0],
-                12: [3, 2, 1],
-                13: [3, 1, 0],
-                14: [4 ,0, 0],
-                15: [4, 1, 0],
-                16: [3, 3, 0],
-                17: [3, 3, 1],
-                18: [4, 2, 0]
+                9: [3, 0, 0],
+                10: [3, 1, 0],
+                11: [3, 1, 1],
+                12: [2, 2, 2],
+                13: [3, 2, 0],
+                14: [3 ,2, 1],
+                16: [4, 0, 0],
+                17: [4, 1, 0],
+                18: [3, 3, 0],
+                19: [3, 3, 1],
+                20: [4, 2, 0]
             };
             return ratioMap[ratio] || [0, 0, 0];
         }
 
-       
+
        </script>
 </body>
 </html>

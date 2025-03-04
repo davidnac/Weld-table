@@ -6,13 +6,12 @@
     <title>Searchable Etchants Table</title>
     <style>
 
-    @font-face {
-        font-family: 'Montserrat-Medium';
-        src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
-        font-weight: 500; /* Medium weight */
-        font-style: normal;
-    }
-
+        @font-face {
+            font-family: 'Montserrat-Medium';
+            src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+            font-weight: 500; /* Medium weight */
+            font-style: normal;
+        }
 
         body {
             font-family: 'Montserrat-Medium', sans-serif;
@@ -24,16 +23,7 @@
             margin-bottom: 25px;
             margin-top: 30px;
         }
-        input {
-            padding: 10px;
-            width: 25%;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .controls {
-            margin-bottom: 20px;
-        }
+
         select {
             width: 15%;
             padding: 10px;
@@ -82,7 +72,6 @@
             background-color: #e0f7fa;
         }
 
-
         br {
             display: block;
             content: "";
@@ -114,18 +103,113 @@
        h4{
          padding-left: 25px;
        }
-       .controls{
-          display: flex;
-          justify-content: center; /* Centers horizontally */
-          align-items: center;     /* Centers vertically */
-          margin-bottom: 10px;
+
+       /* Navbar styles */
+       .navbar {
+           display: flex;
+           flex-direction: row;
+           justify-content: space-between;
+           align-items: center;
+           background-color: #3674B5;
+           padding: 15px 30px;
+
+           width: 94%;
+           margin: 15px auto;
+           margin-bottom: 50px;
+           background: white;
+           border-radius: 10px;
+           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
        }
-       .clearButton{
+
+       .navbar .logo {
+           font-size: 21px;
+           font-weight: bold;
+           color: #1F497D;
+           text-transform: uppercase;
+       }
+
+        .icons {
+           display: flex;
+           flex-direction: row;
+           gap: 15px;
+       }
+
+       .navbar .icon {
+           color: white;
+           font-size: 20px;
+           cursor: pointer;
+       }
+
+       .navbar .icon:hover {
+           color: #FFD95F;
+       }
+
+
+       img{
+           height: 40px;
+           width: auto;
+       }
+
+       .logo-container{
+           display: flex;
+           flex-direction: row;
+           align-items: center;
+           gap: 20px;
+       }
+
+       .navbar .ThemeBtn-container {
+         height: 45px;
+         width: 45px;
+         border-radius: 100%;
+         opacity: 1;
+         background-color: transparnt;
+         display: flex;
+         align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+       }
+
+       .navbar .ThemeBtn-container:hover {
+         background-color: #98D8EF;
+         fill: white ;
+         transition: all 0.5s ease;
+       }
+
+       .clearButton {
           display: none;
           cursor: pointer;
           font-size: 26px;
           color: gray;
           padding-left: 6px;
+       }
+
+       .svg-button{
+          border: none;
+          cursor: pointer;
+          background-color: transparent !important;
+          fill: #AC1754 ;
+          transform: scale(1.2);
+          margin: 4px;
+          margin-bottom: 0;
+          margin-right: 1px;
+        }
+
+        .svg-button:hover{
+          fill: white;
+        }
+
+       /* Search bar container */
+       .search-container {
+           display: flex;
+           justify-content: center; /* Center horizontally */
+           margin-top: 30px; /* Adjust space above the search bar */
+       }
+
+       .navbar input {
+           padding: 10px;
+           width: 400px; /* Width of the search bar */
+           font-size: 16px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           background-color: rgb(244, 244, 244);
        }
 
 
@@ -135,13 +219,29 @@
 </head>
 <body>
 
-    <h2>Searchable ASTM E407 Etchants Table</h2>
-    <div class="controls">
-      <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
+  <!-- Navbar -->
+  <div class="navbar">
+      <div class="logo-container">
+          <img src="Images/IAI logo.webp" alt="Book Logo">
+          <div class="logo">ASTM E407 Etchants</div>
+      </div>
 
-      <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
+      <div>
+          <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
+         <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
+      </div>
+
+
+      <div class="icons">
+        <div class="ThemeBtn-container" style="display: none;">
+          <button id="clearSearch" class="svg-button" onclick="clearSearch()">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
+            </button>
+        </div>
+      </div>
+
   </div>
-
 
 
     <div class="table-container">
@@ -4720,10 +4820,10 @@
         function searchTable() {
           let input = document.getElementById("search");
           let searchValue = input.value.trim();
-          let clearBtn = document.getElementById("clearSearch");
+          let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
           // Show the clear button only if there is text in the search box
-          clearBtn.style.display = searchValue ? "block" : "none";
+          clearBtnContainer.style.display = searchValue ? "flex" : "none";
 
           let table = document.querySelector("table:not([style*='display: none'])");
           if (!table) return;
@@ -4787,11 +4887,11 @@
 
       function clearSearch() {
           let input = document.getElementById("search");
-          let clearBtn = document.getElementById("clearSearch");
+          let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
           // Clear the search input
           input.value = "";
-          clearBtn.style.display = "none"; // Hide the clear button
+          clearBtnContainer.style.display = "none"; // Hide the clear button
 
           // Reset the table to show all rows
           let table = document.querySelector("table:not([style*='display: none'])");
