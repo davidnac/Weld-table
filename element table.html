@@ -37,6 +37,15 @@
             outline: none;
         }
 
+        .controls{
+          display: flex;
+          justify-content: space-between;; /* Centers horizontally */
+          align-items: center;     /* Centers vertically */
+          gap: 10px;
+          margin: 0 20px 25px;
+          margin-bottom: 60px;
+       }
+
         .table-container {
             width: 98%;
             margin: 0 auto;
@@ -104,6 +113,16 @@
         .highlighted {
             background-color: #FFD95F !important;
         }
+
+        .section a{
+          color: #3674B5;
+          margin-left: 12px;
+          margin-right: 12px;
+          text-align: center;
+          font-size: 14px;
+          text-transform: uppercase;
+          text-decoration: none;
+       }
 
        ul {
          list-style-type: none;
@@ -452,69 +471,68 @@
 </head>
 <body>
 
-   <!-- Navbar -->
-   <div class="navbar">
-    <div class="logo-container">
-        <img src="Images/IAI logo.webp" alt="Book Logo">
-        <div class="logo">Materials Chemical Composition</div>
-    </div>
+  <!-- Navbar -->
+  <div class="navbar">
+      <div class="logo-container">
+          <img src="Images/IAI logo.webp" alt="Book Logo">
+          <div class="logo">Materials Chemical Composition</div>
+      </div>
 
-    <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15">
+      <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15">
 
 
-    <div class="icons">
-    <div class="ThemeBtn-container">
-          <button class="svg-button" onclick="clearInputs()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-              <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"></path></svg>
-          </button>
-            </div>
-    <div class="ThemeBtn-container">
-          <button class="svg-button" id="toggleButton" onclick="toggleBalanceValues()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-              <path d="m560-200 160-160-56-56-64 62v-166h-80v166l-64-62-56 56 160 160ZM360-440h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
-          </button>
-            </div>
-    <div class="ThemeBtn-container">
-          <button class="svg-button" onclick="copyHighlightedRowToInput()">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-            <path d="M80-200v-80h400v80H80Zm0-200v-80h200v80H80Zm0-200v-80h200v80H80Zm744 400L670-354q-24 17-52.5 25.5T560-320q-83 0-141.5-58.5T360-520q0-83 58.5-141.5T560-720q83 0 141.5 58.5T760-520q0 29-8.5 57.5T726-410l154 154-56 56ZM560-400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"></path></svg>
-          </button>
-            </div>
-          <!--<button class="btn PeriodicTableModal">Open Periodic Table</button>-->
-    <div class="ThemeBtn-container">
-          <button class="svg-button PeriodicTableModal">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-              <path d="M80-80v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-360v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-640v-240h520v240H80Zm560 0v-240h240v240H640ZM240-240Zm200 0h80-80Zm280 0ZM240-440v-80 80Zm240-40Zm240 40v-80 80Zm0-280ZM160-160h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80ZM160-440h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80Zm0-280h80v-80h-80v80Z"></path>
-            </svg>
-         </button>
-           </div>
-    <div class="ThemeBtn-container">
-          <button class="svg-button" id="saveButton" onclick="toggleTableEdit()">
+      <div class="icons">
+      <div class="ThemeBtn-container">
+            <button class="svg-button" onclick="clearInputs()">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v200h-80v-40H200v400h280v80H200Zm0-560h560v-80H200v80Zm0 0v-80 80ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"></path></svg>
-         </button>
-           </div>
-    <div class="ThemeBtn-container">
-         <button class="svg-button" onclick="saveHtmlToFile()">
-           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0z" fill="none"></path>
-             <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path></svg>
-         </button>
-           </div>
-
-
-           <button class="export-btn" id="exportCSV">
-             Export to CSV
+                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"></path></svg>
+            </button>
+              </div>
+      <div class="ThemeBtn-container">
+            <button class="svg-button" id="toggleButton" onclick="toggleBalanceValues()">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                <path d="m560-200 160-160-56-56-64 62v-166h-80v166l-64-62-56 56 160 160ZM360-440h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+            </button>
+              </div>
+      <div class="ThemeBtn-container">
+            <button class="svg-button" onclick="copyHighlightedRowToInput()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+              <path d="M80-200v-80h400v80H80Zm0-200v-80h200v80H80Zm0-200v-80h200v80H80Zm744 400L670-354q-24 17-52.5 25.5T560-320q-83 0-141.5-58.5T360-520q0-83 58.5-141.5T560-720q83 0 141.5 58.5T760-520q0 29-8.5 57.5T726-410l154 154-56 56ZM560-400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"></path></svg>
+            </button>
+              </div>
+            <!--<button class="btn PeriodicTableModal">Open Periodic Table</button>-->
+      <div class="ThemeBtn-container">
+            <button class="svg-button PeriodicTableModal">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                <path d="M80-80v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-360v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-640v-240h520v240H80Zm560 0v-240h240v240H640ZM240-240Zm200 0h80-80Zm280 0ZM240-440v-80 80Zm240-40Zm240 40v-80 80Zm0-280ZM160-160h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80ZM160-440h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80Zm0-280h80v-80h-80v80Z"></path>
+              </svg>
            </button>
+             </div>
+      <div class="ThemeBtn-container">
+            <button class="svg-button" id="saveButton" onclick="toggleTableEdit()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                  <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v200h-80v-40H200v400h280v80H200Zm0-560h560v-80H200v80Zm0 0v-80 80ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"></path></svg>
+           </button>
+             </div>
+      <div class="ThemeBtn-container">
+           <button class="svg-button" onclick="saveHtmlToFile()">
+             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0z" fill="none"></path>
+               <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path></svg>
+           </button>
+             </div>
 
-           <label for="importCSV" class="custom-file-upload">
-             <span>Import a CSV</span>
-             <input type="file" id="importCSV">
-           </label>
 
-    </div>
-</div>
+             <button class="export-btn" id="exportCSV">
+               Export to CSV
+             </button>
 
+             <label for="importCSV" class="custom-file-upload">
+               <span>Import a CSV</span>
+               <input type="file" id="importCSV">
+             </label>
+
+      </div>
+  </div>
 
 
     <div class="table-container">
@@ -587,6 +605,12 @@
             <th onclick="sortTable(20)">
               Magnesium (Mg) % <span class="sort-icon">⇅</span>
             </th>
+            <th onclick="sortTable(21)">
+              Cadmium (Cd) % <span class="sort-icon">⇅</span>
+            </th>
+            <th onclick="sortTable(22)">
+              Nitrogen (N) % <span class="sort-icon">⇅</span>
+            </th>
           </tr>
 
           <tr>
@@ -594,19 +618,7 @@
               <input type="text" id="materialSearch" placeholder="Search material...">
             </td>
             <td>
-              <input type="text" class="filter" oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
+              <input type="text" class="filter" oninput="validateInput(this)" >
               <span class="error-message"></span>
             </td>
             <td>
@@ -614,55 +626,7 @@
               <span class="error-message"></span>
             </td>
             <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
-              <span class="error-message"></span>
-            </td>
-            <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
+              <input type="text" class="filter" oninput="validateInput(this)">
               <span class="error-message"></span>
             </td>
             <td>
@@ -670,1032 +634,146 @@
               <span class="error-message"></span>
             </td>
             <td>
-              <input type="text" class="filter"  oninput="validateInput(this)">
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
+              <span class="error-message"></span>
+            </td>
+            <td>
+              <input type="text" class="filter" oninput="validateInput(this)">
               <span class="error-message"></span>
             </td>
           </tr>
 
             </thead>
-            <tbody>
+            <tbody><tr><td>CRES 304</td><td>8.0 - 10.5</td><td>-</td><td>17.5 - 19.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0 - 0.08</td><td>0 - 2.0</td><td>0 - 0.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>CRES 308</td><td>10.0 - 12.0</td><td>-</td><td>19.0 - 21.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0 - 0.08</td><td>0 - 2.0</td><td>0 - 0.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>CRES 316</td><td>10.0 - 14.0</td><td>-</td><td>16.0 - 18.0</td><td>2.0 - 3.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0 - 0.08</td><td>0 - 2.0</td><td>0 - 0.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>CRES 321</td><td>9.0 - 12.0</td><td>-</td><td>17.0 - 19.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0 - 0.08</td><td>0 - 2.0</td><td>0 - 0.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>CRES 347</td><td>9.0 - 13.0</td><td>-</td><td>17.0 - 19.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0 - 0.08</td><td>0 - 2.0</td><td>0 - 0.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>CRES 410</td><td>0 - 0.75</td><td>-</td><td>11.5 - 13.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0.08 - 0.15</td><td>0 - 1.0</td><td>0 - 1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>CRES M152 (AMS 5719)</td><td>2.75</td><td>-</td><td>12</td><td>1.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0.14</td><td>0.7</td><td>0.15</td><td>-</td><td>0.3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.035
+</td></tr><tr><td>Rene 41</td><td>Bal.</td><td>10.0 - 12.0</td><td>18.0 - 20.0</td><td>9.0 - 10.5</td><td>-</td><td>3.0 - 3.3</td><td>1.4 - 1.6</td><td>-</td><td>0 - 5.0</td><td>0.06 - 0.12</td><td>0 - 1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Rene 77</td><td>Bal.</td><td>14.0 - 16.0</td><td>14.0 - 16.0</td><td>3.9 - 4.5</td><td>-</td><td>3.0 - 3.7</td><td>4.0 - 4.6</td><td>-</td><td>0 - 0.4</td><td>0.05 - 0.09</td><td>0.1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Rene 80</td><td>61</td><td>9.5</td><td>14</td><td>4</td><td>-</td><td>4</td><td>-</td><td>-</td><td>-</td><td>0.15</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Waspaloy</td><td>Bal.</td><td>12.0 - 15.0</td><td>18.0 - 21.0</td><td>3.5 - 5.0</td><td>-</td><td>2.75 - 3.5</td><td>1.2 - 1.6</td><td>-</td><td>0 - 2.0</td><td>0.02 - 0.1</td><td>0 - 0.1</td><td>0.1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Inconel 100</td><td>Bal.</td><td>13.0 - 17.0</td><td>8.0 - 11.0</td><td>2.0 - 4.0</td><td>-</td><td>4.5 - 5.0</td><td>5.0 - 6.0</td><td>-</td><td>0 - 1.0</td><td>0.15 - 0.20</td><td>0 - 0.02</td><td>0 - 0.02</td><td>-</td><td>-</td><td>0.03 - 0.09</td><td>0.01 - 0.02</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Inconel 600</td><td>72</td><td>-</td><td>14-17</td><td>-</td><td>-</td><td>0 - 0.5</td><td>0 - 0.35</td><td>-</td><td>6.0 - 10.0</td><td>0 - 0.1</td><td>0 - 1.0</td><td>0 - 0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Inconel 601</td><td>58.0 - 63.0</td><td>-</td><td>21-25</td><td>-</td><td>-</td><td>-</td><td>1.0 - 1.7</td><td>-</td><td>Bal.</td><td>0 - 0.1</td><td>0 - 1.0</td><td>0 - 0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Inconel 602</td><td>Bal.</td><td>-</td><td>24.0-26.0</td><td>-</td><td>-</td><td>0.1 - 0.2</td><td>1.8-2.4</td><td>-</td><td>8.0 - 11.0</td><td>0.15 - 0.025</td><td>0 - 0.15</td><td>0 - 0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0 - 0.1</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Inconel 625</td><td>58</td><td>0 - 1.0</td><td>20-23</td><td>8.0 - 10.0</td><td>3.15-4.15</td><td>0 - 0.4</td><td>0 - 0.4</td><td>-</td><td>0 - 5.0</td><td>0 - 0.1</td><td>0 - 0.5</td><td>0 - 0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Inconel 713</td><td>Bal.</td><td>-</td><td>12.0 - 14.0</td><td>3.8 - 5.2</td><td>1.8 - 2.8</td><td>0.5 - 1.0</td><td>5.5-6.5</td><td>-</td><td>0 - 2.5</td><td>0.08-0.2</td><td>0 - 0.25</td><td>0 - 0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Inconel 718</td><td>50.0-55.0</td><td>0 - 1.0</td><td>17.0-21.0</td><td>2.8-3.3</td><td>4.75-5.5</td><td>0.65-1.15</td><td>0.2-0.8</td><td>-</td><td>Bal.</td><td>0 - 0.08</td><td>0 - 0.35</td><td>0 - 0.35</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Hastelloy X</td><td>Bal.</td><td>0.5 - 2.5</td><td>20.5-23.0</td><td>8.0 - 10.0</td><td>0 - 0.5</td><td>0 - 0.15</td><td>0 - 0.5</td><td>0.2 - 1.0</td><td>17.0 - 20.0</td><td>0.05-0.15</td><td>0 - 1.0</td><td>0 - 1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Hastelloy W</td><td>63</td><td>0 - 2.5</td><td>0 - 5.0</td><td>0 - 24.0</td><td>-</td><td>-</td><td>-</td><td>0 - 1.0</td><td>6</td><td>0 - 0.12</td><td>0 - 1.0</td><td>0 - 1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>L605</td><td>9.0 - 11.0</td><td>Bal.</td><td>19.0 - 21.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>14.0-16.0</td><td>0 - 3.0</td><td>0.05-0.15</td><td>1.0 - 2.0</td><td>0 - 0.4</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Haynes 188</td><td>20.0 - 24.0</td><td>Bal.</td><td>21.0 - 23.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>13.0-15.0</td><td>0 - 3.0</td><td>0.05-0.15</td><td>0 - 1.25</td><td>0.2 - 0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Haynes 230</td><td>Bal.</td><td>0 - 5.0</td><td>20.0 - 24.0</td><td>1.0 - 3.0</td><td>-</td><td>0 - 0.1</td><td>-</td><td>13.0-15.0</td><td>0 - 3.0</td><td>0.05-0.15</td><td>0.3 - 1.0</td><td>0.25 - 0.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>X-750</td><td>70</td><td>0 - 1.0</td><td>14.0-17.0</td><td>-</td><td>0.7 - 1.2</td><td>2.25 - 2.75</td><td>0.4 - 1.0</td><td>-</td><td>5.0 - 9.0</td><td>0 - 0.08</td><td>0 - 1.0</td><td>0 - 0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Greek Ascoloy (418)</td><td>1.8 - 2.2</td><td>-</td><td>12.0 - 14.0</td><td>0 - 0.5</td><td>-</td><td>-</td><td>0 - 0.15</td><td>2.5 - 3.5</td><td>Bal.</td><td>0.15 - 0.2</td><td>0 - 0.5</td><td>0 - 0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>17-4 PH</td><td>3.0 - 5.0</td><td>-</td><td>15.0 - 17.5</td><td>-</td><td>0.15 - 0.45</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0 - 0.07</td><td>0 - 1.0</td><td>0 - 1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>15-5 PH</td><td>4.3 - 5.0</td><td>-</td><td>14.0 - 15.5</td><td>0 - 0.5</td><td>0 - 0.45</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0 - 0.07</td><td>0 - 1.0</td><td>0 - 1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>A286</td><td>24.0 - 27.0</td><td>0 - 1.0</td><td>13.5 - 16.0</td><td>1.0 - 1.5</td><td>-</td><td>1.9 - 2.3</td><td>0 - 0.35</td><td>-</td><td>Bal.</td><td>0.03 - 0.08</td><td>1.0 - 2.0</td><td>0 - 1.0</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>C263</td><td>Bal.</td><td>19.0 - 21.0</td><td>19.0 - 21.0</td><td>5.6 - 6.1</td><td>-</td><td>1.9 - 2.4</td><td>0.3 - 0.6</td><td>-</td><td>0 - 0.7</td><td>0.04 - 0.08</td><td>0 - 0.6</td><td>0 - 0.4</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>C276</td><td>Bal.</td><td>0 - 2.5</td><td>14.5-16.5</td><td>15.0 - 17.0</td><td>-</td><td>-</td><td>-</td><td>3.0 - 4.5</td><td>4.0 - 7.0</td><td>0 - 0.1</td><td>0 - 1.0</td><td>0 - 0.08</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Steel 4340</td><td>1.65 - 2.0</td><td>-</td><td>0.7 - 0.9</td><td>0.2 - 0.3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0.38 - 0.43</td><td>0.6 - 0.8</td><td>0.15 - 0.3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Steel 4130</td><td>0 - 0.25</td><td>-</td><td>0.8 - 1.1</td><td>0.15 - 0.25</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0.28 - 0.33</td><td>0.4 - 0.6</td><td>0.15 - 0.3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Marm-200</td><td>54.3 - 64.1</td><td>9.0 - 11.0</td><td>8.0 - 10.0</td><td>-</td><td>0.75 - 1.25</td><td>1.75 - 2.25</td><td>4.75 - 5.25</td><td>-</td><td>0 - 1.5</td><td>0.12 - 0.17</td><td>0 - 0.2</td><td>0 - 0.2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Marm-247</td><td>Bal.</td><td>9.15 - 10.15</td><td>8.2 - 8.8</td><td>0 - 1.0</td><td></td><td>0 - 1.0</td><td>5.0 - 6.0</td><td>9.5 - 10.0</td><td>-</td><td>0 - 0.1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Coast Metal 64</td><td>5</td><td>43.6</td><td>28</td><td>0.5</td><td>-</td><td>-</td><td>-</td><td>21</td><td>-</td><td>0.85</td><td>-</td><td>-</td><td>-</td><td>1</td><td>-</td><td>0.05</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Tribaloy 800</td><td>-</td><td>Bal.</td><td>17.5</td><td>28.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>3.4</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Stellite 31 (X40)</td><td>10.5</td><td>Bal.</td><td>25.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>7.5</td><td>0 - 1.5</td><td>0 - 0.5</td><td>0 - 0.75</td><td>0 - 0.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Titanium 8Al 1Mo 1V</td><td>-</td><td>-</td><td>-</td><td>1</td><td>-</td><td>90</td><td>8</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Titanium 6Al 4V ELI</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>90</td><td>6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Titanium 6Al 4V</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>90</td><td>6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Titanium 6Al 2Sn 4Zr 2Mo</td><td>-</td><td>-</td><td>-</td><td>2</td><td>-</td><td>86</td><td>6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>2</td><td>-</td><td>4</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Titanium 15V 3Cr 3Sn 3Al</td><td>-</td><td>-</td><td>3</td><td>-</td><td>-</td><td>76</td><td>3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>3</td><td>15</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Silver Flo 55</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>2</td><td>-</td><td>-</td><td>-</td><td>55</td><td>21</td><td>22</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Silver Flo 56 (AMS 4763)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>5</td><td>-</td><td>-</td><td>-</td><td>56</td><td>22</td><td>17</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BAg-1a (AMS 4770)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>50</td><td>15.5</td><td>16.5</td><td>-</td><td>18</td><td>-
+</td></tr><tr><td>BAg-3 (AMS 4771)</td><td>3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>50</td><td>15.5</td><td>15.5</td><td>-</td><td>16</td><td>-
+</td></tr><tr><td>BAg-24 (AMS 4788)</td><td>2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>50</td><td>20</td><td>28</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BAg-13 (AMS 4772)</td><td>1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>54</td><td>40</td><td>5</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BAg-13a (AMS 4765)</td><td>2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>56</td><td>42</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BNi-5 (AMS 4782)</td><td>71</td><td>-</td><td>19</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>10</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BNi-1 (AMS 4775)</td><td>73</td><td>-</td><td>14</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>0.8</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BNi-1a (AMS 4776)</td><td>74</td><td>-</td><td>14</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BNi-2 (AMS 4777)</td><td>82.4</td><td>-</td><td>7</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>3</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3.1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BNi-3 (AMS 4778)</td><td>92</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.5</td><td>-</td><td>-</td><td>-</td><td>3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>BNi-4 (AMS 4779)</td><td>94.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>3.5</td><td>-</td><td>-</td><td>-</td><td>1.9</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Al 2024</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>93</td><td>-</td><td>0.5</td><td>-</td><td>-</td><td>0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>4.9</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Al 6061</td><td>-</td><td>-</td><td>0.2</td><td>-</td><td>-</td><td>-</td><td>97.9</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.28</td><td>-</td><td>1</td><td>-</td><td>-
+</td></tr><tr><td>Al 7075</td><td>-</td><td>-</td><td>0.2</td><td>-</td><td>-</td><td>-</td><td>91</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.6</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1.4</td><td>5.6</td><td>2.1</td><td>-</td><td>-
+</td></tr><tr><td>Al A413</td><td>0.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>94</td><td>-</td><td>-</td><td>-</td><td>0.35</td><td>12</td><td>0.15</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1</td><td>-</td><td>0.1</td><td>-</td><td>-
+</td></tr><tr><td>Al 4043</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>93.9</td><td>-</td><td>-</td><td>-</td><td>-</td><td>5.2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-
+</td></tr><tr><td>Al 5052</td><td>-</td><td>-</td><td>0.25</td><td>-</td><td>-</td><td>-</td><td>97.2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>2.5</td><td>-</td><td>-
+</td></tr><tr><td>Al 5Si 1.3Cu 0.5Mg</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>93.2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1.3</td><td>-</td><td>0.5</td><td>-</td><td>-
+</td></tr><tr><td>Al A357</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0.04 - 0.2</td><td>90.8 - 93.0</td><td>-</td><td>0 - 0.2</td><td></td><td>0 - 0.1</td><td>6.5 - 7.5</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0 - 0.2</td><td>0 - 0.1</td><td>0 - 0.7</td><td>-</td><td>-
+</td></tr></tbody>
 
-          <tr>
-            <td contenteditable="false">CRES 304</td>
-            <td contenteditable="false">8.0 - 10.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">18.0 - 20.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">Bal.</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">0.8</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">CRES 308</td>
-            <td contenteditable="false">11.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">19.0 - 21.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">Bal.</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">0.8</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">CRES 316</td>
-            <td contenteditable="false">10.0 - 14.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">16.0 - 18.0</td>
-            <td contenteditable="false">2.0 - 3.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">Bal.</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">0.8</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">CRES 321</td>
-            <td contenteditable="false">9.0 - 12.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">17.0 - 19.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">Bal.</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">0.8</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">CRES 347</td>
-            <td contenteditable="false">9.0 - 12.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">17.0 - 19.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">10.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">62.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">0.8</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">CRES 410</td>
-            <td contenteditable="false">0.75</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">11.5 - 13.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">88.0</td>
-            <td contenteditable="false">0.08 - 0.15</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">René 41</td>
-            <td contenteditable="false">54.0</td>
-            <td contenteditable="false">10.0 - 12.0</td>
-            <td contenteditable="false">18.0 - 20.0</td>
-            <td contenteditable="false">9.0 - 10.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">3.0 - 3.3</td>
-            <td contenteditable="false">1.4 - 1.6</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">0.05 - 0.12</td>
-            <td contenteditable="false">0.003 - 0.010</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Rene 77</td>
-            <td contenteditable="false">62.0</td>
-            <td contenteditable="false">14-16</td>
-            <td contenteditable="false">14-16</td>
-            <td contenteditable="false">4-5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">2.5-3.2</td>
-            <td contenteditable="false">3.8-4.8</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.08-0.15</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">René 80</td>
-            <td contenteditable="false">56.0</td>
-            <td contenteditable="false">9.5 - 10.5</td>
-            <td contenteditable="false">19.0 - 21.0</td>
-            <td contenteditable="false">9.0 - 10.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">2.6 - 3.1</td>
-            <td contenteditable="false">1.4 - 1.6</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">0.05 - 0.10</td>
-            <td contenteditable="false">0.003 - 0.010</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Waspaloy</td>
-            <td contenteditable="false">53.0 - 59.0</td>
-            <td contenteditable="false">9.0 - 11.0</td>
-            <td contenteditable="false">19.0 - 21.0</td>
-            <td contenteditable="false">1.5 - 2.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">3.0 - 3.5</td>
-            <td contenteditable="false">1.0 - 1.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">1.0 - 5.0</td>
-            <td contenteditable="false">0.05 - 0.15</td>
-            <td contenteditable="false">0.003 - 0.010</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
 
-          <tr>
-            <td contenteditable="false">Inconel 100</td>
-            <td contenteditable="false">64.0</td>
-            <td contenteditable="false">15-16.5</td>
-            <td contenteditable="false">9-11</td>
-            <td contenteditable="false">3-4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">4.3-4.7</td>
-            <td contenteditable="false">4.8-5.2</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">≤1</td>
-            <td contenteditable="false">0.17-0.23</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Inconel 600</td>
-            <td contenteditable="false">72.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">14-17</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.3</td>
-            <td contenteditable="false">0.2-0.4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">6-10</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Inconel 601</td>
-            <td contenteditable="false">58-63</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">21-25</td>
-            <td contenteditable="false">≤1</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.3-1.5</td>
-            <td contenteditable="false">1-1.7</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">17.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Inconel 602</td>
-            <td contenteditable="false">63.0</td>
-            <td contenteditable="false">1.5</td>
-            <td contenteditable="false">24.0-26.0</td>
-            <td contenteditable="false">8.5-9</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.15-0.25</td>
-            <td contenteditable="false">1.8-2.4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">≤3</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Inconel 625</td>
-            <td contenteditable="false">58.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">20-23</td>
-            <td contenteditable="false">8-10</td>
-            <td contenteditable="false">3.15-4.15</td>
-            <td contenteditable="false">0.4</td>
-            <td contenteditable="false">0.4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Inconel 713</td>
-            <td contenteditable="false">76.0</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">12.5-13.5</td>
-            <td contenteditable="false">4.2-4.8</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.5-0.8</td>
-            <td contenteditable="false">5.5-6.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">76.0</td>
-            <td contenteditable="false">0.08-0.2</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">0.3</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Inconel 718</td>
-            <td contenteditable="false">50.0-55.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">17.0-21.0</td>
-            <td contenteditable="false">2.8-3.3</td>
-            <td contenteditable="false">4.75-5.5</td>
-            <td contenteditable="false">0.65-1.15</td>
-            <td contenteditable="false">0.2-0.8</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">23.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">0.3</td>
-            <td contenteditable="false">0.3</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Hastelloy X</td>
-            <td contenteditable="false">47.5-52.0</td>
-            <td contenteditable="false">1.5</td>
-            <td contenteditable="false">20.5-23</td>
-            <td contenteditable="false">8-10</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">17.0-20.0</td>
-            <td contenteditable="false">0.05-0.15</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Hastelloy W</td>
-            <td contenteditable="false">56.0</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">4.5-7</td>
-            <td contenteditable="false">24.0-28.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">4.0-6.0</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">0.05-0.15</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">0.2</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">L605</td>
-            <td contenteditable="false">10.0</td>
-            <td contenteditable="false">49.0-53.0</td>
-            <td contenteditable="false">19-21</td>
-            <td contenteditable="false">1.0-2.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">14.0-16.0</td>
-            <td contenteditable="false">3.0</td>
-            <td contenteditable="false">0.05-0.15</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">0.4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Haynes 188</td>
-            <td contenteditable="false">22.0</td>
-            <td contenteditable="false">37.0</td>
-            <td contenteditable="false">20.0-24.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">13.0-16.0</td>
-            <td contenteditable="false">3.0</td>
-            <td contenteditable="false">0.05-0.15</td>
-            <td contenteditable="false">1.3</td>
-            <td contenteditable="false">0.4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Haynes 230</td>
-            <td contenteditable="false">57.0</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">20.0-24.0</td>
-            <td contenteditable="false">1.5-3</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">14.0</td>
-            <td contenteditable="false">3.0</td>
-            <td contenteditable="false">0.05-0.15</td>
-            <td contenteditable="false">0.3-0.6</td>
-            <td contenteditable="false">0.4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">X-750</td>
-            <td contenteditable="false">70.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">14.0-17.0</td>
-            <td contenteditable="false">0.7-1.2</td>
-            <td contenteditable="false">0.7-1.2</td>
-            <td contenteditable="false">2.25-2.75</td>
-            <td contenteditable="false">0.4-1</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">5-9</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Greek Ascoloy</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">12.0-14.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">2.75-3.25</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">84.0</td>
-            <td contenteditable="false">0.15-0.2</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">17-4 PH</td>
-            <td contenteditable="false">3.0-5.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">15.0-17.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.15-0.45</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">63.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">15-5 PH</td>
-            <td contenteditable="false">3.5-5.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">14.0-15.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.9</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">65.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">A286</td>
-            <td contenteditable="false">24.0-27.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">13.5-16</td>
-            <td contenteditable="false">1.0-1.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">1.9-2.3</td>
-            <td contenteditable="false">0.1-0.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">56.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">C263</td>
-            <td contenteditable="false">52.0</td>
-            <td contenteditable="false">20.0</td>
-            <td contenteditable="false">19-21</td>
-            <td contenteditable="false">5.6-6.1</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">2-2.4</td>
-            <td contenteditable="false">0.6</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">52.0</td>
-            <td contenteditable="false">0.0</td>
-            <td contenteditable="false">0.6</td>
-            <td contenteditable="false">0.4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">C276</td>
-            <td contenteditable="false">60.0</td>
-            <td contenteditable="false">2.5</td>
-            <td contenteditable="false">14.5-16.5</td>
-            <td contenteditable="false">15-17</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">3-4.5</td>
-            <td contenteditable="false">4-7</td>
-            <td contenteditable="false">0.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Steel 4340</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.7-0.9</td>
-            <td contenteditable="false">0.2-0.3</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">98.0</td>
-            <td contenteditable="false">0.38-0.43</td>
-            <td contenteditable="false">0.6-0.8</td>
-            <td contenteditable="false">0.15-0.3</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Steel 4130</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.8-1.1</td>
-            <td contenteditable="false">0.15-0.25</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">98.0</td>
-            <td contenteditable="false">0.28-0.33</td>
-            <td contenteditable="false">0.4-0.6</td>
-            <td contenteditable="false">0.15-0.3</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Marm-200</td>
-            <td contenteditable="false">72.0</td>
-            <td contenteditable="false">10.0</td>
-            <td contenteditable="false">9.0</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Coast Metal 64</td>
-            <td contenteditable="false">5</td>
-            <td contenteditable="false">43.6</td>
-            <td contenteditable="false">28</td>
-            <td contenteditable="false">0.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">21</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.85</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">1</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">0.05</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Tribaloy 800</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">50.6</td>
-            <td contenteditable="false">17.5</td>
-            <td contenteditable="false">28.5</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">3.4</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Stellite 31 (X40)</td>
-            <td contenteditable="false">10.5</td>
-            <td contenteditable="false">51.0</td>
-            <td contenteditable="false">26.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">7.5</td>
-            <td contenteditable="false">3.0</td>
-            <td contenteditable="false">0.1</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Titanium 8Al 1Mo 1V</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">90.0</td>
-            <td contenteditable="false">8.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">1.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Titanium 6Al 4V ELI</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">90.0</td>
-            <td contenteditable="false">6.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">4.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Titanium 6Al 4V</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">90.0</td>
-            <td contenteditable="false">6.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">4.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Titanium 6Al 2Sn 4Zr 2Mo</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">86.0</td>
-            <td contenteditable="false">6.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">4.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Titanium 15V 3Cr 3Sn 3Al</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">3.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">76.0</td>
-            <td contenteditable="false">3.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">3.0</td>
-            <td contenteditable="false">15.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Silver Flo 55</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">2.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">55.0</td>
-            <td contenteditable="false">21.0</td>
-            <td contenteditable="false">22.0</td>
-            <td contenteditable="false">-</td>
-          </tr>
-          <tr>
-            <td contenteditable="false">Silver Flo 56 (AMS 4763)</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">5.0</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">-</td>
-            <td contenteditable="false">56.0</td>
-            <td contenteditable="false">22.0</td>
-            <td contenteditable="false">17.0</td>
-            <td contenteditable="false">-</td>
-          </tr>
-            <tr>
-              <td contenteditable="false">BAg-24 (AMS 4788)</td><td contenteditable="false">2.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">50.0</td><td contenteditable="false">20.0</td><td contenteditable="false">28.0</td>  <td contenteditable="false">-</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">BAg-13 (AMS 4772)</td><td contenteditable="false">1.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">54.0</td><td contenteditable="false">40.0</td><td contenteditable="false">5.0</td>  <td contenteditable="false">-</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">BAg-13a (AMS 4765)</td><td contenteditable="false">2.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">56.0</td><td contenteditable="false">42.0</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">BNi-5 (AMS 4782)</td><td contenteditable="false">71.0</td><td contenteditable="false">-</td><td contenteditable="false">19.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">10.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">BNi-1 (AMS 4775)</td><td contenteditable="false">73.0</td><td contenteditable="false">-</td><td contenteditable="false">14.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">0.8</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">BNi-1a (AMS 4776)</td><td contenteditable="false">74.0</td><td contenteditable="false">-</td><td contenteditable="false">14.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">BNi-2 (AMS 4777)</td><td contenteditable="false">82.4</td><td contenteditable="false">-</td><td contenteditable="false">7.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.1</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">BNi-3 (AMS 4778)</td><td contenteditable="false">92.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.0</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">BNi-4 (AMS 4779)</td><td contenteditable="false">94.6</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">3.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">1.9</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>  <td contenteditable="false">-</td>
-              </tr>
-            <tr>
-              <td contenteditable="false">Al 2024</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">93</td><td contenteditable="false">-</td><td contenteditable="false">0.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">4.9</td><td contenteditable="false">-</td><td contenteditable="false">-</td>
-            </tr>
-              <tr>
-                <td contenteditable="false">Al 6061</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">97.9</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.6</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.28</td><td contenteditable="false">-</td><td contenteditable="false">1</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">Al 7075</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">91</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.6</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">1.4</td><td contenteditable="false">5.6</td><td contenteditable="false">2.1</td>
-              </tr>
-              <tr>
-                <td contenteditable="false">Al A413</td><td contenteditable="false">0.5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">94</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.35</td><td contenteditable="false">12</td><td contenteditable="false">0.15</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">1</td><td contenteditable="false">-</td><td contenteditable="false">0.1</td>
-            </tr>
-            <tr>
-              <td contenteditable="false">Al 4043</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">93.9</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">5.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td>
-            </tr>
-            <tr>
-              <td contenteditable="false">Al 5052</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">0.25</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">97.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">2.5</td>
-            </tr>
-            <tr>
-              <td contenteditable="false">Al 5Si 1.3Cu 0.5Mg</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">93.2</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">5</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">-</td><td contenteditable="false">1.3</td><td contenteditable="false">-</td><td contenteditable="false">0.5</td>
-            </tr>
-          </tbody>
-
-            </tbody>
         </table>
 
     </div>
@@ -1703,18 +781,19 @@
 
     <div id="modal-periodic-table" class="modal" style="display:none;">
 
-        <div class="modal-content-periodic-table">
-          <h3>Element selection</h3>
-            <span class="close">&times;</span>
-            <div class="table" id="periodic-table"></div>
-        </div>
-    </div>
+      <div class="modal-content-periodic-table">
+        <h3>Element selection</h3>
+          <span class="close">&times;</span>
+          <div class="table" id="periodic-table"></div>
+      </div>
+  </div>
+
 
 
     <div id="modal-spectral-table" class="modal" style="display:none;">
       <div class="modal-content-spectral-table">
         <h3>Material EDS Spectral</h3>
-          <span class="close">&times;</span>
+          <span class="close">×</span>
           <canvas id="myChart"></canvas>
       </div>
   </div>
@@ -1790,6 +869,7 @@
 
         let sensitivity = parseFloat(document.getElementById("sensitivity").value) || 1;
 
+    
         rows.forEach((row) => {
           let cells = row.getElementsByTagName("td");
           let showRow = true;
@@ -1798,6 +878,7 @@
             let cell = filter.closest('td'); // Get the closest <td> element
             let row = cell.parentElement;   // Get the row (<tr>) containing the <td>
             let colIndex = Array.from(row.children).indexOf(cell); // Get the column index
+            
 
           //  let colIndex = filter.getAttribute("data-col");
             let filterValue = filter.value.trim();
@@ -2119,6 +1200,8 @@
                        event.target.value = ""; // Reset input so the same file can be selected again
                   };
                   reader.readAsText(file);
+
+                  hideUnselectedColumns("data-table");
               });
 
 
@@ -2298,8 +1381,11 @@
           const inputCells = inputRow.querySelectorAll("input");
 
           highlightedCells.forEach((cell, index) => {
-              const numericValue = parseFloat(cell.textContent);
-              if (!isNaN(numericValue) && inputCells[index]) {
+
+             // const numericValue = parseFloat(cell.textContent);
+              let numericValue = parseCellValue(cell.textContent,highlightedRow,index);
+
+              if (!isNaN(numericValue) && inputCells[index] && numericValue!=0) {
                   inputCells[index].value = numericValue;
               } else if (inputCells[index]) {
                   inputCells[index].value = ""; // Clear if not numeric
@@ -2308,8 +1394,6 @@
 
           filterTable();
       }
-
-
 
 
         //////////////////MODAL CODE ////////////////////////////
@@ -2564,12 +1648,6 @@
       }
 
 
-
-      document.addEventListener("DOMContentLoaded", () => {
-          hideUnselectedColumns("data-table");
-      });
-
-
               let spectralChart = null;
               const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -2655,7 +1733,11 @@
                         return max;
                       }
 
-          </script>
-        </body>
-      </html>
+                      document.addEventListener("DOMContentLoaded", () => {
+                          hideUnselectedColumns("data-table");
+                      });
 
+          </script>
+
+
+</body></html>

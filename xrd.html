@@ -86,7 +86,7 @@
 
     <h2>X-ray Diffraction Analysis</h2>
     <label>Enter 2θ angles (comma-separated):</label>
-    <input type="text" id="anglesInput" placeholder="e.g., 20,30,40">
+    <input type="text" id="anglesInput" value="147.2,138.46,118.194" placeholder="e.g., 20,30,40">
     <button onclick="analyzeXRD()">Analyze</button>
 
     <table id="resultsTable">
@@ -95,6 +95,7 @@
                 <th>2θ (°)</th>
                 <th>d (Å)</th>
                 <th>1/d²</th>
+                <th>Normalized</th>
                 <th>Ratio</th>
                 <th>hkl</th>
                 <th>a (Å)</th>
@@ -204,85 +205,7 @@
 
 document.addEventListener("DOMContentLoaded", updateChart);
 
-
-function braggLaw(theta, wavelength = 1.5406) {
-            let thetaRad = (theta / 2) * (Math.PI / 180);
-            return wavelength / (2 * Math.sin(thetaRad));
-        }
-
-        function structureFactors(hkl) {
-            let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
-            if (sumHkl2 === 0) return; // Skip (0,0,0) which is invalid
-            return {
-                FCC: sumHkl2 % 4 === 0 ? '✔' : '✘',
-                BCC: sumHkl2 % 2 === 0 ? '✔' : '✘',
-                SC: sumHkl2 > 0 ? '✔' : '✘', // Simple cubic allows any (h,k,l) > 0
-                HCP: (sumHkl2 === 3 || sumHkl2 === 4 || sumHkl2 === 8) ? '✔' : '✘' // Common for HCP
-            };
-        }
-
-        function analyzeXRD() {
-            let anglesInput = document.getElementById("anglesInput").value;
-            let angles = anglesInput.split(",").map(a => parseFloat(a.trim())).filter(a => !isNaN(a));
-            let tbody = document.querySelector("#resultsTable tbody");
-            tbody.innerHTML = "";
-
-            if (angles.length < 3) {
-                alert("Please enter at least 3 angles.");
-                return;
-            }
-
-            // Step 1: Compute d-values and 1/d²
-            let dValues = angles.map(theta => ({
-                theta,
-                d: braggLaw(theta)
-            }));
-
-            dValues.sort((a, b) => b.d - a.d);
-            let dInverseSquares = dValues.map(entry => 1 / (entry.d ** 2));
-
-            // Step 2: Compute ratios
-            // Step 2: Find common multiplier to make all ratios integers
-            let baseValue = dInverseSquares[0];
-            let multiplier = findCommonMultiplier(dInverseSquares.map(val => val / baseValue));
-            let ratios = dInverseSquares.map(val => Math.round((val / baseValue) * multiplier));
-            let millerIndices = ratios.map(ratio => getMillerIndices(ratio));
-
-            // Step 3: Populate table
-            dValues.forEach((entry, index) => {
-                let hkl = millerIndices[index];
-                let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
-
-                if (sumHkl2 === 0) return; // Skip (0,0,0) which is invalid
-
-                let aCalc = sumHkl2 > 0 ? entry.d * Math.sqrt(sumHkl2) : "-";
-                let structFlags = structureFactors(hkl);
-                let row = `<tr>
-                    <td>${entry.theta.toFixed(2)}</td>
-                    <td>${entry.d.toFixed(4)}</td>
-                    <td>${dInverseSquares[index].toFixed(6)}</td>
-                    <td>${ratios[index]}</td>
-                    <td>(${hkl.join('')})</td>
-                    <td>${aCalc !== "-" ? aCalc.toFixed(4) : "-"}</td>
-                    <td>${structFlags.FCC}</td>
-                    <td>${structFlags.BCC}</td>
-                    <td>${structFlags.SC}</td>
-                    <td>${structFlags.HCP}</td>
-                </tr>`;
-                tbody.innerHTML += row;
-            });
-        }
-
-        function findCommonMultiplier(ratios) {
-                let n = 1;
-                while (true) {
-                    let scaledRatios = ratios.map(r => r * n);
-                    if (scaledRatios.every(r => Math.abs(r - Math.round(r)) < 0.01)) {
-                        return n;
-                    }
-                    n++;
-                }
-            }
+const lambda = 1.5406; // Wavelength for Cu Kα radiation in Å
 
         function getMillerIndices(ratio) {
             const ratioMap = {
@@ -308,6 +231,61 @@ function braggLaw(theta, wavelength = 1.5406) {
             return ratioMap[ratio] || [0, 0, 0];
         }
 
+        function structureFactors(hkl) {
+            let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
+            let hklSum = hkl[0] + hkl[1] + hkl[2];
+            let allEven = hkl[0] % 2 === 0 && hkl[1] % 2 === 0 && hkl[2] % 2 === 0;
+            let allOdd = hkl[0] % 2 !== 0 && hkl[1] % 2 !== 0 && hkl[2] % 2 !== 0;
+            
+            if (sumHkl2 === 0) return; // Skip (0,0,0) which is invalid
+            return {
+                FCC: (allEven || allOdd) ? '✔' : '✘',
+                BCC: (hklSum % 2 === 0) ? '✔' : '✘',
+                SC: sumHkl2 > 0 ? '✔' : '✘', // Simple cubic allows any (h,k,l) > 0
+                HCP: (sumHkl2 === 3 || sumHkl2 === 4 || sumHkl2 === 8) ? '✔' : '✘' // Common for HCP
+            };
+        }
+
+        function normalizeValues(values) {
+            if (values.length === 0) return [];
+            let baseValue = values[0];
+            return values.map(v => v / baseValue);
+        }
+
+        function analyzeXRD() {
+            let input = document.getElementById("anglesInput").value;
+            let angles = input.split(",").map(a => parseFloat(a.trim()));
+            let resultsTable = document.querySelector("#resultsTable tbody");
+            resultsTable.innerHTML = "";
+            
+            let dValues = angles.map(theta => lambda / (2 * Math.sin((theta / 2) * Math.PI / 180)));
+            let inverseD2 = dValues.map(d => 1 / (d * d));
+            let normalizedValues = normalizeValues(inverseD2);
+            let multiplier = findMultiplier(normalizedValues[1]);
+            let ratios = normalizedValues.map(v => Math.round(v * multiplier));
+            
+            ratios.forEach((ratio, index) => {
+                let hkl = getMillerIndices(ratio);
+                let a = dValues[index] * Math.sqrt(hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2);
+                let structure = structureFactors(hkl);
+                
+                let row = `<tr>
+                    <td>${angles[index]}</td>
+                    <td>${dValues[index].toFixed(4)}</td>
+                    <td>${inverseD2[index].toFixed(6)}</td>
+                    <td>${normalizedValues[index].toFixed(4)}</td>
+                    <td>${ratios[index]}</td>
+                    <td>${hkl.join(" ")}</td>
+                    <td>${a.toFixed(4)}</td>
+                    <td>${structure.FCC}</td>
+                    <td>${structure.BCC}</td>
+                    <td>${structure.SC}</td>
+                    <td>${structure.HCP}</td>
+                </tr>`;
+                
+                resultsTable.innerHTML += row;
+            });
+        }
 
         function findMultiplier(x) {
             const decimal = 2;
@@ -322,11 +300,6 @@ function braggLaw(theta, wavelength = 1.5406) {
             }
             return n;
         }
-
-        // Test data
-        let x = 0.833337;
-        let multiplier = findMultiplier(x);
-        console.log(`Multiplier: ${multiplier}`);
 
 
        </script>
