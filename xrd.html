@@ -231,6 +231,20 @@ const lambda = 1.5406; // Wavelength for Cu Kα radiation in Å
             return ratioMap[ratio] || [0, 0, 0];
         }
 
+        function calculateMillerIndices(ratio) {
+            for (let h = Math.floor(Math.sqrt(ratio)); h >= 0; h--) {
+                for (let k = h; k >= 0; k--) { // Ensure k <= h to avoid duplicates
+                    let lSquared = ratio - (h ** 2 + k ** 2);
+                    let l = Math.floor(Math.sqrt(lSquared));
+
+                    if (l >= 0 && l ** 2 === lSquared) { // Ensure it's a perfect square
+                        return [h, k, l];
+                    }
+                }
+            }
+            return [0, 0, 0]; // Return (0,0,0) if no valid solution is found
+        }
+
         function structureFactors(hkl) {
             let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
             let hklSum = hkl[0] + hkl[1] + hkl[2];
@@ -253,8 +267,14 @@ const lambda = 1.5406; // Wavelength for Cu Kα radiation in Å
         }
 
         function analyzeXRD() {
-            let input = document.getElementById("anglesInput").value;
-            let angles = input.split(",").map(a => parseFloat(a.trim()));
+          //  let input = document.getElementById("anglesInput").value;
+         //   let angles = input.split(",").map(a => parseFloat(a.trim()));
+
+            let tableRow = document.querySelector("#dataTable tr:first-child"); // Select the first row
+            let angles = Array.from(tableRow.querySelectorAll("td input")) // Get all input fields in the row
+                .map(input => parseFloat(input.value)) // Convert values to numbers
+                .filter(value => !isNaN(value) && value !== 0); // Remove NaN, empty, and zero values
+
             let resultsTable = document.querySelector("#resultsTable tbody");
             resultsTable.innerHTML = "";
             
@@ -265,9 +285,12 @@ const lambda = 1.5406; // Wavelength for Cu Kα radiation in Å
             let ratios = normalizedValues.map(v => Math.round(v * multiplier));
             
             ratios.forEach((ratio, index) => {
-                let hkl = getMillerIndices(ratio);
+               // let hkl = getMillerIndices(ratio);
+                let hkl =calculateMillerIndices(ratio)
                 let a = dValues[index] * Math.sqrt(hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2);
-                let structure = structureFactors(hkl);
+                //let structure = structureFactors(hkl);
+                let structure = structureFactors(hkl) || { FCC: '✘', BCC: '✘', SC: '✘', HCP: '✘' };
+
                 
                 let row = `<tr>
                     <td>${angles[index]}</td>
