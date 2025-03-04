@@ -43,9 +43,9 @@
       background-color: #15b392;
     }
     canvas {
-      width: 100% !important;
-      height: 65% !important;
-      margin-top: 50px;
+      width: 95% !important;
+      margin: 0 auto;
+      margin-top: 40px;
     }
     input {
       width: 60px;
@@ -65,9 +65,10 @@
     th {
       padding: 6px 20px;
       text-align: left;
-      font-size: 14px;
-      height: 50px;
+      font-size: 13px;
+      height: 40px;
       box-sizing: border-box;
+      background-color: #f9f9f9;
     }
     td{
       border: solid 1px rgba(159, 154, 154, 0.39);
@@ -125,6 +126,10 @@
       }
       .resultText{
         font-weight: 800;
+      }
+
+      h2{
+        margin-top: 6px;
       }
 
 
@@ -493,7 +498,7 @@
       }
 
     // document.getElementById("resultMax").textContent = `Point of Max curvature:  ${cMax}, ${iMax}`;
-      document.getElementById("resultMax").innerHTML = `Point of Max Curvature:  <span class="resultText">${cMax}, ${iMax}</span>`;
+      document.getElementById("resultMax").innerHTML = `Point of Max Curvature:  <span class="resultText">(${cMax}, ${iMax})</span>`;
 
      // document.getElementById("fittedr").textContent = `R^2:  ${rValue.toFixed(2)}` + "    " + `${warnningMessage}`;
       document.getElementById("fittedr").innerHTML = `R^2:  <span class="resultText">${rValue.toFixed(2)}` + "    " + `${warnningMessage}</span>`;
