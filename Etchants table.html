@@ -35,7 +35,7 @@
             margin-bottom: 20px;
         }
         select {
-            width: 15%;
+            width: 270px;
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
@@ -241,6 +241,10 @@
       <div>
           <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
          <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
+         <select id="tableSelect" onchange="changeTable()">
+           <option value="dataTable2">Etchant preperation</option>
+           <option value="dataTable3">Etchant usage</option>
+         </select>
       </div>
 
 
@@ -382,7 +386,7 @@
       </tbody>
   </table>
 
-  <table>
+  <table <table id="dataTable3">>
       <tr>
           <th>Metal</th>
           <th>Etchants</th>
@@ -1216,6 +1220,10 @@
 
     <script>
 
+        window.onload = function() {
+            document.getElementById("tableSelect").selectedIndex = 0;
+            changeTable();
+        }
 
         //highlight clicked rows
         document.addEventListener("DOMContentLoaded", function() {
@@ -1315,29 +1323,59 @@
                 }
 
 
-              function clearSearch() {
-                  let input = document.getElementById("search");
-                  let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+                function clearSearch() {
+                    let input = document.getElementById("search");
+                    let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-                  // Clear the search input
-                  input.value = "";
-                  clearBtnContainer.style.display = "none"; // Hide the clear button
+                    // Clear the search input
+                    input.value = "";
+                    clearBtnContainer.style.display = "none"; // Hide the clear button
 
-                  // Reset the table to show all rows
-                  let table = document.querySelector("table:not([style*='display: none'])");
-                  if (!table) return;
+                    // Reset the table to show all rows
+                    let table = document.querySelector("table:not([style*='display: none'])");
+                    if (!table) return;
 
-                  let rows = table.getElementsByTagName("tr");
-                  for (let i = 1; i < rows.length; i++) {
-                      rows[i].style.display = ""; // Make all rows visible again
+                    let rows = table.getElementsByTagName("tr");
+                    for (let i = 1; i < rows.length; i++) {
+                        rows[i].style.display = ""; // Make all rows visible again
 
-                      // Remove any highlighting
-                      let cells = rows[i].getElementsByTagName("td");
-                      for (let j = 0; j < cells.length; j++) {
-                          cells[j].innerHTML = cells[j].textContent;
-                      }
-                  }
-              }
+                        // Remove any highlighting from cells
+                        let cells = rows[i].getElementsByTagName("td");
+                        for (let j = 0; j < cells.length; j++) {
+                            let cell = cells[j];
+
+                            // Remove previous highlights: remove all <span> elements and preserve their content
+                            let spans = cell.querySelectorAll("span");
+                            spans.forEach(span => {
+                                span.replaceWith(...span.childNodes); // Remove <span> and keep its children
+                            });
+                        }
+                    }
+                }
+
+
+                function changeTable() {
+                   let selectedTable = document.getElementById("tableSelect").value;
+                   document.querySelectorAll("table").forEach(table => {
+                       table.style.display = (table.id === selectedTable) ? "table" : "none";
+                   });
+
+                   let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
+
+                   if (selectedTable === "dataTable2") {
+                       ulElement.forEach(element => {
+                           element.style.display = 'block';
+                       });
+                   } else {
+                     ulElement.forEach(element => {
+                           element.style.display = 'none';
+                       });
+                   }
+
+
+                   searchTable();
+               }
+
 
     </script>
 </body>
