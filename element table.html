@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Searchable Welding Wire Table</title>
@@ -37,15 +36,6 @@
             border: solid 2px #98D8EF;
             outline: none;
         }
-
-        .controls{
-          display: flex;
-          justify-content: space-between;; /* Centers horizontally */
-          align-items: center;     /* Centers vertically */
-          gap: 10px;
-          margin: 0 20px 25px;
-          margin-bottom: 60px;
-       }
 
         .table-container {
             width: 98%;
@@ -86,7 +76,7 @@
         }
 
         th {
-            background-color: #0473bd;
+            background-color: #98D8EF;
             color: white;
             align-items: center;
             text-align: center;
@@ -114,16 +104,6 @@
         .highlighted {
             background-color: #FFD95F !important;
         }
-
-        .section a{
-          color: #3674B5;
-          margin-left: 12px;
-          margin-right: 12px;
-          text-align: center;
-          font-size: 14px;
-          text-transform: uppercase;
-          text-decoration: none;
-       }
 
        ul {
          list-style-type: none;
@@ -166,8 +146,10 @@
         background-color: #cc0000;
       }
       .custom-file-upload {
-        display: inline-block;
-        padding: 8px 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 4px 12px;
         background-color: none;
         color: #4caf50;
         border: solid 2px #4caf50;
@@ -176,20 +158,29 @@
         border-radius: 6px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        height: 35px;
+        box-sizing: border-box;
+        margin: auto 0;
+        align-items: center;
       }
+
       .export-btn{
-        padding: 8px 12px;
-        background-color: none;
+        padding: 4px 12px;
+        background-color: transparent !important;
         color: #4caf50;
         border: solid 2px #4caf50;
         border-radius: 6px;
+        height: 35px;
+        box-sizing: border-box;
+        margin: auto 0;
+        cursor: pointer;
       }
       .custom-file-upload:hover {
         background-color: #45a049;
         color: white;
       }
       .export-btn:hover {
-        background-color: #45a049;
+        background-color: #45a049 !important;
         color: white;
       }
 
@@ -207,7 +198,6 @@
       .highlight {
         background-color: #ffd95f !important; /* Change color as needed */
       }
-
 
       .error-message {
           color: white;
@@ -339,18 +329,122 @@
     canvas{
       width: 100% !important; /* 50% of the body width */
     }
-    .svg-button{
-      border: none;
-      cursor: pointer;
-      background-color: rgb(244, 244, 244) !important;
-      fill: #0099ff;
-      transform: scale(1.2);
-      margin-left: 3px;
-      margin-right: 3px;
-    }
-    .svg-button:hover{
-      fill: #0473bd;
-    }
+
+
+           /* Navbar styles */
+           .navbar {
+               display: flex;
+               flex-direction: row;
+               justify-content: space-between;
+               align-items: center;
+               background-color: #3674B5;
+               padding: 15px 30px;
+
+               width: 94%;
+               margin: 15px auto;
+               margin-bottom: 50px;
+               background: white;
+               border-radius: 10px;
+               box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+           }
+
+           .navbar .logo {
+               font-size: 21px;
+               font-weight: bold;
+               color: #1F497D;
+               text-transform: uppercase;
+           }
+
+            .icons {
+               display: flex;
+               flex-direction: row;
+               gap: 15px;
+           }
+
+           .navbar .icon {
+               color: white;
+               font-size: 20px;
+               cursor: pointer;
+           }
+
+           .navbar .icon:hover {
+               color: #FFD95F;
+           }
+
+
+           img{
+               height: 40px;
+               width: auto;
+           }
+
+           .logo-container{
+               display: flex;
+               flex-direction: row;
+               align-items: center;
+               gap: 20px;
+           }
+
+           .navbar .ThemeBtn-container {
+             height: 45px;
+             width: 45px;
+             border-radius: 100%;
+             opacity: 1;
+             background-color: transparnt;
+             display: flex;
+             align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+           }
+
+           .navbar .ThemeBtn-container:hover {
+             background-color: #98D8EF;
+             fill: white ;
+             transition: all 0.5s ease;
+           }
+
+           .clearButton {
+              display: none;
+              cursor: pointer;
+              font-size: 26px;
+              color: gray;
+              padding-left: 6px;
+           }
+
+           .svg-button{
+              border: none;
+              cursor: pointer;
+              background-color: transparent !important;
+              fill: #1F497D ;
+              transform: scale(1.2);
+              margin: 4px;
+              margin-bottom: 0;
+              margin-right: 1px;
+            }
+
+            .svg-button:hover{
+              fill: white;
+            }
+
+           /* Search bar container */
+           .search-container {
+               display: flex;
+               justify-content: center; /* Center horizontally */
+               margin-top: 30px; /* Adjust space above the search bar */
+           }
+
+           .navbar input {
+               padding: 10px;
+               width: 200px; /* Width of the search bar */
+               font-size: 16px;
+               border: 1px solid #ccc;
+               border-radius: 5px;
+               background-color: rgb(244, 244, 244);
+           }
+
+           .custom-file-upload input{
+             margin: 0;
+             padding: 0;
+             height: 0;
+             width: 0;
+           }
 
     </style>
 
@@ -358,55 +452,68 @@
 </head>
 <body>
 
-    <div class="controls">
-      <div>
-        <!--<label for="sensitivity">Sensitivity, %:</label>-->
-        <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15">
+   <!-- Navbar -->
+   <div class="navbar">
+    <div class="logo-container">
+        <img src="Images/IAI logo.webp" alt="Book Logo">
+        <div class="logo">Materials Chemical Composition</div>
+    </div>
 
-        <button class="export-btn" id="exportCSV">
-          Export to CSV
-        </button>
+    <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15">
 
-        <label for="importCSV" class="custom-file-upload">
-          <span>Import a CSV file</span>
-          <input type="file" id="importCSV">
-        </label>
-      </div>
 
-      <h3>Find a Material By it's Chemical Composition</h3>
+    <div class="icons">
+    <div class="ThemeBtn-container">
+          <button class="svg-button" onclick="clearInputs()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+              <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"></path></svg>
+          </button>
+            </div>
+    <div class="ThemeBtn-container">
+          <button class="svg-button" id="toggleButton" onclick="toggleBalanceValues()">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+              <path d="m560-200 160-160-56-56-64 62v-166h-80v166l-64-62-56 56 160 160ZM360-440h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+          </button>
+            </div>
+    <div class="ThemeBtn-container">
+          <button class="svg-button" onclick="copyHighlightedRowToInput()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+            <path d="M80-200v-80h400v80H80Zm0-200v-80h200v80H80Zm0-200v-80h200v80H80Zm744 400L670-354q-24 17-52.5 25.5T560-320q-83 0-141.5-58.5T360-520q0-83 58.5-141.5T560-720q83 0 141.5 58.5T760-520q0 29-8.5 57.5T726-410l154 154-56 56ZM560-400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"></path></svg>
+          </button>
+            </div>
+          <!--<button class="btn PeriodicTableModal">Open Periodic Table</button>-->
+    <div class="ThemeBtn-container">
+          <button class="svg-button PeriodicTableModal">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+              <path d="M80-80v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-360v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-640v-240h520v240H80Zm560 0v-240h240v240H640ZM240-240Zm200 0h80-80Zm280 0ZM240-440v-80 80Zm240-40Zm240 40v-80 80Zm0-280ZM160-160h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80ZM160-440h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80Zm0-280h80v-80h-80v80Z"></path>
+            </svg>
+         </button>
+           </div>
+    <div class="ThemeBtn-container">
+          <button class="svg-button" id="saveButton" onclick="toggleTableEdit()">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v200h-80v-40H200v400h280v80H200Zm0-560h560v-80H200v80Zm0 0v-80 80ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"></path></svg>
+         </button>
+           </div>
+    <div class="ThemeBtn-container">
+         <button class="svg-button" onclick="saveHtmlToFile()">
+           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0z" fill="none"></path>
+             <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path></svg>
+         </button>
+           </div>
 
-      <div>
 
-        <button class="svg-button" onclick="clearInputs()">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
-            <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
-        </button>
+           <button class="export-btn" id="exportCSV">
+             Export to CSV
+           </button>
 
-        <button class="svg-button" id="toggleButton" onclick="toggleBalanceValues()">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
-            <path d="m560-200 160-160-56-56-64 62v-166h-80v166l-64-62-56 56 160 160ZM360-440h80v-166l64 62 56-56-160-160-160 160 56 56 64-62v166ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-        </button>
+           <label for="importCSV" class="custom-file-upload">
+             <span>Import a CSV</span>
+             <input type="file" id="importCSV">
+           </label>
 
-        <button class="svg-button" onclick="copyHighlightedRowToInput()">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
-          <path d="M80-200v-80h400v80H80Zm0-200v-80h200v80H80Zm0-200v-80h200v80H80Zm744 400L670-354q-24 17-52.5 25.5T560-320q-83 0-141.5-58.5T360-520q0-83 58.5-141.5T560-720q83 0 141.5 58.5T760-520q0 29-8.5 57.5T726-410l154 154-56 56ZM560-400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z"/></svg>
-        </button>
-        <!--<button class="btn PeriodicTableModal">Open Periodic Table</button>-->
-        <button class="svg-button PeriodicTableModal">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
-            <path d="M80-80v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-360v-240h240v240H80Zm280 0v-240h240v240H360Zm280 0v-240h240v240H640ZM80-640v-240h520v240H80Zm560 0v-240h240v240H640ZM240-240Zm200 0h80-80Zm280 0ZM240-440v-80 80Zm240-40Zm240 40v-80 80Zm0-280ZM160-160h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80ZM160-440h80v-80h-80v80Zm280 0h80v-80h-80v80Zm280 0h80v-80h-80v80Zm0-280h80v-80h-80v80Z"/>
-          </svg>
-       </button>
-        <button class="svg-button" id="saveButton" onclick="toggleTableEdit()">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0099ff">
-              <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v200h-80v-40H200v400h280v80H200Zm0-560h560v-80H200v80Zm0 0v-80 80ZM560-80v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T903-300L683-80H560Zm300-263-37-37 37 37ZM620-140h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>
-       </button>
-       <button class="svg-button" onclick="saveHtmlToFile()">
-         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="##0099ff"><path d="M0 0h24v24H0z" fill="none"/>
-           <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-       </button>
-      </div>
-  </div>
+    </div>
+</div>
 
 
 
