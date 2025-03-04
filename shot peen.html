@@ -14,16 +14,22 @@
         }
 
     body{
-      font-family: 'Montserrat-Medium', sans-serif;
-      display: flex;
-      flex-direction: row;
+      font-family: "Montserrat-Medium", sans-serif;
       margin: 0;
-      height: 100vh;
+      height: 96vh;
       width: 100%;
       background-color: #f4f4f4;
-      padding: 35px;
       box-sizing: border-box;
+      padding-left: 15px;
+      padding-right: 15px;
     }
+
+    .cards-left-right{
+      display: flex;
+      flex-direction: row;
+      margin: 15px;
+    }
+
     button {
       padding: 9px 15px;
       border-radius: 5px;
@@ -82,7 +88,6 @@
       white-space: pre-wrap;
     }
 
-
     .limit-container{
       margin-bottom: 8px;
     }
@@ -122,13 +127,131 @@
         font-weight: 800;
       }
 
+
+                   /* Navbar styles */
+                   .navbar {
+                       display: flex;
+                       flex-direction: row;
+                       justify-content: space-between;
+                       align-items: center;
+                       background-color: #3674B5;
+                       padding: 15px 30px;
+
+                       width: 95%;
+                       margin: 15px auto;
+                       background: white;
+                       border-radius: 10px;
+                       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                   }
+
+                   .navbar .logo {
+                       font-size: 21px;
+                       font-weight: bold;
+                       color: #1F497D;
+                       text-transform: uppercase;
+                   }
+
+                    .icons {
+                       display: flex;
+                       flex-direction: row;
+                       gap: 15px;
+                   }
+
+                   .navbar .icon {
+                       color: white;
+                       font-size: 20px;
+                       cursor: pointer;
+                   }
+
+                   .navbar .icon:hover {
+                       color: #FFD95F;
+                   }
+
+
+                   img{
+                       height: 40px;
+                       width: auto;
+                   }
+
+                   .logo-container{
+                       display: flex;
+                       flex-direction: row;
+                       align-items: center;
+                       gap: 20px;
+                   }
+
+                   .navbar .ThemeBtn-container {
+                     height: 45px;
+                     width: 45px;
+                     border-radius: 100%;
+                     opacity: 1;
+                     background-color: transparnt;
+                     display: flex;
+                     align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+                   }
+
+                   .navbar .ThemeBtn-container:hover {
+                     background-color: #98D8EF;
+                     fill: white ;
+                     transition: all 0.5s ease;
+                   }
+
+                   .clearButton {
+                      display: none;
+                      cursor: pointer;
+                      font-size: 26px;
+                      color: gray;
+                      padding-left: 6px;
+                   }
+
+                   .svg-button{
+                      border: none;
+                      cursor: pointer;
+                      background-color: transparent !important;
+                      fill: #AC1754 ;
+                      transform: scale(1.2);
+                      margin: 4px;
+                      margin-bottom: 0;
+                      margin-right: 1px;
+                    }
+
+                    .svg-button:hover{
+                      fill: white;
+                    }
+
+                   /* Search bar container */
+                   .search-container {
+                       display: flex;
+                       justify-content: center; /* Center horizontally */
+                       margin-top: 30px; /* Adjust space above the search bar */
+                   }
+
+                   .navbar input {
+                       padding: 10px;
+                       width: 400px; /* Width of the search bar */
+                       font-size: 16px;
+                       border: 1px solid #ccc;
+                       border-radius: 5px;
+                       background-color: rgb(244, 244, 244);
+                   }
+
   </style>
 </head>
+
 <body>
 
+  <!-- Navbar -->
+  <div class="navbar">
+      <div class="logo-container">
+          <img src="Images/IAI logo.webp" alt="Book Logo">
+          <div class="logo">Shot Peening Curve Plotter</div>
+      </div>
 
+  </div>
+
+<div class="cards-left-right">
   <div class="card-left card">
-    
+
     <div class="graph-header-container">
       <h2>Shot Peening Intensity Curve</h2>
       <button onclick="updateChart()">Update Graph</button>
@@ -174,33 +297,34 @@
   </div>
 
 
-  <div class="card-right card">
+    <div class="card-right card">
 
-    <h2>Analysis</h2>
-    <p id="fitted"></p>
-    <p id="fittedr"></p>
-    <p id="resultMax"></p>
+      <h2>Analysis</h2>
+      <p id="fitted"></p>
+      <p id="fittedr"></p>
+      <p id="resultMax"></p>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <h2>Results</h2>
-    <p id="resultt1"></p>
-    <p id="resultt2"></p>
-    <p id="resulti1"></p>
-    <p id="resulti2"></p>
+      <h2>Results</h2>
+      <p id="resultt1"></p>
+      <p id="resultt2"></p>
+      <p id="resulti1"></p>
+      <p id="resulti2"></p>
 
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <h2>Additional input</h2>
-    <div class="limit-container">
-      <label for="minIntensity">Min Intensity:  </label>
-      <input type="number" id="minIntensity" value="8">
-    </div>
+      <h2>Additional input</h2>
+      <div class="limit-container">
+        <label for="minIntensity">Min Intensity:  </label>
+        <input type="number" id="minIntensity" value="8">
+      </div>
 
-    <div class="limit-container">
-      <label for="maxIntensity">Max Intensity: </label>
-      <input type="number" id="maxIntensity" value="10">
+      <div class="limit-container">
+        <label for="maxIntensity">Max Intensity: </label>
+        <input type="number" id="maxIntensity" value="10">
+      </div>
     </div>
   </div>
 
