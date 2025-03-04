@@ -36,7 +36,7 @@
         #anglesInput{
           width: 300px;
         }
-        
+
     </style>
 </head>
 <body>
@@ -307,6 +307,26 @@ function braggLaw(theta, wavelength = 1.5406) {
             };
             return ratioMap[ratio] || [0, 0, 0];
         }
+
+
+        function findMultiplier(x) {
+            const decimal = 2;
+            let n = 1;
+            let factor = Math.pow(10, decimal);
+            while (true) {
+                let result = n * x;
+                if (Math.abs(result - Math.round(result)) < 1 / factor) {
+                    break;
+                }
+                n++;
+            }
+            return n;
+        }
+
+        // Test data
+        let x = 0.833337;
+        let multiplier = findMultiplier(x);
+        console.log(`Multiplier: ${multiplier}`);
 
 
        </script>
