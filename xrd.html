@@ -21,6 +21,7 @@
         box-sizing: border-box;
         padding-left: 15px;
         padding-right: 15px;
+        padding-bottom: 15px;
       }
 
       .cards-left-right {
@@ -72,6 +73,8 @@
       }
       .table-container th {
         text-align: center;
+        font-size: 16px;
+        height: 50px;
       }
 
       .table-container table {
@@ -342,76 +345,76 @@
         </thead>
         <tbody>
           <tr>
-            <td>SS304</td>
+            <td>CRES 304</td>
             <td>Austenite (γ)</td>
             <td>Face-Centered Cubic (FCC)</td>
-            <td>43.5, 50.7, 74.6,90.705,95.989,118.194, 138.464,147.2</td>
+            <td>43.5, 50.7, 74.6, 90.705, 95.989, 118.194, 138.464, 147.2</td>
           </tr>
           <tr>
-            <td>SS304</td>
+            <td>CRES 304</td>
             <td>Ferrite (α)</td>
             <td>Body-Centered Cubic (BCC)</td>
-            <td>44.7, 137.141,116.372,98.937,82.379,65.019</td>
+            <td>44.7, 137.141, 116.372, 98.937, 82.379, 65.019</td>
           </tr>
           <tr>
-            <td>SS304</td>
+            <td>CRES 304</td>
             <td>Sigma (σ)</td>
             <td>Tetragonal</td>
-            <td>31,45,55</td>
+            <td>31, 45, 55</td>
           </tr>
           <!-- Stainless Steel 316 -->
           <tr>
-            <td>SS316</td>
-            <td>Austenite (γ)</td>
-            <td>Face-Centered Cubic (FCC)</td>
-            <td>43.5,50.7, 74.6</td>
-          </tr>
-          <tr>
-            <td>SS316</td>
-            <td>Ferrite (α)</td>
-            <td>Body-Centered Cubic (BCC)</td>
-            <td>44.7,65.0,82.3</td>
-          </tr>
-          <tr>
-            <td>SS316</td>
-            <td>Sigma (σ)</td>
-            <td>Tetragonal</td>
-            <td>31, 45,55</td>
-          </tr>
-          <!-- Stainless Steel 321 -->
-          <tr>
-            <td>SS321</td>
+            <td>CRES 316</td>
             <td>Austenite (γ)</td>
             <td>Face-Centered Cubic (FCC)</td>
             <td>43.5, 50.7, 74.6</td>
           </tr>
           <tr>
-            <td>SS321</td>
+            <td>CRES 316</td>
             <td>Ferrite (α)</td>
             <td>Body-Centered Cubic (BCC)</td>
             <td>44.7, 65.0, 82.3</td>
           </tr>
           <tr>
-            <td>SS321</td>
+            <td>CRES 316</td>
+            <td>Sigma (σ)</td>
+            <td>Tetragonal</td>
+            <td>31, 45, 55</td>
+          </tr>
+          <!-- Stainless Steel 321 -->
+          <tr>
+            <td>CRES 321</td>
+            <td>Austenite (γ)</td>
+            <td>Face-Centered Cubic (FCC)</td>
+            <td>43.5, 50.7, 74.6</td>
+          </tr>
+          <tr>
+            <td>CRES 321</td>
+            <td>Ferrite (α)</td>
+            <td>Body-Centered Cubic (BCC)</td>
+            <td>44.7, 65.0, 82.3</td>
+          </tr>
+          <tr>
+            <td>CRES 321</td>
             <td>Sigma (σ)</td>
             <td>Tetragonal</td>
             <td>31, 45, 55</td>
           </tr>
           <!-- Stainless Steel 347 -->
           <tr>
-            <td>SS347</td>
+            <td>CRES 347</td>
             <td>Austenite (γ)</td>
             <td>Face-Centered Cubic (FCC)</td>
-            <td>43.5, 50.7,74.6</td>
+            <td>43.5, 50.7, 74.6</td>
           </tr>
           <tr>
-            <td>SS347</td>
+            <td>CRES 347</td>
             <td>Ferrite (α)</td>
             <td>Body-Centered Cubic (BCC)</td>
             <td>44.7, 65.0, 82.3</td>
           </tr>
           <tr>
-            <td>SS347</td>
+            <td>CRES 347</td>
             <td>Sigma (σ)</td>
             <td>Tetragonal</td>
             <td>31, 45, 55</td>
@@ -992,9 +995,9 @@
         const matchingRow = findMatchingRow(peaks);
 
         if (matchingRow) {
-          matchResult.textContent = `Matching row found: ${matchingRow.innerText}`;
+          matchResult.textContent = `Match found: ${matchingRow}`;
         } else {
-          matchResult.textContent = "No matching row found.";
+          matchResult.textContent = "No match found.";
         }
       }
 
@@ -1154,7 +1157,7 @@
           }
 
           if (matchCount >= 3) {
-            return row; // Return the first matching row
+            return `${row.cells[0].innerText},  ${row.cells[1].innerText},  ${row.cells[2].innerText}`; // Return the first matching row
           }
         }
 
