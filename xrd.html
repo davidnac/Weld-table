@@ -52,6 +52,16 @@
       text-align: center;
       padding: 3px 1px;
     }
+    .table-container {
+            width: 98%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-bottom: 22px;
+        }
+
     table {
       margin-bottom: 30px;
       margin-top: 24px;
@@ -60,6 +70,14 @@
       box-sizing: border-box;
       border-radius: 7px;
       box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .table-container th{
+      text-align: center;
+    }
+
+    .table-container table{
+      width: 90%;
+      margin: 30px auto;
     }
 
     th {
@@ -264,9 +282,9 @@
       <button onclick="updateChart()">Analyze</button>
     </div>
   
-  <canvas id="xrdChart"></canvas>
+   <canvas id="xrdChart"></canvas>
 
-  <table>
+   <table>
     <tbody id="dataTable">
         <tr>
             <th>2θ (Degrees)</th>
@@ -289,9 +307,9 @@
 
         </tr>
     </tbody>
-</table>
+   </table>
 
-  </div>
+   </div>
 
 
     <div class="card-right card">
@@ -322,102 +340,692 @@
 
     <h2>Results</h2>
     <div class="divider"></div>
-    <p>Detected phase is CRES 304 Austenite phase</p>
+    <p id="matchResult">Detected phase is CRES 304 Austenite phase</p>
 
     </div>
+
   </div>
 
+  <div class="table-container">
+
+    <table id="xrdDatabaseTable">
+      <thead>
+          <tr>
+              <th>Material</th>
+              <th>Phase</th>
+              <th>Structure</th>
+              <th>XRD 2Theta Angles</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>SS304</td>
+            <td>Austenite (γ)</td>
+            <td>Face-Centered Cubic (FCC)</td>
+            <td>43.5, 50.7, 74.6,90.705,95.989,118.194, 138.464,147.2</td>
+        </tr>
+        <tr>
+            <td>SS304</td>
+            <td>Ferrite (α)</td>
+            <td>Body-Centered Cubic (BCC)</td>
+            <td>44.7, 137.141,116.372,98.937,82.379,65.019</td>
+        </tr>
+        <tr>
+            <td>SS304</td>
+            <td>Sigma (σ)</td>
+            <td>Tetragonal</td>
+            <td>31,45,55</td>
+        </tr>
+         <!-- Stainless Steel 316 -->
+         <tr>
+          <td>SS316</td>
+          <td>Austenite (γ)</td>
+          <td>Face-Centered Cubic (FCC)</td>
+          <td>43.5,50.7, 74.6</td>
+      </tr>
+      <tr>
+          <td>SS316</td>
+          <td>Ferrite (α)</td>
+          <td>Body-Centered Cubic (BCC)</td>
+          <td>44.7,65.0,82.3</td>
+      </tr>
+      <tr>
+          <td>SS316</td>
+          <td>Sigma (σ)</td>
+          <td>Tetragonal</td>
+          <td> 31, 45,55</td>
+      </tr>
+      <!-- Stainless Steel 321 -->
+      <tr>
+          <td>SS321</td>
+          <td>Austenite (γ)</td>
+          <td>Face-Centered Cubic (FCC)</td>
+          <td>43.5, 50.7, 74.6</td>
+      </tr>
+      <tr>
+          <td>SS321</td>
+          <td>Ferrite (α)</td>
+          <td>Body-Centered Cubic (BCC)</td>
+          <td>44.7, 65.0, 82.3</td>
+      </tr>
+      <tr>
+          <td>SS321</td>
+          <td>Sigma (σ)</td>
+          <td>Tetragonal</td>
+          <td>31, 45, 55</td>
+      </tr>
+      <!-- Stainless Steel 347 -->
+      <tr>
+          <td>SS347</td>
+          <td>Austenite (γ)</td>
+          <td>Face-Centered Cubic (FCC)</td>
+          <td>43.5, 50.7,74.6</td>
+      </tr>
+      <tr>
+          <td>SS347</td>
+          <td>Ferrite (α)</td>
+          <td>Body-Centered Cubic (BCC)</td>
+          <td>44.7, 65.0,  82.3</td>
+      </tr>
+      <tr>
+          <td>SS347</td>
+          <td>Sigma (σ)</td>
+          <td>Tetragonal</td>
+          <td>31, 45, 55</td>
+      </tr>
+          <!-- Boron Carbide (B?C) -->
+          <tr>
+              <td>Boron Carbide (B4C)</td>
+              <td>Boron Carbide (B4C)</td>
+              <td>Hexagonal</td>
+              <td>27.3, 30.5, 34.3, 38.7, 44.3</td>
+          </tr>
+
+
+          <!-- Steel 4340 -->
+          <tr>
+              <td  >Steel 4340</td>
+              <td>Alpha-Fe (Ferrite)</td>
+              <td>BCC</td>
+              <td>44.6, 65.1, 82.3</td>
+          </tr>
+          <tr>
+              <td  >Steel 4340</td>
+              <td>Gamma-Fe (Austenite)</td>
+              <td>FCC</td>
+              <td>43.2, 50.4, 74.8</td>
+          </tr>
+          <tr>
+              <td  >Steel 4340</td>
+              <td>Fe?C (Cementite)</td>
+              <td>Orthorhombic</td>
+              <td>28.7, 37.8, 41.5</td>
+          </tr>
+
+          <!-- PH 15-5 -->
+          <tr>
+              <td  >PH 15-5</td>
+              <td>Alpha-Fe (Martensite)</td>
+              <td>BCC</td>
+              <td>44.6, 64.7, 82.3</td>
+          </tr>
+          <tr>
+            <td  >PH 15-5</td>
+              <td>Ferrite (Fe3C)</td>
+              <td>BCC</td>
+              <td>30.1, 50.4, 63.2</td>
+          </tr>
+          <tr>
+            <td  >PH 15-5</td>
+              <td>Gamma-Fe (Austenite)</td>
+              <td>FCC</td>
+              <td>44.6, 64.9, 84.2</td>
+          </tr>
+
+          <!-- PH 17-4 -->
+          <tr>
+              <td  >PH 17-4</td>
+              <td>Alpha-Fe (Martensite)</td>
+              <td>BCC</td>
+              <td>44.6, 63.5, 82.3</td>
+          </tr>
+          <tr>
+            <td  >PH 17-4</td>
+              <td>Ferrite (Fe3C)</td>
+              <td>BCC</td>
+              <td>30.1, 50.4, 63.3</td>
+          </tr>
+          <tr>
+            <td  >PH 17-4</td>
+              <td>Gamma-Fe (Austenite)</td>
+              <td>FCC</td>
+              <td>44.6, 64.9, 84.2</td>
+          </tr>
+
+
+
+
+          <!-- Aluminum 2024 -->
+          <tr>
+              <td>Aluminum 2024</td>
+              <td>Alpha-Al (Al?O?)</td>
+              <td>FCC</td>
+              <td>38.5, 45.5, 63.0, 77.5</td>
+          </tr>
+
+
+
+
+          <!-- Hastelloy X -->
+          <tr>
+              <td  >Hastelloy X</td>
+              <td>Face-Centered Cubic (FCC) - Gamma</td>
+              <td>FCC</td>
+              <td>44.6, 51.7, 76.5, 92.9</td>
+          </tr>
+          <tr>
+            <td  >Hastelloy X</td>
+              <td>Ordered FCC (Ni3Nb)</td>
+              <td>FCC</td>
+              <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td  >Hastelloy X</td>
+              <td>Ni?Al Phase</td>
+              <td>FCC</td>
+              <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
+          <tr>
+            <td  >Hastelloy X</td>
+              <td>Ni3Nb Phase</td>
+              <td>FCC</td>
+              <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
+
+          <!-- Hastelloy W -->
+          <tr>
+              <td  >Hastelloy W</td>
+              <td>Face-Centered Cubic (FCC) - Gamma</td>
+              <td>FCC</td>
+              <td>44.6, 51.7, 76.5, 92.9</td>
+          </tr>
+          <tr>
+            <td  >Hastelloy W</td>
+              <td>Ordered FCC (Ni3Nb)</td>
+              <td>FCC</td>
+              <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td  >Hastelloy W</td>
+              <td>Ni?Al Phase</td>
+              <td>FCC</td>
+              <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
+          <tr>
+            <td  >Hastelloy W</td>
+              <td>Ni3Nb Phase</td>
+              <td>FCC</td>
+              <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
+
+
+
+                      <tr>
+                          <td  >Iron Oxides</td>
+                          <td>FeO (Wustite)</td>
+                          <td>Rock Salt</td>
+                          <td>32.5, 37.5, 43.5, 51.5</td>
+                      </tr>
+                      <tr>
+                          <td  >Iron Oxides</td>
+                          <td>Fe2O3 (Hematite)</td>
+                          <td>Rhombohedral</td>
+                          <td>24.1, 33.2, 35.6, 40.9, 49.4, 54.0, 57.5</td>
+                      </tr>
+                      <tr>
+                          <td  >Iron Oxides</td>
+                          <td>Fe3O4 (Magnetite)</td>
+                          <td>Spinel</td>
+                          <td>30.1, 35.4, 43.3, 53.5, 57.5</td>
+                      </tr>
+                      <tr>
+                          <td  >Iron Oxides</td>
+                          <td>Fe2O3 (Maghemite)</td>
+                          <td>Spinel</td>
+                          <td>30.3, 35.5, 43.1, 57.1</td>
+                      </tr>
+                      <tr>
+                          <td  >Iron Oxides</td>
+                          <td>Fe2O3</td>
+                          <td>Orthorhombic</td>
+                          <td>27.6, 35.8, 40.2, 50.7</td>
+                      </tr>
+                      <tr>
+                          <td  >Iron Oxides</td>
+                          <td>Fe2O3</td>
+                          <td>Orthorhombic</td>
+                          <td>27.4, 33.0, 37.8, 49.8</td>
+                      </tr>
+
+
+                      <tr>
+                          <td  >Inconel 100</td>
+                          <td>Face-Centered Cubic (FCC) - Gamma</td>
+                          <td>FCC</td>
+                          <td>44.6, 51.8, 74.9, 94.6</td>
+                      </tr>
+                      <tr>
+                         <td  >Inconel 100</td>
+                          <td>Ni?Al Phase</td>
+                          <td>FCC</td>
+                          <td>33.4, 36.8, 47.5, 58.4</td>
+                      </tr>
+
+                      <tr>
+                        <td  >Rene 77</td>
+                          <td>Face-Centered Cubic (FCC) - Gamma</td>
+                          <td>FCC</td>
+                          <td>44.6, 51.8, 74.9, 94.6</td>
+                      </tr>
+                      <tr>
+                        <td  >Rene 77</td>
+                          <td>Ni?Nb Phase</td>
+                          <td>FCC</td>
+                          <td>28.4, 38.2, 44.5, 51.6</td>
+                      </tr>
+                      <tr>
+                          <td  >MarM-200</td>
+                          <td>Face-Centered Cubic (FCC) - Gamma</td>
+                          <td>FCC</td>
+                          <td>44.6, 51.8, 74.9, 94.6</td>
+                      </tr>
+                      <tr>
+                        <td  >MarM-200</td>
+                          <td>Ordered FCC (Ni3Nb)</td>
+                          <td>FCC</td>
+                          <td>28.4, 38.2, 44.5, 51.6</td>
+                      </tr>
+                      <tr>
+                          <td  >Inconel 713</td>
+                          <td>Face-Centered Cubic (FCC) - Gamma</td>
+                          <td>FCC</td>
+                          <td>44.6, 51.8, 74.9, 94.6</td>
+                      </tr>
+                      <tr>
+                        <td  >Inconel 713</td>
+                          <td>Ni?Al Phase</td>
+                          <td>FCC</td>
+                          <td>33.4, 36.8, 47.5, 58.4</td>
+                      </tr>
+                      <tr>
+                        <td  >Inconel 713</td>
+                          <td>Ni3Nb Phase</td>
+                          <td>FCC</td>
+                          <td>22.5, 33.3, 43.8, 48.6</td>
+                      </tr>
+
+                      <tr>
+                          <td  >Inconel 718</td>
+                          <td>Face-Centered Cubic (FCC) - Gamma</td>
+                          <td>FCC</td>
+                          <td>44.6, 51.7, 76.5, 92.9</td>
+                      </tr>
+                      <tr>
+                        <td  >Inconel 718</td>
+                          <td>Ordered FCC (Ni?Nb)</td>
+                          <td>FCC</td>
+                          <td>28.4, 38.2, 44.5, 51.6</td>
+                      </tr>
+                      <tr>
+                        <td  >Inconel 718</td>
+                          <td>Ni?Al Phase</td>
+                          <td>FCC</td>
+                          <td>33.4, 36.8, 47.5, 58.4</td>
+                      </tr>
+                      <tr>
+                        <td  >Inconel 718</td>
+                          <td>Ni3Nb Phase</td>
+                          <td>FCC</td>
+                          <td>22.5, 33.3, 43.8, 48.6</td>
+                      </tr>
+
+                      <tr>
+                          <td  >Inconel 600</td>
+                          <td>Face-Centered Cubic (FCC) - Gamma</td>
+                          <td>FCC</td>
+                          <td>44.6, 51.8, 74.9, 94.6</td>
+                      </tr>
+                      <tr>
+                        <td  >Inconel 600</td>
+                          <td>Ni?Al Phase</td>
+                          <td>FCC</td>
+                          <td>33.4, 36.8, 47.5, 58.4</td>
+                      </tr>
+                      <tr>
+                        <td  >Inconel 600</td>
+                          <td>Ni3Nb Phase</td>
+                          <td>FCC</td>
+                          <td>22.5, 33.3, 43.8, 48.6</td>
+                      </tr>
+
+
+                                  <!-- Inconel 601 -->
+                                  <tr>
+                                      <td  >Inconel 601</td>
+                                      <td>Face-Centered Cubic (FCC) - Gamma</td>
+                                      <td>FCC</td>
+                                      <td>44.6, 51.7, 76.5, 92.9</td>
+                                  </tr>
+                                  <tr>
+                                    <td  >Inconel 601</td>
+                                      <td>Ordered FCC (Ni?Nb)</td>
+                                      <td>FCC</td>
+                                      <td>28.4, 38.2, 44.5, 51.6</td>
+                                  </tr>
+                                  <tr>
+                                    <td  >Inconel 601</td>
+                                      <td>Ni?Al Phase</td>
+                                      <td>FCC</td>
+                                      <td>33.4, 36.8, 47.5, 58.4</td>
+                                  </tr>
+                                  <tr>
+                                    <td  >Inconel 601</td>
+                                      <td>Ni3Nb Phase</td>
+                                      <td>FCC</td>
+                                      <td>22.5, 33.3, 43.8, 48.6</td>
+                                  </tr>
+                                  <!-- Inconel 602 -->
+                                  <tr>
+                                      <td  >Inconel 602</td>
+                                      <td>Face-Centered Cubic (FCC) - Gamma</td>
+                                      <td>FCC</td>
+                                      <td>44.6, 51.7, 76.5, 92.9</td>
+                                  </tr>
+                                  <tr>
+                                    <td  >Inconel 602</td>
+                                      <td>Ordered FCC (Ni?Nb)</td>
+                                      <td>FCC</td>
+                                      <td>28.4, 38.2, 44.5, 51.6</td>
+                                  </tr>
+                                  <tr>
+                                    <td  >Inconel 602</td>
+                                      <td>Ni?Al Phase</td>
+                                      <td>FCC</td>
+                                      <td>33.4, 36.8, 47.5, 58.4</td>
+                                  </tr>
+                                  <tr>
+                                    <td  >Inconel 602</td>
+                                      <td>Ni3Nb Phase</td>
+                                      <td>FCC</td>
+                                      <td>22.5, 33.3, 43.8, 48.6</td>
+                                  </tr>
+
+                      <tr>
+                          <td  >Inconel 625</td>
+                          <td>Face-Centered Cubic (FCC) - Gamma</td>
+                          <td>FCC</td>
+                          <td>44.6, 51.8, 74.9, 94.6</td>
+                      </tr>
+                      <tr>
+                          <td  >Inconel 625</td>
+                          <td>Ni3Nb Phase</td>
+                          <td>FCC</td>
+                          <td>28.4, 38.2, 44.5, 51.6</td>
+                      </tr>
+                      <tr>
+                          <td  >Inconel 625</td>
+                          <td>Ni3Nb Phase</td>
+                          <td>FCC</td>
+                          <td>22.5, 33.3, 43.8, 48.6</td>
+                      </tr>
+
+
+
+
+                      <!-- Aluminum Oxide -->
+                      <tr>
+                          <td  >Aluminum Oxide (Al2O3)</td>
+                          <td>Alpha-Al?O? (Corundum)</td>
+                          <td>Hexagonal</td>
+                          <td>25.8, 35.1, 43.3, 57.3, 66.3</td>
+                      </tr>
+                      <tr>
+                        <td  >Aluminum Oxide (Al2O3)</td>
+                          <td>Beta-Al2O3</td>
+                          <td>Orthorhombic</td>
+                          <td>25.7, 31.7, 37.6, 45.5, 59.9</td>
+                      </tr>
+                      <tr>
+                        <td  >Aluminum Oxide (Al2O3)</td>
+                          <td>Gamma-Al2O3</td>
+                          <td>Cubic</td>
+                          <td>23.0, 29.7, 34.2, 45.2</td>
+                      </tr>
+                      <tr>
+                        <td  >Aluminum Oxide (Al2O3)</td>
+                          <td>Delta-Al2O3</td>
+                          <td>Cubic</td>
+                          <td>24.4, 34.4, 41.3, 47.6</td>
+                      </tr>
+                      <tr>
+                        <td  >Aluminum Oxide (Al2O3)</td>
+                          <td>Theta-Al2O3</td>
+                          <td>Triclinic</td>
+                          <td>26.7, 35.5, 41.0, 48.5</td>
+                      </tr>
+
+                      <tr>
+                          <td  >Titanium Oxide (TiO2)</td>
+                          <td>Rutile (TiO?)</td>
+                          <td>Tetragonal</td>
+                          <td>27.4, 36.0, 41.2, 54.3, 56.6</td>
+                      </tr>
+                      <tr>
+                        <td  >Titanium Oxide (TiO2)</td>
+                          <td>Anatase (TiO2)</td>
+                          <td>Tetragonal</td>
+                          <td>25.3, 37.8, 48.0, 54.6, 62.7</td>
+                      </tr>
+                      <tr>
+                        <td  >Titanium Oxide (TiO2)</td>
+                          <td>Brookite (TiO2)</td>
+                          <td>Orthorhombic</td>
+                          <td>24.4, 28.4, 32.8, 38.2, 49.5</td>
+                      </tr>
+
+                      <tr>
+                          <td  >Steel 1020</td>
+                          <td>Alpha-Fe (Ferrite)</td>
+                          <td>BCC</td>
+                          <td>44.6, 65.0, 82.1</td>
+                      </tr>
+                      <tr>
+                        <td  >Steel 1020</td>
+                          <td>Gamma-Fe (Austenite)</td>
+                          <td>FCC</td>
+                          <td>43.2, 50.5, 74.9</td>
+                      </tr>
+                      <tr>
+                        <td  >Steel 1020</td>
+                          <td>Fe3C (Cementite)</td>
+                          <td>Orthorhombic</td>
+                          <td>28.7, 37.8, 41.5</td>
+                      </tr>
+
+                      <!-- Stainless Steel 410 -->
+                      <tr>
+                          <td  >Stainless Steel 410</td>
+                          <td>Alpha-Fe (Martensite)</td>
+                          <td>BCC</td>
+                          <td>43.7, 63.5, 82.3</td>
+                      </tr>
+
+                      <tr>
+                        <td  >Stainless Steel 410</td>
+                          <td>Ferrite (Fe?C)</td>
+                          <td>BCC</td>
+                          <td>30.1, 50.4, 63.3</td>
+                      </tr>
+                      <tr>
+                        <td  >Stainless Steel 410</td>
+                          <td>Gamma-Fe (Austenite)</td>
+                          <td>FCC</td>
+                          <td>44.6, 64.9, 84.2</td>
+                      </tr>
+
+                      <!-- M152 -->
+                      <tr>
+                          <td  >M152</td>
+                          <td>Alpha-Fe</td>
+                          <td>BCC</td>
+                          <td>44.6, 65.2, 83.1</td>
+                      </tr>
+                      <tr>
+                          <td  >M152</td>
+                          <td>Gamma-Fe</td>
+                          <td>FCC</td>
+                          <td>43.3, 50.2, 75.3</td>
+                      </tr>
+                      <tr>
+                          <td  >M152</td>
+                          <td>Fe3C (Cementite)</td>
+                          <td>Orthorhombic</td>
+                          <td>28.6, 37.9, 41.4</td>
+                      </tr>
+
+
+                      <!-- A286 -->
+                      <tr>
+                          <td  >A286</td>
+                          <td>Face-Centered Cubic (FCC) - Gamma</td>
+                          <td>FCC</td>
+                          <td>44.6, 51.7, 76.5, 92.9</td>
+                      </tr>
+                      <tr>
+                        <td  >A286</td>
+                          <td>Ordered FCC (Ni?Nb)</td>
+                          <td>FCC</td>
+                          <td>28.4, 38.2, 44.5, 51.6</td>
+                      </tr>
+                      <tr>
+                        <td  >A286</td>
+                          <td>Ni3Al Phase</td>
+                          <td>FCC</td>
+                          <td>33.4, 36.8, 47.5, 58.4</td>
+                      </tr>
+                      <tr>
+                        <td>A286</td>
+                          <td>Ni3Nb Phase</td>
+                          <td>FCC</td>
+                          <td>22.5, 33.3, 43.8, 48.6</td>
+                      </tr>
+      
+      </tbody>
+  </table>
+
+  </div>
+  
+  
   <script>
- function updateChart() {
-    const ctx = document.getElementById("xrdChart").getContext("2d");
-    const tableRows = document.querySelectorAll("#dataTable tr");
-    let peaks = [], intensities = [];
+    const matchResult = document.getElementById("matchResult")
 
-    // Iterate over each row and extract the necessary data
-    tableRows.forEach((row, rowIndex) => {
-        const cells = row.querySelectorAll("td input"); // Get the input elements
-        const header = row.querySelector("th").textContent; // Get the header (2θ, Intensity, or hkl)
+    function updateChart() {
+        const ctx = document.getElementById("xrdChart").getContext("2d");
+        const tableRows = document.querySelectorAll("#dataTable tr");
+        let peaks = [], intensities = [];
 
-        if (header === "2θ (Degrees)") {
-            // Extract 2θ (Degrees) values
-            cells.forEach((cell, index) => {
-                peaks.push(parseFloat(cell.value));
-            });
-        } else if (header === "Intensity") {
-            // Extract intensity values
-            cells.forEach((cell, index) => {
-                intensities.push(parseFloat(cell.value));
-            });
+        // Iterate over each row and extract the necessary data
+        tableRows.forEach((row, rowIndex) => {
+            const cells = row.querySelectorAll("td input"); // Get the input elements
+            const header = row.querySelector("th").textContent; // Get the header (2θ, Intensity, or hkl)
+
+            if (header === "2θ (Degrees)") {
+                // Extract 2θ (Degrees) values
+                cells.forEach((cell, index) => {
+                    peaks.push(parseFloat(cell.value));
+                });
+            } else if (header === "Intensity") {
+                // Extract intensity values
+                cells.forEach((cell, index) => {
+                    intensities.push(parseFloat(cell.value));
+                });
+            }
+        });
+
+        const peakData = peaks.map((theta, index) => {
+            const width = 0.5; // half width (total width = 5 degrees)
+            const leftX = theta - width;
+            const rightX = theta + width;
+
+            // Return data for the peak with its width at zero intensity, but only one point at the peak intensity
+            return [
+                { x: leftX, y: 0 }, // left side at zero intensity
+                { x: theta, y: intensities[index] }, // peak at maximum intensity
+                { x: rightX, y: 0 } // right side at zero intensity
+            ];
+        }).flat().sort((a, b) => a.x - b.x); // Sort data points by x (theta)
+
+        // Destroy the previous chart if it exists
+        if (window.myChart) {
+            window.myChart.destroy();
         }
-    });
 
-    const peakData = peaks.map((theta, index) => {
-        const width = 0.5; // half width (total width = 5 degrees)
-        const leftX = theta - width;
-        const rightX = theta + width;
-
-        // Return data for the peak with its width at zero intensity, but only one point at the peak intensity
-        return [
-            { x: leftX, y: 0 }, // left side at zero intensity
-            { x: theta, y: intensities[index] }, // peak at maximum intensity
-            { x: rightX, y: 0 } // right side at zero intensity
-        ];
-    }).flat().sort((a, b) => a.x - b.x); // Sort data points by x (theta)
-
-    // Destroy the previous chart if it exists
-    if (window.myChart) {
-        window.myChart.destroy();
-    }
-
-    // Create a new chart
-    window.myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            datasets: [{
-                label: 'XRD Intensity',
-                data: peakData,
-                borderColor: "rgba(75, 192, 192, 1)", // Line color
-                backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
-                fill: true,
-                borderWidth: 2,
-                pointRadius: 0,
-                showLine: true,
-                tension: 0.05, // Smooth lines
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            if (context.raw.y === 0) return '';
-                            const index = peaks.indexOf(context.raw.x);
-                            return `2θ: ${context.raw.x}°, Intensity: ${context.raw.y}, hkl: ${hklLabels[index]}`;
+        // Create a new chart
+        window.myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'XRD Intensity',
+                    data: peakData,
+                    borderColor: "rgba(75, 192, 192, 1)", // Line color
+                    backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
+                    fill: true,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    showLine: true,
+                    tension: 0.05, // Smooth lines
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.raw.y === 0) return '';
+                                const index = peaks.indexOf(context.raw.x);
+                                return `2θ: ${context.raw.x}°, Intensity: ${context.raw.y}, hkl: ${hklLabels[index]}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '2θ (Degrees)'
+                        },
+                        type: 'linear'
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Intensity (Arbitrary Units)'
                         }
                     }
                 }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: '2θ (Degrees)'
-                    },
-                    type: 'linear'
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Intensity (Arbitrary Units)'
-                    }
-                }
             }
-        }
-    });
+        });
 
-    analyzeXRD();
-}
+        analyzeXRD();
+        const matchingRow = findMatchingRow(peaks);
+        
+          if (matchingRow) {
+            matchResult.textContent = `Matching row found: ${matchingRow.innerText}`;
+          } else {
+              matchResult.textContent = "No matching row found.";
+          }
+    }
 
 document.addEventListener("DOMContentLoaded", updateChart);
 
@@ -541,6 +1149,37 @@ const lambda = 1.5406; // Wavelength for Cu Kα radiation in Å
         }
 
 
+        function findMatchingRow(targetValues) {
+            const table = document.getElementById("xrdDatabaseTable");
+            if (!table) return null;
+
+            const rows = table.querySelectorAll("tbody tr");
+            const tolerance = 0.1;
+
+            for (let row of rows) {
+                const xrdCell = row.cells[3]; // The 4th column contains XRD 2Theta Angles
+                if (!xrdCell) continue;
+
+                const rowValues = xrdCell.innerText.split(",").map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
+                let matchCount = 0;
+
+                for (let target of targetValues) {
+                    if (target === null) continue;
+
+                    if (rowValues.some(val => Math.abs(val - target) <= tolerance)) {
+                        matchCount++;
+                    }
+                }
+
+                if (matchCount >= 3) {
+                    return row; // Return the first matching row
+                }
+            }
+
+            return null; // No matching row found
+        }
+
+  
   </script>
 </body>
 </html>
