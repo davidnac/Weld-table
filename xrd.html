@@ -1,1122 +1,1102 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Curve Fitting</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <head>
+    <title>Curve Fitting</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
+    <style>
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+      }
 
-    @font-face {
-            font-family: 'Montserrat-Medium';
-            src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
-            font-weight: 500; /* Medium weight */
-            font-style: normal;
-        }
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        margin: 0;
+        height: 96vh;
+        width: 100%;
+        background-color: #f4f4f4;
+        box-sizing: border-box;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
 
-    body{
-      font-family: "Montserrat-Medium", sans-serif;
-      margin: 0;
-      height: 96vh;
-      width: 100%;
-      background-color: #f4f4f4;
-      box-sizing: border-box;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
+      .cards-left-right {
+        display: flex;
+        flex-direction: row;
+        margin: 15px;
+      }
 
-    .cards-left-right{
-      display: flex;
-      flex-direction: row;
-      margin: 15px;
-    }
+      button {
+        padding: 9px 15px;
+        border-radius: 5px;
+        background-color: #4bc0c0;
+        margin-top: 8px;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #15b392;
+      }
+      canvas {
+        width: 100% !important;
+        margin: 0 auto;
+        margin-top: 40px;
+      }
+      input {
+        width: 60px;
+        text-align: center;
+        padding: 3px 1px;
+      }
+      .table-container {
+        width: 98%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 22px;
+      }
 
-    button {
-      padding: 9px 15px;
-      border-radius: 5px;
-      background-color: #4BC0C0;
-      margin-top: 8px;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #15b392;
-    }
-    canvas {
-      width: 100% !important;
-      margin: 0 auto;
-      margin-top: 40px;
-    }
-    input {
-      width: 60px;
-      text-align: center;
-      padding: 3px 1px;
-    }
-    .table-container {
-            width: 98%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* Enable vertical scrolling */
-            margin-bottom: 22px;
-        }
+      table {
+        margin-bottom: 30px;
+        margin-top: 24px;
+        margin-left: 12px;
+        border-collapse: collapse;
+        box-sizing: border-box;
+        border-radius: 7px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .table-container th {
+        text-align: center;
+      }
 
-    table {
-      margin-bottom: 30px;
-      margin-top: 24px;
-      margin-left: 12px;
-      border-collapse: collapse;
-      box-sizing: border-box;
-      border-radius: 7px;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-    .table-container th{
-      text-align: center;
-    }
+      .table-container table {
+        width: 90%;
+        margin: 30px auto;
+      }
 
-    .table-container table{
-      width: 90%;
-      margin: 30px auto;
-    }
-
-    th {
-      padding: 6px 20px;
-      text-align: left;
-      font-size: 13px;
-      height: 40px;
-      box-sizing: border-box;
-      background-color: #f9f9f9;
-    }
-    td{
-      border: solid 1px rgba(159, 154, 154, 0.39);
-      text-align: center;
-      padding: 10px 6px;
-    }
-    td input{
+      th {
+        padding: 6px 20px;
+        text-align: left;
+        font-size: 13px;
+        height: 40px;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+      }
+      td {
+        border: solid 1px rgba(159, 154, 154, 0.39);
+        text-align: center;
+        padding: 10px 6px;
+      }
+      td input {
         width: 100%;
         text-align: center;
         font-size: 13px;
         padding: 10px 10px;
         box-sizing: border-box;
         border: none;
-    }
-    td input:hover{
-       background-color: rgba(75, 192, 192, 0.2);
-    }
-    label{
-      margin-right: 6px;
-      white-space: pre-wrap;
-    }
+      }
+      td input:hover {
+        background-color: rgba(75, 192, 192, 0.2);
+      }
+      label {
+        margin-right: 6px;
+        white-space: pre-wrap;
+      }
 
-    .limit-container{
-      margin-bottom: 8px;
-    }
+      .limit-container {
+        margin-bottom: 8px;
+      }
 
-    .card {
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            background-color: white;
-    }
+      .card {
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        background-color: white;
+      }
 
-    .card-right{
-      margin-left: 20px;
-      width: 100%;
-    }
-    .margin-top{
-      margin-top: 50px;
-    }
-    p{
-      white-space: pre-wrap;
-    }
-    .divider {
-           border-top: 1px solid #ccc; /* Light gray line */
-           margin: 20px 0; /* Add some space above and below the line */
-       }
-       .graph-header-container {
+      .card-right {
+        margin-left: 20px;
+        width: 100%;
+      }
+      .margin-top {
+        margin-top: 50px;
+      }
+      p {
+        white-space: pre-wrap;
+      }
+      .divider {
+        border-top: 1px solid #ccc; /* Light gray line */
+        margin: 20px 0; /* Add some space above and below the line */
+      }
+      .graph-header-container {
         /* You can choose a more descriptive class name */
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
 
-      .graph-header-container button{
+      .graph-header-container button {
         margin: 0;
       }
-      .resultText{
+      .resultText {
         font-weight: 800;
       }
 
-      h2{
+      h2 {
         margin-top: 6px;
       }
 
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
 
-                   /* Navbar styles */
-                   .navbar {
-                       display: flex;
-                       flex-direction: row;
-                       justify-content: space-between;
-                       align-items: center;
-                       background-color: #3674B5;
-                       padding: 15px 30px;
+        width: 95%;
+        margin: 15px auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
 
-                       width: 95%;
-                       margin: 15px auto;
-                       background: white;
-                       border-radius: 10px;
-                       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-                   }
+      .navbar .logo {
+        font-size: 21px;
+        font-weight: bold;
+        color: #1f497d;
+        text-transform: uppercase;
+      }
 
-                   .navbar .logo {
-                       font-size: 21px;
-                       font-weight: bold;
-                       color: #1F497D;
-                       text-transform: uppercase;
-                   }
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+      }
 
-                    .icons {
-                       display: flex;
-                       flex-direction: row;
-                       gap: 15px;
-                   }
+      .navbar .icon {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
 
-                   .navbar .icon {
-                       color: white;
-                       font-size: 20px;
-                       cursor: pointer;
-                   }
+      .navbar .icon:hover {
+        color: #ffd95f;
+      }
 
-                   .navbar .icon:hover {
-                       color: #FFD95F;
-                   }
+      img {
+        height: 40px;
+        width: auto;
+      }
 
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
 
-                   img{
-                       height: 40px;
-                       width: auto;
-                   }
+      .navbar .ThemeBtn-container {
+        height: 45px;
+        width: 45px;
+        border-radius: 100%;
+        opacity: 1;
+        background-color: transparnt;
+        display: flex;
+        align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+      }
 
-                   .logo-container{
-                       display: flex;
-                       flex-direction: row;
-                       align-items: center;
-                       gap: 20px;
-                   }
+      .navbar .ThemeBtn-container:hover {
+        background-color: #98d8ef;
+        fill: white;
+        transition: all 0.5s ease;
+      }
 
-                   .navbar .ThemeBtn-container {
-                     height: 45px;
-                     width: 45px;
-                     border-radius: 100%;
-                     opacity: 1;
-                     background-color: transparnt;
-                     display: flex;
-                     align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
-                   }
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
 
-                   .navbar .ThemeBtn-container:hover {
-                     background-color: #98D8EF;
-                     fill: white ;
-                     transition: all 0.5s ease;
-                   }
+      .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
 
-                   .clearButton {
-                      display: none;
-                      cursor: pointer;
-                      font-size: 26px;
-                      color: gray;
-                      padding-left: 6px;
-                   }
+      .svg-button:hover {
+        fill: white;
+      }
 
-                   .svg-button{
-                      border: none;
-                      cursor: pointer;
-                      background-color: transparent !important;
-                      fill: #AC1754 ;
-                      transform: scale(1.2);
-                      margin: 4px;
-                      margin-bottom: 0;
-                      margin-right: 1px;
-                    }
+      /* Search bar container */
+      .search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
+      }
 
-                    .svg-button:hover{
-                      fill: white;
-                    }
+      .navbar input {
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
+      }
+    </style>
+  </head>
 
-                   /* Search bar container */
-                   .search-container {
-                       display: flex;
-                       justify-content: center; /* Center horizontally */
-                       margin-top: 30px; /* Adjust space above the search bar */
-                   }
-
-                   .navbar input {
-                       padding: 10px;
-                       width: 400px; /* Width of the search bar */
-                       font-size: 16px;
-                       border: 1px solid #ccc;
-                       border-radius: 5px;
-                       background-color: rgb(244, 244, 244);
-                   }
-
-  </style>
-</head>
-
-<body>
-
-  <!-- Navbar -->
-  <div class="navbar">
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
       <div class="logo-container">
-          <img src="Images/IAI logo.webp" alt="Book Logo">
-          <div class="logo">X-Ray Diffraction Calculator</div>
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">X-Ray Diffraction Calculator</div>
+      </div>
+    </div>
+
+    <div class="cards-left-right">
+      <div class="card-left card">
+        <div class="graph-header-container">
+          <h2>X-Ray Diffraction</h2>
+          <button onclick="updateChart()">Analyze</button>
+        </div>
+
+        <canvas id="xrdChart"></canvas>
+
+        <table>
+          <tbody id="dataTable">
+            <tr>
+              <th>2θ (Degrees)</th>
+              <td><input type="number" value="147.2" /></td>
+              <td><input type="number" value="138.464" /></td>
+              <td><input type="number" value="118.194" /></td>
+              <td><input type="number" value="95.989" /></td>
+              <td><input type="number" value="90.705" /></td>
+              <td><input type="number" value="" /></td>
+            </tr>
+            <tr>
+              <th>Intensity</th>
+              <td><input type="number" value="100" /></td>
+              <td><input type="number" value="80" /></td>
+              <td><input type="number" value="90" /></td>
+              <td><input type="number" value="70" /></td>
+              <td><input type="number" value="60" /></td>
+              <td><input type="number" value="" /></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-  </div>
+      <div class="card-right card">
+        <h2>Analysis</h2>
+        <div class="divider"></div>
 
-<div class="cards-left-right">
-  <div class="card-left card">
-
-    <div class="graph-header-container">
-      <h2>X-Ray Diffraction</h2>
-      <button onclick="updateChart()">Analyze</button>
-    </div>
-  
-   <canvas id="xrdChart"></canvas>
-
-   <table>
-    <tbody id="dataTable">
-        <tr>
-            <th>2θ (Degrees)</th>
-            <td><input type="number" value="147.2"></td>
-            <td><input type="number" value="138.464"></td>
-            <td><input type="number" value="118.194"></td>
-            <td><input type="number" value="95.989"></td>
-            <td><input type="number" value="90.705"></td>
-            <td><input type="number" value=""></td>
-      
-        </tr>
-        <tr>
-            <th>Intensity</th>
-            <td><input type="number" value="100"></td>
-            <td><input type="number" value="80"></td>
-            <td><input type="number" value="90"></td>
-            <td><input type="number" value="70"></td>
-            <td><input type="number" value="60"></td>
-            <td><input type="number" value=""></td>
-
-        </tr>
-    </tbody>
-   </table>
-
-   </div>
-
-
-    <div class="card-right card">
-
-      <h2>Analysis</h2>
-      <div class="divider"></div>
-
-      <table id="resultsTable">
-        <thead>
+        <table id="resultsTable">
+          <thead>
             <tr>
-                <th>2θ (°)</th>
-                <th>d (Å)</th>
-                <th>1/d²</th>
-                <th>Normalized</th>
-                <th>Ratio</th>
-                <th>hkl</th>
-                <th>a (Å)</th>
-                <th>FCC</th>
-                <th>BCC</th>
-                <th>SC</th>
-                <th>HCP</th>
+              <th>2θ (°)</th>
+              <th>d (Å)</th>
+              <th>1/d²</th>
+              <th>Normalized</th>
+              <th>Ratio</th>
+              <th>hkl</th>
+              <th>a (Å)</th>
+              <th>FCC</th>
+              <th>BCC</th>
+              <th>SC</th>
+              <th>HCP</th>
             </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <h2>Results</h2>
+        <div class="divider"></div>
+        <p id="matchResult">Detected phase is CRES 304 Austenite phase</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table id="xrdDatabaseTable">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Phase</th>
+            <th>Structure</th>
+            <th>XRD 2Theta Angles</th>
+          </tr>
         </thead>
         <tbody>
-            
-        </tbody>
-    </table>
-
-    <h2>Results</h2>
-    <div class="divider"></div>
-    <p id="matchResult">Detected phase is CRES 304 Austenite phase</p>
-
-    </div>
-
-  </div>
-
-  <div class="table-container">
-
-    <table id="xrdDatabaseTable">
-      <thead>
-          <tr>
-              <th>Material</th>
-              <th>Phase</th>
-              <th>Structure</th>
-              <th>XRD 2Theta Angles</th>
-          </tr>
-      </thead>
-      <tbody>
           <tr>
             <td>SS304</td>
             <td>Austenite (γ)</td>
             <td>Face-Centered Cubic (FCC)</td>
             <td>43.5, 50.7, 74.6,90.705,95.989,118.194, 138.464,147.2</td>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>SS304</td>
             <td>Ferrite (α)</td>
             <td>Body-Centered Cubic (BCC)</td>
             <td>44.7, 137.141,116.372,98.937,82.379,65.019</td>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>SS304</td>
             <td>Sigma (σ)</td>
             <td>Tetragonal</td>
             <td>31,45,55</td>
-        </tr>
-         <!-- Stainless Steel 316 -->
-         <tr>
-          <td>SS316</td>
-          <td>Austenite (γ)</td>
-          <td>Face-Centered Cubic (FCC)</td>
-          <td>43.5,50.7, 74.6</td>
-      </tr>
-      <tr>
-          <td>SS316</td>
-          <td>Ferrite (α)</td>
-          <td>Body-Centered Cubic (BCC)</td>
-          <td>44.7,65.0,82.3</td>
-      </tr>
-      <tr>
-          <td>SS316</td>
-          <td>Sigma (σ)</td>
-          <td>Tetragonal</td>
-          <td> 31, 45,55</td>
-      </tr>
-      <!-- Stainless Steel 321 -->
-      <tr>
-          <td>SS321</td>
-          <td>Austenite (γ)</td>
-          <td>Face-Centered Cubic (FCC)</td>
-          <td>43.5, 50.7, 74.6</td>
-      </tr>
-      <tr>
-          <td>SS321</td>
-          <td>Ferrite (α)</td>
-          <td>Body-Centered Cubic (BCC)</td>
-          <td>44.7, 65.0, 82.3</td>
-      </tr>
-      <tr>
-          <td>SS321</td>
-          <td>Sigma (σ)</td>
-          <td>Tetragonal</td>
-          <td>31, 45, 55</td>
-      </tr>
-      <!-- Stainless Steel 347 -->
-      <tr>
-          <td>SS347</td>
-          <td>Austenite (γ)</td>
-          <td>Face-Centered Cubic (FCC)</td>
-          <td>43.5, 50.7,74.6</td>
-      </tr>
-      <tr>
-          <td>SS347</td>
-          <td>Ferrite (α)</td>
-          <td>Body-Centered Cubic (BCC)</td>
-          <td>44.7, 65.0,  82.3</td>
-      </tr>
-      <tr>
-          <td>SS347</td>
-          <td>Sigma (σ)</td>
-          <td>Tetragonal</td>
-          <td>31, 45, 55</td>
-      </tr>
+          </tr>
+          <!-- Stainless Steel 316 -->
+          <tr>
+            <td>SS316</td>
+            <td>Austenite (γ)</td>
+            <td>Face-Centered Cubic (FCC)</td>
+            <td>43.5,50.7, 74.6</td>
+          </tr>
+          <tr>
+            <td>SS316</td>
+            <td>Ferrite (α)</td>
+            <td>Body-Centered Cubic (BCC)</td>
+            <td>44.7,65.0,82.3</td>
+          </tr>
+          <tr>
+            <td>SS316</td>
+            <td>Sigma (σ)</td>
+            <td>Tetragonal</td>
+            <td>31, 45,55</td>
+          </tr>
+          <!-- Stainless Steel 321 -->
+          <tr>
+            <td>SS321</td>
+            <td>Austenite (γ)</td>
+            <td>Face-Centered Cubic (FCC)</td>
+            <td>43.5, 50.7, 74.6</td>
+          </tr>
+          <tr>
+            <td>SS321</td>
+            <td>Ferrite (α)</td>
+            <td>Body-Centered Cubic (BCC)</td>
+            <td>44.7, 65.0, 82.3</td>
+          </tr>
+          <tr>
+            <td>SS321</td>
+            <td>Sigma (σ)</td>
+            <td>Tetragonal</td>
+            <td>31, 45, 55</td>
+          </tr>
+          <!-- Stainless Steel 347 -->
+          <tr>
+            <td>SS347</td>
+            <td>Austenite (γ)</td>
+            <td>Face-Centered Cubic (FCC)</td>
+            <td>43.5, 50.7,74.6</td>
+          </tr>
+          <tr>
+            <td>SS347</td>
+            <td>Ferrite (α)</td>
+            <td>Body-Centered Cubic (BCC)</td>
+            <td>44.7, 65.0, 82.3</td>
+          </tr>
+          <tr>
+            <td>SS347</td>
+            <td>Sigma (σ)</td>
+            <td>Tetragonal</td>
+            <td>31, 45, 55</td>
+          </tr>
           <!-- Boron Carbide (B?C) -->
           <tr>
-              <td>Boron Carbide (B4C)</td>
-              <td>Boron Carbide (B4C)</td>
-              <td>Hexagonal</td>
-              <td>27.3, 30.5, 34.3, 38.7, 44.3</td>
+            <td>Boron Carbide (B4C)</td>
+            <td>Boron Carbide (B4C)</td>
+            <td>Hexagonal</td>
+            <td>27.3, 30.5, 34.3, 38.7, 44.3</td>
           </tr>
-
 
           <!-- Steel 4340 -->
           <tr>
-              <td  >Steel 4340</td>
-              <td>Alpha-Fe (Ferrite)</td>
-              <td>BCC</td>
-              <td>44.6, 65.1, 82.3</td>
+            <td>Steel 4340</td>
+            <td>Alpha-Fe (Ferrite)</td>
+            <td>BCC</td>
+            <td>44.6, 65.1, 82.3</td>
           </tr>
           <tr>
-              <td  >Steel 4340</td>
-              <td>Gamma-Fe (Austenite)</td>
-              <td>FCC</td>
-              <td>43.2, 50.4, 74.8</td>
+            <td>Steel 4340</td>
+            <td>Gamma-Fe (Austenite)</td>
+            <td>FCC</td>
+            <td>43.2, 50.4, 74.8</td>
           </tr>
           <tr>
-              <td  >Steel 4340</td>
-              <td>Fe?C (Cementite)</td>
-              <td>Orthorhombic</td>
-              <td>28.7, 37.8, 41.5</td>
+            <td>Steel 4340</td>
+            <td>Fe?C (Cementite)</td>
+            <td>Orthorhombic</td>
+            <td>28.7, 37.8, 41.5</td>
           </tr>
 
           <!-- PH 15-5 -->
           <tr>
-              <td  >PH 15-5</td>
-              <td>Alpha-Fe (Martensite)</td>
-              <td>BCC</td>
-              <td>44.6, 64.7, 82.3</td>
+            <td>PH 15-5</td>
+            <td>Alpha-Fe (Martensite)</td>
+            <td>BCC</td>
+            <td>44.6, 64.7, 82.3</td>
           </tr>
           <tr>
-            <td  >PH 15-5</td>
-              <td>Ferrite (Fe3C)</td>
-              <td>BCC</td>
-              <td>30.1, 50.4, 63.2</td>
+            <td>PH 15-5</td>
+            <td>Ferrite (Fe3C)</td>
+            <td>BCC</td>
+            <td>30.1, 50.4, 63.2</td>
           </tr>
           <tr>
-            <td  >PH 15-5</td>
-              <td>Gamma-Fe (Austenite)</td>
-              <td>FCC</td>
-              <td>44.6, 64.9, 84.2</td>
+            <td>PH 15-5</td>
+            <td>Gamma-Fe (Austenite)</td>
+            <td>FCC</td>
+            <td>44.6, 64.9, 84.2</td>
           </tr>
 
           <!-- PH 17-4 -->
           <tr>
-              <td  >PH 17-4</td>
-              <td>Alpha-Fe (Martensite)</td>
-              <td>BCC</td>
-              <td>44.6, 63.5, 82.3</td>
+            <td>PH 17-4</td>
+            <td>Alpha-Fe (Martensite)</td>
+            <td>BCC</td>
+            <td>44.6, 63.5, 82.3</td>
           </tr>
           <tr>
-            <td  >PH 17-4</td>
-              <td>Ferrite (Fe3C)</td>
-              <td>BCC</td>
-              <td>30.1, 50.4, 63.3</td>
+            <td>PH 17-4</td>
+            <td>Ferrite (Fe3C)</td>
+            <td>BCC</td>
+            <td>30.1, 50.4, 63.3</td>
           </tr>
           <tr>
-            <td  >PH 17-4</td>
-              <td>Gamma-Fe (Austenite)</td>
-              <td>FCC</td>
-              <td>44.6, 64.9, 84.2</td>
+            <td>PH 17-4</td>
+            <td>Gamma-Fe (Austenite)</td>
+            <td>FCC</td>
+            <td>44.6, 64.9, 84.2</td>
           </tr>
-
-
-
 
           <!-- Aluminum 2024 -->
           <tr>
-              <td>Aluminum 2024</td>
-              <td>Alpha-Al (Al?O?)</td>
-              <td>FCC</td>
-              <td>38.5, 45.5, 63.0, 77.5</td>
+            <td>Aluminum 2024</td>
+            <td>Alpha-Al (Al2O3)</td>
+            <td>FCC</td>
+            <td>25.72,35.28,37.938,43.48,57.64</td>
           </tr>
-
-
-
 
           <!-- Hastelloy X -->
           <tr>
-              <td  >Hastelloy X</td>
-              <td>Face-Centered Cubic (FCC) - Gamma</td>
-              <td>FCC</td>
-              <td>44.6, 51.7, 76.5, 92.9</td>
+            <td>Hastelloy X</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.7, 76.5, 92.9</td>
           </tr>
           <tr>
-            <td  >Hastelloy X</td>
-              <td>Ordered FCC (Ni3Nb)</td>
-              <td>FCC</td>
-              <td>28.4, 38.2, 44.5, 51.6</td>
+            <td>Hastelloy X</td>
+            <td>Ordered FCC (Ni3Nb)</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
           </tr>
           <tr>
-            <td  >Hastelloy X</td>
-              <td>Ni?Al Phase</td>
-              <td>FCC</td>
-              <td>33.4, 36.8, 47.5, 58.4</td>
+            <td>Hastelloy X</td>
+            <td>Ni?Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
           </tr>
           <tr>
-            <td  >Hastelloy X</td>
-              <td>Ni3Nb Phase</td>
-              <td>FCC</td>
-              <td>22.5, 33.3, 43.8, 48.6</td>
+            <td>Hastelloy X</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
           </tr>
 
           <!-- Hastelloy W -->
           <tr>
-              <td  >Hastelloy W</td>
-              <td>Face-Centered Cubic (FCC) - Gamma</td>
-              <td>FCC</td>
-              <td>44.6, 51.7, 76.5, 92.9</td>
+            <td>Hastelloy W</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.7, 76.5, 92.9</td>
           </tr>
           <tr>
-            <td  >Hastelloy W</td>
-              <td>Ordered FCC (Ni3Nb)</td>
-              <td>FCC</td>
-              <td>28.4, 38.2, 44.5, 51.6</td>
+            <td>Hastelloy W</td>
+            <td>Ordered FCC (Ni3Nb)</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
           </tr>
           <tr>
-            <td  >Hastelloy W</td>
-              <td>Ni?Al Phase</td>
-              <td>FCC</td>
-              <td>33.4, 36.8, 47.5, 58.4</td>
+            <td>Hastelloy W</td>
+            <td>Ni?Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
           </tr>
           <tr>
-            <td  >Hastelloy W</td>
-              <td>Ni3Nb Phase</td>
-              <td>FCC</td>
-              <td>22.5, 33.3, 43.8, 48.6</td>
+            <td>Hastelloy W</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
           </tr>
 
+          <tr>
+            <td>Iron Oxides</td>
+            <td>FeO (Wustite)</td>
+            <td>Rock Salt</td>
+            <td>32.5, 37.5, 43.5, 51.5</td>
+          </tr>
+          <tr>
+            <td>Iron Oxides</td>
+            <td>Fe2O3 (Hematite)</td>
+            <td>Rhombohedral</td>
+            <td>24.1, 33.2, 35.6, 40.9, 49.4, 54.0, 57.5</td>
+          </tr>
+          <tr>
+            <td>Iron Oxides</td>
+            <td>Fe3O4 (Magnetite)</td>
+            <td>Spinel</td>
+            <td>30.1, 35.4, 43.3, 53.5, 57.5</td>
+          </tr>
+          <tr>
+            <td>Iron Oxides</td>
+            <td>Fe2O3 (Maghemite)</td>
+            <td>Spinel</td>
+            <td>30.3, 35.5, 43.1, 57.1</td>
+          </tr>
+          <tr>
+            <td>Iron Oxides</td>
+            <td>Fe2O3</td>
+            <td>Orthorhombic</td>
+            <td>27.6, 35.8, 40.2, 50.7</td>
+          </tr>
+          <tr>
+            <td>Iron Oxides</td>
+            <td>Fe2O3</td>
+            <td>Orthorhombic</td>
+            <td>27.4, 33.0, 37.8, 49.8</td>
+          </tr>
 
+          <tr>
+            <td>Inconel 100</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.8, 74.9, 94.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 100</td>
+            <td>Ni?Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
 
-                      <tr>
-                          <td  >Iron Oxides</td>
-                          <td>FeO (Wustite)</td>
-                          <td>Rock Salt</td>
-                          <td>32.5, 37.5, 43.5, 51.5</td>
-                      </tr>
-                      <tr>
-                          <td  >Iron Oxides</td>
-                          <td>Fe2O3 (Hematite)</td>
-                          <td>Rhombohedral</td>
-                          <td>24.1, 33.2, 35.6, 40.9, 49.4, 54.0, 57.5</td>
-                      </tr>
-                      <tr>
-                          <td  >Iron Oxides</td>
-                          <td>Fe3O4 (Magnetite)</td>
-                          <td>Spinel</td>
-                          <td>30.1, 35.4, 43.3, 53.5, 57.5</td>
-                      </tr>
-                      <tr>
-                          <td  >Iron Oxides</td>
-                          <td>Fe2O3 (Maghemite)</td>
-                          <td>Spinel</td>
-                          <td>30.3, 35.5, 43.1, 57.1</td>
-                      </tr>
-                      <tr>
-                          <td  >Iron Oxides</td>
-                          <td>Fe2O3</td>
-                          <td>Orthorhombic</td>
-                          <td>27.6, 35.8, 40.2, 50.7</td>
-                      </tr>
-                      <tr>
-                          <td  >Iron Oxides</td>
-                          <td>Fe2O3</td>
-                          <td>Orthorhombic</td>
-                          <td>27.4, 33.0, 37.8, 49.8</td>
-                      </tr>
+          <tr>
+            <td>Rene 77</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.8, 74.9, 94.6</td>
+          </tr>
+          <tr>
+            <td>Rene 77</td>
+            <td>Ni?Nb Phase</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td>MarM-200</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.8, 74.9, 94.6</td>
+          </tr>
+          <tr>
+            <td>MarM-200</td>
+            <td>Ordered FCC (Ni3Nb)</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 713</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.8, 74.9, 94.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 713</td>
+            <td>Ni?Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
+          <tr>
+            <td>Inconel 713</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
 
+          <tr>
+            <td>Inconel 718</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.7, 76.5, 92.9</td>
+          </tr>
+          <tr>
+            <td>Inconel 718</td>
+            <td>Ordered FCC (Ni?Nb)</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 718</td>
+            <td>Ni?Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
+          <tr>
+            <td>Inconel 718</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
 
-                      <tr>
-                          <td  >Inconel 100</td>
-                          <td>Face-Centered Cubic (FCC) - Gamma</td>
-                          <td>FCC</td>
-                          <td>44.6, 51.8, 74.9, 94.6</td>
-                      </tr>
-                      <tr>
-                         <td  >Inconel 100</td>
-                          <td>Ni?Al Phase</td>
-                          <td>FCC</td>
-                          <td>33.4, 36.8, 47.5, 58.4</td>
-                      </tr>
+          <tr>
+            <td>Inconel 600</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.8, 74.9, 94.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 600</td>
+            <td>Ni?Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
+          <tr>
+            <td>Inconel 600</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
 
-                      <tr>
-                        <td  >Rene 77</td>
-                          <td>Face-Centered Cubic (FCC) - Gamma</td>
-                          <td>FCC</td>
-                          <td>44.6, 51.8, 74.9, 94.6</td>
-                      </tr>
-                      <tr>
-                        <td  >Rene 77</td>
-                          <td>Ni?Nb Phase</td>
-                          <td>FCC</td>
-                          <td>28.4, 38.2, 44.5, 51.6</td>
-                      </tr>
-                      <tr>
-                          <td  >MarM-200</td>
-                          <td>Face-Centered Cubic (FCC) - Gamma</td>
-                          <td>FCC</td>
-                          <td>44.6, 51.8, 74.9, 94.6</td>
-                      </tr>
-                      <tr>
-                        <td  >MarM-200</td>
-                          <td>Ordered FCC (Ni3Nb)</td>
-                          <td>FCC</td>
-                          <td>28.4, 38.2, 44.5, 51.6</td>
-                      </tr>
-                      <tr>
-                          <td  >Inconel 713</td>
-                          <td>Face-Centered Cubic (FCC) - Gamma</td>
-                          <td>FCC</td>
-                          <td>44.6, 51.8, 74.9, 94.6</td>
-                      </tr>
-                      <tr>
-                        <td  >Inconel 713</td>
-                          <td>Ni?Al Phase</td>
-                          <td>FCC</td>
-                          <td>33.4, 36.8, 47.5, 58.4</td>
-                      </tr>
-                      <tr>
-                        <td  >Inconel 713</td>
-                          <td>Ni3Nb Phase</td>
-                          <td>FCC</td>
-                          <td>22.5, 33.3, 43.8, 48.6</td>
-                      </tr>
+          <!-- Inconel 601 -->
+          <tr>
+            <td>Inconel 601</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.7, 76.5, 92.9</td>
+          </tr>
+          <tr>
+            <td>Inconel 601</td>
+            <td>Ordered FCC (Ni?Nb)</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 601</td>
+            <td>Ni?Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
+          <tr>
+            <td>Inconel 601</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
+          <!-- Inconel 602 -->
+          <tr>
+            <td>Inconel 602</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.7, 76.5, 92.9</td>
+          </tr>
+          <tr>
+            <td>Inconel 602</td>
+            <td>Ordered FCC (Ni?Nb)</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 602</td>
+            <td>Ni?Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
+          <tr>
+            <td>Inconel 602</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
 
-                      <tr>
-                          <td  >Inconel 718</td>
-                          <td>Face-Centered Cubic (FCC) - Gamma</td>
-                          <td>FCC</td>
-                          <td>44.6, 51.7, 76.5, 92.9</td>
-                      </tr>
-                      <tr>
-                        <td  >Inconel 718</td>
-                          <td>Ordered FCC (Ni?Nb)</td>
-                          <td>FCC</td>
-                          <td>28.4, 38.2, 44.5, 51.6</td>
-                      </tr>
-                      <tr>
-                        <td  >Inconel 718</td>
-                          <td>Ni?Al Phase</td>
-                          <td>FCC</td>
-                          <td>33.4, 36.8, 47.5, 58.4</td>
-                      </tr>
-                      <tr>
-                        <td  >Inconel 718</td>
-                          <td>Ni3Nb Phase</td>
-                          <td>FCC</td>
-                          <td>22.5, 33.3, 43.8, 48.6</td>
-                      </tr>
+          <tr>
+            <td>Inconel 625</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.8, 74.9, 94.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 625</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td>Inconel 625</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
 
-                      <tr>
-                          <td  >Inconel 600</td>
-                          <td>Face-Centered Cubic (FCC) - Gamma</td>
-                          <td>FCC</td>
-                          <td>44.6, 51.8, 74.9, 94.6</td>
-                      </tr>
-                      <tr>
-                        <td  >Inconel 600</td>
-                          <td>Ni?Al Phase</td>
-                          <td>FCC</td>
-                          <td>33.4, 36.8, 47.5, 58.4</td>
-                      </tr>
-                      <tr>
-                        <td  >Inconel 600</td>
-                          <td>Ni3Nb Phase</td>
-                          <td>FCC</td>
-                          <td>22.5, 33.3, 43.8, 48.6</td>
-                      </tr>
+          <!-- Aluminum Oxide -->
+          <tr>
+            <td>Aluminum Oxide (Al2O3)</td>
+            <td>Alpha-Al?O? (Corundum)</td>
+            <td>Hexagonal</td>
+            <td>25.8, 35.1, 43.3, 57.3, 66.3</td>
+          </tr>
+          <tr>
+            <td>Aluminum Oxide (Al2O3)</td>
+            <td>Beta-Al2O3</td>
+            <td>Orthorhombic</td>
+            <td>25.7, 31.7, 37.6, 45.5, 59.9</td>
+          </tr>
+          <tr>
+            <td>Aluminum Oxide (Al2O3)</td>
+            <td>Gamma-Al2O3</td>
+            <td>Cubic</td>
+            <td>23.0, 29.7, 34.2, 45.2</td>
+          </tr>
+          <tr>
+            <td>Aluminum Oxide (Al2O3)</td>
+            <td>Delta-Al2O3</td>
+            <td>Cubic</td>
+            <td>24.4, 34.4, 41.3, 47.6</td>
+          </tr>
+          <tr>
+            <td>Aluminum Oxide (Al2O3)</td>
+            <td>Theta-Al2O3</td>
+            <td>Triclinic</td>
+            <td>26.7, 35.5, 41.0, 48.5</td>
+          </tr>
 
+          <tr>
+            <td>Titanium Oxide (TiO2)</td>
+            <td>Rutile (TiO?)</td>
+            <td>Tetragonal</td>
+            <td>27.4, 36.0, 41.2, 54.3, 56.6</td>
+          </tr>
+          <tr>
+            <td>Titanium Oxide (TiO2)</td>
+            <td>Anatase (TiO2)</td>
+            <td>Tetragonal</td>
+            <td>25.3, 37.8, 48.0, 54.6, 62.7</td>
+          </tr>
+          <tr>
+            <td>Titanium Oxide (TiO2)</td>
+            <td>Brookite (TiO2)</td>
+            <td>Orthorhombic</td>
+            <td>24.4, 28.4, 32.8, 38.2, 49.5</td>
+          </tr>
 
-                                  <!-- Inconel 601 -->
-                                  <tr>
-                                      <td  >Inconel 601</td>
-                                      <td>Face-Centered Cubic (FCC) - Gamma</td>
-                                      <td>FCC</td>
-                                      <td>44.6, 51.7, 76.5, 92.9</td>
-                                  </tr>
-                                  <tr>
-                                    <td  >Inconel 601</td>
-                                      <td>Ordered FCC (Ni?Nb)</td>
-                                      <td>FCC</td>
-                                      <td>28.4, 38.2, 44.5, 51.6</td>
-                                  </tr>
-                                  <tr>
-                                    <td  >Inconel 601</td>
-                                      <td>Ni?Al Phase</td>
-                                      <td>FCC</td>
-                                      <td>33.4, 36.8, 47.5, 58.4</td>
-                                  </tr>
-                                  <tr>
-                                    <td  >Inconel 601</td>
-                                      <td>Ni3Nb Phase</td>
-                                      <td>FCC</td>
-                                      <td>22.5, 33.3, 43.8, 48.6</td>
-                                  </tr>
-                                  <!-- Inconel 602 -->
-                                  <tr>
-                                      <td  >Inconel 602</td>
-                                      <td>Face-Centered Cubic (FCC) - Gamma</td>
-                                      <td>FCC</td>
-                                      <td>44.6, 51.7, 76.5, 92.9</td>
-                                  </tr>
-                                  <tr>
-                                    <td  >Inconel 602</td>
-                                      <td>Ordered FCC (Ni?Nb)</td>
-                                      <td>FCC</td>
-                                      <td>28.4, 38.2, 44.5, 51.6</td>
-                                  </tr>
-                                  <tr>
-                                    <td  >Inconel 602</td>
-                                      <td>Ni?Al Phase</td>
-                                      <td>FCC</td>
-                                      <td>33.4, 36.8, 47.5, 58.4</td>
-                                  </tr>
-                                  <tr>
-                                    <td  >Inconel 602</td>
-                                      <td>Ni3Nb Phase</td>
-                                      <td>FCC</td>
-                                      <td>22.5, 33.3, 43.8, 48.6</td>
-                                  </tr>
+          <tr>
+            <td>Steel 1020</td>
+            <td>Alpha-Fe (Ferrite)</td>
+            <td>BCC</td>
+            <td>44.6, 65.0, 82.1</td>
+          </tr>
+          <tr>
+            <td>Steel 1020</td>
+            <td>Gamma-Fe (Austenite)</td>
+            <td>FCC</td>
+            <td>43.2, 50.5, 74.9</td>
+          </tr>
+          <tr>
+            <td>Steel 1020</td>
+            <td>Fe3C (Cementite)</td>
+            <td>Orthorhombic</td>
+            <td>28.7, 37.8, 41.5</td>
+          </tr>
 
-                      <tr>
-                          <td  >Inconel 625</td>
-                          <td>Face-Centered Cubic (FCC) - Gamma</td>
-                          <td>FCC</td>
-                          <td>44.6, 51.8, 74.9, 94.6</td>
-                      </tr>
-                      <tr>
-                          <td  >Inconel 625</td>
-                          <td>Ni3Nb Phase</td>
-                          <td>FCC</td>
-                          <td>28.4, 38.2, 44.5, 51.6</td>
-                      </tr>
-                      <tr>
-                          <td  >Inconel 625</td>
-                          <td>Ni3Nb Phase</td>
-                          <td>FCC</td>
-                          <td>22.5, 33.3, 43.8, 48.6</td>
-                      </tr>
+          <!-- Stainless Steel 410 -->
+          <tr>
+            <td>Stainless Steel 410</td>
+            <td>Alpha-Fe (Martensite)</td>
+            <td>BCC</td>
+            <td>43.7, 63.5, 82.3</td>
+          </tr>
 
+          <tr>
+            <td>Stainless Steel 410</td>
+            <td>Ferrite (Fe?C)</td>
+            <td>BCC</td>
+            <td>30.1, 50.4, 63.3</td>
+          </tr>
+          <tr>
+            <td>Stainless Steel 410</td>
+            <td>Gamma-Fe (Austenite)</td>
+            <td>FCC</td>
+            <td>44.6, 64.9, 84.2</td>
+          </tr>
 
+          <!-- M152 -->
+          <tr>
+            <td>M152</td>
+            <td>Alpha-Fe</td>
+            <td>BCC</td>
+            <td>44.6, 65.2, 83.1</td>
+          </tr>
+          <tr>
+            <td>M152</td>
+            <td>Gamma-Fe</td>
+            <td>FCC</td>
+            <td>43.3, 50.2, 75.3</td>
+          </tr>
+          <tr>
+            <td>M152</td>
+            <td>Fe3C (Cementite)</td>
+            <td>Orthorhombic</td>
+            <td>28.6, 37.9, 41.4</td>
+          </tr>
 
+          <!-- A286 -->
+          <tr>
+            <td>A286</td>
+            <td>Face-Centered Cubic (FCC) - Gamma</td>
+            <td>FCC</td>
+            <td>44.6, 51.7, 76.5, 92.9</td>
+          </tr>
+          <tr>
+            <td>A286</td>
+            <td>Ordered FCC (Ni?Nb)</td>
+            <td>FCC</td>
+            <td>28.4, 38.2, 44.5, 51.6</td>
+          </tr>
+          <tr>
+            <td>A286</td>
+            <td>Ni3Al Phase</td>
+            <td>FCC</td>
+            <td>33.4, 36.8, 47.5, 58.4</td>
+          </tr>
+          <tr>
+            <td>A286</td>
+            <td>Ni3Nb Phase</td>
+            <td>FCC</td>
+            <td>22.5, 33.3, 43.8, 48.6</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-                      <!-- Aluminum Oxide -->
-                      <tr>
-                          <td  >Aluminum Oxide (Al2O3)</td>
-                          <td>Alpha-Al?O? (Corundum)</td>
-                          <td>Hexagonal</td>
-                          <td>25.8, 35.1, 43.3, 57.3, 66.3</td>
-                      </tr>
-                      <tr>
-                        <td  >Aluminum Oxide (Al2O3)</td>
-                          <td>Beta-Al2O3</td>
-                          <td>Orthorhombic</td>
-                          <td>25.7, 31.7, 37.6, 45.5, 59.9</td>
-                      </tr>
-                      <tr>
-                        <td  >Aluminum Oxide (Al2O3)</td>
-                          <td>Gamma-Al2O3</td>
-                          <td>Cubic</td>
-                          <td>23.0, 29.7, 34.2, 45.2</td>
-                      </tr>
-                      <tr>
-                        <td  >Aluminum Oxide (Al2O3)</td>
-                          <td>Delta-Al2O3</td>
-                          <td>Cubic</td>
-                          <td>24.4, 34.4, 41.3, 47.6</td>
-                      </tr>
-                      <tr>
-                        <td  >Aluminum Oxide (Al2O3)</td>
-                          <td>Theta-Al2O3</td>
-                          <td>Triclinic</td>
-                          <td>26.7, 35.5, 41.0, 48.5</td>
-                      </tr>
+    <script>
+      const matchResult = document.getElementById("matchResult");
 
-                      <tr>
-                          <td  >Titanium Oxide (TiO2)</td>
-                          <td>Rutile (TiO?)</td>
-                          <td>Tetragonal</td>
-                          <td>27.4, 36.0, 41.2, 54.3, 56.6</td>
-                      </tr>
-                      <tr>
-                        <td  >Titanium Oxide (TiO2)</td>
-                          <td>Anatase (TiO2)</td>
-                          <td>Tetragonal</td>
-                          <td>25.3, 37.8, 48.0, 54.6, 62.7</td>
-                      </tr>
-                      <tr>
-                        <td  >Titanium Oxide (TiO2)</td>
-                          <td>Brookite (TiO2)</td>
-                          <td>Orthorhombic</td>
-                          <td>24.4, 28.4, 32.8, 38.2, 49.5</td>
-                      </tr>
-
-                      <tr>
-                          <td  >Steel 1020</td>
-                          <td>Alpha-Fe (Ferrite)</td>
-                          <td>BCC</td>
-                          <td>44.6, 65.0, 82.1</td>
-                      </tr>
-                      <tr>
-                        <td  >Steel 1020</td>
-                          <td>Gamma-Fe (Austenite)</td>
-                          <td>FCC</td>
-                          <td>43.2, 50.5, 74.9</td>
-                      </tr>
-                      <tr>
-                        <td  >Steel 1020</td>
-                          <td>Fe3C (Cementite)</td>
-                          <td>Orthorhombic</td>
-                          <td>28.7, 37.8, 41.5</td>
-                      </tr>
-
-                      <!-- Stainless Steel 410 -->
-                      <tr>
-                          <td  >Stainless Steel 410</td>
-                          <td>Alpha-Fe (Martensite)</td>
-                          <td>BCC</td>
-                          <td>43.7, 63.5, 82.3</td>
-                      </tr>
-
-                      <tr>
-                        <td  >Stainless Steel 410</td>
-                          <td>Ferrite (Fe?C)</td>
-                          <td>BCC</td>
-                          <td>30.1, 50.4, 63.3</td>
-                      </tr>
-                      <tr>
-                        <td  >Stainless Steel 410</td>
-                          <td>Gamma-Fe (Austenite)</td>
-                          <td>FCC</td>
-                          <td>44.6, 64.9, 84.2</td>
-                      </tr>
-
-                      <!-- M152 -->
-                      <tr>
-                          <td  >M152</td>
-                          <td>Alpha-Fe</td>
-                          <td>BCC</td>
-                          <td>44.6, 65.2, 83.1</td>
-                      </tr>
-                      <tr>
-                          <td  >M152</td>
-                          <td>Gamma-Fe</td>
-                          <td>FCC</td>
-                          <td>43.3, 50.2, 75.3</td>
-                      </tr>
-                      <tr>
-                          <td  >M152</td>
-                          <td>Fe3C (Cementite)</td>
-                          <td>Orthorhombic</td>
-                          <td>28.6, 37.9, 41.4</td>
-                      </tr>
-
-
-                      <!-- A286 -->
-                      <tr>
-                          <td  >A286</td>
-                          <td>Face-Centered Cubic (FCC) - Gamma</td>
-                          <td>FCC</td>
-                          <td>44.6, 51.7, 76.5, 92.9</td>
-                      </tr>
-                      <tr>
-                        <td  >A286</td>
-                          <td>Ordered FCC (Ni?Nb)</td>
-                          <td>FCC</td>
-                          <td>28.4, 38.2, 44.5, 51.6</td>
-                      </tr>
-                      <tr>
-                        <td  >A286</td>
-                          <td>Ni3Al Phase</td>
-                          <td>FCC</td>
-                          <td>33.4, 36.8, 47.5, 58.4</td>
-                      </tr>
-                      <tr>
-                        <td>A286</td>
-                          <td>Ni3Nb Phase</td>
-                          <td>FCC</td>
-                          <td>22.5, 33.3, 43.8, 48.6</td>
-                      </tr>
-      
-      </tbody>
-  </table>
-
-  </div>
-  
-  
-  <script>
-    const matchResult = document.getElementById("matchResult")
-
-    function updateChart() {
+      function updateChart() {
         const ctx = document.getElementById("xrdChart").getContext("2d");
         const tableRows = document.querySelectorAll("#dataTable tr");
-        let peaks = [], intensities = [];
+        let peaks = [],
+          intensities = [];
 
         // Iterate over each row and extract the necessary data
         tableRows.forEach((row, rowIndex) => {
-            const cells = row.querySelectorAll("td input"); // Get the input elements
-            const header = row.querySelector("th").textContent; // Get the header (2θ, Intensity, or hkl)
+          const cells = row.querySelectorAll("td input"); // Get the input elements
+          const header = row.querySelector("th").textContent; // Get the header (2θ, Intensity, or hkl)
 
-            if (header === "2θ (Degrees)") {
-                // Extract 2θ (Degrees) values
-                cells.forEach((cell, index) => {
-                    peaks.push(parseFloat(cell.value));
-                });
-            } else if (header === "Intensity") {
-                // Extract intensity values
-                cells.forEach((cell, index) => {
-                    intensities.push(parseFloat(cell.value));
-                });
-            }
+          if (header === "2θ (Degrees)") {
+            // Extract 2θ (Degrees) values
+            cells.forEach((cell, index) => {
+              peaks.push(parseFloat(cell.value));
+            });
+          } else if (header === "Intensity") {
+            // Extract intensity values
+            cells.forEach((cell, index) => {
+              intensities.push(parseFloat(cell.value));
+            });
+          }
         });
 
-        const peakData = peaks.map((theta, index) => {
+        const peakData = peaks
+          .map((theta, index) => {
             const width = 0.5; // half width (total width = 5 degrees)
             const leftX = theta - width;
             const rightX = theta + width;
 
             // Return data for the peak with its width at zero intensity, but only one point at the peak intensity
             return [
-                { x: leftX, y: 0 }, // left side at zero intensity
-                { x: theta, y: intensities[index] }, // peak at maximum intensity
-                { x: rightX, y: 0 } // right side at zero intensity
+              { x: leftX, y: 0 }, // left side at zero intensity
+              { x: theta, y: intensities[index] }, // peak at maximum intensity
+              { x: rightX, y: 0 }, // right side at zero intensity
             ];
-        }).flat().sort((a, b) => a.x - b.x); // Sort data points by x (theta)
+          })
+          .flat()
+          .sort((a, b) => a.x - b.x); // Sort data points by x (theta)
 
         // Destroy the previous chart if it exists
         if (window.myChart) {
-            window.myChart.destroy();
+          window.myChart.destroy();
         }
 
         // Create a new chart
         window.myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'XRD Intensity',
-                    data: peakData,
-                    borderColor: "rgba(75, 192, 192, 1)", // Line color
-                    backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
-                    fill: true,
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    showLine: true,
-                    tension: 0.05, // Smooth lines
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                if (context.raw.y === 0) return '';
-                                const index = peaks.indexOf(context.raw.x);
-                                return `2θ: ${context.raw.x}°, Intensity: ${context.raw.y}, hkl: ${hklLabels[index]}`;
-                            }
-                        }
-                    }
+          type: "line",
+          data: {
+            datasets: [
+              {
+                label: "XRD Intensity",
+                data: peakData,
+                borderColor: "rgba(75, 192, 192, 1)", // Line color
+                backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
+                fill: true,
+                borderWidth: 2,
+                pointRadius: 0,
+                showLine: true,
+                tension: 0.05, // Smooth lines
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    if (context.raw.y === 0) return "";
+                    const index = peaks.indexOf(context.raw.x);
+                    return `2θ: ${context.raw.x}°, Intensity: ${context.raw.y}, hkl: ${hklLabels[index]}`;
+                  },
                 },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: '2θ (Degrees)'
-                        },
-                        type: 'linear'
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Intensity (Arbitrary Units)'
-                        }
-                    }
-                }
-            }
+              },
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "2θ (Degrees)",
+                },
+                type: "linear",
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: "Intensity (Arbitrary Units)",
+                },
+              },
+            },
+          },
         });
 
         analyzeXRD();
         const matchingRow = findMatchingRow(peaks);
-        
-          if (matchingRow) {
-            matchResult.textContent = `Matching row found: ${matchingRow.innerText}`;
-          } else {
-              matchResult.textContent = "No matching row found.";
-          }
-    }
 
-document.addEventListener("DOMContentLoaded", updateChart);
-
-const lambda = 1.5406; // Wavelength for Cu Kα radiation in Å
-
-        function getMillerIndices(ratio) {
-            const ratioMap = {
-                1: [1, 0, 0],
-                2: [1, 1, 0],
-                3: [1, 1, 1],
-                4: [2, 0, 0],
-                5: [2, 1, 0],
-                6: [2, 1, 1],
-                8: [2, 2, 0],
-                9: [3, 0, 0],
-                10: [3, 1, 0],
-                11: [3, 1, 1],
-                12: [2, 2, 2],
-                13: [3, 2, 0],
-                14: [3 ,2, 1],
-                16: [4, 0, 0],
-                17: [4, 1, 0],
-                18: [3, 3, 0],
-                19: [3, 3, 1],
-                20: [4, 2, 0]
-            };
-            return ratioMap[ratio] || [0, 0, 0];
+        if (matchingRow) {
+          matchResult.textContent = `Matching row found: ${matchingRow.innerText}`;
+        } else {
+          matchResult.textContent = "No matching row found.";
         }
+      }
 
-        function calculateMillerIndices(ratio) {
-            for (let h = Math.floor(Math.sqrt(ratio)); h >= 0; h--) {
-                for (let k = h; k >= 0; k--) { // Ensure k <= h to avoid duplicates
-                    let lSquared = ratio - (h ** 2 + k ** 2);
-                    let l = Math.floor(Math.sqrt(lSquared));
+      document.addEventListener("DOMContentLoaded", updateChart);
 
-                    if (l >= 0 && l ** 2 === lSquared) { // Ensure it's a perfect square
-                        return [h, k, l];
-                    }
-                }
+      const lambda = 1.5406; // Wavelength for Cu Kα radiation in Å
+
+      function getMillerIndices(ratio) {
+        const ratioMap = {
+          1: [1, 0, 0],
+          2: [1, 1, 0],
+          3: [1, 1, 1],
+          4: [2, 0, 0],
+          5: [2, 1, 0],
+          6: [2, 1, 1],
+          8: [2, 2, 0],
+          9: [3, 0, 0],
+          10: [3, 1, 0],
+          11: [3, 1, 1],
+          12: [2, 2, 2],
+          13: [3, 2, 0],
+          14: [3, 2, 1],
+          16: [4, 0, 0],
+          17: [4, 1, 0],
+          18: [3, 3, 0],
+          19: [3, 3, 1],
+          20: [4, 2, 0],
+        };
+        return ratioMap[ratio] || [0, 0, 0];
+      }
+
+      function calculateMillerIndices(ratio) {
+        for (let h = Math.floor(Math.sqrt(ratio)); h >= 0; h--) {
+          for (let k = h; k >= 0; k--) {
+            // Ensure k <= h to avoid duplicates
+            let lSquared = ratio - (h ** 2 + k ** 2);
+            let l = Math.floor(Math.sqrt(lSquared));
+
+            if (l >= 0 && l ** 2 === lSquared) {
+              // Ensure it's a perfect square
+              return [h, k, l];
             }
-            return [0, 0, 0]; // Return (0,0,0) if no valid solution is found
+          }
         }
+        return [0, 0, 0]; // Return (0,0,0) if no valid solution is found
+      }
 
-        function structureFactors(hkl) {
-            let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
-            let hklSum = hkl[0] + hkl[1] + hkl[2];
-            let allEven = hkl[0] % 2 === 0 && hkl[1] % 2 === 0 && hkl[2] % 2 === 0;
-            let allOdd = hkl[0] % 2 !== 0 && hkl[1] % 2 !== 0 && hkl[2] % 2 !== 0;
-            
-            if (sumHkl2 === 0) return; // Skip (0,0,0) which is invalid
-            return {
-                FCC: (allEven || allOdd) ? '✔' : '✘',
-                BCC: (hklSum % 2 === 0) ? '✔' : '✘',
-                SC: sumHkl2 > 0 ? '✔' : '✘', // Simple cubic allows any (h,k,l) > 0
-                HCP: (sumHkl2 === 3 || sumHkl2 === 4 || sumHkl2 === 8) ? '✔' : '✘' // Common for HCP
-            };
-        }
+      function structureFactors(hkl) {
+        let sumHkl2 = hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2;
+        let hklSum = hkl[0] + hkl[1] + hkl[2];
+        let allEven = hkl[0] % 2 === 0 && hkl[1] % 2 === 0 && hkl[2] % 2 === 0;
+        let allOdd = hkl[0] % 2 !== 0 && hkl[1] % 2 !== 0 && hkl[2] % 2 !== 0;
 
-        function normalizeValues(values) {
-            if (values.length === 0) return [];
-            let baseValue = values[0];
-            return values.map(v => v / baseValue);
-        }
+        if (sumHkl2 === 0) return; // Skip (0,0,0) which is invalid
+        return {
+          FCC: allEven || allOdd ? "✔" : "✘",
+          BCC: hklSum % 2 === 0 ? "✔" : "✘",
+          SC: sumHkl2 > 0 ? "✔" : "✘", // Simple cubic allows any (h,k,l) > 0
+          HCP: sumHkl2 === 3 || sumHkl2 === 4 || sumHkl2 === 8 ? "✔" : "✘", // Common for HCP
+        };
+      }
 
-        function analyzeXRD() {
-          //  let input = document.getElementById("anglesInput").value;
-         //   let angles = input.split(",").map(a => parseFloat(a.trim()));
+      function normalizeValues(values) {
+        if (values.length === 0) return [];
+        let baseValue = values[0];
+        return values.map((v) => v / baseValue);
+      }
 
-            let tableRow = document.querySelector("#dataTable tr:first-child"); // Select the first row
-            let angles = Array.from(tableRow.querySelectorAll("td input")) // Get all input fields in the row
-                .map(input => parseFloat(input.value)) // Convert values to numbers
-                .filter(value => !isNaN(value) && value !== 0); // Remove NaN, empty, and zero values
+      function analyzeXRD() {
+        //  let input = document.getElementById("anglesInput").value;
+        //   let angles = input.split(",").map(a => parseFloat(a.trim()));
 
-            let resultsTable = document.querySelector("#resultsTable tbody");
-            resultsTable.innerHTML = "";
-            
-            let dValues = angles.map(theta => lambda / (2 * Math.sin((theta / 2) * Math.PI / 180)));
-            let inverseD2 = dValues.map(d => 1 / (d * d));
-            let normalizedValues = normalizeValues(inverseD2);
-            let multiplier = findMultiplier(normalizedValues[1]);
-            let ratios = normalizedValues.map(v => Math.round(v * multiplier));
-            
-            ratios.forEach((ratio, index) => {
-               // let hkl = getMillerIndices(ratio);
-                let hkl =calculateMillerIndices(ratio)
-                let a = dValues[index] * Math.sqrt(hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2);
-                //let structure = structureFactors(hkl);
-                let structure = structureFactors(hkl) || { FCC: '✘', BCC: '✘', SC: '✘', HCP: '✘' };
+        let tableRow = document.querySelector("#dataTable tr:first-child"); // Select the first row
+        let angles = Array.from(tableRow.querySelectorAll("td input")) // Get all input fields in the row
+          .map((input) => parseFloat(input.value)) // Convert values to numbers
+          .filter((value) => !isNaN(value) && value !== 0); // Remove NaN, empty, and zero values
 
-                
-                let row = `<tr>
+        let resultsTable = document.querySelector("#resultsTable tbody");
+        resultsTable.innerHTML = "";
+
+        let dValues = angles.map(
+          (theta) => lambda / (2 * Math.sin(((theta / 2) * Math.PI) / 180))
+        );
+        let inverseD2 = dValues.map((d) => 1 / (d * d));
+        let normalizedValues = normalizeValues(inverseD2);
+        let multiplier = findMultiplier(normalizedValues[1]);
+        let ratios = normalizedValues.map((v) => Math.round(v * multiplier));
+
+        ratios.forEach((ratio, index) => {
+          // let hkl = getMillerIndices(ratio);
+          let hkl = calculateMillerIndices(ratio);
+          let a =
+            dValues[index] * Math.sqrt(hkl[0] ** 2 + hkl[1] ** 2 + hkl[2] ** 2);
+          //let structure = structureFactors(hkl);
+          let structure = structureFactors(hkl) || {
+            FCC: "✘",
+            BCC: "✘",
+            SC: "✘",
+            HCP: "✘",
+          };
+
+          let row = `<tr>
                     <td>${angles[index]}</td>
                     <td>${dValues[index].toFixed(4)}</td>
                     <td>${inverseD2[index].toFixed(6)}</td>
@@ -1129,57 +1109,57 @@ const lambda = 1.5406; // Wavelength for Cu Kα radiation in Å
                     <td>${structure.SC}</td>
                     <td>${structure.HCP}</td>
                 </tr>`;
-                
-                resultsTable.innerHTML += row;
-            });
-        }
 
-        function findMultiplier(x) {
-            const decimal = 2;
-            let n = 1;
-            let factor = Math.pow(10, decimal);
-            while (true) {
-                let result = n * x;
-                if (Math.abs(result - Math.round(result)) < 1 / factor) {
-                    break;
-                }
-                n++;
+          resultsTable.innerHTML += row;
+        });
+      }
+
+      function findMultiplier(x) {
+        const decimal = 2;
+        let n = 1;
+        let factor = Math.pow(10, decimal);
+        while (true) {
+          let result = n * x;
+          if (Math.abs(result - Math.round(result)) < 1 / factor) {
+            break;
+          }
+          n++;
+        }
+        return n;
+      }
+
+      function findMatchingRow(targetValues) {
+        const table = document.getElementById("xrdDatabaseTable");
+        if (!table) return null;
+
+        const rows = table.querySelectorAll("tbody tr");
+        const tolerance = 0.1;
+
+        for (let row of rows) {
+          const xrdCell = row.cells[3]; // The 4th column contains XRD 2Theta Angles
+          if (!xrdCell) continue;
+
+          const rowValues = xrdCell.innerText
+            .split(",")
+            .map((v) => parseFloat(v.trim()))
+            .filter((v) => !isNaN(v));
+          let matchCount = 0;
+
+          for (let target of targetValues) {
+            if (target === null) continue;
+
+            if (rowValues.some((val) => Math.abs(val - target) <= tolerance)) {
+              matchCount++;
             }
-            return n;
+          }
+
+          if (matchCount >= 3) {
+            return row; // Return the first matching row
+          }
         }
 
-
-        function findMatchingRow(targetValues) {
-            const table = document.getElementById("xrdDatabaseTable");
-            if (!table) return null;
-
-            const rows = table.querySelectorAll("tbody tr");
-            const tolerance = 0.1;
-
-            for (let row of rows) {
-                const xrdCell = row.cells[3]; // The 4th column contains XRD 2Theta Angles
-                if (!xrdCell) continue;
-
-                const rowValues = xrdCell.innerText.split(",").map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
-                let matchCount = 0;
-
-                for (let target of targetValues) {
-                    if (target === null) continue;
-
-                    if (rowValues.some(val => Math.abs(val - target) <= tolerance)) {
-                        matchCount++;
-                    }
-                }
-
-                if (matchCount >= 3) {
-                    return row; // Return the first matching row
-                }
-            }
-
-            return null; // No matching row found
-        }
-
-  
-  </script>
-</body>
+        return null; // No matching row found
+      }
+    </script>
+  </body>
 </html>
