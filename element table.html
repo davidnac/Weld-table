@@ -369,13 +369,14 @@
         font-size: 21px;
         font-weight: bold;
         color: #1f497d;
+        color: black;
         text-transform: uppercase;
       }
 
       .icons {
         display: flex;
         flex-direction: row;
-        gap: 15px;
+        gap: 8px;
       }
 
       .navbar .icon {
@@ -428,8 +429,8 @@
         border: none;
         cursor: pointer;
         background-color: transparent !important;
-        fill: #1f497d;
-        transform: scale(1.2);
+        fill: black;
+        transform: scale(1.1);
         margin: 4px;
         margin-bottom: 0;
         margin-right: 1px;
@@ -471,15 +472,10 @@
         <div class="logo">Materials Chemical Composition</div>
       </div>
 
-      <input
-        class="small"
-        type="number"
-        id="sensitivity"
-        placeholder="Sensitivity, %"
-        min="0"
-        max="100"
-        value="15"
-      />
+      <div>
+        <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15" oninput="filterTable()"/>
+        <span class="error-message"></span>
+      </div>
 
       <div class="icons">
         <div class="ThemeBtn-container">
@@ -2421,8 +2417,8 @@
 
           filters.forEach((filter) => {
             let cell = filter.closest("td"); // Get the closest <td> element
-            let row = cell.parentElement; // Get the row (<tr>) containing the <td>
-            let colIndex = Array.from(row.children).indexOf(cell); // Get the column index
+            let filterRow = cell.parentElement; // Get the row (<tr>) containing the <td>
+            let colIndex = Array.from(filterRow.children).indexOf(cell); // Get the column index
 
             //  let colIndex = filter.getAttribute("data-col");
             let filterValue = filter.value.trim();
@@ -2448,7 +2444,11 @@
               } else {
                 cellValue = parseFloat(cellText); // Fallback in case of malformed data
               }
-            } else {
+            } else if(cellText.toLowerCase() === "bal." || cellText.toLowerCase() === "balance"){
+              console.log("in balance")
+              cellValue = calculateBalance(row, colIndex); // Compute balance 
+              console.log(cellValue)
+            }else{
               cellValue = parseFloat(cellText);
             }
 
@@ -2552,16 +2552,15 @@
         rows.forEach((row) => tbody.appendChild(row));
       }
 
+
+
       // Parse cell value to handle ranges and other types of values
       function parseCellValue(value, row = null, colIndex = null) {
         value = value.trim();
 
         if (value === "-") return 0; // "-" is treated as zero
 
-        if (
-          value.toLowerCase() === "bal." ||
-          value.toLowerCase() === "balance"
-        ) {
+        if (value.toLowerCase() === "bal." || value.toLowerCase() === "balance") {
           return calculateBalance(row, colIndex); // Compute balance dynamically
         }
 
@@ -2582,6 +2581,8 @@
         return parseFloat(value) || 0; // Convert to number, default to 0
       }
 
+
+
       // Calculate balance from row by summing other cell values
       function calculateBalance(row, colIndex) {
         let total = 0;
@@ -2595,6 +2596,7 @@
         }
         return 100 - total; // Balance is 100 - SUM(other values)
       }
+
 
       //clear all inputs
       function clearInputs() {
