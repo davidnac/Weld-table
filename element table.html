@@ -584,75 +584,74 @@
       <table id="data-table">
         <thead>
           <tr>
-            <th onclick="sortTable(0)">
+            <th onclick="sortTable(this)">
               Material <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(1)">
+            <th onclick="sortTable(this)">
               Nickel (Ni) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(2)">
+            <th onclick="sortTable(this)">
               Cobalt (Co) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(3)">
+            <th onclick="sortTable(this)">
               Chromium (Cr) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(4)">
+            <th onclick="sortTable(this)">
               Molybdenum (Mo) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(5)">
+            <th onclick="sortTable(this)">
               Niobium (Nb) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(6)">
+            <th onclick="sortTable(this)">
               Titanium (Ti) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(7)">
+            <th onclick="sortTable(this)">
               Aluminum (Al) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(8)">
+            <th onclick="sortTable(this)">
               Tungsten (W) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(9)">
+            <th onclick="sortTable(this)">
               Iron (Fe) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(10)">
+            <th onclick="sortTable(this)">
               Carbon (C) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(11)">
+            <th onclick="sortTable(this)">
               Manganese (Mn) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(12)">
+            <th onclick="sortTable(this)">
               Silicon (Si) % <span class="sort-icon">⇅</span>
             </th>
 
-            <th onclick="sortTable(13)">
+            <th onclick="sortTable(this)">
               Tin (Sn) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(14)">
+            <th onclick="sortTable(this)">
               Vanadium (V) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(15)">
+            <th onclick="sortTable(this)">
               Zirconium (Zr) % <span class="sort-icon">⇅</span>
             </th>
-
-            <th onclick="sortTable(16)">
+            <th onclick="sortTable(this)">
               Boron (B) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(17)">
+            <th onclick="sortTable(this)">
               Silver (Ag) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(18)">
+            <th onclick="sortTable(this)">
               Copper (Cu) %<span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(19)">
+            <th onclick="sortTable(this)">
               Zinc (Zn) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(20)">
+            <th onclick="sortTable(this)">
               Magnesium (Mg) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(21)">
+            <th onclick="sortTable(this)">
               Cadmium (Cd) % <span class="sort-icon">⇅</span>
             </th>
-            <th onclick="sortTable(22)">
+            <th onclick="sortTable(this)">
               Nitrogen (N) % <span class="sort-icon">⇅</span>
             </th>
           </tr>
@@ -2523,10 +2522,14 @@
       let sortDirections = {}; // Store sort directions for each column
 
       //sort columns
-      function sortTable(colIndex) {
+      function sortTable(cell) {
+
         let table = document.getElementById("data-table");
         let tbody = table.querySelector("tbody"); // Ensure tbody is selected
         let rows = Array.from(tbody.rows); // Get only tbody rows (skip the header)
+
+        let parentRow = cell.parentElement; // Get the row (<tr>) containing the <td>
+        let colIndex = Array.from(parentRow.children).indexOf(cell); // Get the column index
 
         // Default to descending order if first click, otherwise toggle
         if (sortDirections[colIndex] === undefined) {

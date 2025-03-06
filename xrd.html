@@ -131,6 +131,7 @@
       }
       p {
         white-space: pre-wrap;
+        margin-bottom: 35px;;
       }
       .divider {
         border-top: 1px solid #ccc; /* Light gray line */
@@ -308,6 +309,8 @@
         <h2>Analysis</h2>
         <div class="divider"></div>
 
+        <p id="calcError"></p>
+
         <table id="resultsTable">
           <thead>
             <tr>
@@ -329,7 +332,7 @@
 
         <h2>Results</h2>
         <div class="divider"></div>
-        <p id="matchResult">Detected phase is CRES 304 Austenite phase</p>
+        <p id="matchResult"></p>
       </div>
     </div>
 
@@ -485,14 +488,6 @@
             <td>Gamma-Fe (Austenite)</td>
             <td>FCC</td>
             <td>44.6, 64.9, 84.2</td>
-          </tr>
-
-          <!-- Aluminum 2024 -->
-          <tr>
-            <td>Aluminum 2024</td>
-            <td>Alpha-Al (Al2O3)</td>
-            <td>FCC</td>
-            <td>25.72,35.28,37.938,43.48,57.64</td>
           </tr>
 
           <!-- Hastelloy X -->
@@ -757,7 +752,7 @@
           <!-- Aluminum Oxide -->
           <tr>
             <td>Aluminum Oxide (Al2O3)</td>
-            <td>Alpha-Al?O? (Corundum)</td>
+            <td>Alpha-Al2O3 (Corundum)</td>
             <td>Hexagonal</td>
             <td>25.8, 35.1, 43.3, 57.3, 66.3</td>
           </tr>
@@ -788,7 +783,7 @@
 
           <tr>
             <td>Titanium Oxide (TiO2)</td>
-            <td>Rutile (TiO?)</td>
+            <td>Rutile (TiO2)</td>
             <td>Tetragonal</td>
             <td>27.4, 36.0, 41.2, 54.3, 56.6</td>
           </tr>
@@ -895,7 +890,14 @@
     </div>
 
     <script>
+
+      const multiplierThreshold = 30;
+
+      
+      const resultsTableWithHead = document.getElementById("resultsTable");
       const matchResult = document.getElementById("matchResult");
+      const calcError = document.getElementById("calcError");
+
 
       function updateChart() {
         const ctx = document.getElementById("xrdChart").getContext("2d");
@@ -991,7 +993,7 @@
           },
         });
 
-        analyzeXRD();
+        
         const matchingRow = findMatchingRow(peaks);
 
         if (matchingRow) {
@@ -999,6 +1001,8 @@
         } else {
           matchResult.textContent = "No match found.";
         }
+
+        analyzeXRD();
       }
 
       document.addEventListener("DOMContentLoaded", updateChart);
@@ -1084,6 +1088,16 @@
         let inverseD2 = dValues.map((d) => 1 / (d * d));
         let normalizedValues = normalizeValues(inverseD2);
         let multiplier = findMultiplier(normalizedValues[1]);
+
+        resultsTableWithHead.style.display = 'none';
+
+        if(multiplier > multiplierThreshold){
+              calcError.textContent = "Error calculating hkl, multiplier too large. probably not a cubic structure.";
+           return;
+        }
+
+        resultsTableWithHead.style.display = 'block';
+
         let ratios = normalizedValues.map((v) => Math.round(v * multiplier));
 
         ratios.forEach((ratio, index) => {
