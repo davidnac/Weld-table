@@ -23,20 +23,7 @@
         margin-bottom: 25px;
         margin-top: 30px;
       }
-      input {
-        padding: 6px 0;
-        width: 90%;
-        font-size: 14px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        height: 15px;
-        text-align: center;
-      }
-      input:focus {
-        border: solid 2px #98d8ef;
-        outline: none;
-      }
-
+      
       .controls {
         display: flex;
         justify-content: space-between; /* Centers horizontally */
@@ -83,17 +70,37 @@
       table th:not(:last-child),
       table td:not(:last-child) {
         text-align: center;
+        vertical-align: top;
       }
 
+      thead{
+        position: sticky;
+        top: 0; /* Make header sticky */
+        z-index: 3; /* Ensure header stays above table content - was 1 i changed to 0 */
+      }
+
+      thead input{
+        border: none;
+        border-radius: none;
+      }
+      input {
+        padding: 6px 0;
+        width: 90%;
+        font-size: 14px;
+        height: 15px;
+        text-align: center;
+      }
+      input:focus {
+        border: solid 2px #98d8ef;
+        outline: none;
+      }
       th {
         background-color: #98d8ef;
         color: white;
         align-items: center;
         text-align: center;
         cursor: pointer;
-        position: sticky;
-        top: 0; /* Make header sticky */
-        z-index: 3; /* Ensure header stays above table content - was 1 i changed to 0 */
+        
       }
       tr:nth-child(even) {
         background-color: #f9f9f9;
@@ -657,101 +664,101 @@
           </tr>
 
           <tr>
-            <td class="maxWide">
+            <th class="maxWide">
               <input
                 type="text"
                 id="materialSearch"
                 placeholder="Search material..."
               />
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
-            <td>
+            </th>
+            <th>
               <input type="text" class="filter" oninput="validateInput(this)" />
               <span class="error-message"></span>
-            </td>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -2352,7 +2359,7 @@
 
     <script>
       ///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
-
+/*
       // Add event listener for clicks on the inputs
       document.querySelectorAll(".filter").forEach((input) => {
         input.addEventListener("click", function () {
@@ -2381,7 +2388,7 @@
         }
 
         return null; // Return null if no header is found
-      }
+      }*/
 
       ///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
 
@@ -2415,7 +2422,7 @@
           let showRow = true;
 
           filters.forEach((filter) => {
-            let cell = filter.closest("td"); // Get the closest <td> element
+            let cell = filter.closest("th"); // Get the closest <td> element
             let filterRow = cell.parentElement; // Get the row (<tr>) containing the <td>
             let colIndex = Array.from(filterRow.children).indexOf(cell); // Get the column index
 
@@ -2863,7 +2870,7 @@
 
       //validation input
       function validateInput(input) {
-        const cell = input.closest("td"); // Get the closest <td> element
+        const cell = input.closest("th"); // Get the closest <td> element
         const row = cell.parentElement; // Get the row (<tr>) containing the <td>
         const columnIndex = Array.from(row.children).indexOf(cell); // Get the column index
 
@@ -3808,70 +3815,81 @@
             "none";
         }
       };
-
       function hideUnselectedColumns(tableId) {
-        const table = document.getElementById(tableId);
-        if (!table) return;
+  const table = document.getElementById(tableId);
+  if (!table) return;
 
-        const thead = table.querySelector("thead");
-        const tbody = table.querySelector("tbody");
+  const thead = table.querySelector("thead");
+  const tbody = table.querySelector("tbody");
 
-        if (!thead || !tbody) return;
+  if (!thead || !tbody) return;
 
-        const headers = thead.querySelectorAll("th");
-        const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
+  const headers = thead.querySelectorAll("th");
+  const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
 
-        headers.forEach((th, index) => {
-          // Extract text from <th>
-          const text = th.textContent.trim();
+  // Select the second row of the <thead>
+  const secondRow = thead.rows[1];
 
-          // Extract element symbol from header text
-          const match = text.match(/\((\w+)\)/);
-          if (match) {
-            const elementSymbol = match[1]; // Extracted symbol
-            if (!selectedElements.has(elementSymbol)) {
-              // Hide the <th>
-              th.style.display = "none";
+  headers.forEach((th, index) => {
+    // Extract text from <th>
+    const text = th.textContent.trim();
 
-              // Hide corresponding <td> in <thead> (if present)
-              if (theadCells[index]) {
-                theadCells[index].style.display = "none";
-              }
+    // Extract element symbol from header text
+    const match = text.match(/\((\w+)\)/);
+    if (match) {
+      const elementSymbol = match[1]; // Extracted symbol
+      if (!selectedElements.has(elementSymbol)) {
+        // Hide the <th>
+        th.style.display = "none";
 
-              // Hide corresponding column cells in tbody
-              tbody.querySelectorAll("tr").forEach((row) => {
-                const cells = row.querySelectorAll("td");
-                if (cells[index]) {
-                  cells[index].style.display = "none";
+        // Hide corresponding <td> in <thead> (if present)
+        if (theadCells[index]) {
+          theadCells[index].style.display = "none";
+        }
 
-                  // Hide any inputs or elements inside the <td>
-                  cells[index].querySelectorAll("*").forEach((child) => {
-                    child.style.display = "none";
-                  });
-                }
-              });
-            } else {
-              // If the element is selected, make the column visible
-              th.style.display = "";
-              if (theadCells[index]) {
-                theadCells[index].style.display = "";
-              }
-              tbody.querySelectorAll("tr").forEach((row) => {
-                const cells = row.querySelectorAll("td");
-                if (cells[index]) {
-                  cells[index].style.display = "";
+        // Hide corresponding column cells in tbody
+        tbody.querySelectorAll("tr").forEach((row) => {
+          const cells = row.querySelectorAll("td");
+          if (cells[index]) {
+            cells[index].style.display = "none";
 
-                  // Show any inputs or elements inside the <td>
-                  cells[index].querySelectorAll("*").forEach((child) => {
-                    child.style.display = "";
-                  });
-                }
-              });
-            }
+            // Hide any inputs or elements inside the <td>
+            cells[index].querySelectorAll("*").forEach((child) => {
+              child.style.display = "none";
+            });
           }
         });
-      }
 
+        // Also hide the cell in the second row of <thead>
+        if (secondRow && secondRow.cells[index]) {
+          secondRow.cells[index].style.display = "none";
+        }
+      } else {
+        // If the element is selected, make the column visible
+        th.style.display = "";
+        if (theadCells[index]) {
+          theadCells[index].style.display = "";
+        }
+        tbody.querySelectorAll("tr").forEach((row) => {
+          const cells = row.querySelectorAll("td");
+          if (cells[index]) {
+            cells[index].style.display = "";
+
+            // Show any inputs or elements inside the <td>
+            cells[index].querySelectorAll("*").forEach((child) => {
+              child.style.display = "";
+            });
+          }
+        });
+
+        // Make the cell in the second row of <thead> visible
+        if (secondRow && secondRow.cells[index]) {
+          secondRow.cells[index].style.display = "";
+        }
+      }
+    }
+  });
+}
       let spectralChart = null;
       const ctx = document.getElementById("myChart").getContext("2d");
 
