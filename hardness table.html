@@ -2999,52 +2999,90 @@
       }
 
       function filterTable(input) {
-    let colIndex = Array.from(input.parentElement.parentElement.children).indexOf(input.parentElement);
-    let searchValue = input.value;
-    let table = document.getElementById("dataTable2");
-    let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-    
-    if (searchValue.trim() === "") {
-        for (let row of rows) {
-            row.style.display = "";
+        let colIndex = Array.from(input.parentElement.parentElement.children).indexOf(input.parentElement);
+        let searchValue = input.value;
+        let table = document.getElementById("dataTable2");
+        let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        
+        if (searchValue.trim() === "") {
+            for (let row of rows) {
+                row.style.display = "";
+            }
+            return;
         }
-        return;
-    }
-    
-    let exactMatch = false;
-    let closestBelow = null, closestAbove = null;
-    searchValue = parseFloat(searchValue);
+        
+        let exactMatch = false;
+        let closestBelow = null, closestAbove = null;
+        searchValue = parseFloat(searchValue);
 
-    for (let row of rows) {
-        let cells = row.getElementsByTagName("td");
-        if (colIndex >= cells.length) continue;
-        let cell = cells[colIndex];
-        let cellValue = parseFloat(cell.textContent.trim());
+        for (let row of rows) {
+            let cells = row.getElementsByTagName("td");
+            if (colIndex >= cells.length) continue;
+            let cell = cells[colIndex];
+            let cellValue = parseFloat(cell.textContent.trim());
 
-        if (!isNaN(searchValue)) {
-            if (cellValue === searchValue) {
-                exactMatch = true;
-            } else if (cellValue < searchValue && (!closestBelow || cellValue > closestBelow)) {
-                closestBelow = cellValue;
-            } else if (cellValue > searchValue && (!closestAbove || cellValue < closestAbove)) {
-                closestAbove = cellValue;
+            if (!isNaN(searchValue)) {
+                if (cellValue === searchValue) {
+                    exactMatch = true;
+                } else if (cellValue < searchValue && (!closestBelow || cellValue > closestBelow)) {
+                    closestBelow = cellValue;
+                } else if (cellValue > searchValue && (!closestAbove || cellValue < closestAbove)) {
+                    closestAbove = cellValue;
+                }
+            }
+        }
+
+        for (let row of rows) {
+            let cells = row.getElementsByTagName("td");
+            if (colIndex >= cells.length) continue;
+            let cell = cells[colIndex];
+            let cellValue = parseFloat(cell.textContent.trim());
+            
+            if (exactMatch) {
+                row.style.display = cellValue === searchValue ? "" : "none";
+            } else {
+                row.style.display = cellValue === closestBelow || cellValue === closestAbove ? "" : "none";
             }
         }
     }
 
-    for (let row of rows) {
-        let cells = row.getElementsByTagName("td");
-        if (colIndex >= cells.length) continue;
-        let cell = cells[colIndex];
-        let cellValue = parseFloat(cell.textContent.trim());
-        
-        if (exactMatch) {
-            row.style.display = cellValue === searchValue ? "" : "none";
-        } else {
-            row.style.display = cellValue === closestBelow || cellValue === closestAbove ? "" : "none";
-        }
-    }
-}
+      function tableToCSV(tableId) {
+      var table = document.getElementById(tableId);
+      var rows = table.querySelectorAll("tr");
+      var csv = [];
+
+      rows.forEach(row => {
+          var cells = row.querySelectorAll("th, td");
+          var rowData = [];
+          
+          cells.forEach(cell => {
+              rowData.push(cell.textContent.trim());
+          });
+
+          csv.push(rowData.join(","));
+      });
+
+      return csv.join("\n");
+  }
+
+  function downloadCSV(tableId, filename = 'table.csv') {
+      var csvData = tableToCSV(tableId);
+      
+      // Create a Blob with CSV data
+      var blob = new Blob([csvData], { type: 'text/csv' });
+      
+      // Create a temporary link element to trigger the download
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      
+      // Trigger the download by clicking the link
+      link.click();
+  }
+
+  // Example usage: Call this function with the table ID to download the CSV
+  //downloadCSV('dataTable2');
+
     </script>
 </body>
 </html>
