@@ -93,7 +93,7 @@
             z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
         }
         thead input{
-          width: 65px;
+          width: 67px;
           border: none;
           padding: 6px 10px;
           text-align: center;
@@ -247,8 +247,8 @@
       <div>
        <select id="tableSelect" onchange="changeTable()">
          <option value="dataTable">Nickel and High-Nickel Alloys</option>
-         <option value="dataTable3">HRC Non-Austenitic Steels</option>
-         <option value="dataTable3">HRB Non-Austenitic Steels</option>
+         <option value="dataTable1">HRC Non-Austenitic Steels</option>
+         <option value="dataTable2">HRB Non-Austenitic Steels</option>
        </select>
      </div>
 
@@ -256,44 +256,44 @@
 
 
     <div class="table-container">
-        <table id="dataTable2">
+        <table id="dataTable">
             <thead>
                 <th>Knoop <br> indenter 500 and 1000 gf (HK)</th>
                 <th>Vickers <br> 1, 5, 10, 30 kgf (HV)</th>
                 <th>Brinell <br> 10-mm Standard Ball, 3000 kgf (HBS)</th>
-                <th>Rockwell A <br> Scale 60-kgf Diamond Penetrator (HRA)</th>
-                <th>Rockwell B <br> Scale 100-kgf 1/16-in. (1.588 mm) Ball (HRB)</th>
-                <th>Rockwell C <br> Scale 150-kgf Diamond Penetrator (HRC)</th>
-                <th>Rockwell D <br> Scale 100-kgf Diamond Penetrator (HRD)</th>
-                <th>Rockwell E <br> Scale 100-kgf 1/8-in. (3.175 mm) Ball (HRE)</th>
-                <th>Rockwell F <br> Scale 60-kgf 1/16-in. (1.588 mm) Ball (HRF)</th>
-                <th>Rockwell G <br> Scale 150-kgf 1/16-in. (1.588 mm) Ball (HRG)</th>
-                <th>Rockwell K <br> Scale 150-kgf 1/8-in. (3.175 mm) Ball (HRK)</th>
-                <th>Rockwell 15N <br> Scale 15-kgf Superficial Diamond Penetrator (HR15N)</th>
-                <th>Rockwell 30N <br> Scale 30-kgf Superficial Diamond Penetrator (HR30N)</th>
-                <th>Rockwell 45N <br> Scale 45-kgf Superficial Diamond Penetrator (HR45N)</th>
+                <th>Rockwell A <br> Scale 60 kgf Diamond (HRA)</th>
+                <th>Rockwell B <br> Scale 100 kgf 1/16-in. (1.588 mm) Ball (HRB)</th>
+                <th>Rockwell C <br> Scale 150 kgf Diamond (HRC)</th>
+                <th>Rockwell D <br> Scale 100 kgf Diamond (HRD)</th>
+                <th>Rockwell E <br> Scale 100 kgf 1/8-in. (3.175 mm) Ball (HRE)</th>
+                <th>Rockwell F <br> Scale 60 kgf 1/16-in. (1.588 mm) Ball (HRF)</th>
+                <th>Rockwell G <br> Scale 150 kgf 1/16-in. (1.588 mm) Ball (HRG)</th>
+                <th>Rockwell K <br> Scale 150 kgf 1/8-in. (3.175 mm) Ball (HRK)</th>
+                <th>Rockwell 15N <br> Scale 15-kgf Superficial Diamond (HR15N)</th>
+                <th>Rockwell 30N <br> Scale 30-kgf Superficial Diamond (HR30N)</th>
+                <th>Rockwell 45N <br> Scale 45-kgf Superficial Diamond (HR45N)</th>
                 <th>Rockwell 15T <br> Scale 15-kgf 1/16-in. (1.588 mm) Ball (HR15T)</th>
                 <th>Rockwell 30T <br> Scale 30-kgf 1/16-in. (1.588 mm) Ball (HR30T)</th>
                 <th>Rockwell 45T <br> Scale 45-kgf 1/16-in. (1.588 mm) Ball (HR45T)</th>
               </tr>
               <tr>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value-"></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
             </tr>
             </thead>
             <tbody>
@@ -1182,7 +1182,7 @@
             </tbody>
           </table>
 
-        <div>
+        <div class="nickelHardness">
             <h3>General Notes</h3>
               <ul>
                 <li>1. The use of hardness scales for hardness values shown in parentheses is not recommended since they are beyond the ranges recommended for accuracy.Such values are shown for 
@@ -1191,21 +1191,36 @@
               </ul>
          </div>
 
-         <table id="dataTable3">
+         <table id="dataTable1">
+          <thead>
           <tr>
-            <th>Rockwell C Hardness Number 150kgf (HRC)</th>
-            <th>Vickers Hardness Number (HV)</th>
-            <th>Brinell Hardness Number (HBS)</th>
-            <th>Brinell Hardness Number (HBW)</th>
-            <th>Knoop Hardness Number 500-gf and Over (HK)</th>
-            <th>Rockwell Hardness Number A Scale 60-kgf (HRA)</th>
-            <th>Rockwell Hardness Number D Scale 100-kgf (HRD)</th>
-            <th>Rockwell Superficial Hardness Number 15N Scale 15-kgf (HR15N)</th>
-            <th>Rockwell Superficial Hardness Number 30N Scale 30-kgf (HR30N)</th>
-            <th>Rockwell Superficial Hardness Number 45N Scale 45-kgf (HR45N)</th>
-            <th>Scleroscope Hardness Number</th>
+            <th>Rockwell C <br> 150kgf (HRC)</th>
+            <th>Vickers <br> (HV)</th>
+            <th>Brinell <br> (HBS)</th>
+            <th>Brinell <br> (HBW)</th>
+            <th>Knoop <br> 500-gf and Over (HK)</th>
+            <th>Rockwell A <br> Scale 60 kgf (HRA)</th>
+            <th>Rockwell D <br> Scale 100 kgf (HRD)</th>
+            <th>Rockwell 15N <br> Superficial Scale 15 kgf (HR15N)</th>
+            <th>Rockwell 30N <br> Superficial Scale 30 kgf (HR30N)</th>
+            <th>Rockwell 45N <br> Superficial Scale 45 kgf (HR45N)</th>
+            <th>Scleroscope <br> Hardness Number</th>
           </tr>
-          
+          <tr>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+        </tr>
+      </thead>
+      <tbody>
           <tr>
             <td>68</td>
             <td>940</td>
@@ -1842,10 +1857,11 @@
       <td>41.5</td>
       <td>19.6</td>
       <td>34.2</td>
-      </tr>        
+      </tr>
+    </tbody>        
     </table>
 
-    <div>
+    <div class="steelHardnessC">
       <h3>General Notes</h3>
         <ul>
           <li>1. Scleroscope hardness conversions are based on Vickers—Sc leroscope hardness relationships developed from Vickers hardness data provided by the National
@@ -1857,19 +1873,30 @@
         </ul>
    </div>
 
-    <table>
+    <table id="dataTable2">
       <thead>
           <tr>
-              <th>Rockwell B Hardness Number<br>100-kgf (HRB)</th>
-              <th>Vickers Hardness Number<br>(HV)</th>
-              <th>Brinell Hardness Number,<br>3000-kgf (HBS)</th>
-              <th>Knoop Hardness Number,<br>500-gf and Over (HK)</th>
-              <th>Rockwell A Hardness Number,<br>60-kgf (HRA)</th>
-              <th>Rockwell F Hardness Number,<br>60-kgf (HRF)</th>
-              <th>Rockwell Superficial 15T Scale,<br>15-kgf (HR15T)</th>
-              <th>Rockwell Superficial 30T Scale,<br>30-kgf (HR30T)</th>
-              <th>Rockwell Superficial 45T Scale,<br>45-kgf (HR45T)</th>
+              <th>Rockwell B <br> 100 kgf (HRB)</th>
+              <th>Vickers <br> (HV)</th>
+              <th>Brinell <br>3000 kgf (HBS)</th>
+              <th>Knoop <br> 500 gf and Over (HK)</th>
+              <th>Rockwell A <br> 60 kgf (HRA)</th>
+              <th>Rockwell F <br> 60 kgf (HRF)</th>
+              <th>Rockwell 15T <br> Superficial Scale 15 kgf (HR15T)</th>
+              <th>Rockwell 30T <br> Superficial Scale 30 kgf (HR30T)</th>
+              <th>Rockwell 45T <br> Superficial Scale 45 kgf (HR45T)</th>
           </tr>
+          <tr>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
+        </tr>
       </thead>
       <tbody>
           <tr>
@@ -2732,6 +2759,55 @@
 
 
     <script>
+
+      
+          window.onload = function() {
+              document.getElementById("tableSelect").selectedIndex = 0;
+              changeTable();
+          }
+
+          function changeTable() {
+          let selectedTable = document.getElementById("tableSelect").value;
+          document.querySelectorAll("table").forEach(table => {
+              table.style.display = (table.id === selectedTable) ? "table" : "none";
+          });
+
+          let ulElement = document.querySelectorAll(".nickelHardness"); // Change "myList" to your actual <ul> ID
+          let pwclElement = document.querySelectorAll(".steelHardnessC"); // Change "myList" to your actual <ul> ID
+        //  let clElement = document.querySelectorAll(".steelHardnessB"); // Change "myList" to your actual <ul> ID
+
+          if (selectedTable === "dataTable") {
+              ulElement.forEach(element => {
+                  element.style.display = 'block';
+              });
+          } else {
+            ulElement.forEach(element => {
+                  element.style.display = 'none';
+              });
+          }
+
+          if (selectedTable === "dataTable1") {
+            pwclElement.forEach(element => {
+                  element.style.display = 'block';
+              });
+          } else {
+            pwclElement.forEach(element => {
+                  element.style.display = 'none';
+              });
+          }
+
+          /*
+          if (selectedTable === "dataTable2") {
+            clElement.forEach(element => {
+                  element.style.display = 'block';
+              });
+          } else {
+            clElement.forEach(element => {
+                  element.style.display = 'none';
+              });
+          }*/
+
+      }
 
 
         //highlight clicked rows
