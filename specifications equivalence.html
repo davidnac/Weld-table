@@ -1,0 +1,6578 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conductivity Table</title>
+    <style>
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+      }
+
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 25px;
+        margin-top: 30px;
+      }
+
+      select {
+        width: 15%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 5px;
+      }
+      .table-container {
+        width: 97%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        height: 71vh; /* Fixed height of the table container */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 22px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+        font-size: 15px;
+      }
+
+      table th:not(:last-child),
+      table td:not(:last-child) {
+        text-align: center;
+      }
+
+  
+      th {
+        background-color: #98d8ef;
+        color: white;
+        text-align: left;
+        cursor: pointer;
+        position: sticky;
+        top: 0; /* Make header sticky */
+        z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .sort-icon {
+        margin-left: 5px;
+        font-size: 12px;
+      }
+      tr:hover {
+        background-color: #e0f7fa;
+      }
+
+      br {
+        display: block;
+        content: "";
+        margin-bottom: 10px; /* Adjust the space */
+      }
+      .highlighted {
+        background-color: #ffd95f !important;
+      }
+
+      .section a {
+        color: #3674b5;
+        margin-left: 12px;
+        margin-right: 12px;
+        text-align: center;
+        font-size: 14px;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
+
+      ul {
+        list-style-type: none;
+        text-align: left;
+        padding-left: 25px; /* remove default padding */
+      }
+      li {
+        padding: 5px 0;
+        font-size: 13px;
+      }
+      h4 {
+        padding-left: 25px;
+      }
+
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
+
+        width: 94%;
+        margin: 15px auto;
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar .logo {
+        font-size: 21px;
+        font-weight: bold;
+        color: #1f497d;
+        text-transform: uppercase;
+      }
+
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+      }
+
+      .navbar .icon {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .navbar .icon:hover {
+        color: #ffd95f;
+      }
+
+      img {
+        height: 40px;
+        width: auto;
+      }
+
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .navbar .ThemeBtn-container {
+        height: 45px;
+        width: 45px;
+        border-radius: 100%;
+        opacity: 1;
+        background-color: transparnt;
+        display: flex;
+        align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+      }
+
+      .navbar .ThemeBtn-container:hover {
+        background-color: #98d8ef;
+        fill: white;
+        transition: all 0.5s ease;
+      }
+
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
+
+      .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
+
+      .svg-button:hover {
+        fill: white;
+      }
+
+      /* Search bar container */
+      .search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
+      }
+
+      .navbar input {
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="logo-container">
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">Specifications equivalence</div>
+      </div>
+
+      <div>
+        <input
+          type="text"
+          id="search"
+          onkeyup="searchTable()"
+          placeholder="Search for anything in the table..."
+        />
+        <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
+      </div>
+
+      <div class="icons">
+        <div class="ThemeBtn-container" style="display: none">
+          <button id="clearSearch" class="svg-button" onclick="clearSearch()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+            >
+              <path
+                d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table id="dataTable">
+        <tbody>
+          <tr >
+            <th>
+          
+                TYPE
+            
+            </th>
+            <th>
+                UNS
+            </th>
+            <th>
+                ASTM
+            </th>
+            <th>
+                ASME
+            </th>
+            <th>
+                AMS
+            </th>
+            <th> 
+                SAE
+            
+            </th>
+            <th>
+                MILITARY
+            </th>
+            <th>
+           ACI
+            </th>
+          </tr>
+
+          <tr>
+            <td>
+                201
+            </td>
+            <td>
+             
+                S20100
+        
+            </td>
+            <td
+              
+            >
+              
+                A213 A240 A249 A276 A473 A666
+              </p>
+            
+                A480 A1012
+        
+            </td>
+            <td
+              
+            >
+        
+            </td>
+            <td
+              
+            >
+       
+            </td>
+            <td
+              
+            >
+             
+                20201
+     
+          
+                J405 J412
+           
+            </td>
+            <td
+              
+            >
+           
+            </td>
+            <td
+              
+            >
+             
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                202
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S20200
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A213 A240 A249 A276 A314 A473 A666
+              </p>
+              <p
+               
+                
+              >
+                A480 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                20202
+              </p>
+              <p
+               
+                
+              >
+                J405 J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-W-6712
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+
+
+          
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                205
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S20500
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A276 A473 A666
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                301
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30100
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A240 A264 A554 A666 F899
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5517 5518 5519 5901 5902
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30301
+              </p>
+              <p
+               
+                
+              >
+                J405 J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-T-5695
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                302
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30200
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A240 A264 A276 A313 A314 A368 A473 A478
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA-240
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5358 5500 5515 5516 5600
+              </p>
+              <p
+               
+                
+              >
+                5636 5637 5688 5693 5866
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30302
+              </p>
+              <p
+               
+                
+              >
+                J230
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-854 MIL-S-862
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CF-20
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A479 A480 A492 A493
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5903 5904 5905 5906 6693
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-46044
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A511 A554 A580 A666
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                7241 AS7210 AS7228 AS7472
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-T-5677
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                F599 F899 F1669 F2215
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763 S-7720
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-W-6712
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                302B
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30215
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A167 A276 A314 A473 A480 A580
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30302B
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                HF
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                303
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30300
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A194 A314 A320 A473 A581 A582 A895 F593 F594 F738 F836 F837 F880
+                F899
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA194 SA320
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5640
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30303
+              </p>
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CF-16F
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                303Se
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30323
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A194 A314 A320 A473 A511 A581 A582 A895 F593 F594 F738 F836
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA-194 SA-320
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5640 5641 5738
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30303Se
+              </p>
+            </td>
+            <td
+              
+             
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+             
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+             
+                F880
+            
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                304
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30400
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A213 A240 A249 A269 A270
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA194
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5501 5513 5560 5563 5564 5565
+              </p>
+              <p
+               
+                
+              >
+                5566 5567 5639 5697 5857 5868
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30304
+              </p>
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-F-20138 MIL-P-24691/3
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CF-8
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A276 A312 A313 A314
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA213
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5910 5911 5912 5913
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-854
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A320 A336 A358 A368
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA240
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                AS7524 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-862
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A376 A403 A409 A430 A473 A478 A479 A492
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA249 SA312
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                T-6845 T-8506
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J2515
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-18170 MIL-S-21149/6
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A493 A511 A554 A580
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA320
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-24149/3
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A632 A666 A688 A774
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA358
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-24249/6
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A793 A813 A814 A851
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA376
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-T-5695
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A908 A943 A965 A988
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA403
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-T-8504
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A593 A738 A836 A837 A879 A880 A899 A1022
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA409 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-T-18063
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A1049 F1667 F2215
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA688
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                304L
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30403
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A213 A240 A249 A269 A270 A276 A312
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA213 SA240
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5370 5371 5511 5569 5584 5647
+              </p>
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30304L J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-854 MIL-S-862
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CF-3
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A314 A358 A368 A403 A409 A473 A478 A479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA249 SA312
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                T-6845
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-4043 MIL-S-18170
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A493 A511 A554 A580
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA403
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-18171
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A632 A666 A688 A774
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-81591
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A778 A793 A813 A814 A851 A924 A943 A965
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA688
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-T-18063
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A988 A1022 A1040
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                F593 F594 F738 F836
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                F837 F879 F880 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                304N
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30451
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A213 A240 A249 A276 A312
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA213
+              </p>
+            </td>
+            <td
+              
+         
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+         
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A358 A376 A403 A479
+              </p>
+            </td>
+            <td
+              
+            >
+             
+                SA312
+        
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+          </tr>
+
+
+          <tr >
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A666 A688 A813 A814
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA358
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </td>
+          <td>
+          </td>
+          <td>
+          </td>
+          <td>
+            
+          </tr>
+          <tr>
+            <td
+              
+            >
+          
+            </td>
+            <td>
+         
+            </td>
+            <td>
+             
+                A924 A943 A965 A988
+              
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA376
+              </p>
+            </td>
+            <td
+              
+            >
+         
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                304LN
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30453
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A213 A240 A249 A269 A276 A312 A320 A358 A376 A403
+                A479 A666 A688 A813 A924 A943 A965 A988 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                TYPE
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                UNS
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ASTM
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ASME
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                AMS
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SAE
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MILITARY
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ACI
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                305
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30500
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A193 A194 A240 A249 A276 A313 A314 A320 A368 A473 A478 A492 A493
+                A511 A554 A580 A1012 F593 F594 F738 F836 F837 F879 F880 F1667
+                F2215
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA193 SA194 SA240
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5514 5685 5686 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30305
+              </p>
+              <p
+               
+                
+              >
+                J405 J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-24149/3 MIL-S-24149/6 MIL-W-30508
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                308
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30800
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A167 A276 A314 A473 A480 A580
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30308
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-E-19933
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                309
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30900
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A167 A264 A276 A314 A403 A409 A473 A480 A580 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA249 SA312 SA358 SA403 SA409
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30309
+              </p>
+              <p
+               
+                
+              >
+                J412 J2515
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-E-19933 MIL-S-862
+              </p>
+              <p
+               
+                
+              >
+                MIL-S-24149/3 MIL-S-24149/6
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CH-20
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                309S
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S30908
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A213 A240 A249 A276 A312 A314 A358 A409 A473 A478 A479 A511 A554
+                A580 A813 A814 A924 A943 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA240
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5523 5574 5650 7490
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30309S J405 J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                HH
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                310
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31000
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A167 A182 A213 A240 A249 A276 A312 A314 A336 A473 A580 A632 A965
+                A1012 A1049 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA213 SA312 SA358 SA403 SA409
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30310
+              </p>
+              <p
+               
+                
+              >
+                J412 J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-B-15382 MIL-E-19933 MIL-S-854 MIL-S-862
+              </p>
+              <p
+               
+                
+              >
+                MIL-S-24149/3 MIL-S-24149/6
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CK-20
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                310S
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31008
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A213 A240 A249 A264 A276 A312 A314 A358 A409 A473 A479 A511 A554
+                A580 A813 A814 A924 A943 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA240 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5521 5572 5577 5651 7490
+              </p>
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30310S J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                HK
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                314
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31400
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A276 A314 A473 A580
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5652 7490
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30314
+              </p>
+              <p
+               
+                
+              >
+                J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                316
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31600
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A213 A240 A249 A264 A269 A270 A271 A276 A312 A313
+                A314 A320 A336 A358 A368 A376 A403 A409 A430 A580 A632 A666 A688
+                A793 A813 A814 A826 A831 A943 A965 A988 A1012 A1022 A1049 F55
+                F56 F593 F594 F738 F836 F837 F879 F899 F957 F1667 F2215 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA193 SA194 SA213 SA240 SA249 SA312 SA320 SA358 SA376
+                SA403 SA409 SA479 SA688
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5524 5573 5690 5691
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30316
+              </p>
+              <p
+               
+                
+              >
+                J412 J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-F-20138 MIL-S-854 MIL-S-862
+              </p>
+              <p
+               
+                
+              >
+                MIL-C-24707/3 MIL-E-22200/2 MIL-S-24149/3 MIL-S-24249/6
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CF-8M CF-12M
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                316L
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31603
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A213 A240 A249 A269 A270 A276 A312 A314 A336 A358 A403 A409
+                A473 A478 A479 A493 A511 A554 A580 A632 A666 A688 A774 A778 A793
+                A813 A814 A943 A965 A988 A1022 A1049 F593 F594 F738 F836 F837
+                F879 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA183 SA240 SA249 SA312 SA403 SA479 SA688
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5507 5584 5653 S-7720 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30316L J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-E-19933 MIL-S-862
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CF-3M
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                316F
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31620
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5649
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                316N
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31651
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A213 A240 A312 A336 A358 A376 A403 A479 A666 A688
+                A813 A814 A943 A965 A988 A1012 A1022
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA213 SA240 SA249 SA312 SA358 SA376 SA403 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                316LN
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31653
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A213 A240 A249 A269 A276 A312 A320 A336 A358 A376
+                A403 A479 A688 A813 A814 A943 A965 A988 A1012 A1022 A1049
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                TYPE
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                UNS
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ASTM
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ASME
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                AMS
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SAE
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MILITARY
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ACI
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                317
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31700
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A213 A240 A249 A269 A276 A312 A314 A409 A473 A478 A479 A511
+                A554 A580 A632 A813 A814 A943 A988 A1012 A1049 F899
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA240 SA249 SA312 SA403 SA409
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30317
+              </p>
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-E-19933 MIL-S-862
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CG-8M
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                317L
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S31703
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A213 A240 A249 A312 A403 A774 A778 A813 A814 A903 A943 A988
+                A1012 A1049
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA240
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                321
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S32100
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A213 A240 A249 A264 A269 A276 A312 A313 A314 A320
+                A336 A358 A376 A409 A430 A473 A479 A511 A554 A580 A632 A774 A778
+                A813 A814 A943 A965 A988 A1012 A1049 F593 F594 F738 F836 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA193 SA194 SA213 SA240 SA249 SA312 SA320 SA358 SA376
+                SA403 SA409 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5510 5557 5559 5570 5576 5645
+              </p>
+              <p
+               
+                
+              >
+                5689 7490 AS7325 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30321
+              </p>
+              <p
+               
+                
+              >
+                J405 J412 J467 J2515
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-E-19933 MIL-P-24691/3 MIL-S-854
+              </p>
+              <p
+               
+                
+              >
+                MIL-S-862 MIL-T-16282
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                329
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S32900
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A240 A480 A789 A790 A928 A949 A1022 F2215
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA789
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                330
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                N08330
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A554 B366 B511 B512 B535 B536 B546 B710 B739 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SB366 SB511 SB536 SB710
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5592 5716
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30330
+              </p>
+              <p
+               
+                
+              >
+                J412 J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                HK
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                347
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S34700
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A213 A240 A249 A264 A269 A276 A312 A313 A314 A320
+                A336 A358 A376 A403 A409 A430 A473 A479 A511 A554 A580 A632 A774
+                A778 A813 A814 A943 A965 A1012 A1049 F593 F594 F738 F836 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA193 SA213 SA240 SA249 SA312 SA320 SA358 SA376 SA403
+                SA409 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5512 5556 5558 5571 5575 5646
+              </p>
+              <p
+               
+                
+              >
+                5654 5674 5790 5897 7490 AS7229 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30347
+              </p>
+              <p
+               
+                
+              >
+                J405 J412 J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-E-19933 MIL-S-862 MIL-S-18170 MIL-S-18171 MIL-T-16286
+                MIL-T-18063
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                CF-8C
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                348
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S34800
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A213 A240 A249 A269 A276 A312 A314 A336 A358 A376 A403 A409
+                A473 A479 A580 A632 A813 A814 A943 A965 A1012 A1049 F593 F594
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA213 SA240 SA249 SA312 SA358 SA376 SA403 SA409 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30348
+              </p>
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-C-24707/3
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                384
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S38400
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A493 F593 F594 F738 F837 F879 F880
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                30384
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                403
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S40300
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A176 A276 A314 A479 A511 A580
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5614 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51403
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S40500
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A240 A268 A276 A473 A479 A511 A580 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA240 SA268 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                409
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S40900
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A268 A651 A791 A803 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA268
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51409
+              </p>
+              <p
+               
+                
+              >
+                J405 J412 J2515
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                410
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S41000
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A193 A194 A240 A268 A276 A314 A336 A473 A479 A493 A511 A580
+                A815 A837 A988 A1012 A1021 A1028 A1049 F593 F594 F738 F899 F1613
+                F2215 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA194 SA240 SA268 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5350 5504 5505 5591 5613 5776
+              </p>
+              <p
+               
+                
+              >
+                5777 5876 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51410
+              </p>
+              <p
+               
+                
+              >
+                J405 J412 J467
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                TYPE
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                UNS
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ASTM
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ASME
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                AMS
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SAE
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MILITARY
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                ACI
+              </p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                414
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S41400
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A276 A314 A473 A479 A511 A580
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51414
+              </p>
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                416
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S41600
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A194 A314 A473 A581 A582 A593 A594 A895 F738 F836 F899 F1613
+                F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA194
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5610
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51416
+              </p>
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                416L
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S41603
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A581 A582
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                416Se
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S41623
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A194 A314 A473 A511 A581 A582 A895 F593 F594 F738 F836
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA194
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5610 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51416Se
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                420
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S42000
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A176 A182 A276 A314 A473 A580 A1049 F1079 F2215
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5506 5621 AS7202 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51420
+              </p>
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                420F
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S42020
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A582 A895 F116 F899 F1613
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5620
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51420F J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                422
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S42200
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A176 A565
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5655
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51422
+              </p>
+              <p
+               
+                
+              >
+                J467 J775
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                429
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S42900
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A240 A268 A276 A314 A473 A493 A511 A554 A815 A1049
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA240 SA268
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51429
+              </p>
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                430
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S43000
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A182 A240 A268 A276 A314 A473 A479 A493 A511 A554 A580 A815
+                A1012 F593 F594 F738 F836 F2215 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA182 SA240 SA268 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5503 5627 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51430
+              </p>
+              <p
+               
+                
+              >
+                J405 J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                430F
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S43020
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A314 A473 A581 A582 A895 F593 F594 F738 F836 F899 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51430F J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                430FSe
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S43023
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A314 A473 A581 A582 A895
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51430FSe
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                431
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S43100
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A176 A276 A314 A473 A479 A493 A580 A593 A594 F738 F836 F899
+                F1613 F2281
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5628 S-18732
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51431
+              </p>
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                MIL-S-8967
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                434
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S43400
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A240
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51434
+              </p>
+              <p
+               
+                
+              >
+                J405 J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                436
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S43600
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A240
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51436
+              </p>
+              <p
+               
+                
+              >
+                J405 J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                439
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S43035
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A240 A268 A463 A479 A803
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA240 SA268 SA479
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J2515
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                440A
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S44002
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A276 A314 A473 A511 A580 F116 F899 F1613
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5631 7445 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51440A J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                440B
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S44003
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A276 A314 A473 A580 F116 F899 F1613 F2215
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                7445 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51440B
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                440C
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S44004
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A276 A314 A473 A493 A580 F899 F116 F1613 F2215
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5630 5618 5899 7445 QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51440C J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                442
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S44200
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A176
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51442
+              </p>
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                444
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S44400
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A213 A240 A268 A276 A479 A480 A493 A580 A791 A803 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J405 J444
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                446
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S44600
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A176 A268 A276 A314 A473 A511 A580 A815 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA268
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                QQ-S-763
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                51446
+              </p>
+              <p
+               
+                
+              >
+                J412
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                446Mo
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S44660
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A240 A268 A803 A1012
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                J405
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                PH13-8Mo
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S13800
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A564 A693 A705
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA705
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5629 5412 5840
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                15-5PH
+              </p>
+            </td>
+            <td
+              
+            >
+            
+                S15500
+        
+            </td>
+            <td
+              
+            >
+             
+                A564 A693 A705
+           
+            </td>
+            <td
+              
+            >
+             
+                SA705
+          
+            </td>
+            <td
+              
+            >
+            
+                5659 5826 5862
+            
+            </td>
+            <td>
+         
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                17-4PH
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S17400
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A564 A693 A705 A982 A1028 F593 F594 F738 F836 F899
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA567 SA705
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                5604 5622 5643
+              </p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+            <td
+              
+            >
+              <p ><br /></p>
+            </td>
+          </tr>
+
+          <tr >
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                17-7PH
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                S17700
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                A564 A693 A705
+              </p>
+            </td>
+            <td
+              
+            >
+              <p
+               
+                
+              >
+                SA705
+              </p>
+            </td>
+            <td
+              
+            >
+            
+                5529 5644 AS7474
+           
+            </td>
+            <td
+              
+            >
+      
+            </td>
+            <td>
+        
+            </td>
+            <td
+              >
+           
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+             
+                2205
+        
+            </td>
+            <td>
+             
+                S31803
+              
+            </td>
+            <td>
+             
+                A182 A240 A276 A479 A789 A790 A815 A923 A928 A949 A988 A1022
+           
+            </td>
+            <td>
+                SA240 SA789 SA790 SA815
+             
+            </td>
+            <td>
+            
+            </td>
+            <td>
+                J405 
+            </td>
+            <td>
+          
+            </td>
+            <td>
+           
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      //highlight clicked rows
+      document.addEventListener("DOMContentLoaded", function () {
+        let rows = document.querySelectorAll(
+          "#dataTable tbody tr, #dataTable2 tbody tr"
+        );
+
+        rows.forEach((row) => {
+          row.addEventListener("click", function (event) {
+            if (row.classList.contains("highlighted")) {
+              row.classList.remove("highlighted");
+            } else {
+              rows.forEach((r) => r.classList.remove("highlighted"));
+              row.classList.add("highlighted");
+            }
+            event.stopPropagation();
+          });
+
+          // Double-click event to call a function
+          row.addEventListener("dblclick", function () {
+            openModal(row);
+          });
+        });
+
+        document.addEventListener("click", function () {
+          rows.forEach((row) => row.classList.remove("highlighted"));
+        });
+      });
+
+      function searchTable() {
+        let input = document.getElementById("search");
+        let searchValue = input.value.trim();
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+
+        // Show the clear button only if there is text in the search box
+        clearBtnContainer.style.display = searchValue ? "flex" : "none";
+
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
+
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+          if (rows[i].getElementsByTagName("th").length > 0) {
+            continue; // Skip header rows
+          }
+
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
+
+            // Clear previous highlights: remove all <span> elements and preserve their content
+            cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, "");
+
+            if (
+              searchValue &&
+              cell.textContent.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              highlightTextInElement(cell, searchValue);
+              found = true;
+            }
+          }
+
+          // Show row if a match is found, otherwise hide it
+          rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        }
+      }
+
+      // Recursive function to highlight text while preserving HTML structure
+      function highlightTextInElement(element, searchValue) {
+        let regex = new RegExp(
+          `(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`,
+          "gi"
+        ); // Escape special characters
+
+        function highlightNode(node) {
+          if (node.nodeType === 3) {
+            // TEXT_NODE
+            let parent = node.parentNode;
+            let text = node.nodeValue;
+
+            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+              let tempWrapper = document.createElement("span");
+              tempWrapper.innerHTML = text.replace(
+                regex,
+                `<span >$1</span>`
+              );
+
+              while (tempWrapper.firstChild) {
+                parent.insertBefore(tempWrapper.firstChild, node);
+              }
+              parent.removeChild(node);
+            }
+          } else {
+            // Recursively process child nodes
+            for (let i = node.childNodes.length - 1; i >= 0; i--) {
+              highlightNode(node.childNodes[i]);
+            }
+          }
+        }
+
+        highlightNode(element);
+      }
+
+      function clearSearch() {
+        let input = document.getElementById("search");
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+
+        // Clear the search input
+        input.value = "";
+        clearBtnContainer.style.display = "none"; // Hide the clear button
+
+        // Reset the table to show all rows
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
+
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+          rows[i].style.display = ""; // Make all rows visible again
+
+          // Remove any highlighting
+          let cells = rows[i].getElementsByTagName("td");
+          for (let j = 0; j < cells.length; j++) {
+            cells[j].innerHTML = cells[j].textContent;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

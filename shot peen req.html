@@ -1,1069 +1,1054 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Searchable Brazing Table</title>
     <style>
-
-        @font-face {
-            font-family: 'Montserrat-Medium';
-            src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
-            font-weight: 500; /* Medium weight */
-            font-style: normal;
-        }
-
-        body {
-            font-family: 'Montserrat-Medium', sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 25px;
-            margin-top: 30px;
-        }
-
-        select {
-            width: 290px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 5px;
-        }
-        .table-container {
-            width: 98%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            height: 78vh; /* Fixed height of the table container */
-            overflow-y: auto; /* Enable vertical scrolling */
-            margin-bottom: 22px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 15px;
-            font-size: 14px;
-        }
-
-
-        table th:not(:last-child),
-        table td:not(:last-child) {
-            text-align: center;
-        }
-
-
-        table td:last-child {
-          font-size: 14px; /* Adjust the font size as needed */
-        }
-
-        th {
-            background-color: #98D8EF;
-            color: white;
-            text-align: center;
-            vertical-align: top;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .sort-icon {
-            margin-left: 5px;
-            font-size: 12px;
-        }
-        tr:hover {
-            background-color: #e0f7fa;
-        }
-
-        br {
-            display: block;
-            content: "";
-            margin-bottom: 10px; /* Adjust the space */
-        }
-        .highlighted {
-            background-color: #FFD95F !important;
-        }
-        thead{
-            position: sticky;
-            top: 0; /* Make header sticky */
-            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
-        }
-        thead input{
-          width: 67px;
-          border: none;
-          padding: 6px 10px;
-          text-align: center;
-        }
-
-        .section a{
-          color: #3674B5;
-          margin-left: 12px;
-          margin-right: 12px;
-          text-align: center;
-          font-size: 14px;
-          text-transform: uppercase;
-          text-decoration: none;
-       }
-
-       ul {
-         list-style-type: none;
-         text-align: left;
-         padding-left: 25px; /* remove default padding */
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
       }
-       li {
-         padding: 5px 0;
-         font-size: 13px;
-       }
-       h4{
-         padding-left: 25px;
-       }
 
-       /* Navbar styles */
-       .navbar {
-           display: flex;
-           flex-direction: row;
-           justify-content: space-between;
-           align-items: center;
-           background-color: #3674B5;
-           padding: 15px 30px;
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 25px;
+        margin-top: 30px;
+      }
 
-           width: 94%;
-           margin: 15px auto;
-           margin-bottom: 50px;
-           background: white;
-           border-radius: 10px;
-           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-       }
+      select {
+        width: 350px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 5px;
+      }
+      .table-container {
+        width: 95%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        height: 78vh; /* Fixed height of the table container */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 22px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+        font-size: 14px;
+      }
 
-       .navbar .logo {
-           font-size: 18px;
-           font-weight: bold;
-           color: black;
-           text-transform: uppercase;
-       }
+      table th:not(:last-child),
+      table td:not(:last-child) {
+        text-align: center;
+      }
 
-        .icons {
-           display: flex;
-           flex-direction: row;
-           gap: 15px;
-       }
+      table td:last-child {
+        font-size: 14px; /* Adjust the font size as needed */
+      }
 
-       .navbar .icon {
-           color: white;
-           font-size: 20px;
-           cursor: pointer;
-       }
+      th {
+        background-color: #98d8ef;
+        color: white;
+        text-align: center;
+        vertical-align: top;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .sort-icon {
+        margin-left: 5px;
+        font-size: 12px;
+      }
+      tr:hover {
+        background-color: #e0f7fa;
+      }
 
-       .navbar .icon:hover {
-           color: #FFD95F;
-       }
+      br {
+        display: block;
+        content: "";
+        margin-bottom: 10px; /* Adjust the space */
+      }
+      .highlighted {
+        background-color: #ffd95f !important;
+      }
+      thead {
+        position: sticky;
+        top: 0; /* Make header sticky */
+        z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+      }
+      thead input {
+        width: 67px;
+        border: none;
+        padding: 6px 10px;
+        text-align: center;
+      }
 
+      .section a {
+        color: #3674b5;
+        margin-left: 12px;
+        margin-right: 12px;
+        text-align: center;
+        font-size: 14px;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
 
-       img{
-           height: 40px;
-           width: auto;
-       }
+      ul {
+        list-style-type: none;
+        text-align: left;
+        padding-left: 25px; /* remove default padding */
+      }
+      li {
+        padding: 5px 0;
+        font-size: 13px;
+      }
+      h4 {
+        padding-left: 25px;
+      }
 
-       .logo-container{
-           display: flex;
-           flex-direction: row;
-           align-items: center;
-           gap: 20px;
-       }
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
 
-       .navbar .ThemeBtn-container {
-         height: 45px;
-         width: 45px;
-         border-radius: 100%;
-         opacity: 1;
-         background-color: transparnt;
-         display: flex;
-         align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
-       }
+        width: 94%;
+        margin: 15px auto;
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
 
-       .navbar .ThemeBtn-container:hover {
-         background-color: #98D8EF;
-         fill: white ;
-         transition: all 0.5s ease;
-       }
+      .navbar .logo {
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+        text-transform: uppercase;
+      }
 
-       .clearButton {
-          display: none;
-          cursor: pointer;
-          font-size: 26px;
-          color: gray;
-          padding-left: 6px;
-       }
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+      }
 
-       .svg-button{
-          border: none;
-          cursor: pointer;
-          background-color: transparent !important;
-          fill: #AC1754 ;
-          transform: scale(1.2);
-          margin: 4px;
-          margin-bottom: 0;
-          margin-right: 1px;
-        }
+      .navbar .icon {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
 
-        .svg-button:hover{
-          fill: white;
-        }
+      .navbar .icon:hover {
+        color: #ffd95f;
+      }
 
-       /* Search bar container */
-       .search-container {
-           display: flex;
-           justify-content: center; /* Center horizontally */
-           margin-top: 30px; /* Adjust space above the search bar */
-       }
+      img {
+        height: 40px;
+        width: auto;
+      }
 
-       .navbar input {
-           padding: 10px;
-           width: 400px; /* Width of the search bar */
-           font-size: 16px;
-           border: 1px solid #ccc;
-           border-radius: 5px;
-           background-color: rgb(244, 244, 244);
-       }
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
 
+      .navbar .ThemeBtn-container {
+        height: 45px;
+        width: 45px;
+        border-radius: 100%;
+        opacity: 1;
+        background-color: transparnt;
+        display: flex;
+        align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+      }
 
+      .navbar .ThemeBtn-container:hover {
+        background-color: #98d8ef;
+        fill: white;
+        transition: all 0.5s ease;
+      }
+
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
+
+      .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
+
+      .svg-button:hover {
+        fill: white;
+      }
+
+      /* Search bar container */
+      .search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
+      }
+
+      .navbar input {
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
+      }
     </style>
-
-
-</head>
-<body>
-
-  <!-- Navbar -->
-  <div class="navbar">
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
       <div class="logo-container">
-          <img src="Images/IAI logo.webp" alt="Book Logo">
-          <div class="logo">Shot peen media requirements per AMS 2430</div>
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">Shot peen media requirements per AMS 2430</div>
       </div>
 
       <div>
-       <select id="tableSelect" onchange="changeTable()">
-         <option value="dataTable">Nickel and High-Nickel Alloys</option>
-         <option value="dataTable1">HRC Non-Austenitic Steels</option>
-         <option value="dataTable2">HRB Non-Austenitic Steels</option>
-       </select>
-     </div>
-
-  </div>
-
-
-    <div class="table-container">
-
-<h2>Table 1 – Size requirements of in-process media</h2>
-<table>
-<thead>
-  <tr>
-    <th>Cast Shot Sizes ASR or ASH (1)</th>
-    <th>Cut Wire Shot Sizes AWCR AWS AWCH (1)</th>
-    <th>Glass Shot Sizes AGB (1)</th>
-    <th>Ceramic Shot Sizes AZB (1)</th>
-    <th>0.5% Maximum by weight Allowed to be Retained on U.S. Sieve (2), Size mm (Inch)</th>
-    <th>Maximum 20% By Weight Passing U.S. Sieve (2), Size mm (Inch)</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>930</td>
-    <td>116</td>
-    <td>—</td>
-    <td>—</td>
-    <td>5, 4.00 (0.157)</td>
-    <td>8, 2.36 (0.0937)</td>
-  </tr>
-  <tr>
-    <td>780</td>
-    <td>96</td>
-    <td>—</td>
-    <td>—</td>
-    <td>6, 3.35 (0.132)</td>
-    <td>10, 2.00 (0.0787)</td>
-  </tr>
-  <tr>
-    <td>660</td>
-    <td>80</td>
-    <td>200</td>
-    <td>—</td>
-    <td>7, 2.80 (0.110)</td>
-    <td>12, 1.7 (0.0661)</td>
-  </tr>
-  <tr>
-    <td>550</td>
-    <td>62</td>
-    <td>170</td>
-    <td>—</td>
-    <td>8, 2.36 (0.0937)</td>
-    <td>14, 1.4 (0.0555)</td>
-  </tr>
-  <tr>
-    <td>460</td>
-    <td>54</td>
-    <td>150</td>
-    <td>—</td>
-    <td>10, 2.00 (0.0787)</td>
-    <td>16, 1.18 (0.0469)</td>
-  </tr>
-  <tr>
-    <td>390</td>
-    <td>47</td>
-    <td>—</td>
-    <td>—</td>
-    <td>12, 1.7 (0.0661)</td>
-    <td>18, 1.00 (0.0394)</td>
-  </tr>
-  <tr>
-    <td>330</td>
-    <td>41</td>
-    <td>100</td>
-    <td>850</td>
-    <td>14, 1.4 (0.0555)</td>
-    <td>20, 0.850 (0.0331)</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>35</td>
-    <td>—</td>
-    <td>—</td>
-    <td>16, 1.18 (0.0469)</td>
-    <td>25, 0.710 (0.0278)</td>
-  </tr>
-  <tr>
-    <td>280</td>
-    <td>32</td>
-    <td>—</td>
-    <td>—</td>
-    <td>16, 1.18 (0.0469)</td>
-    <td>25, 0.710 (0.0278)</td>
-  </tr>
-  <tr>
-    <td>230</td>
-    <td>28</td>
-    <td>70</td>
-    <td>600</td>
-    <td>18, 1.00 (0.0394)</td>
-    <td>30, 0.600 (0.0234)</td>
-  </tr>
-  <tr>
-    <td>190</td>
-    <td>23</td>
-    <td>—</td>
-    <td>—</td>
-    <td>20, 0.850 (0.0331)</td>
-    <td>35, 0.500 (0.0197)</td>
-  </tr>
-  <tr>
-    <td>170</td>
-    <td>20</td>
-    <td>50</td>
-    <td>425</td>
-    <td>25, 0.710 (0.0278)</td>
-    <td>40, 0.425 (0.0165)</td>
-  </tr>
-  <tr>
-    <td>130</td>
-    <td>17</td>
-    <td>—</td>
-    <td>—</td>
-    <td>30, 0.600 (0.0234)</td>
-    <td>45, 0.355 (0.0139)</td>
-  </tr>
-  <tr>
-    <td>110</td>
-    <td>14</td>
-    <td>35</td>
-    <td>300</td>
-    <td>35, 0.500 (0.0197)</td>
-    <td>50, 0.300 (0.0117)</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>—</td>
-    <td>30</td>
-    <td>—</td>
-    <td>40, 0.425 (0.0165)</td>
-    <td>60, 0.250 (0.0098)</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>25</td>
-    <td>210</td>
-    <td>45, 0.355 (0.0139)</td>
-    <td>70, 0.212 (0.0083)</td>
-    <td>—</td>
-  </tr>
-  <tr>
-    <td>70</td>
-    <td>12</td>
-    <td>—</td>
-    <td>—</td>
-    <td>40, 0.425 (0.0165)</td>
-    <td>80, 0.180 (0.0070)</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>—</td>
-    <td>20</td>
-    <td>—</td>
-    <td>60, 0.250 (0.0098)</td>
-    <td>80, 0.180 (0.0070)</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>18</td>
-    <td>150</td>
-    <td>60, 0.250 (0.0098)</td>
-    <td>100, 0.150 (0.0059)</td>
-    <td>—</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>15</td>
-    <td>—</td>
-    <td>70, 0.212 (0.0083)</td>
-    <td>120, 0.125 (0.0049)</td>
-    <td>—</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>—</td>
-    <td>100</td>
-    <td>80, 0.180 (0.0070)</td>
-    <td>230, 0.063 (0.0025)</td>
-    <td>—</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>12</td>
-    <td>—</td>
-    <td>100, 0.150 (0.0059)</td>
-    <td>170, 0.090 (0.0035)</td>
-    <td>—</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>10</td>
-    <td>—</td>
-    <td>120, 0.125 (0.0049)</td>
-    <td>200, 0.075 (0.0029)</td>
-    <td>—</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>9</td>
-    <td>—</td>
-    <td>140, 0.106 (0.0041)</td>
-    <td>230, 0.063 (0.0025)</td>
-    <td>—</td>
-  </tr>
-  <tr>
-    <td>—</td>
-    <td>6</td>
-    <td>—</td>
-    <td>170, 0.090 (0.0035)</td>
-    <td>325, 0.045 (0.0017)</td>
-    <td>—</td>
-  </tr>
-</tbody>
-</table>
-
-
-<h2>Table 2A – Shape requirements of in-process non-metallic media</h2>
-<table>
-<thead>
-<tr>
-<th>Sample Size (Inches)</th>
-<th>Glass Shot Sizes AGB (1)</th>
-<th>Max Allowable Number of Unacceptable Glass Shot Shapes</th>
-<th>Ceramic Shot Sizes AZB (1)</th>
-<th>Max Allowable Number of Unacceptable Ceramic Shot Shapes</th>
-<th>Minimum Magnifier</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1 x 1</td>
-<td>200</td>
-<td>14</td>
-<td>—</td>
-<td>—</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>1 x 1</td>
-<td>170</td>
-<td>19</td>
-<td>—</td>
-<td>—</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>1 x 1</td>
-<td>140</td>
-<td>28</td>
-<td>—</td>
-<td>—</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>½ x ½</td>
-<td>100</td>
-<td>14</td>
-<td>850</td>
-<td>14</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>½ x ½</td>
-<td>70</td>
-<td>28</td>
-<td>600</td>
-<td>28</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>¼ x ¼</td>
-<td>50</td>
-<td>14</td>
-<td>425</td>
-<td>14</td>
-<td>20X</td>
-</tr>
-<tr>
-<td>¼ x ¼</td>
-<td>35</td>
-<td>28</td>
-<td>300</td>
-<td>28</td>
-<td>20X</td>
-</tr>
-<tr>
-<td>¼ x ¼</td>
-<td>30</td>
-<td>40</td>
-<td>—</td>
-<td>—</td>
-<td>30X</td>
-</tr>
-<tr>
-<td>1/8 x 1/8</td>
-<td>25</td>
-<td>14</td>
-<td>210</td>
-<td>14</td>
-<td>30X</td>
-</tr>
-<tr>
-<td>1/8 x 1/8</td>
-<td>18</td>
-<td>28</td>
-<td>150</td>
-<td>28</td>
-<td>30X</td>
-</tr>
-<tr>
-<td>1/8 x 1/8</td>
-<td>15</td>
-<td>not required</td>
-<td>not required</td>
-<td>not required</td>
-<td>1/8 x 1/8</td>
-</tr>
-<tr>
-<td>1/8 x 1/8</td>
-<td>12</td>
-<td>not required</td>
-<td>not required</td>
-<td>not required</td>
-<td>1/8 x 1/8</td>
-</tr>
-<tr>
-<td>1/8 x 1/8</td>
-<td>10</td>
-<td>not required</td>
-<td>not required</td>
-<td>not required</td>
-<td>1/8 x 1/8</td>
-</tr>
-<tr>
-<td>1/8 x 1/8</td>
-<td>9</td>
-<td>not required</td>
-<td>not required</td>
-<td>not required</td>
-<td>1/8 x 1/8</td>
-</tr>
-<tr>
-<td>1/8 x 1/8</td>
-<td>6</td>
-<td>not required</td>
-<td>not required</td>
-<td>not required</td>
-<td>1/8 x 1/8</td>
-</tr>
-</tbody>
-</table>
-
-<h2>Table 2B – Metallic media shape maintenance requirements</h2>
-<table>
-<thead>
-<tr>
-<th>Size (Inches)</th>
-<th>Cast Shot Sizes ASR or ASH (1)</th>
-<th>Maximum Allowable Number of Unacceptable Cast Shot Shapes</th>
-<th>Cut Wire Shot Sizes AWCR, AWS, AWCH (1)</th>
-<th>Maximum Allowable Number of Unacceptable Cut Wire Shot Shapes</th>
-<th>Minimum Magnifier</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1 x 1</td>
-<td>930</td>
-<td>4</td>
-<td>116</td>
-<td>4</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>1 x 1</td>
-<td>780</td>
-<td>5</td>
-<td>96</td>
-<td>5</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>1 x 1</td>
-<td>660</td>
-<td>7</td>
-<td>80</td>
-<td>7</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>1 x 1</td>
-<td>550</td>
-<td>9</td>
-<td>62</td>
-<td>9</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>1 x 1</td>
-<td>460</td>
-<td>16</td>
-<td>54</td>
-<td>16</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>1 x 1</td>
-<td>390</td>
-<td>22</td>
-<td>47</td>
-<td>22</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>½ x ½</td>
-<td>330</td>
-<td>7</td>
-<td>41</td>
-<td>7</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>½ x ½</td>
-<td>-</td>
-<td>-</td>
-<td>35</td>
-<td>9</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>½ x ½</td>
-<td>280</td>
-<td>9</td>
-<td>32</td>
-<td>9</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>½ x ½</td>
-<td>230</td>
-<td>14</td>
-<td>28</td>
-<td>14</td>
-<td>10X</td>
-</tr>
-<tr>
-<td>½ x ½</td>
-<td>190</td>
-<td>22</td>
-<td>23</td>
-<td>22</td>
-<td>20X</td>
-</tr>
-<tr>
-<td>½ x ½</td>
-<td>170</td>
-<td>31</td>
-<td>20</td>
-<td>31</td>
-<td>20X</td>
-</tr>
-<tr>
-<td>¼ x ¼</td>
-<td>130</td>
-<td>9</td>
-<td>17</td>
-<td>9</td>
-<td>20X</td>
-</tr>
-<tr>
-<td>¼ x ¼</td>
-<td>110</td>
-<td>14</td>
-<td>14</td>
-<td>14</td>
-<td>20X</td>
-</tr>
-<tr>
-<td>¼ x ¼</td>
-<td>70</td>
-<td>22</td>
-<td>12</td>
-<td>22</td>
-<td>30X</td>
-</tr>
-</tbody>
-</table>
-
-<h2>Table 5 – In-process media inspection frequency requirements</h2>
-<table>
-<thead>
-<tr>
-  <th>Media</th>
-  <th>Machine With Separator (Hours)</th>
-  <th>Machine Without Separator (Hours)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>AMS2431/1 Cast Steel Shot Regular</td>
-  <td>40</td>
-  <td>8</td>
-</tr>
-<tr>
-  <td>AMS2431/2 Cast Steel Shot Hard</td>
-  <td>40</td>
-  <td>8</td>
-</tr>
-<tr>
-  <td>AMS2431/3 Cut Wire Shot Carbon, Regular</td>
-  <td>80</td>
-  <td>16</td>
-</tr>
-<tr>
-  <td>AMS2431/4 Cut Wire Shot Stainless</td>
-  <td>120</td>
-  <td>24</td>
-</tr>
-<tr>
-  <td>AMS2431/5 Peening Balls</td>
-  <td>20</td>
-  <td>4</td>
-</tr>
-<tr>
-  <td>AMS2431/6 Glass Shot</td>
-  <td>8</td>
-  <td>Media shall be replaced after 2 hours of peening. No inspection of outgoing media required. When wet glass shot is used, the entire slurry charge shall be changed at frequent intervals for compliance with this requirement. Fresh shot may be added only once between changes of the entire slurry to maintain the media quality.</td>
-</tr>
-<tr>
-  <td>AMS2431/7 Ceramic Shot</td>
-  <td>8</td>
-  <td>4</td>
-</tr>
-<tr>
-  <td>AMS2431/8 Cut Wire Shot Carbon, Hard</td>
-  <td>80</td>
-  <td>16</td>
-</tr>
-</tbody>
-</table>
-
-
-
-
+        <select id="tableSelect" onchange="changeTable()">
+          <option value="dataTable">
+            Size requirements of in-process media
+          </option>
+          <option value="dataTable1">
+            None-metallic media shape requirements
+          </option>
+          <option value="dataTable2">Metallic media shape requirements</option>
+          <option value="dataTable3">
+            Media inspection frequency requirements
+          </option>
+        </select>
+      </div>
     </div>
 
+    <div class="table-container">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>Cast Shot Sizes ASR or ASH (1)</th>
+            <th>Cut Wire Shot Sizes AWCR AWS AWCH (1)</th>
+            <th>Glass Shot Sizes AGB (1)</th>
+            <th>Ceramic Shot Sizes AZB (1)</th>
+            <th>
+              0.5% Maximum by weight Allowed to be Retained on U.S. Sieve (2),
+              Size mm (Inch)
+            </th>
+            <th>
+              Maximum 20% By Weight Passing U.S. Sieve (2), Size mm (Inch)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>930</td>
+            <td>116</td>
+            <td>—</td>
+            <td>—</td>
+            <td>5, 4.00 (0.157)</td>
+            <td>8, 2.36 (0.0937)</td>
+          </tr>
+          <tr>
+            <td>780</td>
+            <td>96</td>
+            <td>—</td>
+            <td>—</td>
+            <td>6, 3.35 (0.132)</td>
+            <td>10, 2.00 (0.0787)</td>
+          </tr>
+          <tr>
+            <td>660</td>
+            <td>80</td>
+            <td>200</td>
+            <td>—</td>
+            <td>7, 2.80 (0.110)</td>
+            <td>12, 1.7 (0.0661)</td>
+          </tr>
+          <tr>
+            <td>550</td>
+            <td>62</td>
+            <td>170</td>
+            <td>—</td>
+            <td>8, 2.36 (0.0937)</td>
+            <td>14, 1.4 (0.0555)</td>
+          </tr>
+          <tr>
+            <td>460</td>
+            <td>54</td>
+            <td>150</td>
+            <td>—</td>
+            <td>10, 2.00 (0.0787)</td>
+            <td>16, 1.18 (0.0469)</td>
+          </tr>
+          <tr>
+            <td>390</td>
+            <td>47</td>
+            <td>—</td>
+            <td>—</td>
+            <td>12, 1.7 (0.0661)</td>
+            <td>18, 1.00 (0.0394)</td>
+          </tr>
+          <tr>
+            <td>330</td>
+            <td>41</td>
+            <td>100</td>
+            <td>850</td>
+            <td>14, 1.4 (0.0555)</td>
+            <td>20, 0.850 (0.0331)</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>35</td>
+            <td>—</td>
+            <td>—</td>
+            <td>16, 1.18 (0.0469)</td>
+            <td>25, 0.710 (0.0278)</td>
+          </tr>
+          <tr>
+            <td>280</td>
+            <td>32</td>
+            <td>—</td>
+            <td>—</td>
+            <td>16, 1.18 (0.0469)</td>
+            <td>25, 0.710 (0.0278)</td>
+          </tr>
+          <tr>
+            <td>230</td>
+            <td>28</td>
+            <td>70</td>
+            <td>600</td>
+            <td>18, 1.00 (0.0394)</td>
+            <td>30, 0.600 (0.0234)</td>
+          </tr>
+          <tr>
+            <td>190</td>
+            <td>23</td>
+            <td>—</td>
+            <td>—</td>
+            <td>20, 0.850 (0.0331)</td>
+            <td>35, 0.500 (0.0197)</td>
+          </tr>
+          <tr>
+            <td>170</td>
+            <td>20</td>
+            <td>50</td>
+            <td>425</td>
+            <td>25, 0.710 (0.0278)</td>
+            <td>40, 0.425 (0.0165)</td>
+          </tr>
+          <tr>
+            <td>130</td>
+            <td>17</td>
+            <td>—</td>
+            <td>—</td>
+            <td>30, 0.600 (0.0234)</td>
+            <td>45, 0.355 (0.0139)</td>
+          </tr>
+          <tr>
+            <td>110</td>
+            <td>14</td>
+            <td>35</td>
+            <td>300</td>
+            <td>35, 0.500 (0.0197)</td>
+            <td>50, 0.300 (0.0117)</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>—</td>
+            <td>30</td>
+            <td>—</td>
+            <td>40, 0.425 (0.0165)</td>
+            <td>60, 0.250 (0.0098)</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>25</td>
+            <td>210</td>
+            <td>45, 0.355 (0.0139)</td>
+            <td>70, 0.212 (0.0083)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>70</td>
+            <td>12</td>
+            <td>—</td>
+            <td>—</td>
+            <td>40, 0.425 (0.0165)</td>
+            <td>80, 0.180 (0.0070)</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>—</td>
+            <td>20</td>
+            <td>—</td>
+            <td>60, 0.250 (0.0098)</td>
+            <td>80, 0.180 (0.0070)</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>18</td>
+            <td>150</td>
+            <td>60, 0.250 (0.0098)</td>
+            <td>100, 0.150 (0.0059)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>15</td>
+            <td>—</td>
+            <td>70, 0.212 (0.0083)</td>
+            <td>120, 0.125 (0.0049)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>—</td>
+            <td>100</td>
+            <td>80, 0.180 (0.0070)</td>
+            <td>230, 0.063 (0.0025)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>12</td>
+            <td>—</td>
+            <td>100, 0.150 (0.0059)</td>
+            <td>170, 0.090 (0.0035)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>10</td>
+            <td>—</td>
+            <td>120, 0.125 (0.0049)</td>
+            <td>200, 0.075 (0.0029)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>9</td>
+            <td>—</td>
+            <td>140, 0.106 (0.0041)</td>
+            <td>230, 0.063 (0.0025)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>—</td>
+            <td>6</td>
+            <td>—</td>
+            <td>170, 0.090 (0.0035)</td>
+            <td>325, 0.045 (0.0017)</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="dataTable1">
+        <thead>
+          <tr>
+            <th>Sample Size (Inches)</th>
+            <th>Glass Shot Sizes AGB (1)</th>
+            <th>Max Allowable Number of Unacceptable Glass Shot Shapes</th>
+            <th>Ceramic Shot Sizes AZB (1)</th>
+            <th>Max Allowable Number of Unacceptable Ceramic Shot Shapes</th>
+            <th>Minimum Magnifier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 x 1</td>
+            <td>200</td>
+            <td>14</td>
+            <td>—</td>
+            <td>—</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>1 x 1</td>
+            <td>170</td>
+            <td>19</td>
+            <td>—</td>
+            <td>—</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>1 x 1</td>
+            <td>140</td>
+            <td>28</td>
+            <td>—</td>
+            <td>—</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>½ x ½</td>
+            <td>100</td>
+            <td>14</td>
+            <td>850</td>
+            <td>14</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>½ x ½</td>
+            <td>70</td>
+            <td>28</td>
+            <td>600</td>
+            <td>28</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>¼ x ¼</td>
+            <td>50</td>
+            <td>14</td>
+            <td>425</td>
+            <td>14</td>
+            <td>20X</td>
+          </tr>
+          <tr>
+            <td>¼ x ¼</td>
+            <td>35</td>
+            <td>28</td>
+            <td>300</td>
+            <td>28</td>
+            <td>20X</td>
+          </tr>
+          <tr>
+            <td>¼ x ¼</td>
+            <td>30</td>
+            <td>40</td>
+            <td>—</td>
+            <td>—</td>
+            <td>30X</td>
+          </tr>
+          <tr>
+            <td>1/8 x 1/8</td>
+            <td>25</td>
+            <td>14</td>
+            <td>210</td>
+            <td>14</td>
+            <td>30X</td>
+          </tr>
+          <tr>
+            <td>1/8 x 1/8</td>
+            <td>18</td>
+            <td>28</td>
+            <td>150</td>
+            <td>28</td>
+            <td>30X</td>
+          </tr>
+          <tr>
+            <td>1/8 x 1/8</td>
+            <td>15</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+          </tr>
+          <tr>
+            <td>1/8 x 1/8</td>
+            <td>12</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+          </tr>
+          <tr>
+            <td>1/8 x 1/8</td>
+            <td>10</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+          </tr>
+          <tr>
+            <td>1/8 x 1/8</td>
+            <td>9</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+          </tr>
+          <tr>
+            <td>1/8 x 1/8</td>
+            <td>6</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+            <td>not required</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="dataTable2">
+        <thead>
+          <tr>
+            <th>Size (Inches)</th>
+            <th>Cast Shot Sizes ASR or ASH (1)</th>
+            <th>Maximum Allowable Number of Unacceptable Cast Shot Shapes</th>
+            <th>Cut Wire Shot Sizes AWCR, AWS, AWCH (1)</th>
+            <th>
+              Maximum Allowable Number of Unacceptable Cut Wire Shot Shapes
+            </th>
+            <th>Minimum Magnifier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 x 1</td>
+            <td>930</td>
+            <td>4</td>
+            <td>116</td>
+            <td>4</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>1 x 1</td>
+            <td>780</td>
+            <td>5</td>
+            <td>96</td>
+            <td>5</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>1 x 1</td>
+            <td>660</td>
+            <td>7</td>
+            <td>80</td>
+            <td>7</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>1 x 1</td>
+            <td>550</td>
+            <td>9</td>
+            <td>62</td>
+            <td>9</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>1 x 1</td>
+            <td>460</td>
+            <td>16</td>
+            <td>54</td>
+            <td>16</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>1 x 1</td>
+            <td>390</td>
+            <td>22</td>
+            <td>47</td>
+            <td>22</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>½ x ½</td>
+            <td>330</td>
+            <td>7</td>
+            <td>41</td>
+            <td>7</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>½ x ½</td>
+            <td>-</td>
+            <td>-</td>
+            <td>35</td>
+            <td>9</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>½ x ½</td>
+            <td>280</td>
+            <td>9</td>
+            <td>32</td>
+            <td>9</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>½ x ½</td>
+            <td>230</td>
+            <td>14</td>
+            <td>28</td>
+            <td>14</td>
+            <td>10X</td>
+          </tr>
+          <tr>
+            <td>½ x ½</td>
+            <td>190</td>
+            <td>22</td>
+            <td>23</td>
+            <td>22</td>
+            <td>20X</td>
+          </tr>
+          <tr>
+            <td>½ x ½</td>
+            <td>170</td>
+            <td>31</td>
+            <td>20</td>
+            <td>31</td>
+            <td>20X</td>
+          </tr>
+          <tr>
+            <td>¼ x ¼</td>
+            <td>130</td>
+            <td>9</td>
+            <td>17</td>
+            <td>9</td>
+            <td>20X</td>
+          </tr>
+          <tr>
+            <td>¼ x ¼</td>
+            <td>110</td>
+            <td>14</td>
+            <td>14</td>
+            <td>14</td>
+            <td>20X</td>
+          </tr>
+          <tr>
+            <td>¼ x ¼</td>
+            <td>70</td>
+            <td>22</td>
+            <td>12</td>
+            <td>22</td>
+            <td>30X</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="dataTable3">
+        <thead>
+          <tr>
+            <th>Media</th>
+            <th>Machine With Separator (Hours)</th>
+            <th>Machine Without Separator (Hours)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AMS2431/1 Cast Steel Shot Regular</td>
+            <td>40</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td>AMS2431/2 Cast Steel Shot Hard</td>
+            <td>40</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td>AMS2431/3 Cut Wire Shot Carbon, Regular</td>
+            <td>80</td>
+            <td>16</td>
+          </tr>
+          <tr>
+            <td>AMS2431/4 Cut Wire Shot Stainless</td>
+            <td>120</td>
+            <td>24</td>
+          </tr>
+          <tr>
+            <td>AMS2431/5 Peening Balls</td>
+            <td>20</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>AMS2431/6 Glass Shot</td>
+            <td>8</td>
+            <td>
+              Media shall be replaced after 2 hours of peening. No inspection of
+              outgoing media required. When wet glass shot is used, the entire
+              slurry charge shall be changed at frequent intervals for
+              compliance with this requirement. Fresh shot may be added only
+              once between changes of the entire slurry to maintain the media
+              quality.
+            </td>
+          </tr>
+          <tr>
+            <td>AMS2431/7 Ceramic Shot</td>
+            <td>8</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>AMS2431/8 Cut Wire Shot Carbon, Hard</td>
+            <td>80</td>
+            <td>16</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <script>
+      window.onload = function () {
+        document.getElementById("tableSelect").selectedIndex = 0;
+        changeTable();
+      };
 
+      function changeTable() {
+        let selectedTable = document.getElementById("tableSelect").value;
+        document.querySelectorAll("table").forEach((table) => {
+          table.style.display = table.id === selectedTable ? "table" : "none";
+        });
+      }
 
-          window.onload = function() {
-              document.getElementById("tableSelect").selectedIndex = 0;
-            //  changeTable();
-          }
+      //highlight clicked rows
+      document.addEventListener("DOMContentLoaded", function () {
+        let rows = document.querySelectorAll(
+          "#dataTable tbody tr, #dataTable1 tbody tr, #dataTable2 tbody tr, #dataTable3 tbody tr"
+        );
 
-          function changeTable() {
-          let selectedTable = document.getElementById("tableSelect").value;
-          document.querySelectorAll("table").forEach(table => {
-              table.style.display = (table.id === selectedTable) ? "table" : "none";
+        rows.forEach((row) => {
+          row.addEventListener("click", function (event) {
+            if (row.classList.contains("highlighted")) {
+              row.classList.remove("highlighted");
+            } else {
+              rows.forEach((r) => r.classList.remove("highlighted"));
+              row.classList.add("highlighted");
+            }
+            event.stopPropagation();
           });
 
-          let ulElement = document.querySelectorAll(".nickelHardness"); // Change "myList" to your actual <ul> ID
-          let pwclElement = document.querySelectorAll(".steelHardnessC"); // Change "myList" to your actual <ul> ID
-        //  let clElement = document.querySelectorAll(".steelHardnessB"); // Change "myList" to your actual <ul> ID
-
-          if (selectedTable === "dataTable") {
-              ulElement.forEach(element => {
-                  element.style.display = 'block';
-              });
-          } else {
-            ulElement.forEach(element => {
-                  element.style.display = 'none';
-              });
-          }
-
-          if (selectedTable === "dataTable1") {
-            pwclElement.forEach(element => {
-                  element.style.display = 'block';
-              });
-          } else {
-            pwclElement.forEach(element => {
-                  element.style.display = 'none';
-              });
-          }
-
-          /*
-          if (selectedTable === "dataTable2") {
-            clElement.forEach(element => {
-                  element.style.display = 'block';
-              });
-          } else {
-            clElement.forEach(element => {
-                  element.style.display = 'none';
-              });
-          }*/
-
-      }
-
-
-        //highlight clicked rows
-        document.addEventListener("DOMContentLoaded", function() {
-            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
-
-            rows.forEach(row => {
-                row.addEventListener("click", function(event) {
-                    if (row.classList.contains("highlighted")) {
-                        row.classList.remove("highlighted");
-                    } else {
-                        rows.forEach(r => r.classList.remove("highlighted"));
-                        row.classList.add("highlighted");
-                    }
-                    event.stopPropagation();
-                });
-
-                  // Double-click event to call a function
-                  row.addEventListener("dblclick", function() {
-                    openModal(row);
-                });
-
-            });
-
-
-            document.addEventListener("click", function() {
-                rows.forEach(row => row.classList.remove("highlighted"));
-            });
+          // Double-click event to call a function
+          row.addEventListener("dblclick", function () {
+            openModal(row);
+          });
         });
 
+        document.addEventListener("click", function () {
+          rows.forEach((row) => row.classList.remove("highlighted"));
+        });
+      });
 
+      function searchTable() {
+        let input = document.getElementById("search");
+        let searchValue = input.value.trim();
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-        function searchTable() {
-          let input = document.getElementById("search");
-          let searchValue = input.value.trim();
-          let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+        // Show the clear button only if there is text in the search box
+        clearBtnContainer.style.display = searchValue ? "flex" : "none";
 
-          // Show the clear button only if there is text in the search box
-          clearBtnContainer.style.display = searchValue ? "flex" : "none";
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
 
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
+        let rows = table.getElementsByTagName("tr");
 
-          let rows = table.getElementsByTagName("tr");
-
-          for (let i = 1; i < rows.length; i++) {
-              if (rows[i].getElementsByTagName("th").length > 0) {
-                  continue; // Skip header rows
-              }
-
-              let cells = rows[i].getElementsByTagName("td");
-              let found = false;
-
-              for (let j = 0; j < cells.length; j++) {
-                  let cell = cells[j];
-
-                  // Clear previous highlights: remove all <span> elements and preserve their content
-                  cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
-
-                  if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
-                      highlightTextInElement(cell, searchValue);
-                      found = true;
-                  }
-              }
-
-              // Show row if a match is found, otherwise hide it
-              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        for (let i = 1; i < rows.length; i++) {
+          if (rows[i].getElementsByTagName("th").length > 0) {
+            continue; // Skip header rows
           }
+
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
+
+            // Clear previous highlights: remove all <span> elements and preserve their content
+            cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, "");
+
+            if (
+              searchValue &&
+              cell.textContent.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              highlightTextInElement(cell, searchValue);
+              found = true;
+            }
+          }
+
+          // Show row if a match is found, otherwise hide it
+          rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        }
       }
 
-        // Recursive function to highlight text while preserving HTML structure
-        function highlightTextInElement(element, searchValue) {
-            let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+      // Recursive function to highlight text while preserving HTML structure
+      function highlightTextInElement(element, searchValue) {
+        let regex = new RegExp(
+          `(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`,
+          "gi"
+        ); // Escape special characters
 
-            function highlightNode(node) {
-                if (node.nodeType === 3) { // TEXT_NODE
-                    let parent = node.parentNode;
-                    let text = node.nodeValue;
+        function highlightNode(node) {
+          if (node.nodeType === 3) {
+            // TEXT_NODE
+            let parent = node.parentNode;
+            let text = node.nodeValue;
 
-                    if (text.toLowerCase().includes(searchValue.toLowerCase())) {
-                        let tempWrapper = document.createElement("span");
-                        tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+              let tempWrapper = document.createElement("span");
+              tempWrapper.innerHTML = text.replace(
+                regex,
+                `<span style="color: red; font-weight: bold;">$1</span>`
+              );
 
-                        while (tempWrapper.firstChild) {
-                            parent.insertBefore(tempWrapper.firstChild, node);
-                        }
-                        parent.removeChild(node);
-                    }
-                } else {
-                    // Recursively process child nodes
-                    for (let i = node.childNodes.length - 1; i >= 0; i--) {
-                        highlightNode(node.childNodes[i]);
-                    }
-                }
+              while (tempWrapper.firstChild) {
+                parent.insertBefore(tempWrapper.firstChild, node);
+              }
+              parent.removeChild(node);
             }
-
-            highlightNode(element);
+          } else {
+            // Recursively process child nodes
+            for (let i = node.childNodes.length - 1; i >= 0; i--) {
+              highlightNode(node.childNodes[i]);
+            }
+          }
         }
 
+        highlightNode(element);
+      }
 
       function clearSearch() {
-          let input = document.getElementById("search");
-          let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+        let input = document.getElementById("search");
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-          // Clear the search input
-          input.value = "";
-          clearBtnContainer.style.display = "none"; // Hide the clear button
+        // Clear the search input
+        input.value = "";
+        clearBtnContainer.style.display = "none"; // Hide the clear button
 
-          // Reset the table to show all rows
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
+        // Reset the table to show all rows
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
 
-          let rows = table.getElementsByTagName("tr");
-          for (let i = 1; i < rows.length; i++) {
-              rows[i].style.display = ""; // Make all rows visible again
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+          rows[i].style.display = ""; // Make all rows visible again
 
-              // Remove any highlighting
-              let cells = rows[i].getElementsByTagName("td");
-              for (let j = 0; j < cells.length; j++) {
-                  cells[j].innerHTML = cells[j].textContent;
-              }
+          // Remove any highlighting
+          let cells = rows[i].getElementsByTagName("td");
+          for (let j = 0; j < cells.length; j++) {
+            cells[j].innerHTML = cells[j].textContent;
           }
+        }
       }
 
       function filterTable(input) {
-        let colIndex = Array.from(input.parentElement.parentElement.children).indexOf(input.parentElement);
+        let colIndex = Array.from(
+          input.parentElement.parentElement.children
+        ).indexOf(input.parentElement);
         let searchValue = input.value;
         let table = document.getElementById("dataTable2");
-        let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        let rows = table
+          .getElementsByTagName("tbody")[0]
+          .getElementsByTagName("tr");
 
         if (searchValue.trim() === "") {
-            for (let row of rows) {
-                row.style.display = "";
-            }
-            return;
+          for (let row of rows) {
+            row.style.display = "";
+          }
+          return;
         }
 
         let exactMatch = false;
-        let closestBelow = null, closestAbove = null;
+        let closestBelow = null,
+          closestAbove = null;
         searchValue = parseFloat(searchValue);
 
         for (let row of rows) {
-            let cells = row.getElementsByTagName("td");
-            if (colIndex >= cells.length) continue;
-            let cell = cells[colIndex];
-            let cellValue = parseFloat(cell.textContent.trim());
+          let cells = row.getElementsByTagName("td");
+          if (colIndex >= cells.length) continue;
+          let cell = cells[colIndex];
+          let cellValue = parseFloat(cell.textContent.trim());
 
-            if (!isNaN(searchValue)) {
-                if (cellValue === searchValue) {
-                    exactMatch = true;
-                } else if (cellValue < searchValue && (!closestBelow || cellValue > closestBelow)) {
-                    closestBelow = cellValue;
-                } else if (cellValue > searchValue && (!closestAbove || cellValue < closestAbove)) {
-                    closestAbove = cellValue;
-                }
+          if (!isNaN(searchValue)) {
+            if (cellValue === searchValue) {
+              exactMatch = true;
+            } else if (
+              cellValue < searchValue &&
+              (!closestBelow || cellValue > closestBelow)
+            ) {
+              closestBelow = cellValue;
+            } else if (
+              cellValue > searchValue &&
+              (!closestAbove || cellValue < closestAbove)
+            ) {
+              closestAbove = cellValue;
             }
+          }
         }
 
         for (let row of rows) {
-            let cells = row.getElementsByTagName("td");
-            if (colIndex >= cells.length) continue;
-            let cell = cells[colIndex];
-            let cellValue = parseFloat(cell.textContent.trim());
+          let cells = row.getElementsByTagName("td");
+          if (colIndex >= cells.length) continue;
+          let cell = cells[colIndex];
+          let cellValue = parseFloat(cell.textContent.trim());
 
-            if (exactMatch) {
-                row.style.display = cellValue === searchValue ? "" : "none";
-            } else {
-                row.style.display = cellValue === closestBelow || cellValue === closestAbove ? "" : "none";
-            }
+          if (exactMatch) {
+            row.style.display = cellValue === searchValue ? "" : "none";
+          } else {
+            row.style.display =
+              cellValue === closestBelow || cellValue === closestAbove
+                ? ""
+                : "none";
+          }
         }
-    }
+      }
 
       function tableToCSV(tableId) {
-      var table = document.getElementById(tableId);
-      var rows = table.querySelectorAll("tr");
-      var csv = [];
+        var table = document.getElementById(tableId);
+        var rows = table.querySelectorAll("tr");
+        var csv = [];
 
-      rows.forEach(row => {
+        rows.forEach((row) => {
           var cells = row.querySelectorAll("th, td");
           var rowData = [];
 
-          cells.forEach(cell => {
-              rowData.push(cell.textContent.trim());
+          cells.forEach((cell) => {
+            rowData.push(cell.textContent.trim());
           });
 
           csv.push(rowData.join(","));
-      });
+        });
 
-      return csv.join("\n");
-  }
+        return csv.join("\n");
+      }
 
-  function downloadCSV(tableId, filename = 'table.csv') {
-      var csvData = tableToCSV(tableId);
+      function downloadCSV(tableId, filename = "table.csv") {
+        var csvData = tableToCSV(tableId);
 
-      // Create a Blob with CSV data
-      var blob = new Blob([csvData], { type: 'text/csv' });
+        // Create a Blob with CSV data
+        var blob = new Blob([csvData], { type: "text/csv" });
 
-      // Create a temporary link element to trigger the download
-      var link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
+        // Create a temporary link element to trigger the download
+        var link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
 
-      // Trigger the download by clicking the link
-      link.click();
-  }
+        // Trigger the download by clicking the link
+        link.click();
+      }
 
-  // Example usage: Call this function with the table ID to download the CSV
-  //downloadCSV('dataTable2');
-
+      // Example usage: Call this function with the table ID to download the CSV
+      //downloadCSV('dataTable2');
     </script>
-</body>
+  </body>
 </html>

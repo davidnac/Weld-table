@@ -1,256 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Searchable Heat Treatments Table</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+      }
 
-        @font-face {
-            font-family: 'Montserrat-Medium';
-            src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
-            font-weight: 500; /* Medium weight */
-            font-style: normal;
-        }
-
-        :root{
-          --whiteColor: white;
-          }
-
+      :root {
+        --whiteColor: white;
+      }
 
       * {
         box-sizing: border-box;
       }
 
-      body[data-theme="light"]{
+      body[data-theme="light"] {
         --lightblack: white;
         --backgroundColor: #f4f4f4;
-        --tableHeader: #98D8EF;
+        --tableHeader: #98d8ef;
         --tableHover: #e0f7fa;
         --tableSecondRow: #f9f9f9;
         --textColor: black;
         --tableContainer: white;
-        --highlightRow: #FFD95F;
+        --highlightRow: #ffd95f;
       }
 
-      body[data-theme="dark"]{
+      body[data-theme="dark"] {
         --lightblack: #26272b;
         --backgroundColor: #171818;
-        --tableHeader: #FF748B;
-        --tableHover: #FF748B20;
+        --tableHeader: #ff748b;
+        --tableHover: #ff748b20;
         --tableContainer: #303233;
-        --tableSecondRow: #474B4D;
+        --tableSecondRow: #474b4d;
         --textColor: #fff;
-        --highlightRow: #FF748B20;
+        --highlightRow: #ff748b20;
       }
 
-        body {
-            font-family: 'Montserrat-Medium', sans-serif;
-            margin: 20px;
-            background-color: var(--backgroundColor);
-            text-align: center;
-            color: var(--textColor);
-        }
-        h2 {
-            margin-bottom: 25px;
-            margin-top: 30px;
-        }
-
-        select {
-            width: 270px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 5px;
-        }
-        .table-container {
-            width: 90%;
-            margin: 0 auto;
-            background-color: var(--tableContainer);
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            height: 71vh; /* Fixed height of the table container */
-            overflow-y: auto; /* Enable vertical scrolling */
-            margin-bottom: 22px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 15px;
-        }
-
-        table th:not(:last-child),
-        table td:not(:last-child) {
-            text-align: center;
-        }
-
-        th {
-            background-color: var(--tableHeader);
-            color: var(--whiteColor);
-            text-align: left;
-            cursor: pointer;
-            position: sticky;
-            top: 0; /* Make header sticky */
-            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
-        }
-        tr:nth-child(even) {
-            background-color: var(--tableSecondRow);
-        }
-        .sort-icon {
-            margin-left: 5px;
-            font-size: 12px;
-        }
-        tr:hover {
-            background-color: var(--tableHover);
-        }
-
-        /* Modal Styles */
-        #modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background-color: var(--lightblack);
-            padding: 20px 50px;
-            border-radius: 10px;
-            width: 55%;
-        }
-        .modal-header {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .modal-content input{
-          width: 70%;
-          padding: 8px;
-          margin-left: 8px;
-        }
-
-        .modal-content button{
-            background-color: #66D2CE;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-          }
-
-          .modal-content button:hover{
-            background-color: #2DAA9E;
-          }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-        }
-        br {
-            display: block;
-            content: "";
-            margin-bottom: 10px; /* Adjust the space */
-        }
-        .highlighted {
-            background-color: var(--highlightRow) !important;
-
-        }
-
-       ul {
-         list-style-type: none;
-         text-align: left;
-         margin: 0;
-         padding-left: 15px; /* remove default padding */
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        margin: 20px;
+        background-color: var(--backgroundColor);
+        text-align: center;
+        color: var(--textColor);
       }
-       li {
-         padding: 5px 0;
-         font-size: 14px;
-       }
-       h4{
-         padding-left: 25px;
-       }
+      h2 {
+        margin-bottom: 25px;
+        margin-top: 30px;
+      }
 
-       a img{
+      select {
+        width: 270px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 5px;
+      }
+      .table-container {
+        width: 90%;
+        margin: 0 auto;
+        background-color: var(--tableContainer);
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        height: 71vh; /* Fixed height of the table container */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 22px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+      }
+
+      table th:not(:last-child),
+      table td:not(:last-child) {
+        text-align: center;
+      }
+
+      th {
+        background-color: var(--tableHeader);
+        color: var(--whiteColor);
+        text-align: left;
+        cursor: pointer;
+        position: sticky;
+        top: 0; /* Make header sticky */
+        z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+      }
+      tr:nth-child(even) {
+        background-color: var(--tableSecondRow);
+      }
+      .sort-icon {
+        margin-left: 5px;
+        font-size: 12px;
+      }
+      tr:hover {
+        background-color: var(--tableHover);
+      }
+
+      /* Modal Styles */
+      #modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-content {
+        background-color: var(--lightblack);
+        padding: 20px 50px;
+        border-radius: 10px;
+        width: 55%;
+      }
+      .modal-header {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      .modal-content input {
+        width: 70%;
+        padding: 8px;
+        margin-left: 8px;
+      }
+
+      .modal-content button {
+        background-color: #66d2ce;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      .modal-content button:hover {
+        background-color: #2daa9e;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+      }
+      br {
+        display: block;
+        content: "";
+        margin-bottom: 10px; /* Adjust the space */
+      }
+      .highlighted {
+        background-color: var(--highlightRow) !important;
+      }
+
+      ul {
+        list-style-type: none;
+        text-align: left;
+        margin: 0;
+        padding-left: 15px; /* remove default padding */
+      }
+      li {
+        padding: 5px 0;
+        font-size: 14px;
+      }
+      h4 {
+        padding-left: 25px;
+      }
+
+      a img {
         width: 20px;
         height: 20px;
-       }
+      }
 
-       canvas {
+      canvas {
         width: 100% !important; /* 50% of the body width */
         margin-top: 40px;
         margin-bottom: 20px;
       }
 
-
       /* Navbar styles */
       .navbar {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          background-color: #3674B5;
-          padding: 15px 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
 
-          width: 94%;
-          margin: 15px auto;
-          margin-bottom: 50px;
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        width: 94%;
+        margin: 15px auto;
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       }
 
       .navbar .logo {
-          font-size: 18px;
-          font-weight: bold;
-          color: #1F497D;
-          text-transform: uppercase;
+        font-size: 18px;
+        font-weight: bold;
+        color: #1f497d;
+        text-transform: uppercase;
       }
 
-       .icons {
-          display: flex;
-          flex-direction: row;
-          gap: 15px;
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
       }
 
       .navbar .icon {
-          color: white;
-          font-size: 20px;
-          cursor: pointer;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
       }
 
       .navbar .icon:hover {
-          color: #FFD95F;
+        color: #ffd95f;
       }
 
-
-      img{
-          height: 40px;
-          width: auto;
+      img {
+        height: 40px;
+        width: auto;
       }
 
-      .logo-container{
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          gap: 20px;
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
       }
 
       .navbar .ThemeBtn-container {
@@ -264,94 +260,120 @@
       }
 
       .navbar .ThemeBtn-container:hover {
-        background-color: #98D8EF;
-        fill: white ;
+        background-color: #98d8ef;
+        fill: white;
         transition: all 0.5s ease;
       }
 
       .clearButton {
-         display: none;
-         cursor: pointer;
-         font-size: 26px;
-         color: gray;
-         padding-left: 6px;
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
       }
 
-      .svg-button{
-         border: none;
-         cursor: pointer;
-         background-color: transparent !important;
-         fill: #AC1754 ;
-         transform: scale(1.2);
-         margin: 4px;
-         margin-bottom: 0;
-         margin-right: 1px;
-       }
+      .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
 
-       .svg-button:hover{
-         fill: white;
-       }
+      .svg-button:hover {
+        fill: white;
+      }
 
       /* Search bar container */
       .search-container {
-          display: flex;
-          justify-content: center; /* Center horizontally */
-          margin-top: 30px; /* Adjust space above the search bar */
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
       }
 
       .navbar input {
-          padding: 10px;
-          width: 400px; /* Width of the search bar */
-          font-size: 16px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          background-color: rgb(244, 244, 244);
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
       }
-
     </style>
-
-</head>
-<body data-theme="light">
-
+  </head>
+  <body data-theme="light">
     <!-- Navbar -->
     <div class="navbar">
-        <div class="logo-container">
-            <img src="Images/IAI logo.webp" alt="Book Logo">
-            <div class="logo">Heat Treatments Table</div>
-        </div>
-
-        <div>
-            <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
-           <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
-           <select id="tableSelect" onchange="changeTable()">
-             <option value="dataTable">Safran (CFM)</option>
-             <option value="dataTable3">Pratt & Whitney (Civilian)</option>
-             <option value="dataTable2">Pratt & Whitney (Military)</option>
-           </select>
-         </div>
-
-
-
-        <div class="icons">
-          <div class="ThemeBtn-container" style="display: none;">
-            <button id="clearSearch" class="svg-button" onclick="clearSearch()">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                  <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
-              </button>
-          </div>
-
-          <div class="ThemeBtn-container">
-            <button id="clearSearch" class="svg-button" onclick="openBuilder()">
-                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M21,8c-1.45,0-2.26,1.44-1.93,2.51l-3.55,3.56c-0.3-0.09-0.74-0.09-1.04,0l-2.55-2.55C12.27,10.45,11.46,9,10,9 c-1.45,0-2.27,1.44-1.93,2.52l-4.56,4.55C2.44,15.74,1,16.55,1,18c0,1.1,0.9,2,2,2c1.45,0,2.26-1.44,1.93-2.51l4.55-4.56 c0.3,0.09,0.74,0.09,1.04,0l2.55,2.55C12.73,16.55,13.54,18,15,18c1.45,0,2.27-1.44,1.93-2.52l3.56-3.55 C21.56,12.26,23,11.45,23,10C23,8.9,22.1,8,21,8z"/><polygon points="15,9 15.94,6.93 18,6 15.94,5.07 15,3 14.08,5.07 12,6 14.08,6.93"/><polygon points="3.5,11 4,9 6,8.5 4,8 3.5,6 3,8 1,8.5 3,9"/></g></g></svg>              </button>
-          </div>
-        </div>
+      <div class="logo-container">
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">Heat Treatments Table</div>
       </div>
 
+      <div>
+        <input
+          type="text"
+          id="search"
+          onkeyup="searchTable()"
+          placeholder="Search for anything in the table..."
+        />
+        <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
+        <select id="tableSelect" onchange="changeTable()">
+          <option value="dataTable">Safran (CFM)</option>
+          <option value="dataTable3">Pratt & Whitney (Civilian)</option>
+          <option value="dataTable2">Pratt & Whitney (Military)</option>
+        </select>
+      </div>
 
+      <div class="icons">
+        <div class="ThemeBtn-container" style="display: none">
+          <button id="clearSearch" class="svg-button" onclick="clearSearch()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+            >
+              <path
+                d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"
+              />
+            </svg>
+          </button>
+        </div>
 
-  <div class="table-container">
-    <table id="dataTable">
-      <tr>
+        <div class="ThemeBtn-container">
+          <button id="clearSearch" class="svg-button" onclick="openBuilder()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              enable-background="new 0 0 24 24"
+              height="24px"
+              viewBox="0 0 24 24"
+              width="24px"
+            >
+              <g><rect fill="none" height="24" width="24" /></g>
+              <g>
+                <g>
+                  <path
+                    d="M21,8c-1.45,0-2.26,1.44-1.93,2.51l-3.55,3.56c-0.3-0.09-0.74-0.09-1.04,0l-2.55-2.55C12.27,10.45,11.46,9,10,9 c-1.45,0-2.27,1.44-1.93,2.52l-4.56,4.55C2.44,15.74,1,16.55,1,18c0,1.1,0.9,2,2,2c1.45,0,2.26-1.44,1.93-2.51l4.55-4.56 c0.3,0.09,0.74,0.09,1.04,0l2.55,2.55C12.73,16.55,13.54,18,15,18c1.45,0,2.27-1.44,1.93-2.52l3.56-3.55 C21.56,12.26,23,11.45,23,10C23,8.9,22.1,8,21,8z"
+                  />
+                  <polygon
+                    points="15,9 15.94,6.93 18,6 15.94,5.07 15,3 14.08,5.07 12,6 14.08,6.93"
+                  />
+                  <polygon points="3.5,11 4,9 6,8.5 4,8 3.5,6 3,8 1,8.5 3,9" />
+                </g>
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table id="dataTable">
+        <tr>
           <th>Cycle No.</th>
           <th>Type</th>
           <th>Application</th>
@@ -359,7 +381,7 @@
           <th>Heat Treat Cycle</th>
           <th>File</th>
         </tr>
-      <tr>
+        <tr>
           <td>1</td>
           <td>Full age</td>
           <td>Inconel 718 (NC19FeNb) and Incoloy 903 (Z3NK38)</td>
@@ -368,42 +390,53 @@
             <ul>
               <li><strong>a.</strong> Heat to 1325±25°F (720±14°C).</li>
               <li><strong>b.</strong> Hold for 8 hours.</li>
-              <li><strong>c.</strong> Cool to 1150±25°F (620±14°C) at a rate of 1.6°F (0.9°C) per minute.</li>
+              <li>
+                <strong>c.</strong> Cool to 1150±25°F (620±14°C) at a rate of
+                1.6°F (0.9°C) per minute.
+              </li>
               <li><strong>d.</strong> Hold for 8 hours.</li>
-              <li><strong>e.</strong> Air-cool or equivalent to room temperature.</li>
+              <li>
+                <strong>e.</strong> Air-cool or equivalent to room temperature.
+              </li>
             </ul>
           </td>
           <td>-</td>
-    </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>2</td>
           <td>Full age</td>
           <td>Rene’ 41, (NC19KDT), and Rene’ 77 (NK15CADT)</td>
           <td>Inert, Vacuum</td>
           <td>
             <ul>
-                <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
-                <li><strong>b.</strong> Hold for 16 hours.</li>
-                <li><strong>c.</strong> Cool to room temperature at a convenient rate.</li>
+              <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
+              <li><strong>b.</strong> Hold for 16 hours.</li>
+              <li>
+                <strong>c.</strong> Cool to room temperature at a convenient
+                rate.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>3</td>
           <td>Final age</td>
           <td>Rene’ 77 (NK15CADT)</td>
           <td>Inert, Vacuum</td>
           <td>
             <ul>
-                <li><strong>a.</strong> Heat to 1550±25°F (843±14°C).</li>
-                <li><strong>b.</strong> Hold for 16 hours.</li>
-                <li><strong>c.</strong> Cool to room temperature at a convenient rate.</li>
+              <li><strong>a.</strong> Heat to 1550±25°F (843±14°C).</li>
+              <li><strong>b.</strong> Hold for 16 hours.</li>
+              <li>
+                <strong>c.</strong> Cool to room temperature at a convenient
+                rate.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>4</td>
           <td>Aging</td>
           <td>17-4 PH (Z5CNU17)</td>
@@ -412,12 +445,14 @@
             <ul>
               <li><strong>a.</strong> Heat to 1150±15°F (620±10°C).</li>
               <li><strong>b.</strong> Hold for 4 hours.</li>
-              <li><strong>c.</strong> Air-cool or equivalent to room temperature.</li>
-              </ul>
+              <li>
+                <strong>c.</strong> Air-cool or equivalent to room temperature.
+              </li>
+            </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>5</td>
           <td>Stress relief</td>
           <td>A-286 (Z6NCT25) alloy</td>
@@ -426,31 +461,43 @@
             <ul>
               <li><strong>a.</strong> Heat to 1325±25°F (720±14°C).</li>
               <li><strong>b.</strong> Hold for 60 minutes.</li>
-              <li><strong>c.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>c.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>6</td>
           <td>Solution</td>
           <td>300 series stainless steel and Hastelloy X (NC22FeD)</td>
           <td>Hydrogen, Vacuum</td>
           <td>
             <ul>
-                <li><strong>a.</strong> Heat to 1925±25°F (1052±14°C).</li>
-                <li><strong>b.</strong> Hold for 30 minutes.</li>
-                <li><strong>c.</strong> Cool to 1000°F (540°C) at a rate not less than 30°F (17°C) per minute.</li>
-                <li><strong>d.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li><strong>a.</strong> Heat to 1925±25°F (1052±14°C).</li>
+              <li><strong>b.</strong> Hold for 30 minutes.</li>
+              <li>
+                <strong>c.</strong> Cool to 1000°F (540°C) at a rate not less
+                than 30°F (17°C) per minute.
+              </li>
+              <li>
+                <strong>d.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
           <td>
-            <a href="\\maman.iai\avi\CDROMS\Cdroms\JT9D\7R4\7R4D_E_E4-822232\NEW\HTR 1215230.docx" target="_blank">
-              <img src="Images/wordlogo.webp" alt="Word File" class="icon">
+            <a
+              href="\\maman.iai\avi\CDROMS\Cdroms\JT9D\7R4\7R4D_E_E4-822232\NEW\HTR 1215230.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
             </a>
           </td>
-    </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>7</td>
           <td>Solution</td>
           <td>Rene’ 77 (NK15CADT) and Rene’ 41 (NC19KDT)</td>
@@ -459,13 +506,19 @@
             <ul>
               <li><strong>a.</strong> Heat to 1975±25°F (1080±14°C).</li>
               <li><strong>b.</strong> Hold for 30 minutes.</li>
-              <li><strong>c.</strong> Cool to 1000°F (540°C) at a rate not less than 30°F (17°C) per minute.</li>
-              <li><strong>d.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>c.</strong> Cool to 1000°F (540°C) at a rate not less
+                than 30°F (17°C) per minute.
+              </li>
+              <li>
+                <strong>d.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>8</td>
           <td>Stress relief</td>
           <td>Some Titanium alloys</td>
@@ -473,13 +526,19 @@
           <td>
             <ul>
               <li><strong>a.</strong> Heat to 1300±25°F (705±14°C).</li>
-              <li><strong>b.</strong> Cool to 1000°F (540°C). Cooling rate is not critical.</li>
-              <li><strong>c.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>b.</strong> Cool to 1000°F (540°C). Cooling rate is not
+                critical.
+              </li>
+              <li>
+                <strong>c.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>9</td>
           <td>Partial Stress relief</td>
           <td>Ti6-4 (TA6V)</td>
@@ -488,16 +547,22 @@
             <ul>
               <li><strong>a.</strong> Heat to 1025±25°F (550±14°C).</li>
               <li><strong>b.</strong> Hold for 2 hours.</li>
-              <li><strong>c.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>c.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
           <td>
-            <a href="file:\\iai.co.il\AVI\DFS-Users\d13n887\Desktop\Downloads\HTR 1270823.docx" target="_blank">
-              <img src="Images/wordlogo.webp" alt="Word File" class="icon">
+            <a
+              href="file:\\iai.co.il\AVI\DFS-Users\d13n887\Desktop\Downloads\HTR 1270823.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
             </a>
           </td>
-    </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>10</td>
           <td>Solution</td>
           <td>X-40 alloy (KC25NW)</td>
@@ -507,12 +572,15 @@
               <li><strong>a.</strong> Heat to 2150±25°F (1180±14°C).</li>
               <li><strong>b.</strong> Hold for 60 minutes.</li>
               <li><strong>c.</strong> Cool to 1200°F (650°C) in 20 minutes.</li>
-              <li><strong>d.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>d.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
-        </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>11</td>
           <td>Solution, Stress relief, Bright Annealing</td>
           <td>Hastelloy X (NC22FeD) and HS188 (KCN22W)</td>
@@ -522,16 +590,22 @@
               <li><strong>a.</strong> Heat to 2075±25°F (1135±14°C).</li>
               <li><strong>b.</strong> Hold for a minimum of 30 minutes.</li>
               <li><strong>c.</strong> Cool to 1200°F (650°C) in 20 minutes.</li>
-              <li><strong>d.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>d.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
           <td>
-            <a href="file:///C:/Users/boken/Downloads/HTR 1072580.docx" target="_blank">
-              <img src="Images/wordlogo.webp" alt="Word File" class="icon">
+            <a
+              href="file:///C:/Users/boken/Downloads/HTR 1072580.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
             </a>
           </td>
-    </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>12</td>
           <td>Solution</td>
           <td>Rene’ 41 (NC19KDT) and Hastelloy X (NC22FeD)</td>
@@ -540,13 +614,19 @@
             <ul>
               <li><strong>a.</strong> Heat to 1950±25°F (1065±14°C).</li>
               <li><strong>b.</strong> Hold for 30 minutes.</li>
-              <li><strong>c.</strong> Cool to 1000°F (540°C) at a rate not less than 30°F (17°C) per minute.</li>
-              <li><strong>d.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>c.</strong> Cool to 1000°F (540°C) at a rate not less
+                than 30°F (17°C) per minute.
+              </li>
+              <li>
+                <strong>d.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>13</td>
           <td>Solution</td>
           <td>Incoloy 903 (Z3NK38 alloy)</td>
@@ -555,26 +635,38 @@
             <ul>
               <li><strong>a.</strong> Heat to 1550±25°F (845±14°C).</li>
               <li><strong>b.</strong> Hold for 60 minutes.</li>
-              <li><strong>c.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>c.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>14</td>
           <td>Solution</td>
           <td>Inconel 718 (NC19FeNb)</td>
           <td>Inert, Vacuum</td>
           <td>
             <ul>
-              <li><strong>a.</strong> Heat to 1750±25°F (955±14°C) and hold for 60 min ±5 min.</li>
-              <li><strong>b.</strong> Cool to 1000°F (540°C) at a rate not less than 30°F (20°C) per minute.</li>
-              <li><strong>c.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>a.</strong> Heat to 1750±25°F (955±14°C) and hold for 60
+                min ±5 min.
+              </li>
+              <li>
+                <strong>b.</strong> Cool to 1000°F (540°C) at a rate not less
+                than 30°F (20°C) per minute.
+              </li>
+              <li>
+                <strong>c.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-      <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>15</td>
           <td>High temperature Solution</td>
           <td>Inconel 718 (NC19FeNb) Forge, Case & Frame</td>
@@ -583,13 +675,19 @@
             <ul>
               <li><strong>a.</strong> Heat to 1780±25°F (970±14°C).</li>
               <li><strong>b.</strong> Hold for 15 ±5 minutes.</li>
-              <li><strong>c.</strong> Cool to 1000°F (540°C) at a rate not less than 30°F (20°C) per minute.</li>
-              <li><strong>d.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>c.</strong> Cool to 1000°F (540°C) at a rate not less
+                than 30°F (20°C) per minute.
+              </li>
+              <li>
+                <strong>d.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
-       <tr>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>16</td>
           <td>Deleted. See cycle No. 14</td>
           <td>-</td>
@@ -597,7 +695,7 @@
           <td>-</td>
           <td>-</td>
         </tr>
-       <tr>
+        <tr>
           <td>17</td>
           <td>Short age</td>
           <td>Inconel 718 (NC19FeNb) Seal teeth</td>
@@ -606,552 +704,784 @@
             <ul>
               <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
               <li><strong>b.</strong> Hold for 2 hours.</li>
-              <li><strong>c.</strong> Introduce inert gas and cool to 1150±25°F (620±14°C).</li>
+              <li>
+                <strong>c.</strong> Introduce inert gas and cool to 1150±25°F
+                (620±14°C).
+              </li>
               <li><strong>d.</strong> Hold for 4 hours.</li>
-              <li><strong>e.</strong> Air-cool or equivalent rate to room temperature.</li>
+              <li>
+                <strong>e.</strong> Air-cool or equivalent rate to room
+                temperature.
+              </li>
             </ul>
           </td>
-      <td>-</td>
-    </tr>
+          <td>-</td>
+        </tr>
 
         <tr>
-            <td>18</td>
-            <td>Stress relief</td>
-            <td>IN100 (NK15CATu) DS200 (NW12KCA)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1600±25°F (870±14°C).</li>
-                <li><strong>b.</strong> Hold for 2 hours.</li>
-                <li><strong>c.</strong> Cool to 400°F (205°C) in an inert atmosphere.</li>
-                <li><strong>d.</strong> Cool to room temperature.</li>
-              </ul>
+          <td>18</td>
+          <td>Stress relief</td>
+          <td>IN100 (NK15CATu) DS200 (NW12KCA)</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat to 1600±25°F (870±14°C).</li>
+              <li><strong>b.</strong> Hold for 2 hours.</li>
+              <li>
+                <strong>c.</strong> Cool to 400°F (205°C) in an inert
+                atmosphere.
+              </li>
+              <li><strong>d.</strong> Cool to room temperature.</li>
+            </ul>
           </td>
-        <td>-</td>
-      </tr>
-        <tr>
-            <td>19</td>
-            <td>Stress relief</td>
-            <td>Rene’ 77 (NK15CADT)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
-                <li><strong>b.</strong> Hold for 4 hours.</li>
-                <li><strong>c.</strong> Cool to 400°F (205°C) in an inert atmosphere.</li>
-                <li><strong>d.</strong> Cool to room temperature.</li>
-              </ul>
-            </td>
-            <td>
-              <a href="file:///C:/Users/boken/Downloads/HTR 1107158.docx" target="_blank">
-                <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-              </a>
-            </td>
+          <td>-</td>
         </tr>
         <tr>
-            <td>20</td>
-            <td>Stress relief</td>
-            <td>Rene’ 77 (NK15CADT)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
-                <li><strong>b.</strong> Hold for 8 hours.</li>
-                <li><strong>c.</strong> Cool to 400°F (205°C) in an inert atmosphere.</li>
-                <li><strong>d.</strong> Cool to room temperature.</li>
-              </ul>
-            </td>
-        <td>-</td>
-      </tr>
-        <tr>
-            <td>21</td>
-            <td>Alt full age </td>
-            <td>Inconel 718 (NC19FeNb)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
-                <li><strong>b.</strong> Hold for 5 hours.</li>
-                <li><strong>c.</strong> Cool to 1200°F (650°C).</li>
-                <li><strong>d.</strong> Hold for 60 minutes.</li>
-                <li><strong>e.</strong> Cool to room temperature.</li>
+          <td>19</td>
+          <td>Stress relief</td>
+          <td>Rene’ 77 (NK15CADT)</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
+              <li><strong>b.</strong> Hold for 4 hours.</li>
+              <li>
+                <strong>c.</strong> Cool to 400°F (205°C) in an inert
+                atmosphere.
+              </li>
+              <li><strong>d.</strong> Cool to room temperature.</li>
             </ul>
           </td>
-        <td>-</td>
-      </tr>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/HTR 1107158.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
         <tr>
-            <td>22</td>
-            <td>Full age</td>
-            <td>DS200 (NW12KCA)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1600±25°F (870±14°C).</li>
-                <li><strong>b.</strong> Hold for 16 hours in vacuum or inert atmosphere.</li>
-                <li><strong>c.</strong> Cool to room temperature.</li>
-              </ul>
-            </td>
-        <td>-</td>
-      </tr>
-        <tr>
-            <td>23</td>
-            <td>Stress relief</td>
-            <td>17-4 PH (Z5CNU17)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1095±15°F (590±10°C).</li>
-                <li><strong>b.</strong> Hold for 2 hours.</li>
-                <li><strong>c.</strong> Air-cool to room temperature.</li>
-              </ul>
-            </td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <td>-</td>
-        <td>Brazing</td>
-        <td>AMS 4777 for Inconel 718</td>
-        <td>Vacuum</td>
-        <td>
-          <ul>
-            <li><strong>a.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
-            <li><strong>b.</strong> Heat to 1750±50°F (954±14°C) and hold for 10-15 minutes (heat rate not important).</li>
-            <li><strong>c.</strong> Heat to 1900±25°F (1038±14°C) at a rate of 31±4°F (17±2°C) per minute.</li>
-            <li><strong>d.</strong> Hold for 5 minutes max.</li>
-            <li><strong>e.</strong> Cool to 1750±50°F (954±27°C) at a max rate of 35°F (19°C) per minute.</li>
-            <li><strong>f.</strong> Hold for 15 minutes max.</li>
-            <li><strong>g.</strong> Cool to 1000°F (538°C) within 30 minutes or less in inert atnosphere.</li>
-            <li><strong>h.</strong> Cool to room temperature. rate is not important</li>
-          </ul>
-        </td>
-        <td>
-          <a href="file:///C:/Users/boken/Downloads/BRZ 5603-0089.docx" target="_blank">
-            <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-          </a>
-        </td>
-    </tr>
-      <tr>
-        <td>-</td>
-        <td>Brazing</td>
-        <td>AMS 4777 + full Solution of Inconel 718</td>
-        <td>Vacuum</td>
-        <td>
-          <ul>
-            <li><strong>a.</strong> Heat to 1000°F (538°C) and hold for 15 minutes.</li>
-            <li><strong>b.</strong> Heat to 1750±50°F (954±14°C) and hold for 25 minutes (heat rate not important).</li>
-            <li><strong>c.</strong> Heat to 1900±25°F (1038±14°C) at a rate of 31±4°F (17±2°C) per minute.</li>
-            <li><strong>d.</strong> Hold for 4 minutes.</li>
-            <li><strong>e.</strong> Cool to 1750±50°F (954±27°C) at a rate of 17°F (10°C) per minute.</li>
-            <li><strong>f.</strong> Hold for 15 minutes.</li>
-            <li><strong>g.</strong> Cool to 1000°F (538°C) at a rate of 35°F (19°C) per minute or faster.</li>
-            <li><strong>h.</strong> Cool to room temperature. rate is not important</li>
-          </ul>
-        </td>
-        <td>
-          <a href="file:///C:/Users/boken/Downloads/BRZ 1309680-1.docx" target="_blank">
-            <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>-</td>
-        <td>Diffusion Brazing</td>
-        <td>75% AMS 4777 + 25% Nicrogap 116 for Rene 41</td>
-        <td>Vacuum</td>
-        <td>
-          <ul>
-            <li><strong>a.</strong> Heat to 1000° (538°C) and hold for 30 minutes.</li>
-            <li><strong>b.</strong> Heat to 1706±25°F (930±14°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Heat to to 2084±25°F (1140±14°C) and hold for 30 minutes.</li>
-            <li><strong>e.</strong> Cool to 1931±50°F (1055±14°C) at a rate of 7°F (5°C) per minute.</li>
-            <li><strong>f.</strong> Hold for 120 minutes.</li>
-            <li><strong>e.</strong> Cool to 1760±25°F (960±14°C) at a rate of 7°F (5°C) per minute.</li>
-            <li><strong>f.</strong> Hold for 120 minutes.</li>
-            <li><strong>h.</strong> Cool to room temperature at max rate.</li>
-          </ul>
-        </td>
-        <td>
-          <a href="file:///C:/Users/boken/Downloads/BRZ 52319015-1.docx" target="_blank">
-            <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-          </a>
-        </td>
-      </tr>
-
-
-      <tr>
+          <td>20</td>
+          <td>Stress relief</td>
+          <td>Rene’ 77 (NK15CADT)</td>
           <td>-</td>
-          <td>Solution</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
+              <li><strong>b.</strong> Hold for 8 hours.</li>
+              <li>
+                <strong>c.</strong> Cool to 400°F (205°C) in an inert
+                atmosphere.
+              </li>
+              <li><strong>d.</strong> Cool to room temperature.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td>Alt full age</td>
+          <td>Inconel 718 (NC19FeNb)</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat to 1400±25°F (760±14°C).</li>
+              <li><strong>b.</strong> Hold for 5 hours.</li>
+              <li><strong>c.</strong> Cool to 1200°F (650°C).</li>
+              <li><strong>d.</strong> Hold for 60 minutes.</li>
+              <li><strong>e.</strong> Cool to room temperature.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>Full age</td>
+          <td>DS200 (NW12KCA)</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat to 1600±25°F (870±14°C).</li>
+              <li>
+                <strong>b.</strong> Hold for 16 hours in vacuum or inert
+                atmosphere.
+              </li>
+              <li><strong>c.</strong> Cool to room temperature.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>23</td>
+          <td>Stress relief</td>
+          <td>17-4 PH (Z5CNU17)</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat to 1095±15°F (590±10°C).</li>
+              <li><strong>b.</strong> Hold for 2 hours.</li>
+              <li><strong>c.</strong> Air-cool to room temperature.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>-</td>
+          <td>Brazing</td>
+          <td>AMS 4777 for Inconel 718</td>
+          <td>Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1000°F (538°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Heat to 1750±50°F (954±14°C) and hold for
+                10-15 minutes (heat rate not important).
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 1900±25°F (1038±14°C) at a rate of
+                31±4°F (17±2°C) per minute.
+              </li>
+              <li><strong>d.</strong> Hold for 5 minutes max.</li>
+              <li>
+                <strong>e.</strong> Cool to 1750±50°F (954±27°C) at a max rate
+                of 35°F (19°C) per minute.
+              </li>
+              <li><strong>f.</strong> Hold for 15 minutes max.</li>
+              <li>
+                <strong>g.</strong> Cool to 1000°F (538°C) within 30 minutes or
+                less in inert atnosphere.
+              </li>
+              <li>
+                <strong>h.</strong> Cool to room temperature. rate is not
+                important
+              </li>
+            </ul>
+          </td>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/BRZ 5603-0089.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>-</td>
+          <td>Brazing</td>
+          <td>AMS 4777 + full Solution of Inconel 718</td>
+          <td>Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1000°F (538°C) and hold for 15
+                minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Heat to 1750±50°F (954±14°C) and hold for 25
+                minutes (heat rate not important).
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 1900±25°F (1038±14°C) at a rate of
+                31±4°F (17±2°C) per minute.
+              </li>
+              <li><strong>d.</strong> Hold for 4 minutes.</li>
+              <li>
+                <strong>e.</strong> Cool to 1750±50°F (954±27°C) at a rate of
+                17°F (10°C) per minute.
+              </li>
+              <li><strong>f.</strong> Hold for 15 minutes.</li>
+              <li>
+                <strong>g.</strong> Cool to 1000°F (538°C) at a rate of 35°F
+                (19°C) per minute or faster.
+              </li>
+              <li>
+                <strong>h.</strong> Cool to room temperature. rate is not
+                important
+              </li>
+            </ul>
+          </td>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/BRZ 1309680-1.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>-</td>
+          <td>Diffusion Brazing</td>
+          <td>75% AMS 4777 + 25% Nicrogap 116 for Rene 41</td>
+          <td>Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1000° (538°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Heat to 1706±25°F (930±14°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to to 2084±25°F (1140±14°C) and hold
+                for 30 minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Cool to 1931±50°F (1055±14°C) at a rate of
+                7°F (5°C) per minute.
+              </li>
+              <li><strong>f.</strong> Hold for 120 minutes.</li>
+              <li>
+                <strong>e.</strong> Cool to 1760±25°F (960±14°C) at a rate of
+                7°F (5°C) per minute.
+              </li>
+              <li><strong>f.</strong> Hold for 120 minutes.</li>
+              <li><strong>h.</strong> Cool to room temperature at max rate.</li>
+            </ul>
+          </td>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/BRZ 52319015-1.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td>-</td>
+          <td>Solution, Stress relieve</td>
           <td>Hastelloy X part with previous brazing</td>
           <td>Vacuum</td>
           <td>
             <ul>
-                <li><strong>a.</strong> Heat to 1700±25°F (927±14°C).</li>
-                <li><strong>b.</strong> Hold for 30 minutes.</li>
-                <li><strong>c.</strong> Cool to 800°F (427°C) in 0.5 vacuum.</li>
-                <li><strong>d.</strong> Cool to room temperature.</li>
+              <li><strong>a.</strong> Heat to 1700±25°F (927±14°C).</li>
+              <li><strong>b.</strong> Hold for 30 minutes.</li>
+              <li><strong>c.</strong> Cool to 800°F (427°C) in 0.5 vacuum.</li>
+              <li><strong>d.</strong> Cool to room temperature.</li>
             </ul>
           </td>
           <td>
-            <a href="\\maman.iai\avi\CDROMS\Cdroms\JT9D\7R4\7R4D_E_E4-822232\NEW\HTR 23410.docx" target="_blank">
-              <img src="Images/wordlogo.webp" alt="Word File" class="icon">
+            <a
+              href="\\maman.iai\avi\CDROMS\Cdroms\JT9D\7R4\7R4D_E_E4-822232\NEW\HTR 23410.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
             </a>
           </td>
-    </tr>
+        </tr>
 
-
-      <tr>
-        <td>-</td>
-        <td>Stress relief</td>
-        <td>Magnesium Alloy AMS 4439</td>
-        <td>Air</td>
-        <td>
+        <tr>
+          <td>-</td>
+          <td>Stress relief</td>
+          <td>Magnesium Alloy AMS 4439</td>
+          <td>Air</td>
+          <td>
             <ul>
               <li><strong>a.</strong> Heat to 349±50°F (176±5°C).</li>
               <li><strong>a.</strong> Hold for 10 hours.</li>
               <li><strong>c.</strong> Air-cool to room temperature.</li>
             </ul>
           </td>
-         <td>
-           <a href="file:///C:/Users/boken/Downloads/HTR 1307356.docx" target="_blank">
-             <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-           </a>
-        </td>
-      </tr>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/HTR 1307356.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
 
-      <tr>
-        <td>-</td>
-        <td>Stress relief</td>
-        <td>Aluminum 6061-T651</td>
-        <td>Air</td>
-        <td>
+        <tr>
+          <td>-</td>
+          <td>Stress relief</td>
+          <td>Aluminum 6061-T651</td>
+          <td>Air</td>
+          <td>
             <ul>
               <li><strong>a.</strong> Heat to 350±9°F (177±14°C).</li>
               <li><strong>a.</strong> Hold for 3 hours.</li>
               <li><strong>c.</strong> Air-cool to room temperature.</li>
             </ul>
           </td>
-         <td>
-           <a href="file:///C:/Users/boken/Downloads/HTR 1310307.docx" target="_blank">
-             <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-           </a>
-        </td>
-      </tr>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/HTR 1310307.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
 
-      <tr>
-        <td>-</td>
-        <td>Baking</td>
-        <td>Inconel 718 Silver Plating</td>
-        <td>Argon</td>
-        <td>
+        <tr>
+          <td>-</td>
+          <td>Baking</td>
+          <td>Inconel 718 Silver Plating</td>
+          <td>Argon</td>
+          <td>
             <ul>
               <li><strong>a.</strong> Heat to 725±25°F (385±14°C).</li>
               <li><strong>a.</strong> Hold for 60 minutes.</li>
               <li><strong>c.</strong> Air-cool to room temperature.</li>
             </ul>
           </td>
-         <td>
-           <a href="file:///C:/Users/boken/Downloads/HTR 1223299.docx" target="_blank">
-             <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-           </a>
-        </td>
-      </tr>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/HTR 1223299.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
 
-
-      <tr>
-        <td>-</td>
-        <td>Degassing</td>
-        <td>M152 (AMS 5719) Silver Plating</td>
-        <td>Argon</td>
-        <td>
+        <tr>
+          <td>-</td>
+          <td>Degassing</td>
+          <td>M152 (AMS 5719) Silver Plating</td>
+          <td>Argon</td>
+          <td>
             <ul>
               <li><strong>a.</strong> Heat to 392±9°F (200±5°C).</li>
               <li><strong>a.</strong> Hold for 3 hours.</li>
               <li><strong>c.</strong> Air-cool to room temperature.</li>
             </ul>
           </td>
-         <td>
-           <a href="file:///C:/Users/boken/Downloads/PLT 5603-0262-070.docx" target="_blank">
-             <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-           </a>
-        </td>
-      </tr>
-    </table>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/PLT 5603-0262-070.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
+      </table>
 
-    <!--Pratt & Whitney (Civilian)-->
-    <table id="dataTable3">
-      <tr>
-        <th onclick="sortTable(0, 'dataTable3')">Cycle No.<span class="sort-icon">&#x2195;</span></th>
-        <th onclick="sortTable(1, 'dataTable3')">SPOP No.<span class="sort-icon">&#x2195;</span></th>
-        <th>Type</th>
-        <th>Application</th>
-        <th>Acceptable Atmosphere</th>
-        <th>Heat Treat Cycle</th>
-        <th>File</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>455-1</td>
-        <td>Stress relief</td>
-        <td>Type 410, Greek Ascoloy, Low Alloy Steels</td>
-        <td>Air, Argon, Vacuum</td>
-        <td>
-          <ul>
-            <li><strong>a.</strong> Heat part to 1015±25°F (546±14°C).</li>
-            <li><strong>b.</strong> Hold for  2 hours.</li>
-        </ul>
-      </td>
-        <td>
-          <a href="file:///C:/Users/boken/Downloads/weld.docx" target="_blank">
-            <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-          </a>
-        </td>
-    </tr>
-      <tr>
-        <td>1A</td>
-        <td>455-2</td>
-        <td>Stress relief</td>
-        <td>Low Alloy Steels</td>
-        <td>Air, Argon, Vacuum</td>
-        <td>
-          <ul>
-            <li><strong>a.</strong> Put part in cold furnace.</li>
-            <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-            <li><strong>d.</strong> Heat to 1015±15°F (546±8°C) and hold for 2 hours.</li>
-            <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-         </ul>
-        </td>
-      <td>-</td>
-    </tr>
-      <tr>
-        <td>-</td>
-        <td>456-2</td>
-        <td>Post weld Stress relief</td>
-        <td>6061 Aluminum, AZ92 and ZE41 Magnesium</td>
-        <td>Air</td>
-        <td>
-          <ul>
-            <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-            <li><strong>a.</strong> Heat part to 325±10°F (162±5°C).</li>
-            <li><strong>b.</strong> Hold for 4 hours.</li>
-        </ul>
-      </td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>458-1</td>
-      <td>Stress relief</td>
-      <td>Inconel X-750</td>
-      <td>Air</td>
-      <td>
-          <ul>
-            <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-            <li><strong>a.</strong> Heat to 1300±25°F (704±13°C) and hold for 2 hours.</li>
-        </ul>
-      </td>
-    <td>-</td>
-  </tr>
-      <tr>
-        <td>4A</td>
-        <td>458-2</td>
-        <td>Stress relief</td>
-        <td>Inconel X-750</td>
-        <td>Air</td>
-        <td>
+      <!--Pratt & Whitney (Civilian)-->
+      <table id="dataTable3">
+        <tr>
+          <th onclick="sortTable(0, 'dataTable3')">
+            Cycle No.<span class="sort-icon">&#x2195;</span>
+          </th>
+          <th onclick="sortTable(1, 'dataTable3')">
+            SPOP No.<span class="sort-icon">&#x2195;</span>
+          </th>
+          <th>Type</th>
+          <th>Application</th>
+          <th>Acceptable Atmosphere</th>
+          <th>Heat Treat Cycle</th>
+          <th>File</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>455-1</td>
+          <td>Stress relief</td>
+          <td>Type 410, Greek Ascoloy, Low Alloy Steels</td>
+          <td>Air, Argon, Vacuum</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1015±25°F (546±14°C).</li>
+              <li><strong>b.</strong> Hold for 2 hours.</li>
+            </ul>
+          </td>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/weld.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>1A</td>
+          <td>455-2</td>
+          <td>Stress relief</td>
+          <td>Low Alloy Steels</td>
+          <td>Air, Argon, Vacuum</td>
+          <td>
             <ul>
               <li><strong>a.</strong> Put part in cold furnace.</li>
-              <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-              <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-              <li><strong>d.</strong> Heat to 1100°F (593°C) and hold for 30 minutes.</li>
-              <li><strong>e.</strong> Heat to 1300±25°F (704±13°C) and hold for 2 hours.</li>
-              <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-          </ul>
-        </td>
-      <td>-</td>
-    </tr>
-      <tr>
-        <td>5</td>
-        <td>459-1</td>
-        <td>Stress relief</td>
-        <td>B-1900/PWA 663/PWA 1455, STELLITE 31/AMS 5382, Inconel 713/PWA 655, WI-52/PWA 653, MAR-M-509/PWA 647, MAR-M-200/PWA 1422/PWA 1480</td>
-        <td>Air</td>
-        <td>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1015±15°F (546±8°C) and hold for 2
+                hours.
+              </li>
+              <li>
+                <strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>-</td>
+          <td>456-2</td>
+          <td>Post weld Stress relief</td>
+          <td>6061 Aluminum, AZ92 and ZE41 Magnesium</td>
+          <td>Air</td>
+          <td>
             <ul>
-              <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-              <li><strong>a.</strong> Heat to 1600±25°F (871±14°C) and hold for 2 hours.</li>
-          </ul>
-        </td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td>5A</td>
-      <td>459-2</td>
-      <td>Stress relief</td>
-      <td>B-1900/PWA 663/PWA 1455, STELLITE 31/AMS 5382, Inconel 713/PWA 655, WI-52/PWA 653, MAR-M-509/PWA 647, MAR-M-200/PWA 1422/PWA 1480</td>
-      <td>Air</td>
-      <td>
-          <ul>
-            <li><strong>a.</strong> Put part in cold furnace.</li>
-            <li><strong>b.</strong> Heat to 700°F (371°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
-            <li><strong>d.</strong> Heat to 1300°F (704°C) and hold for 30 minutes.</li>
-            <li><strong>e.</strong> Heat to 1600±25°F (871±14°C) and hold for 2 hours.</li>
-            <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-        </ul>
-      </td>
-    <td>-</td>
-  </tr>
-      <tr>
-        <td>9</td>
-        <td>459-3</td>
-        <td>Stress relief</td>
-        <td>Inconel 600, Nimonic 75/PWA 673</td>
-        <td>Air</td>
-        <td>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li><strong>a.</strong> Heat part to 325±10°F (162±5°C).</li>
+              <li><strong>b.</strong> Hold for 4 hours.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>458-1</td>
+          <td>Stress relief</td>
+          <td>Inconel X-750</td>
+          <td>Air</td>
+          <td>
             <ul>
-              <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-              <li><strong>a.</strong> Heat to 1600±25°F (871±14°C) and Hold for 60 minutes.</li>
-          </ul>
-        </td>
-      <td>-</td>
-    </tr>
-      <tr>
-        <td>6</td>
-        <td>460-1</td>
-        <td>Stress relief</td>
-        <td>Greek Ascoloy</td>
-        <td>Air</td>
-        <td>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1300±25°F (704±13°C) and hold for 2
+                hours.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>4A</td>
+          <td>458-2</td>
+          <td>Stress relief</td>
+          <td>Inconel X-750</td>
+          <td>Air</td>
+          <td>
             <ul>
-              <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-              <li><strong>a.</strong> Heat to 1050±15°F (565±8°C) and hold for 2 hours.</li>
-          </ul>
-        </td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td>6A</td>
-      <td>460-2</td>
-      <td>Stress relief</td>
-      <td>Greek Ascoloy</td>
-      <td>-</td>
-      <td>
-          <ul>
-            <li><strong>a.</strong> Put part in cold furnace.</li>
-            <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-            <li><strong>d.</strong> Heat to 1050±15°F (565±°C) and hold for 2 hours.</li>
-            <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-        </ul>
-      </td>
-    <td>-</td>
-  </tr>
-      <tr>
-        <td>7</td>
-        <td>461</td>
-        <td>Stress relief</td>
-        <td>WASPALOY (Wrought), Udimet 700</td>
-        <td>Air</td>
-        <td>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1100°F (593°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Heat to 1300±25°F (704±13°C) and hold for 2
+                hours.
+              </li>
+              <li>
+                <strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>459-1</td>
+          <td>Stress relief</td>
+          <td>
+            B-1900/PWA 663/PWA 1455, STELLITE 31/AMS 5382, Inconel 713/PWA 655,
+            WI-52/PWA 653, MAR-M-509/PWA 647, MAR-M-200/PWA 1422/PWA 1480
+          </td>
+          <td>Air</td>
+          <td>
             <ul>
-              <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-              <li><strong>a.</strong> Heat to 1500±25°F (816±13°C) and hold for 4 hours.</li>
-          </ul>
-        </td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>461-1</td>
-      <td>Stress relief</td>
-      <td>WASPALOY (Wrought), Udimet 700</td>
-      <td>Air</td>
-      <td>
-          <ul>
-            <li><strong>a.</strong> Put part in cold furnace.</li>
-            <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-            <li><strong>c.</strong> Heat to 900°F (482°C) and hold for 30 minutes.</li>
-            <li><strong>d.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
-            <li><strong>e.</strong> Heat to 1500±25°F (816±13°C) and hold for 4 hours.</li>
-            <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-        </ul>
-      </td>
-    <td>-</td>
-    </tr>
-      <tr>
-        <td>-</td>
-        <td>462</td>
-        <td>Stress relief</td>
-        <td>Types 321/347 (Partial Stress-Relief)</td>
-        <td>Air</td>
-        <td>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1600±25°F (871±14°C) and hold for 2
+                hours.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>5A</td>
+          <td>459-2</td>
+          <td>Stress relief</td>
+          <td>
+            B-1900/PWA 663/PWA 1455, STELLITE 31/AMS 5382, Inconel 713/PWA 655,
+            WI-52/PWA 653, MAR-M-509/PWA 647, MAR-M-200/PWA 1422/PWA 1480
+          </td>
+          <td>Air</td>
+          <td>
             <ul>
-              <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-              <li><strong>a.</strong> Heat to 1200±25°F (649±14°C) and Hold for 60 minutes.</li>
-          </ul>
-        </td>
-      <td>-</td>
-    </tr>
-      <tr>
-        <td>10</td>
-        <td>463</td>
-        <td>Stress relief</td>
-        <td>HASTELLOY X, W, N, S, Haynes 188/ PWA 1042, Inconel 625, Types 310/316</td>
-        <td>Air, Inert, Vacuum</td>
-        <td>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 700°F (371°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 1000°F (538°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1300°F (704°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Heat to 1600±25°F (871±14°C) and hold for 2
+                hours.
+              </li>
+              <li>
+                <strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>459-3</td>
+          <td>Stress relief</td>
+          <td>Inconel 600, Nimonic 75/PWA 673</td>
+          <td>Air</td>
+          <td>
             <ul>
-              <li><strong>a.</strong> Heat to 1800±25°F (982±14°C) and Hold for 60 minutes.</li>
-              <li><strong>b.</strong> Heat rate optional. Air cool or faster.</li>
-          </ul>
-        </td>
-        <td>-</td>
-    </tr>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1600±25°F (871±14°C) and Hold for 60
+                minutes.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>460-1</td>
+          <td>Stress relief</td>
+          <td>Greek Ascoloy</td>
+          <td>Air</td>
+          <td>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1050±15°F (565±8°C) and hold for 2
+                hours.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>6A</td>
+          <td>460-2</td>
+          <td>Stress relief</td>
+          <td>Greek Ascoloy</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1050±15°F (565±°C) and hold for 2
+                hours.
+              </li>
+              <li>
+                <strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>461</td>
+          <td>Stress relief</td>
+          <td>WASPALOY (Wrought), Udimet 700</td>
+          <td>Air</td>
+          <td>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1500±25°F (816±13°C) and hold for 4
+                hours.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>461-1</td>
+          <td>Stress relief</td>
+          <td>WASPALOY (Wrought), Udimet 700</td>
+          <td>Air</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 900°F (482°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1000°F (538°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Heat to 1500±25°F (816±13°C) and hold for 4
+                hours.
+              </li>
+              <li>
+                <strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>-</td>
+          <td>462</td>
+          <td>Stress relief</td>
+          <td>Types 321/347 (Partial Stress-Relief)</td>
+          <td>Air</td>
+          <td>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1200±25°F (649±14°C) and Hold for 60
+                minutes.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>463</td>
+          <td>Stress relief</td>
+          <td>
+            HASTELLOY X, W, N, S, Haynes 188/ PWA 1042, Inconel 625, Types
+            310/316
+          </td>
+          <td>Air, Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1800±25°F (982±14°C) and Hold for 60
+                minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Heat rate optional. Air cool or faster.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
 
-      <tr>
-        <td>11</td>
-        <td>464-1</td>
-        <td>Post weld Stress relief</td>
-        <td>Ti-8Al-1Mo-1V and Ti-5Al-2.5Sn Other than blades</td>
-        <td>Argon, Vacuum</td>
-        <td>
+        <tr>
+          <td>11</td>
+          <td>464-1</td>
+          <td>Post weld Stress relief</td>
+          <td>Ti-8Al-1Mo-1V and Ti-5Al-2.5Sn Other than blades</td>
+          <td>Argon, Vacuum</td>
+          <td>
             <ul>
-              <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-              <li><strong>a.</strong> Heat to 1150±25°F (621±14°C) and hold for 1-2 hours.</li>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1150±25°F (621±14°C) and hold for
+                1-2 hours.
+              </li>
               <li><strong>OR</strong></li>
-              <li><strong>a.</strong> Heat to 1200±25°F (649±14°C) and hold for 10-15 minutes.</li>
-          </ul>
-        </td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td>11</td>
-      <td>464-2</td>
-      <td>Stress relief</td>
-      <td>Titanium Other than Ti-8Al-1Mo-1V, Ti-5Al-2.5Sn, and welded low cycle fatigue (LCF) life-limited Ti-6Al-4V parts</td>
-      <td>Argon, Vacuum</td>
-      <td>
-          <ul>
-            <li><strong>Note:</strong> Cooling rates are optional.</li>
-            <li><strong>a.</strong> Heat to 1100±25°F (593±14°C) and hold for 90 minutes.</li>
-        </ul>
-      </td>
-      <td>-</td>
-    </tr>
-      <tr>
-        <td>11</td>
-        <td>464-3</td>
-        <td>Stress relief</td>
-        <td>Where specified by repair procedure</td>
-        <td>Argon, Vacuum</td>
-        <td>
+              <li>
+                <strong>a.</strong> Heat to 1200±25°F (649±14°C) and hold for
+                10-15 minutes.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>464-2</td>
+          <td>Stress relief</td>
+          <td>
+            Titanium Other than Ti-8Al-1Mo-1V, Ti-5Al-2.5Sn, and welded low
+            cycle fatigue (LCF) life-limited Ti-6Al-4V parts
+          </td>
+          <td>Argon, Vacuum</td>
+          <td>
             <ul>
               <li><strong>Note:</strong> Cooling rates are optional.</li>
-              <li><strong>a.</strong> Heat to 1150±25°F (621±14°C) and hold for 1-2 hours.</li>
-          </ul>
-        </td>
-      <td>-</td>
-    </tr>
+              <li>
+                <strong>a.</strong> Heat to 1100±25°F (593±14°C) and hold for 90
+                minutes.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>464-3</td>
+          <td>Stress relief</td>
+          <td>Where specified by repair procedure</td>
+          <td>Argon, Vacuum</td>
+          <td>
+            <ul>
+              <li><strong>Note:</strong> Cooling rates are optional.</li>
+              <li>
+                <strong>a.</strong> Heat to 1150±25°F (621±14°C) and hold for
+                1-2 hours.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
 
         <tr>
           <td>12</td>
@@ -1160,49 +1490,81 @@
           <td>Inconel 718 Short Cycle Percipitation Heat Treatment</td>
           <td>Air</td>
           <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1350±25°F (732±14°C) and hold for 4 hours.</li>
-                <li><strong>b.</strong> Heating rates are optional.</li>
-                <li><strong>c.</strong> Cool to 1200±25°F (649±14°C) at a max rate of 2°F (1°C) per minute and hold for for a total of 3 hours (including the cooling time from 732°C).</li>
-                <li><strong>d.</strong> Subsequent Cooling rates are optional.</li>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1350±25°F (732±14°C) and hold for 4
+                hours.
+              </li>
+              <li><strong>b.</strong> Heating rates are optional.</li>
+              <li>
+                <strong>c.</strong> Cool to 1200±25°F (649±14°C) at a max rate
+                of 2°F (1°C) per minute and hold for for a total of 3 hours
+                (including the cooling time from 732°C).
+              </li>
+              <li>
+                <strong>d.</strong> Subsequent Cooling rates are optional.
+              </li>
             </ul>
           </td>
-          <td>-</td></tr>
+          <td>-</td>
+        </tr>
+        <tr></tr>
         <tr>
-          <tr>
-            <td>12A</td>
-            <td>465-2</td>
-            <td>Stress relief, Short Percipitation</td>
-            <td>Inconel 718 Short Cycle Percipitation Heat Treatment</td>
-            <td>-</td>
-            <td>
-                <ul>
-                  <li><strong>a.</strong> Put part in cold furnace.</li>
-                  <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                  <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-                  <li><strong>d.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
-                  <li><strong>e.</strong> Heat to 1350±25°F (732±14°C) and hold for 4 hours.</li>
-                  <li><strong>f.</strong> Cool to 1200±25°F (649±14°C) at a max rate of 2°F (1°C) per minute and hold for for a total of 3 hours (including the cooling time from 732°C).</li>
-                  <li><strong>g.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-          <tr>
+          <td>12A</td>
+          <td>465-2</td>
+          <td>Stress relief, Short Percipitation</td>
+          <td>Inconel 718 Short Cycle Percipitation Heat Treatment</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1000°F (538°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Heat to 1350±25°F (732±14°C) and hold for 4
+                hours.
+              </li>
+              <li>
+                <strong>f.</strong> Cool to 1200±25°F (649±14°C) at a max rate
+                of 2°F (1°C) per minute and hold for for a total of 3 hours
+                (including the cooling time from 732°C).
+              </li>
+              <li>
+                <strong>g.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
           <td>13</td>
           <td>466</td>
           <td>Stress relief</td>
           <td>17-7PH Austenite Conditioning, Types 410/430 with 430 Rod</td>
           <td>Air</td>
           <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1400±25°F (760±14°C) and hold for 2-4 hours.</li>
-                <li><strong>b.</strong> Heating rates are optional.</li>
-                <li><strong>c.</strong> Air cool or faster.</li>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1400±25°F (760±14°C) and hold for
+                2-4 hours.
+              </li>
+              <li><strong>b.</strong> Heating rates are optional.</li>
+              <li><strong>c.</strong> Air cool or faster.</li>
             </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>14</td>
           <td>467</td>
@@ -1210,15 +1572,21 @@
           <td>Type 430 with AMS 5776 or AMS 5680 Rod</td>
           <td>Inert, Vacuum</td>
           <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1500±25°F (816±13°C) and hold for 30 minutes.</li>
-                <li><strong>b.</strong> Heating rates are optional.</li>
-                <li><strong>c.</strong> Cool to 1100°F (593°C) at a rate of 0.83°F (0.46°C) per minute.</li>
-                <li><strong>d.</strong> Air cool or faster.</li>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1500±25°F (816±13°C) and hold for 30
+                minutes.
+              </li>
+              <li><strong>b.</strong> Heating rates are optional.</li>
+              <li>
+                <strong>c.</strong> Cool to 1100°F (593°C) at a rate of 0.83°F
+                (0.46°C) per minute.
+              </li>
+              <li><strong>d.</strong> Air cool or faster.</li>
             </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>15</td>
           <td>468</td>
@@ -1226,31 +1594,51 @@
           <td>A-286 Tinidur Stress-Relief/Age</td>
           <td>Air</td>
           <td>
-              <ul>
-                <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-                <li><strong>a.</strong> Heat to 1300±25°F (704±13°C) and hold for 4 hours.</li>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1300±25°F (704±13°C) and hold for 4
+                hours.
+              </li>
             </ul>
           </td>
           <td>-</td>
-      </tr>
-      <tr>
-        <td>15A</td>
-        <td>472</td>
-        <td>Stress relief</td>
-        <td>A-286 Tinidur Stress-Relief/Age</td>
-        <td>-</td>
-        <td>
+        </tr>
+        <tr>
+          <td>15A</td>
+          <td>472</td>
+          <td>Stress relief</td>
+          <td>A-286 Tinidur Stress-Relief/Age</td>
+          <td>-</td>
+          <td>
             <ul>
               <li><strong>a.</strong> Put part in cold furnace.</li>
-              <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-              <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-              <li><strong>d.</strong> Heat to 1100°F (593°C) and hold for 30 minutes.</li>
-              <li><strong>e.</strong> Heat to 1300±25°F (704±13°C) and hold for 4 hours.</li>
-              <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-          </ul>
-        </td>
-        <td>-</td>
-    </tr>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1100°F (593°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Heat to 1300±25°F (704±13°C) and hold for 4
+                hours.
+              </li>
+              <li>
+                <strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
         <tr>
           <td>16</td>
           <td>469</td>
@@ -1258,13 +1646,18 @@
           <td>Inconel 706 or 718 Simple Stress-Relief</td>
           <td>Air</td>
           <td>
-              <ul>
-                <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-                <li><strong>a.</strong> Heat to 1325±25°F (718±14°C) and hold for 4 hours.</li>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1325±25°F (718±14°C) and hold for 4
+                hours.
+              </li>
             </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>17</td>
           <td>470</td>
@@ -1272,15 +1665,23 @@
           <td>Incoloy 901 (Structural Welds)</td>
           <td>Inert, Vacuum</td>
           <td>
-              <ul>
-                <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-                <li><strong>a.</strong> Heat to 1450±15°F (787±8°C) and hold for 4 hours.</li>
-                <li><strong>b.</strong> Air cool or faster to 500°F (260°C).</li>
-                <li><strong>c.</strong> Heat to 1325±25°F (718±14°C) and hold for 14 hours.</li>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1450±15°F (787±8°C) and hold for 4
+                hours.
+              </li>
+              <li><strong>b.</strong> Air cool or faster to 500°F (260°C).</li>
+              <li>
+                <strong>c.</strong> Heat to 1325±25°F (718±14°C) and hold for 14
+                hours.
+              </li>
             </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>18</td>
           <td>473</td>
@@ -1288,23 +1689,34 @@
           <td>Cast Nickel and Cobalt Alloy Airfoil Materials</td>
           <td>inert, Vacuum</td>
           <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 1975±25°F (1080±13°C) and hold for 30-240 minutes.</li>
-                <li><strong>b.</strong> Cool to 1600°F (871°C) at a rate of 35°F (19°C) per minute or faster.</li>
-                <li><strong>c.</strong> Subsequent cooling rates are optional.</li>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1975±25°F (1080±13°C) and hold for
+                30-240 minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Cool to 1600°F (871°C) at a rate of 35°F
+                (19°C) per minute or faster.
+              </li>
+              <li>
+                <strong>c.</strong> Subsequent cooling rates are optional.
+              </li>
             </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>474-1</td>
           <td>Full Heat Treatment</td>
-          <td>Inconel 718 [Wrought and Cast (PWA 649, AMS 5383) Excluding Cast Stators] Full Heat Treatment</td>
+          <td>
+            Inconel 718 [Wrought and Cast (PWA 649, AMS 5383) Excluding Cast
+            Stators] Full Heat Treatment
+          </td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>475-1</td>
@@ -1312,13 +1724,18 @@
           <td>Incoloy 901 (Knife-Edges)</td>
           <td>Air</td>
           <td>
-              <ul>
-                <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-                <li><strong>a.</strong> Heat to 1325±25°F (718±14°C) and hold for 14-18 hours.</li>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1325±25°F (718±14°C) and hold for
+                14-18 hours.
+              </li>
             </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>476-1</td>
@@ -1327,7 +1744,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>477-1</td>
@@ -1335,40 +1752,62 @@
           <td>H-46 (12% Chrome Steel)</td>
           <td>Air</td>
           <td>
-          <ul>
-            <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-            <li><strong>a.</strong> Heat to 1150±25°F (621±14°C) and hold for 2 hours.</li>
-        </ul>
-      </td>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1150±25°F (621±14°C) and hold for 2
+                hours.
+              </li>
+            </ul>
+          </td>
           <td>-</td>
-      </tr>
-      <tr>
-        <td>-</td>
-        <td>477-2</td>
-        <td>Stress relief</td>
-        <td>H-46 (12% Chrome Steel)</td>
-        <td>Air</td>
-        <td>
-        <ul>
-          <li><strong>a.</strong> Put part in cold furnace.</li>
-          <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-          <li><strong>c.</strong> Heat to 900°F (482°C) and hold for 30 minutes.</li>
-          <li><strong>d.</strong> Heat to 1150±25°F (621±14°C) and hold for 2 hours.</li>
-          <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-          <li><strong>Note:</strong> Subsequent Cooling rates are optional</li>
-      </ul>
-    </td>
-        <td>-</td>
-       </tr>
+        </tr>
+        <tr>
+          <td>-</td>
+          <td>477-2</td>
+          <td>Stress relief</td>
+          <td>H-46 (12% Chrome Steel)</td>
+          <td>Air</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 900°F (482°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1150±25°F (621±14°C) and hold for 2
+                hours.
+              </li>
+              <li>
+                <strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+              <li>
+                <strong>Note:</strong> Subsequent Cooling rates are optional
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
         <tr>
           <td>-</td>
           <td>478-1</td>
           <td>Full Heat Treatment</td>
-          <td>Inconel X-750 (All Specifications Except AMS 5668) Full Heat Treatment</td>
+          <td>
+            Inconel X-750 (All Specifications Except AMS 5668) Full Heat
+            Treatment
+          </td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>478-2</td>
@@ -1377,7 +1816,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>479</td>
@@ -1386,7 +1825,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
 
         <tr>
           <td>20</td>
@@ -1396,12 +1835,15 @@
           <td>Inert, Vacuum</td>
           <td>
             <ul>
-              <li><strong>a.</strong> Heat to 2050±25°F (1121±14°C) and hold for 7-10 minutes.</li>
+              <li>
+                <strong>a.</strong> Heat to 2050±25°F (1121±14°C) and hold for
+                7-10 minutes.
+              </li>
               <li><strong>b.</strong> Air cool or faster.</li>
-           </ul>
+            </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
 
         <tr>
           <td>-</td>
@@ -1411,14 +1853,23 @@
           <td>Inert, Vacuum</td>
           <td>
             <ul>
-              <li><strong>a.</strong> Heat to 1750±25°F (954±14°C) and hold for 15-60 minutes.</li>
-              <li><strong>b.</strong> Cool to 1100°F (593°C) at a rate of 35°F (20°C) per minute, or faster..</li>
-              <li><strong>c.</strong> Cool to 1000°F(538°C) at a rate not less than 15°F(8°) per minute.</li>
+              <li>
+                <strong>a.</strong> Heat to 1750±25°F (954±14°C) and hold for
+                15-60 minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Cool to 1100°F (593°C) at a rate of 35°F
+                (20°C) per minute, or faster..
+              </li>
+              <li>
+                <strong>c.</strong> Cool to 1000°F(538°C) at a rate not less
+                than 15°F(8°) per minute.
+              </li>
               <li><strong>d.</strong> Subsequent cooling rate is optional.</li>
-           </ul>
+            </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
 
         <tr>
           <td>22</td>
@@ -1428,12 +1879,15 @@
           <td>Inert, Vacuum</td>
           <td>
             <ul>
-              <li><strong>a.</strong> Heat to 1900±25°F (1038±14°C) and Hold for 60 minutes.</li>
+              <li>
+                <strong>a.</strong> Heat to 1900±25°F (1038±14°C) and Hold for
+                60 minutes.
+              </li>
               <li><strong>b.</strong> Air cool or faster.</li>
-           </ul>
+            </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>483</td>
@@ -1442,7 +1896,7 @@
           <td>-</td>
           <td>Deleted</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>486</td>
@@ -1451,14 +1905,23 @@
           <td>Inert, Vacuum</td>
           <td>
             <ul>
-              <li><strong>a.</strong> Heat to 2175±50°F (1191±27°C) and Hold for 60 minutes.</li>
-              <li><strong>b.</strong> Cool to 1100°F (593°C) at a rate of 35°F (20°C) per minute, or faster..</li>
-              <li><strong>c.</strong> Cool to 1000°F(538°C) at a rate not less than 15°F(8°) per minute.</li>
+              <li>
+                <strong>a.</strong> Heat to 2175±50°F (1191±27°C) and Hold for
+                60 minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Cool to 1100°F (593°C) at a rate of 35°F
+                (20°C) per minute, or faster..
+              </li>
+              <li>
+                <strong>c.</strong> Cool to 1000°F(538°C) at a rate not less
+                than 15°F(8°) per minute.
+              </li>
               <li><strong>c.</strong> Subsequent cooling rate is optional.</li>
-           </ul>
+            </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>487</td>
@@ -1467,30 +1930,39 @@
           <td>Air</td>
           <td>
             <ul>
-              <li><strong>a.</strong> Heat to 1030±20°F (554±11°C) and hold for 4 hours.</li>
+              <li>
+                <strong>a.</strong> Heat to 1030±20°F (554±11°C) and hold for 4
+                hours.
+              </li>
               <li><strong>Note:</strong> Heating rate is optional.</li>
-           </ul>
+            </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>488</td>
           <td>-</td>
-          <td>Inconel 718 [Cast + HIP (PWA 1469)] Full Heat Treatment, Not For Stators</td>
+          <td>
+            Inconel 718 [Cast + HIP (PWA 1469)] Full Heat Treatment, Not For
+            Stators
+          </td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>489</td>
           <td>-</td>
-          <td>Inconel 718 [Assemblies With Wrought and Cast + HIP (PWA 1469) Details] Full Heat Treatment</td>
+          <td>
+            Inconel 718 [Assemblies With Wrought and Cast + HIP (PWA 1469)
+            Details] Full Heat Treatment
+          </td>
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>490</td>
@@ -1499,7 +1971,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>491</td>
@@ -1508,12 +1980,17 @@
           <td>Air Only</td>
           <td>
             <ul>
-              <li><strong>a.</strong> Heat to 2000±25°F (1093±14°C) and Hold for 60 minutes.</li>
-              <li><strong>Note:</strong> Heating & Cooling rates are optional.</li>
-           </ul>
+              <li>
+                <strong>a.</strong> Heat to 2000±25°F (1093±14°C) and Hold for
+                60 minutes.
+              </li>
+              <li>
+                <strong>Note:</strong> Heating & Cooling rates are optional.
+              </li>
+            </ul>
           </td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>492</td>
@@ -1522,7 +1999,7 @@
           <td>-</td>
           <td>-</td>
           <td>-</td>
-      </tr>
+        </tr>
         <tr>
           <td>-</td>
           <td>493</td>
@@ -1531,455 +2008,658 @@
           <td>Inert, Vacuum</td>
           <td>
             <ul>
-              <li><strong>a.</strong> Heat to 1975±25°F (1079±13°C) and Hold for 60 minutes.</li>
-              <li><strong>b.</strong> Cool to 1000°F (538°C) at a rate of 35°F (20°C) per minute, .</li>
+              <li>
+                <strong>a.</strong> Heat to 1975±25°F (1079±13°C) and Hold for
+                60 minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Cool to 1000°F (538°C) at a rate of 35°F
+                (20°C) per minute, .
+              </li>
               <li><strong>c.</strong> Subsequent cooling rate is optional.</li>
               <li><strong>Note:</strong> Heating rate is optional.</li>
-           </ul>
-          </td>
-          <td>-</td>
-      </tr>
-    </table>
-
-    <!--Pratt & Whitney (Military)-->
-    <table id="dataTable2">
-          <tr>
-            <th onclick="sortTable(0, 'dataTable2')">Cycle No.<span class="sort-icon">&#x2195;</span></th>
-            <th onclick="sortTable(1, 'dataTable2')">SPOP No.<span class="sort-icon">&#x2195;</span></th>
-            <th>Type</th>
-            <th>Application</th>
-            <th>Acceptable Atmosphere</th>
-            <th>Heat Treat Cycle</th>
-            <th>File</th>
-          </tr>
-
-          <tr>
-            <td>1</td>
-            <td>455-1</td>
-            <td>Stress relief</td>
-            <td>Low alloy steel, as AMS 6322 and AMS 6415; martensitic stainless steel, as Type 410 (AMS 5504 and AMS 5613) and Greek Ascoloy (AMS 5508 and AMS 5616); Titanium (Blades)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>Note:</strong> To minimize distortion, use Cycle 1A as an alternate. Other cycles are permissible provided stress-relief requirement of 1015±15°F (546±8°C) for 2 hours is met.</li>
-                <li><strong>a.</strong> Heat part to 1015±15°F (546±8°C).</li>
-                <li><strong>b.</strong> Hold for 2 hours.</li>
             </ul>
           </td>
-            <td>
-              <a href="file:///C:/Users/boken/Downloads/weld.docx" target="_blank">
-                <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-              </a>
-            </td>
-        </tr>
-          <tr>
-            <td>1A</td>
-            <td>455-2</td>
-            <td>Stress relief</td>
-            <td>Low alloy steel, as AMS 6322 and AMS 6415; martensitic stainless steel, as Type 410 (AMS 5504 and AMS 5613) and Greek Ascoloy (AMS 5508 and AMS 5616); Titanium (Blades)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Put part in cold furnace.</li>
-                <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-                <li><strong>d.</strong> Heat to 1015±15°F (546±8°C) and hold for 2 hours.</li>
-                <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-             </ul>
-           </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>2</td>
-            <td>456</td>
-            <td>Stress relief</td>
-            <td>Aluminum</td>
-            <td>-</td>
-            <td>
-                <ul>
-                  <li><strong>a.</strong> Heat part to 350±10°F (177±6°C).</li>
-                  <li><strong>b.</strong> Hold for 60 minutes.</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>457</td>
-            <td>Stress relief</td>
-            <td>-</td>
-            <td>-</td>
-              <td>
-                  <ul>
-                    <li><strong>a.</strong> Put part in cold furnace.</li>
-                    <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                    <li><strong>c.</strong> Heat to 900±15°F (482±8°C) and hold for 4 hours.</li>
-                    <li><strong>d.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-                </ul>
-              </td>
+      </table>
+
+      <!--Pratt & Whitney (Military)-->
+      <table id="dataTable2">
+        <tr>
+          <th onclick="sortTable(0, 'dataTable2')">
+            Cycle No.<span class="sort-icon">&#x2195;</span>
+          </th>
+          <th onclick="sortTable(1, 'dataTable2')">
+            SPOP No.<span class="sort-icon">&#x2195;</span>
+          </th>
+          <th>Type</th>
+          <th>Application</th>
+          <th>Acceptable Atmosphere</th>
+          <th>Heat Treat Cycle</th>
+          <th>File</th>
+        </tr>
+
+        <tr>
+          <td>1</td>
+          <td>455-1</td>
+          <td>Stress relief</td>
+          <td>
+            Low alloy steel, as AMS 6322 and AMS 6415; martensitic stainless
+            steel, as Type 410 (AMS 5504 and AMS 5613) and Greek Ascoloy (AMS
+            5508 and AMS 5616); Titanium (Blades)
+          </td>
           <td>-</td>
-        </tr>
-
-          <tr>
-            <td>4</td>
-            <td>458-1</td>
-            <td>Stress relief</td>
-            <td>Inconel X-750</td>
-            <td>-</td>
-            <td>
-                <ul>
-                  <li><strong>a.</strong> Heat part to 1300±25°F (704±14°C).</li>
-                  <li><strong>b.</strong> Hold for  2 hours.</li>
-              </ul>
-            </td>
-          <td>-</td>
-        </tr>
-
-          <tr>
-            <td>4A</td>
-            <td>458-2</td>
-            <td>Stress relief</td>
-            <td>Inconel X-750</td>
-            <td>-</td>
-            <td>
-                  <ul>
-                    <li><strong>a.</strong> Put part in cold furnace.</li>
-                    <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                    <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes. Heat to 1100°F (593°C) and hold for 30 minutes.</li>
-                    <li><strong>d.</strong> Heat to 1300±25°F (704±15°C) and hold for 2 hours.</li>
-                    <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-                </ul>
-              </td>
-          <td>-</td>
-        </tr>
-
-          <tr>
-            <td>5</td>
-            <td>459-1</td>
-            <td>Stress relief</td>
-            <td>Nickel alloys: B-1900 (PWA 663 and PWA 1455); Inconel 713 (PWA 655) Cobalt alloys: Stellite 31 (AMS 5382); WI-52 (PWA 653); MAR-M-509 (PWA 647)</td>
-            <td>-</td>
-            <td>
-                <ul>
-                  <li><strong>a.</strong> Heat part to 1600±25°F (871±14°C).</li>
-                  <li><strong>b.</strong> Hold for  2 hours.</li>
-              </ul>
-            </td>
-          <td>-</td>
-        </tr>
-
-          <tr>
-            <td>5A</td>
-            <td>459-2</td>
-            <td>Stress relief</td>
-            <td>Nickel alloys: B-1900 (PWA 663 and PWA 1455); Inconel 713 (PWA 655) Cobalt alloys: Stellite 31 (AMS 5382); WI-52 (PWA 653); MAR-M-509 (PWA 647)</td>
-            <td>-</td>
-              <td>
-                  <ul>
-                    <li><strong>a.</strong> Put part in cold furnace.</li>
-                    <li><strong>b.</strong> Heat to 700°F (371°C) and hold for 30 minutes.</li>
-                    <li><strong>c.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
-                    <li><strong>d.</strong> Heat to 1300°F (704°C) and hold for 30 minutes.</li>
-                    <li><strong>e.</strong> Heat to 1600±25°F (871±14°C) and hold for 2 hours.</li>
-                    <li><strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-                 </ul>
-              </td>
-          <td>-</td>
-        </tr>
-
-          <tr>
-            <td>6</td>
-            <td>460-1</td>
-            <td>Stress relief</td>
-            <td>Greek Ascoloy (AMS 5508 and AMS 5616) (martensitic stainless steel)</td>
-            <td>-</td>
-            <td>
-                <ul>
-                  <li><strong>a.</strong> Heat part to 1050±15°F (566±8°C).</li>
-                  <li><strong>b.</strong> Hold for 2 hours.</li>
-              </ul>
-            </td>
-          <td></td>
-        </tr>
-
-          <tr>
-            <td>6A</td>
-            <td>460-2</td>
-            <td>Stress relief</td>
-            <td>Greek Ascoloy (AMS 5508 and AMS 5616) (martensitic stainless steel)</td>
-            <td>-</td>
-              <td>
-                  <ul>
-                    <li><strong>a.</strong> Put part in cold furnace.</li>
-                    <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                    <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-                </ul>
-              </td>
-          <td></td>
-        </tr>
-
-
-          <tr>
-            <td>7</td>
-            <td>461</td>
-            <td>Stress relief</td>
-            <td>Waspaloy, Udimet 700</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat part to 1500±25°F (816±14°C).</li>
-                <li><strong>b.</strong> Hold for 4 hours.</li>
-              </ul>
-            </td>
-          <td></td>
-        </tr>
-          <tr>
-            <td>8</td>
-            <td>455-3</td>
-            <td>Stress relief</td>
-            <td></td>
-            <td>-</td>
-            <td>
-                <ul>
-                  <li><strong>a.</strong> Put part in cold furnace.</li>
-                  <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                  <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-                  <li><strong>d.</strong> Heat to 1010±15°F (543±8°C) and hold for 30 minutes.</li>
-                  <li><strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F (3°C) per minute.</li>
-              </ul>
-            </td>
-          <td>-</td>
-        </tr>
-          <tr>
-            <td>9</td>
-            <td>459-3</td>
-            <td>Stress relief</td>
-            <td>Inconel 600 (nickel alloy); Nimonic 75 (PWA 673) (nickel alloy); stainless steel, as Types 310, 316, 321, and 347</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat part to 1600±25°F (871±14°C).</li>
-                <li><strong>b.</strong> Hold for 60 minutes.</li>
-              </ul>
-            </td>
-          <td>-</td>
-        </tr>
-
-          <tr>
-            <td>11</td>
-            <td>464-2</td>
-            <td>Stress relief</td>
-            <td>Titanium as Ti comm pure (AMS 4921, AMS 4900) , Ti-8Al-1Mo-1V (AMS 4972), Ti-5Al-2.5Sn  (AMS 4909), Ti-6Al-4V (AMS 4911, AMS 4928), Ti-6-2-4-2 (AMS 4975, AMS 4919, PWA 1267)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat part to 1100±25°F (593±13°C).</li>
-                <li><strong>b.</strong> Hold for 90 minutes.</li>
+          <td>
+            <ul>
+              <li>
+                <strong>Note:</strong> To minimize distortion, use Cycle 1A as
+                an alternate. Other cycles are permissible provided
+                stress-relief requirement of 1015±15°F (546±8°C) for 2 hours is
+                met.
+              </li>
+              <li><strong>a.</strong> Heat part to 1015±15°F (546±8°C).</li>
+              <li><strong>b.</strong> Hold for 2 hours.</li>
             </ul>
           </td>
-
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/weld.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>1A</td>
+          <td>455-2</td>
+          <td>Stress relief</td>
+          <td>
+            Low alloy steel, as AMS 6322 and AMS 6415; martensitic stainless
+            steel, as Type 410 (AMS 5504 and AMS 5613) and Greek Ascoloy (AMS
+            5508 and AMS 5616); Titanium (Blades)
+          </td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1015±15°F (546±8°C) and hold for 2
+                hours.
+              </li>
+              <li>
+                <strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-
-          <tr>
-            <td>11A</td>
-            <td>464-3</td>
-            <td>Stress relief</td>
-            <td>Titanium as Ti comm pure (AMS 4921, AMS 4900) , Ti-8Al-1Mo-1V (AMS 4972), Ti-5Al-2.5Sn  (AMS 4909), Ti-6Al-4V (AMS 4911, AMS 4928), Ti-6-2-4-2 (AMS 4975, AMS 4919, PWA 1267)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat part to 1150±25°F (621±14°C).</li>
-                <li><strong>b.</strong> Hold for 1-2 hours.</li>
+        <tr>
+          <td>2</td>
+          <td>456</td>
+          <td>Stress relief</td>
+          <td>Aluminum</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 350±10°F (177±6°C).</li>
+              <li><strong>b.</strong> Hold for 60 minutes.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>457</td>
+          <td>Stress relief</td>
+          <td>-</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 900±15°F (482±8°C) and hold for 4
+                hours.
+              </li>
+              <li>
+                <strong>d.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
             </ul>
           </td>
           <td>-</td>
         </tr>
 
-          <tr>
-            <td>12</td>
-            <td>465-1</td>
-            <td>Short Percipitation</td>
-            <td>Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663</td>
-              <td>Air, Inert, Vacuum</td>
-              <td>
-                <ul>
-                  <li><strong>a.</strong> Heat to 1350±25°F (718±14°C).</li>
-                  <li><strong>b.</strong> Hold for 4 hours.</li>
-                  <li><strong>c.</strong> Cool to 1200±25°F (649±14°C) at a rate not faster than 2°F (1°C) per minute.</li>
-                  <li><strong>d.</strong> Hold for 3 hours (including cool down time from 1350°F (732°C).</li>
-                  <li><strong>e.</strong> Air cool to room temperature.</li>
-              </ul>
-              </td>
+        <tr>
+          <td>4</td>
+          <td>458-1</td>
+          <td>Stress relief</td>
+          <td>Inconel X-750</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1300±25°F (704±14°C).</li>
+              <li><strong>b.</strong> Hold for 2 hours.</li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
 
-          <tr>
-            <td>12A</td>
-            <td>465-2</td>
-            <td>Short Percipitation</td>
-            <td>Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663</td>
-              <td>Air, Inert, Vacuum</td>
-              <td>
-                <ul>
-                  <li><strong>a.</strong> Put part in cold furnace.</li>
-                  <li><strong>b.</strong> Heat to 600°F (316°C) and hold for 30 minutes.</li>
-                  <li><strong>c.</strong> Heat to 800°F (427°C) and hold for 30 minutes.</li>
-                  <li><strong>d.</strong> Heat to 1000°F (538°C) and hold for 30 minutes.</li>
-                  <li><strong>e.</strong> Heat to 1200°F (649°C) and hold for 30 minutes.</li>
-                  <li><strong>f.</strong> Heat to 1350±25°F (718±14°C).</li>
-                  <li><strong>g.</strong> Hold for 4 hours.</li>
-                  <li><strong>h.</strong> Cool to 1200±25°F (649±14°C) at a rate not faster than 2°F (1°C) per minute.</li>
-                  <li><strong>i.</strong> Hold for 3 hours (including cool down time from 1350°F (732°C).</li>
-                  <li><strong>j.</strong> Cool to 500°F (260°C) at a rate not faster than 100°F (56°C) per 15 minutes.</li>
-                  <li><strong>k.</strong> Air cool to room temperature.</li>
-              </ul>
-            </td>
+        <tr>
+          <td>4A</td>
+          <td>458-2</td>
+          <td>Stress relief</td>
+          <td>Inconel X-750</td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes. Heat to 1100°F (593°C) and hold for 30 minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1300±25°F (704±15°C) and hold for 2
+                hours.
+              </li>
+              <li>
+                <strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
 
+        <tr>
+          <td>5</td>
+          <td>459-1</td>
+          <td>Stress relief</td>
+          <td>
+            Nickel alloys: B-1900 (PWA 663 and PWA 1455); Inconel 713 (PWA 655)
+            Cobalt alloys: Stellite 31 (AMS 5382); WI-52 (PWA 653); MAR-M-509
+            (PWA 647)
+          </td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1600±25°F (871±14°C).</li>
+              <li><strong>b.</strong> Hold for 2 hours.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
 
-          <tr>
-            <td>13</td>
-            <td>466</td>
-            <td>Stress relief</td>
-            <td>17-7PH (stainless steel - austenite conditioning); Type 430 (ferritic stainless steel), welded with Type 430 filler metal</td>
-            <td>Air</td>
-              <td>
-                <ul>
-                  <li><strong>a.</strong> Heat part to 1400±25°F (760±14°C).</li>
-                  <li><strong>b.</strong> Hold for 2 hours.</li>
-                  <li><strong>c.</strong> Air cool, or faster.</li>
-                </ul>
-              </td>
+        <tr>
+          <td>5A</td>
+          <td>459-2</td>
+          <td>Stress relief</td>
+          <td>
+            Nickel alloys: B-1900 (PWA 663 and PWA 1455); Inconel 713 (PWA 655)
+            Cobalt alloys: Stellite 31 (AMS 5382); WI-52 (PWA 653); MAR-M-509
+            (PWA 647)
+          </td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 700°F (371°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 1000°F (538°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1300°F (704°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Heat to 1600±25°F (871±14°C) and hold for 2
+                hours.
+              </li>
+              <li>
+                <strong>f.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+
+        <tr>
+          <td>6</td>
+          <td>460-1</td>
+          <td>Stress relief</td>
+          <td>
+            Greek Ascoloy (AMS 5508 and AMS 5616) (martensitic stainless steel)
+          </td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1050±15°F (566±8°C).</li>
+              <li><strong>b.</strong> Hold for 2 hours.</li>
+            </ul>
+          </td>
           <td></td>
         </tr>
-          <tr>
-            <td>14</td>
-            <td>467</td>
-            <td>Stress relief</td>
-            <td>Type 430 (ferritic stainless steel), welded with AMS 5680 (Type 347 stainless steel)</td>
-            <td>-</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat part to 1500±25°F (816±14°C).</li>
-                <li><strong>b.</strong> Hold for 30 minutes.</li>
-              </ul>
-            </td>
+
+        <tr>
+          <td>6A</td>
+          <td>460-2</td>
+          <td>Stress relief</td>
+          <td>
+            Greek Ascoloy (AMS 5508 and AMS 5616) (martensitic stainless steel)
+          </td>
           <td>-</td>
-        </tr>
-          <tr>
-            <td>15</td>
-            <td>468</td>
-            <td>Percipitation</td>
-            <td>A-286 (modified Tinidur) stainless steel, as AMS 5525, AMS 5731, AMS 5732, and AMS 5737</td>
-            <td>Air</td>
-              <td>
-                  <ul>
-                    <li><strong>Note:</strong> Cooling rates are optional.</li>
-                    <li><strong>a.</strong> Heat to 1325±25°F (718±14°C) and hold for 4 hours.</li>
-                    <li><strong>b.</strong> Air cool.</li>
-                </ul>
-              </td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+            </ul>
+          </td>
           <td></td>
         </tr>
-          <tr>
-            <td>NA</td>
-            <td>469</td>
-            <td>Stress relief</td>
-            <td>Inconel 706 or 718 (simple stress-relief)</td>
-            <td>Air, Inert, Vacuum</td>
-            <td>
-              <ul>
-                <li><strong>Note:</strong> Heating and Cooling rates are optional.</li>
-                <li><strong>a.</strong> Heat part to 1325±25°F (718±14°C).</li>
-                <li><strong>b.</strong> Hold for 4 hours.</li>
-              </ul>
-            </td>
+
+        <tr>
+          <td>7</td>
+          <td>461</td>
+          <td>Stress relief</td>
+          <td>Waspaloy, Udimet 700</td>
           <td>-</td>
-        </tr>
-          <tr>
-            <td>17</td>
-            <td>470</td>
-            <td>Percipitation</td>
-            <td>Incoloy 901 (nickel alloy), as AMS 5660 and AMS 5661</td>
-            <td>Inert, Vacuum</td>
-              <td>
-                <ul>
-                  <li><strong>a.</strong> Heat to 1450±15°F (788±8°C) and hold for 4 hours.</li>
-                  <li><strong>b.</strong> Cool to 500°F (260°C) at a rate equivalent to air cool.</li>
-                  <li><strong>c.</strong> Heat to 1325±15°F (718±8°C) and hold for 14 hours.</li>
-                  <li><strong>d.</strong> Cool at a rate equivalent to air cool.</li>
-                </ul>
-              </td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1500±25°F (816±14°C).</li>
+              <li><strong>b.</strong> Hold for 4 hours.</li>
+            </ul>
+          </td>
           <td></td>
         </tr>
-          <tr>
-            <td>NA</td>
-            <td>473</td>
-            <td>Stress relief</td>
-            <td>Cast nickel and cobalt alloy airfoil materials, MAR-M-200 (PWA 1422 and PWA 1484), Nickel base air foils.</td>
-              <td>Inert, Vacuum</td>
-              <td>
-                <ul>
-                  <li><strong>a.</strong> Heat to 1975±25°F (1079±13°C) and hold for 30-240 minutes.</li>
-                  <li><strong>b.</strong> Cool to 1600°F (871°C) at a rate of 35°F (19°C) per minute or faster.</li>
-                  <li><strong>c.</strong> For vacuum: cool to 500°F (260°C) with dry argon.</li>
-                </ul>
-              </td>
+        <tr>
+          <td>8</td>
+          <td>455-3</td>
+          <td>Stress relief</td>
+          <td></td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1010±15°F (543±8°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Cool to 500°F (260°C) not faster than 6°F
+                (3°C) per minute.
+              </li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>20</td>
-            <td>480</td>
-            <td>Solution</td>
-            <td>Hastelloy X (nickel alloy), DO NOT USE FOR PWA 1038 HASTELLOY X</td>
-            <td>Inert, Vacuum</td>
-            <td>
-              <ul>
-                <li><strong>b.</strong> Heat to 2050±25°F (1121±14°C) and hold for 7-10 minutes.</li>
-                <li><strong>c.</strong> Air cool or faster.</li>
-              </ul>
-            </td>
+        <tr>
+          <td>9</td>
+          <td>459-3</td>
+          <td>Stress relief</td>
+          <td>
+            Inconel 600 (nickel alloy); Nimonic 75 (PWA 673) (nickel alloy);
+            stainless steel, as Types 310, 316, 321, and 347
+          </td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1600±25°F (871±14°C).</li>
+              <li><strong>b.</strong> Hold for 60 minutes.</li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>21</td>
-            <td>481</td>
-            <td>Solution</td>
-            <td>Nickel alloy: Hastelloy X (AMS 5536 and AMS 5754) Cobalt alloys: Stellite 31 (AMS 5382); Haynes 188 (AMS 5608, AMS 5772, and PWA 1042); L-605 (AMS 5537 and AMS 5759). DO NOT USE FOR PWA 1038 HASTELLOY X!</td>
-            <td>Inert, Vacuum</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Heat to 2150±25°F (1177±14°C) and hold for 7-10 minutes.</li>
-                <li><strong>b.</strong> Air cool or faster.</li>
-              </ul>
-            </td>
+
+        <tr>
+          <td>11</td>
+          <td>464-2</td>
+          <td>Stress relief</td>
+          <td>
+            Titanium as Ti comm pure (AMS 4921, AMS 4900) , Ti-8Al-1Mo-1V (AMS
+            4972), Ti-5Al-2.5Sn (AMS 4909), Ti-6Al-4V (AMS 4911, AMS 4928),
+            Ti-6-2-4-2 (AMS 4975, AMS 4919, PWA 1267)
+          </td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1100±25°F (593±13°C).</li>
+              <li><strong>b.</strong> Hold for 90 minutes.</li>
+            </ul>
+          </td>
+
           <td>-</td>
         </tr>
-          <tr>
-            <td>22</td>
-            <td>482</td>
-            <td>Stress relief</td>
-            <td>Nickel alloys: Inconel 600 (AMS 5540 and AMS 5665); Inconel 625 (AMS 5599 and AMS 5666); Hastelloy N; Hastelloy X (AMS 5536, AMS 5754, and PWA 1038); Hastelloy W Cobalt alloys: Stellite 31 (AMS 5382); Haynes 188 (AMS 5608, AMS 5772, and PWA 1042); L-605 (AMS 5537 and AMS 5759); MAR-M-509 (PWA 647)</td>
-            <td>Inert, Vacuum</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Put part in cold furnace.</li>
-                <li><strong>b.</strong> Heat to 1800±25°F (982±13°C) and Hold for 60 minutes.</li>
-                <li><strong>c.</strong> Air cool.</li>
-              </ul>
-            </td>
+
+        <tr>
+          <td>11A</td>
+          <td>464-3</td>
+          <td>Stress relief</td>
+          <td>
+            Titanium as Ti comm pure (AMS 4921, AMS 4900) , Ti-8Al-1Mo-1V (AMS
+            4972), Ti-5Al-2.5Sn (AMS 4909), Ti-6Al-4V (AMS 4911, AMS 4928),
+            Ti-6-2-4-2 (AMS 4975, AMS 4919, PWA 1267)
+          </td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1150±25°F (621±14°C).</li>
+              <li><strong>b.</strong> Hold for 1-2 hours.</li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>NA</td>
-            <td>485</td>
-            <td>Percipitation</td>
-            <td>Nickel castings</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
+
+        <tr>
+          <td>12</td>
+          <td>465-1</td>
+          <td>Short Percipitation</td>
+          <td>
+            Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663
+          </td>
+          <td>Air, Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat to 1350±25°F (718±14°C).</li>
+              <li><strong>b.</strong> Hold for 4 hours.</li>
+              <li>
+                <strong>c.</strong> Cool to 1200±25°F (649±14°C) at a rate not
+                faster than 2°F (1°C) per minute.
+              </li>
+              <li>
+                <strong>d.</strong> Hold for 3 hours (including cool down time
+                from 1350°F (732°C).
+              </li>
+              <li><strong>e.</strong> Air cool to room temperature.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+
+        <tr>
+          <td>12A</td>
+          <td>465-2</td>
+          <td>Short Percipitation</td>
+          <td>
+            Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663
+          </td>
+          <td>Air, Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 600°F (316°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 800°F (427°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>d.</strong> Heat to 1000°F (538°C) and hold for 30
+                minutes.
+              </li>
+              <li>
+                <strong>e.</strong> Heat to 1200°F (649°C) and hold for 30
+                minutes.
+              </li>
+              <li><strong>f.</strong> Heat to 1350±25°F (718±14°C).</li>
+              <li><strong>g.</strong> Hold for 4 hours.</li>
+              <li>
+                <strong>h.</strong> Cool to 1200±25°F (649±14°C) at a rate not
+                faster than 2°F (1°C) per minute.
+              </li>
+              <li>
+                <strong>i.</strong> Hold for 3 hours (including cool down time
+                from 1350°F (732°C).
+              </li>
+              <li>
+                <strong>j.</strong> Cool to 500°F (260°C) at a rate not faster
+                than 100°F (56°C) per 15 minutes.
+              </li>
+              <li><strong>k.</strong> Air cool to room temperature.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+
+        <tr>
+          <td>13</td>
+          <td>466</td>
+          <td>Stress relief</td>
+          <td>
+            17-7PH (stainless steel - austenite conditioning); Type 430
+            (ferritic stainless steel), welded with Type 430 filler metal
+          </td>
+          <td>Air</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1400±25°F (760±14°C).</li>
+              <li><strong>b.</strong> Hold for 2 hours.</li>
+              <li><strong>c.</strong> Air cool, or faster.</li>
+            </ul>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td>467</td>
+          <td>Stress relief</td>
+          <td>
+            Type 430 (ferritic stainless steel), welded with AMS 5680 (Type 347
+            stainless steel)
+          </td>
+          <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Heat part to 1500±25°F (816±14°C).</li>
+              <li><strong>b.</strong> Hold for 30 minutes.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>468</td>
+          <td>Percipitation</td>
+          <td>
+            A-286 (modified Tinidur) stainless steel, as AMS 5525, AMS 5731, AMS
+            5732, and AMS 5737
+          </td>
+          <td>Air</td>
+          <td>
+            <ul>
+              <li><strong>Note:</strong> Cooling rates are optional.</li>
+              <li>
+                <strong>a.</strong> Heat to 1325±25°F (718±14°C) and hold for 4
+                hours.
+              </li>
+              <li><strong>b.</strong> Air cool.</li>
+            </ul>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>NA</td>
+          <td>469</td>
+          <td>Stress relief</td>
+          <td>Inconel 706 or 718 (simple stress-relief)</td>
+          <td>Air, Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating and Cooling rates are optional.
+              </li>
+              <li><strong>a.</strong> Heat part to 1325±25°F (718±14°C).</li>
+              <li><strong>b.</strong> Hold for 4 hours.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td>470</td>
+          <td>Percipitation</td>
+          <td>Incoloy 901 (nickel alloy), as AMS 5660 and AMS 5661</td>
+          <td>Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1450±15°F (788±8°C) and hold for 4
+                hours.
+              </li>
+              <li>
+                <strong>b.</strong> Cool to 500°F (260°C) at a rate equivalent
+                to air cool.
+              </li>
+              <li>
+                <strong>c.</strong> Heat to 1325±15°F (718±8°C) and hold for 14
+                hours.
+              </li>
+              <li>
+                <strong>d.</strong> Cool at a rate equivalent to air cool.
+              </li>
+            </ul>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>NA</td>
+          <td>473</td>
+          <td>Stress relief</td>
+          <td>
+            Cast nickel and cobalt alloy airfoil materials, MAR-M-200 (PWA 1422
+            and PWA 1484), Nickel base air foils.
+          </td>
+          <td>Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 1975±25°F (1079±13°C) and hold for
+                30-240 minutes.
+              </li>
+              <li>
+                <strong>b.</strong> Cool to 1600°F (871°C) at a rate of 35°F
+                (19°C) per minute or faster.
+              </li>
+              <li>
+                <strong>c.</strong> For vacuum: cool to 500°F (260°C) with dry
+                argon.
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>480</td>
+          <td>Solution</td>
+          <td>
+            Hastelloy X (nickel alloy), DO NOT USE FOR PWA 1038 HASTELLOY X
+          </td>
+          <td>Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>b.</strong> Heat to 2050±25°F (1121±14°C) and hold for
+                7-10 minutes.
+              </li>
+              <li><strong>c.</strong> Air cool or faster.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td>481</td>
+          <td>Solution</td>
+          <td>
+            Nickel alloy: Hastelloy X (AMS 5536 and AMS 5754) Cobalt alloys:
+            Stellite 31 (AMS 5382); Haynes 188 (AMS 5608, AMS 5772, and PWA
+            1042); L-605 (AMS 5537 and AMS 5759). DO NOT USE FOR PWA 1038
+            HASTELLOY X!
+          </td>
+          <td>Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>a.</strong> Heat to 2150±25°F (1177±14°C) and hold for
+                7-10 minutes.
+              </li>
+              <li><strong>b.</strong> Air cool or faster.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>482</td>
+          <td>Stress relief</td>
+          <td>
+            Nickel alloys: Inconel 600 (AMS 5540 and AMS 5665); Inconel 625 (AMS
+            5599 and AMS 5666); Hastelloy N; Hastelloy X (AMS 5536, AMS 5754,
+            and PWA 1038); Hastelloy W Cobalt alloys: Stellite 31 (AMS 5382);
+            Haynes 188 (AMS 5608, AMS 5772, and PWA 1042); L-605 (AMS 5537 and
+            AMS 5759); MAR-M-509 (PWA 647)
+          </td>
+          <td>Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 1800±25°F (982±13°C) and Hold for 60
+                minutes.
+              </li>
+              <li><strong>c.</strong> Air cool.</li>
+            </ul>
+          </td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>NA</td>
+          <td>485</td>
+          <td>Percipitation</td>
+          <td>Nickel castings</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
         </tr>
         <tr>
           <td>NA</td>
@@ -1987,237 +2667,350 @@
           <td>Solution + Percipitation</td>
           <td>Inconel 718 (nickel alloy castings)</td>
           <td>Air, Inert, Vacuum</td>
-            <td>
-              <ul>
-                <li><strong>a.</strong> Put part in cold furnace.</li>
-                <li><strong>b.</strong> Heat to 1750±25°F (954±13°C) and Hold for 60 minutes.</li>
-                <li><strong>c.</strong> Cool to 1100°F (593°C) at a rate of 35°F (19°C) per minute or faster.</li>
-                <li><strong>d.</strong> Cool to 1000°F (538°C) at a rate of 15°F (8°C) per minute or faster.</li>
-                <li><strong>e.</strong> Air cool.</li>
-                <li><strong>f.</strong> Heat to 1400±25°F (760±13°C) and hold for 5 hour.</li>
-                <li><strong>g.</strong> Furnace cool to 1200±25°F (649°C) at a rate of 1.67±0.42°F (0.93±0.23°C) per minute.</li>
-                <li><strong>h.</strong> Hold for 60 minutes.</li>
-              </ul>
-            </td>
-        <td>-</td>
-       </tr>
-          <tr>
-            <td>NA</td>
-            <td>760</td>
-            <td>Stress relief</td>
-            <td>Titanium and Titanium Alloys</td>
-              <td></td>
-              <td>-</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 1750±25°F (954±13°C) and Hold for 60
+                minutes.
+              </li>
+              <li>
+                <strong>c.</strong> Cool to 1100°F (593°C) at a rate of 35°F
+                (19°C) per minute or faster.
+              </li>
+              <li>
+                <strong>d.</strong> Cool to 1000°F (538°C) at a rate of 15°F
+                (8°C) per minute or faster.
+              </li>
+              <li><strong>e.</strong> Air cool.</li>
+              <li>
+                <strong>f.</strong> Heat to 1400±25°F (760±13°C) and hold for 5
+                hour.
+              </li>
+              <li>
+                <strong>g.</strong> Furnace cool to 1200±25°F (649°C) at a rate
+                of 1.67±0.42°F (0.93±0.23°C) per minute.
+              </li>
+              <li><strong>h.</strong> Hold for 60 minutes.</li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>101</td>
-            <td>761</td>
-            <td>Solution</td>
-            <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, and AMS 5707</td>
-              <td></td>
-              <td>-</td>
+        <tr>
+          <td>NA</td>
+          <td>760</td>
+          <td>Stress relief</td>
+          <td>Titanium and Titanium Alloys</td>
+          <td></td>
+          <td>-</td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>102</td>
-            <td>762</td>
-            <td>Solution</td>
-            <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, and AMS 5707</td>
-            <td>Vacuum Only</td>
-              <td>
-                <ul>
-                  <li><strong>d.</strong> Heat to 1825±25°F (996±14°C). Do not exceeed 1850±15°F (1010±8°C) on high Thermocouple.</li>
-                  <li><strong>e.</strong> Hold for 2 hours.</li>
-                  <li><strong>f.</strong> Cool at rate designated in section a using forced argon.</li>
-                  <li><strong>Note:</strong> The cycle shall be completed in 0.01 torr range or lower.</li>
-                  <li><strong>Note:</strong> Heating and cooling to 1000±15°F (538±8°C) and 1775±15°F (968±8°C) shall be at least 40°F (22°C) per minute to prevent cracking and control aging.</li>
-                  <li><strong>Note:</strong> Initial Temperature may be higher than 1825±15°F (996±14°C).</li>
-                </ul>
-              </td>
+        <tr>
+          <td>101</td>
+          <td>761</td>
+          <td>Solution</td>
+          <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, and AMS 5707</td>
+          <td></td>
+          <td>-</td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>103</td>
-            <td>763</td>
-            <td>Stabilization</td>
-            <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, AMS 5707, AMS 5708, and AMS 5709</td>
-            <td>Air, Inert, Vacuum</td>
-              <td>
-                  <ul>
-                    <li><strong>a.</strong> Put part in cold furnace.</li>
-                    <li><strong>b.</strong> Heat to 1550±15°F (843±8°C) and hold for 4 hours.</li>
-                    <li><strong>c.</strong> Air Cool.</li>
-                </ul>
-              </td>
+        <tr>
+          <td>102</td>
+          <td>762</td>
+          <td>Solution</td>
+          <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, and AMS 5707</td>
+          <td>Vacuum Only</td>
+          <td>
+            <ul>
+              <li>
+                <strong>d.</strong> Heat to 1825±25°F (996±14°C). Do not exceeed
+                1850±15°F (1010±8°C) on high Thermocouple.
+              </li>
+              <li><strong>e.</strong> Hold for 2 hours.</li>
+              <li>
+                <strong>f.</strong> Cool at rate designated in section a using
+                forced argon.
+              </li>
+              <li>
+                <strong>Note:</strong> The cycle shall be completed in 0.01 torr
+                range or lower.
+              </li>
+              <li>
+                <strong>Note:</strong> Heating and cooling to 1000±15°F
+                (538±8°C) and 1775±15°F (968±8°C) shall be at least 40°F (22°C)
+                per minute to prevent cracking and control aging.
+              </li>
+              <li>
+                <strong>Note:</strong> Initial Temperature may be higher than
+                1825±15°F (996±14°C).
+              </li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>104</td>
-            <td>764</td>
-            <td>Percipitation</td>
-            <td>Waspaloy (nickel alloy), as AMS 5544, AMS 5706, AMS 5707, AMS 5708, and AMS 5709</td>
-            <td>Air, Inert, Vacuum</td>
-              <td>
-                  <ul>
-                    <li><strong>Note:</strong> SPOP 476-1 part C is recomended instead of SPOP 764</li>
-                    <li><strong>a.</strong> Put part in cold furnace.</li>
-                    <li><strong>b.</strong> Heat to 1400±15°F (760±8°C) and hold for 16 hours.</li>
-                    <li><strong>c.</strong> Air Cool.</li>
-                </ul>
-              </td>
+        <tr>
+          <td>103</td>
+          <td>763</td>
+          <td>Stabilization</td>
+          <td>
+            Waspaloy (nickel alloy), as AMS 5544, AMS 5706, AMS 5707, AMS 5708,
+            and AMS 5709
+          </td>
+          <td>Air, Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 1550±15°F (843±8°C) and hold for 4
+                hours.
+              </li>
+              <li><strong>c.</strong> Air Cool.</li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>105</td>
-            <td>765</td>
-            <td>Solution</td>
-            <td>Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663</td>
-            <td>Argon Only</td>
-              <td>
-                <ul>
-                  <li><strong>Note:</strong> Purge Retort at 150 CFH argon until dew point reaches -40F (-40C) or lower.</li>
-                  <li><strong>Note:</strong> Initial Temperature may be higher than 1775±15°F (968±8°C).</li>
-                  <li><strong>a.</strong> Heat to 1750±25°F (954±14°C). Do not exceeed 1775±15°F (968±8°C) on high Thermocouple.</li>
-                  <li><strong>b.</strong> Hold for 60 minutes</li>
-                  <li><strong>c.</strong> Heating and cooling to 1000±15°F (538±8°C) and 1775±15°F (968±8°C) shall be at least 40F (22C) per minute to prevent cracking and control aging.</li>
-                  <li><strong>d.</strong> remove from furnzce, cool with forced argon to 1000F (538) in no longer than 16 minutes.</li>
-                  <li><strong>e.</strong> Cool with Air or argon</li>
-                </ul>
-              </td>
+        <tr>
+          <td>104</td>
+          <td>764</td>
+          <td>Percipitation</td>
+          <td>
+            Waspaloy (nickel alloy), as AMS 5544, AMS 5706, AMS 5707, AMS 5708,
+            and AMS 5709
+          </td>
+          <td>Air, Inert, Vacuum</td>
+          <td>
+            <ul>
+              <li>
+                <strong>Note:</strong> SPOP 476-1 part C is recomended instead
+                of SPOP 764
+              </li>
+              <li><strong>a.</strong> Put part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 1400±15°F (760±8°C) and hold for 16
+                hours.
+              </li>
+              <li><strong>c.</strong> Air Cool.</li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>106</td>
-            <td>766</td>
-            <td>Solution</td>
-            <td>Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663</td>
-            <td>Vacuum Only</td>
-              <td>
-                  <ul>
-                    <li><strong>Note:</strong> Heating and cooling to 1000±15°F (538±8°C) and 1775±15°F (968±8°C) shall be at least 40°F (22°C) per minute to prevent cracking and control aging.</li>
-                    <li><strong>Note:</strong> The cycle shall be completed in 0.01 torr range or lower.</li>
-                    <li><strong>Note:</strong> Initial Temperature may be higher than 1825±15°F (996±14°C).</li>
-                    <li><strong>a.</strong> Heat to 1775±25°F (968±14°C). Do not exceeed 1775±15°F (968±8°C) on high Thermocouple.</li>
-                    <li><strong>b.</strong> Hold for 60 minutes</li>
-                    <li><strong>c.</strong> Cool at rate designated in section a using forced argon</li>
-                  </ul>
-              </td>
+        <tr>
+          <td>105</td>
+          <td>765</td>
+          <td>Solution</td>
+          <td>
+            Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663
+          </td>
+          <td>Argon Only</td>
+          <td>
+            <ul>
+              <li>
+                <strong>Note:</strong> Purge Retort at 150 CFH argon until dew
+                point reaches -40F (-40C) or lower.
+              </li>
+              <li>
+                <strong>Note:</strong> Initial Temperature may be higher than
+                1775±15°F (968±8°C).
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1750±25°F (954±14°C). Do not exceeed
+                1775±15°F (968±8°C) on high Thermocouple.
+              </li>
+              <li><strong>b.</strong> Hold for 60 minutes</li>
+              <li>
+                <strong>c.</strong> Heating and cooling to 1000±15°F (538±8°C)
+                and 1775±15°F (968±8°C) shall be at least 40F (22C) per minute
+                to prevent cracking and control aging.
+              </li>
+              <li>
+                <strong>d.</strong> remove from furnzce, cool with forced argon
+                to 1000F (538) in no longer than 16 minutes.
+              </li>
+              <li><strong>e.</strong> Cool with Air or argon</li>
+            </ul>
+          </td>
           <td>-</td>
         </tr>
-          <tr>
-            <td>107</td>
-            <td>767</td>
-            <td>Percipitation</td>
-            <td>Nickel alloys: Inconel 718, as AMS 5596, AMS 5662, and AMS 5663; Inconel X-750, as AMS 5598, AMS 5670, and AMS 5671</td>
-            <td>Air, Inert</td>
-              <td>
-                <ul>
-                  <li><strong>a.</strong> Place part in cold furnace.</li>
-                  <li><strong>b.</strong> Heat to 1325±15°F (718±8°C) and hold for 8 hours.</li>
-                  <li><strong>c.</strong> Furnace Cool to 1150±15°F (621±8°C) at a rate not exceeding 1.6°F (0.93°C) per minute.</li>
-                  <li><strong>d.</strong> Hold for 8 hours.</li>
-                  <li><strong>e.</strong> Air Cool.</li>
-                </ul>
-              </td>
-              <td>
-                <a href="file:///C:/Users/boken/Downloads/HTR 5090-0198-03.docx" target="_blank">
-                  <img src="Images/wordlogo.webp" alt="Word File" class="icon">
-                </a>
-             </td>
+        <tr>
+          <td>106</td>
+          <td>766</td>
+          <td>Solution</td>
+          <td>
+            Inconel 718 (nickel alloy), as AMS 5596, AMS 5662, and AMS 5663
+          </td>
+          <td>Vacuum Only</td>
+          <td>
+            <ul>
+              <li>
+                <strong>Note:</strong> Heating and cooling to 1000±15°F
+                (538±8°C) and 1775±15°F (968±8°C) shall be at least 40°F (22°C)
+                per minute to prevent cracking and control aging.
+              </li>
+              <li>
+                <strong>Note:</strong> The cycle shall be completed in 0.01 torr
+                range or lower.
+              </li>
+              <li>
+                <strong>Note:</strong> Initial Temperature may be higher than
+                1825±15°F (996±14°C).
+              </li>
+              <li>
+                <strong>a.</strong> Heat to 1775±25°F (968±14°C). Do not exceeed
+                1775±15°F (968±8°C) on high Thermocouple.
+              </li>
+              <li><strong>b.</strong> Hold for 60 minutes</li>
+              <li>
+                <strong>c.</strong> Cool at rate designated in section a using
+                forced argon
+              </li>
+            </ul>
+          </td>
+          <td>-</td>
         </tr>
-    </table>
+        <tr>
+          <td>107</td>
+          <td>767</td>
+          <td>Percipitation</td>
+          <td>
+            Nickel alloys: Inconel 718, as AMS 5596, AMS 5662, and AMS 5663;
+            Inconel X-750, as AMS 5598, AMS 5670, and AMS 5671
+          </td>
+          <td>Air, Inert</td>
+          <td>
+            <ul>
+              <li><strong>a.</strong> Place part in cold furnace.</li>
+              <li>
+                <strong>b.</strong> Heat to 1325±15°F (718±8°C) and hold for 8
+                hours.
+              </li>
+              <li>
+                <strong>c.</strong> Furnace Cool to 1150±15°F (621±8°C) at a
+                rate not exceeding 1.6°F (0.93°C) per minute.
+              </li>
+              <li><strong>d.</strong> Hold for 8 hours.</li>
+              <li><strong>e.</strong> Air Cool.</li>
+            </ul>
+          </td>
+          <td>
+            <a
+              href="file:///C:/Users/boken/Downloads/HTR 5090-0198-03.docx"
+              target="_blank"
+            >
+              <img src="Images/wordlogo.webp" alt="Word File" class="icon" />
+            </a>
+          </td>
+        </tr>
+      </table>
 
-    <div>
-      <h3>General Notes</h3>
+      <div>
+        <h3>General Notes</h3>
         <ul>
           <li>1. Air cool - liquid quench not allowed.</li>
-          <li>2. Air cool in Inert gas & Vaccum - parts shall be cooled to 1000ºF (538ºC) by back filing with forced argon or nitrogen. Cooling rates 17-25ºC/min to 538ºC.</li>
-          <li>3. Air cool in Air Furnace - air cool or faster means the part shall be taken out of the furnace and cool in the air environment. Fans may be used to aid cooling.  Cooling rates 11-17ºC/min to 538ºC.</li>
+          <li>
+            2. Air cool in Inert gas & Vaccum - parts shall be cooled to 1000ºF
+            (538ºC) by back filing with forced argon or nitrogen. Cooling rates
+            17-25ºC/min to 538ºC.
+          </li>
+          <li>
+            3. Air cool in Air Furnace - air cool or faster means the part shall
+            be taken out of the furnace and cool in the air environment. Fans
+            may be used to aid cooling. Cooling rates 11-17ºC/min to 538ºC.
+          </li>
         </ul>
-   </div>
+      </div>
 
-   <div class="pwm">
-     <h3>Military Pratt & Whitney Notes</h3>
-       <ul>
-         <li>1. SPOP 465-1, SPOP 465-2 (Cycle No. 12, and 12A) or SPOP 469 (Cycle No. 16) can be used as an alternate to SPOP 458-1, SPOP 458-2 (Cycle No. 4, and 4A).</li>
-         <li>2. SPOP 469 (Cycle No. 16) can be used as an alternate to SPOP 468, SPOP 472 (Cycle No. 15, and 15A).</li>
-         <li>3. SPOP 482 (Cycle No. 22) can be used as an alternate to SPOP 463 (Cycle No. 10) for Hastelloy X.</li>
-         <li>4. Relavent for the following Engines: F100, J52.</li>
-       </ul>
-  </div>
+      <div class="pwm">
+        <h3>Military Pratt & Whitney Notes</h3>
+        <ul>
+          <li>
+            1. SPOP 465-1, SPOP 465-2 (Cycle No. 12, and 12A) or SPOP 469 (Cycle
+            No. 16) can be used as an alternate to SPOP 458-1, SPOP 458-2 (Cycle
+            No. 4, and 4A).
+          </li>
+          <li>
+            2. SPOP 469 (Cycle No. 16) can be used as an alternate to SPOP 468,
+            SPOP 472 (Cycle No. 15, and 15A).
+          </li>
+          <li>
+            3. SPOP 482 (Cycle No. 22) can be used as an alternate to SPOP 463
+            (Cycle No. 10) for Hastelloy X.
+          </li>
+          <li>4. Relavent for the following Engines: F100, J52.</li>
+        </ul>
+      </div>
 
-  <div class="pwc">
-    <h3>Civilian Pratt & Whitney Notes</h3>
-      <ul>
-        <li>1. Relavent for the following Engines: PW4000.</li>
-      </ul>
- </div>
+      <div class="pwc">
+        <h3>Civilian Pratt & Whitney Notes</h3>
+        <ul>
+          <li>1. Relavent for the following Engines: PW4000.</li>
+        </ul>
+      </div>
 
-  <div class="cfm">
-    <h3>CFM Notes</h3>
-      <ul>
-        <li>1. Cycle 17 (Short age) was 17 developed to age dabber TIG seal teeth repairs. Aging with no prior solution treatment. It restores most of the physical properties of the welded area, and doesn’t overage the rest of the parent metal.</li>
-        <li>2. Relavent for the following Engines: CFM56 - 3/5B/7B/7BE, LEAP - 1A/B.</li>
-      </ul>
- </div>
-
-</div>
-
-
+      <div class="cfm">
+        <h3>CFM Notes</h3>
+        <ul>
+          <li>
+            1. Cycle 17 (Short age) was 17 developed to age dabber TIG seal
+            teeth repairs. Aging with no prior solution treatment. It restores
+            most of the physical properties of the welded area, and doesn’t
+            overage the rest of the parent metal.
+          </li>
+          <li>
+            2. Relavent for the following Engines: CFM56 - 3/5B/7B/7BE, LEAP -
+            1A/B.
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Modal -->
     <div id="modal" class="modal">
       <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
-          <h2>Edit File Details</h2>
-          <canvas id="temperatureChart"></canvas>
-          <label for="filePath">File Path:</label>
-          <input type="text" id="filePath"><br>
-          <label for="fileName">File Name:</label>
-          <input type="text" id="fileName" ><br>
-          <button onclick="saveChanges()">Save</button>
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Edit File Details</h2>
+        <canvas id="temperatureChart"></canvas>
+        <label for="filePath">File Path:</label>
+        <input type="text" id="filePath" /><br />
+        <label for="fileName">File Name:</label>
+        <input type="text" id="fileName" /><br />
+        <button onclick="saveChanges()">Save</button>
       </div>
-  </div>
-
+    </div>
 
     <script>
-
-      window.onload = function() {
-          document.getElementById("tableSelect").selectedIndex = 0;
-          changeTable();
-      }
+      window.onload = function () {
+        document.getElementById("tableSelect").selectedIndex = 0;
+        changeTable();
+      };
 
       //highlight clicked rows
-      document.addEventListener("DOMContentLoaded", function() {
-        let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr, #dataTable3 tbody tr");
+      document.addEventListener("DOMContentLoaded", function () {
+        let rows = document.querySelectorAll(
+          "#dataTable tbody tr, #dataTable2 tbody tr, #dataTable3 tbody tr"
+        );
 
-          rows.forEach(row => {
-              row.addEventListener("click", function(event) {
-                  if (row.classList.contains("highlighted")) {
-                      row.classList.remove("highlighted");
-                  } else {
-                      rows.forEach(r => r.classList.remove("highlighted"));
-                      row.classList.add("highlighted");
-                  }
-                  event.stopPropagation();
-              });
-
-                // Double-click event to call a function
-                row.addEventListener("dblclick", function() {
-                  openModal(row);
-                  extractTemperaturesAndBuildTable(row)
-              });
-
+        rows.forEach((row) => {
+          row.addEventListener("click", function (event) {
+            if (row.classList.contains("highlighted")) {
+              row.classList.remove("highlighted");
+            } else {
+              rows.forEach((r) => r.classList.remove("highlighted"));
+              row.classList.add("highlighted");
+            }
+            event.stopPropagation();
           });
 
-
-
-          document.addEventListener("click", function() {
-              rows.forEach(row => row.classList.remove("highlighted"));
+          // Double-click event to call a function
+          row.addEventListener("dblclick", function () {
+            openModal(row);
+            extractTemperaturesAndBuildTable(row);
           });
+        });
+
+        document.addEventListener("click", function () {
+          rows.forEach((row) => row.classList.remove("highlighted"));
+        });
       });
-
 
       function searchTable() {
         let input = document.getElementById("search");
@@ -2227,68 +3020,78 @@
         // Show the clear button only if there is text in the search box
         clearBtnContainer.style.display = searchValue ? "flex" : "none";
 
-        let table = document.querySelector("table:not([style*='display: none'])");
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
         if (!table) return;
 
         let rows = table.getElementsByTagName("tr");
 
         for (let i = 1; i < rows.length; i++) {
-            if (rows[i].getElementsByTagName("th").length > 0) {
-                continue; // Skip header rows
+          if (rows[i].getElementsByTagName("th").length > 0) {
+            continue; // Skip header rows
+          }
+
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
+
+            // Clear previous highlights: remove all <span> elements and preserve their content
+            cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, "");
+
+            if (
+              searchValue &&
+              cell.textContent.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              highlightTextInElement(cell, searchValue);
+              found = true;
             }
+          }
 
-            let cells = rows[i].getElementsByTagName("td");
-            let found = false;
-
-            for (let j = 0; j < cells.length; j++) {
-                let cell = cells[j];
-
-                // Clear previous highlights: remove all <span> elements and preserve their content
-                cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
-
-                if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
-                    highlightTextInElement(cell, searchValue);
-                    found = true;
-                }
-            }
-
-            // Show row if a match is found, otherwise hide it
-            rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+          // Show row if a match is found, otherwise hide it
+          rows[i].style.display = searchValue ? (found ? "" : "none") : "";
         }
-    }
+      }
 
       // Recursive function to highlight text while preserving HTML structure
       function highlightTextInElement(element, searchValue) {
-          let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+        let regex = new RegExp(
+          `(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`,
+          "gi"
+        ); // Escape special characters
 
-          function highlightNode(node) {
-              if (node.nodeType === 3) { // TEXT_NODE
-                  let parent = node.parentNode;
-                  let text = node.nodeValue;
+        function highlightNode(node) {
+          if (node.nodeType === 3) {
+            // TEXT_NODE
+            let parent = node.parentNode;
+            let text = node.nodeValue;
 
-                  if (text.toLowerCase().includes(searchValue.toLowerCase())) {
-                      let tempWrapper = document.createElement("span");
-                      tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+              let tempWrapper = document.createElement("span");
+              tempWrapper.innerHTML = text.replace(
+                regex,
+                `<span style="color: red; font-weight: bold;">$1</span>`
+              );
 
-                      while (tempWrapper.firstChild) {
-                          parent.insertBefore(tempWrapper.firstChild, node);
-                      }
-                      parent.removeChild(node);
-                  }
-              } else {
-                  // Recursively process child nodes
-                  for (let i = node.childNodes.length - 1; i >= 0; i--) {
-                      highlightNode(node.childNodes[i]);
-                  }
+              while (tempWrapper.firstChild) {
+                parent.insertBefore(tempWrapper.firstChild, node);
               }
+              parent.removeChild(node);
+            }
+          } else {
+            // Recursively process child nodes
+            for (let i = node.childNodes.length - 1; i >= 0; i--) {
+              highlightNode(node.childNodes[i]);
+            }
           }
+        }
 
-          highlightNode(element);
+        highlightNode(element);
       }
 
-
-
-    function clearSearch() {
+      function clearSearch() {
         let input = document.getElementById("search");
         let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
@@ -2297,154 +3100,147 @@
         clearBtnContainer.style.display = "none"; // Hide the clear button
 
         // Reset the table to show all rows
-        let table = document.querySelector("table:not([style*='display: none'])");
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
         if (!table) return;
 
         let rows = table.getElementsByTagName("tr");
         for (let i = 1; i < rows.length; i++) {
-            rows[i].style.display = ""; // Make all rows visible again
+          rows[i].style.display = ""; // Make all rows visible again
 
-            // Remove any highlighting from cells
-            let cells = rows[i].getElementsByTagName("td");
-            for (let j = 0; j < cells.length; j++) {
-                let cell = cells[j];
+          // Remove any highlighting from cells
+          let cells = rows[i].getElementsByTagName("td");
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
 
-                // Remove previous highlights: remove all <span> elements and preserve their content
-                let spans = cell.querySelectorAll("span");
-                spans.forEach(span => {
-                    span.replaceWith(...span.childNodes); // Remove <span> and keep its children
-                });
-            }
+            // Remove previous highlights: remove all <span> elements and preserve their content
+            let spans = cell.querySelectorAll("span");
+            spans.forEach((span) => {
+              span.replaceWith(...span.childNodes); // Remove <span> and keep its children
+            });
+          }
         }
-    }
-
-
-
-
-
-
-       function changeTable() {
-          let selectedTable = document.getElementById("tableSelect").value;
-          document.querySelectorAll("table").forEach(table => {
-              table.style.display = (table.id === selectedTable) ? "table" : "none";
-          });
-
-          let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
-          let pwclElement = document.querySelectorAll(".pwc"); // Change "myList" to your actual <ul> ID
-          let clElement = document.querySelectorAll(".cfm"); // Change "myList" to your actual <ul> ID
-
-          if (selectedTable === "dataTable2") {
-              ulElement.forEach(element => {
-                  element.style.display = 'block';
-              });
-          } else {
-            ulElement.forEach(element => {
-                  element.style.display = 'none';
-              });
-          }
-
-          if (selectedTable === "dataTable") {
-              clElement.forEach(element => {
-                  element.style.display = 'block';
-              });
-          } else {
-            clElement.forEach(element => {
-                  element.style.display = 'none';
-              });
-          }
-
-          if (selectedTable === "dataTable3") {
-            pwclElement.forEach(element => {
-                  element.style.display = 'block';
-              });
-          } else {
-            pwclElement.forEach(element => {
-                  element.style.display = 'none';
-              });
-          }
-
-
-          searchTable();
       }
 
+      function changeTable() {
+        let selectedTable = document.getElementById("tableSelect").value;
+        document.querySelectorAll("table").forEach((table) => {
+          table.style.display = table.id === selectedTable ? "table" : "none";
+        });
 
+        let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
+        let pwclElement = document.querySelectorAll(".pwc"); // Change "myList" to your actual <ul> ID
+        let clElement = document.querySelectorAll(".cfm"); // Change "myList" to your actual <ul> ID
 
-      function sortTable(col, tableName) {
-         let table = document.getElementById(tableName);
-
-         if (!table) {
-            console.error("Table not found");
-            return;
+        if (selectedTable === "dataTable2") {
+          ulElement.forEach((element) => {
+            element.style.display = "block";
+          });
+        } else {
+          ulElement.forEach((element) => {
+            element.style.display = "none";
+          });
         }
 
-         let headerRows = Array.from(table.rows).filter(row => row.getElementsByTagName("th").length > 0);
-         console.log(headerRows.length)
+        if (selectedTable === "dataTable") {
+          clElement.forEach((element) => {
+            element.style.display = "block";
+          });
+        } else {
+          clElement.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
+
+        if (selectedTable === "dataTable3") {
+          pwclElement.forEach((element) => {
+            element.style.display = "block";
+          });
+        } else {
+          pwclElement.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
+
+        searchTable();
+      }
+
+      function sortTable(col, tableName) {
+        let table = document.getElementById(tableName);
+
+        if (!table) {
+          console.error("Table not found");
+          return;
+        }
+
+        let headerRows = Array.from(table.rows).filter(
+          (row) => row.getElementsByTagName("th").length > 0
+        );
+        console.log(headerRows.length);
 
         let rows = Array.from(table.rows).slice(headerRows.length); //remove header row
 
         let sortedRows = rows.sort((rowA, rowB) => {
-            let cellA = rowA.cells[col];
-            let cellB = rowB.cells[col];
+          let cellA = rowA.cells[col];
+          let cellB = rowB.cells[col];
 
-            if (!cellA || !cellB) {
-                console.warn("Column index out of bounds:", col);
-                return 0; // Prevent sorting errors
-            }
+          if (!cellA || !cellB) {
+            console.warn("Column index out of bounds:", col);
+            return 0; // Prevent sorting errors
+          }
 
-            let textA = cellA.textContent.trim().toLowerCase();
-            let textB = cellB.textContent.trim().toLowerCase();
-            return textA.localeCompare(textB);
+          let textA = cellA.textContent.trim().toLowerCase();
+          let textB = cellB.textContent.trim().toLowerCase();
+          return textA.localeCompare(textB);
         });
 
-        sortedRows.forEach(row => table.appendChild(row));
+        sortedRows.forEach((row) => table.appendChild(row));
       }
 
+      function openModal(row) {
+        selectedRow = row;
+        let link = row.querySelector("a"); // Select the first <a> tag
+        let filePathInput = document.getElementById("filePath");
+        let fileNameInput = document.getElementById("fileName");
 
+        if (link) {
+          let fullPath = link.href;
+          let fileName = fullPath.substring(fullPath.lastIndexOf("/") + 1);
+          let pathOnly = fullPath.substring(0, fullPath.lastIndexOf("/")) + "/";
 
-
-
-
-        function openModal(row) {
-            selectedRow = row;
-            let link = row.querySelector("a"); // Select the first <a> tag
-            let filePathInput = document.getElementById("filePath");
-            let fileNameInput = document.getElementById("fileName");
-
-            if (link) {
-                let fullPath = link.href;
-                let fileName = fullPath.substring(fullPath.lastIndexOf("/") + 1);
-                let pathOnly = fullPath.substring(0, fullPath.lastIndexOf("/")) + "/";
-
-                filePathInput.value = pathOnly;
-                fileNameInput.value = fileName;
-            }
-
-            document.getElementById("modal").style.display = "flex";
+          filePathInput.value = pathOnly;
+          fileNameInput.value = fileName;
         }
 
-        function closeModal() {
-            document.getElementById("modal").style.display = "none";
+        document.getElementById("modal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+
+      function saveChanges() {
+        if (selectedRow) {
+          let newPath = document.getElementById("filePath").value;
+          let newName = document.getElementById("fileName").value;
+          let link = selectedRow.querySelector("a");
+          let fileNameSpan = selectedRow.querySelector(".file-name");
+
+          if (link) {
+            link.href = newPath.endsWith("/")
+              ? newPath + newName
+              : newPath + "/" + newName;
+          }
+          if (fileNameSpan) {
+            fileNameSpan.innerText = newName;
+          }
         }
 
-        function saveChanges() {
-            if (selectedRow) {
-                let newPath = document.getElementById("filePath").value;
-                let newName = document.getElementById("fileName").value;
-                let link = selectedRow.querySelector("a");
-                let fileNameSpan = selectedRow.querySelector(".file-name");
+        closeModal();
+      }
 
-                if (link) {
-                    link.href = newPath.endsWith("/") ? newPath + newName : newPath + "/" + newName;
-                }
-                if (fileNameSpan) {
-                    fileNameSpan.innerText = newName;
-                }
-            }
-
-            closeModal();
-        }
-
-        /*------------------------graph from text-------------------------------*/
+      /*------------------------graph from text-------------------------------*/
 
       let temperatureChart = null; // Global variable for the chart instance
       let times = [];
@@ -2452,16 +3248,14 @@
 
       const canvas = document.getElementById("temperatureChart");
 
-
       function extractTemperaturesAndBuildTable(row) {
-
         const list = row.querySelector("ul");
         const items = list.querySelectorAll("li");
 
         const tableData = [["rate", "temp", "hold"]];
         let previousRow = null; // Store the previous row
 
-        items.forEach(item => {
+        items.forEach((item) => {
           let text = item.textContent;
           text = text.replace(/cool|heat|increase|decrease/gi, "heat");
 
@@ -2499,7 +3293,12 @@
             const newRow = [rate, temp, holdTime];
             tableData.push(newRow);
             previousRow = newRow; // Store current row as previous
-          } else if (holdMatch && !text.includes("heat") && !text.includes("cold") && !text.includes("rate")) {
+          } else if (
+            holdMatch &&
+            !text.includes("heat") &&
+            !text.includes("cold") &&
+            !text.includes("rate")
+          ) {
             // Row contains only hold
             if (previousRow) {
               previousRow[2] = holdTime; // Update the hold column of the previous row
@@ -2507,116 +3306,112 @@
           }
         });
 
-      //push last air cool to room temp
-      tableData.push(["10", "20", ""]);
-      console.log(tableData);
-      calculateDataPoints(tableData);
+        //push last air cool to room temp
+        tableData.push(["10", "20", ""]);
+        console.log(tableData);
+        calculateDataPoints(tableData);
       }
 
+      function calculateDataPoints(data) {
+        let headers = data[0]; // Extract headers
+        let rows = data.slice(1); // Extract data rows
 
+        let time = 0; // Initial time
+        let temp = 20; // Initial temperature
+        let dataPoints = [[time, temp]]; // Store (time, temp) pairs
 
-          function calculateDataPoints(data) {
-            let headers = data[0]; // Extract headers
-            let rows = data.slice(1); // Extract data rows
+        console.log(rows);
 
-            let time = 0; // Initial time
-            let temp = 20; // Initial temperature
-            let dataPoints = [[time, temp]]; // Store (time, temp) pairs
+        rows.forEach((row) => {
+          let rate = null,
+            newTemp = null,
+            hold = 0;
 
-            console.log(rows);
-
-            rows.forEach((row) => {
-              let rate = null,
-                newTemp = null,
-                hold = 0;
-
-              row.forEach((value, colIndex) => {
-                let header = headers[colIndex];
-                if (header === "rate" && value !== "" && value !== undefined) {
-                  rate = parseFloat(value);
-                  //console.log(rate);
-                } else if (
-                  header === "temp" &&
-                  value !== "" &&
-                  value !== undefined
-                ) {
-                  newTemp = parseFloat(value);
-                  // console.log(newTemp);
-                } else if (
-                  header === "hold" &&
-                  value !== "" &&
-                  value !== undefined
-                ) {
-                  hold = parseFloat(value);
-                  // console.log(hold);
-                }
-
-                console.log(dataPoints);
-                // If we have a rate and a new temperature, calculate the time
-                if (rate !== null && newTemp !== null && newTemp !== temp) {
-                  let deltaTemp = Math.abs(newTemp - temp);
-                  let rateTime = deltaTemp / rate; // Time = ΔT / rate
-                  time += rateTime;
-                  temp = newTemp;
-                  time = Math.round(time);
-                  dataPoints.push([time, temp]); // Store new data point
-                  // console.log(dataPoints);
-                }
-
-                if (hold > 0) {
-                  time += hold;
-                  time = Math.round(time);
-                  dataPoints.push([time, temp]); // Store hold point
-                  // console.log(dataPoints);
-                }
-              });
-            });
-            drawChart(dataPoints);
-          }
-
-          function drawChart(dataPoints) {
-            times = dataPoints.map((point) => point[0]);
-            temps = dataPoints.map((point) => point[1]);
-
-            let ctx = document.getElementById("temperatureChart").getContext("2d");
-
-            if (temperatureChart) {
-              // Update the existing chart instead of creating a new one
-              temperatureChart.data.labels = times;
-              temperatureChart.data.datasets[0].data = temps;
-              temperatureChart.update();
-            } else {
-              temperatureChart = new Chart(ctx, {
-                type: "line",
-                data: {
-                  labels: times,
-                  datasets: [
-                    {
-                      label: "Temperature (°C)",
-                      data: temps,
-                      borderWidth: 3,
-                      borderColor: "rgba(75, 192, 192, 1)", // Line color
-                      backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
-                      fill: true,
-                      tension: 0, // Smooth lines
-                    },
-                  ],
-                },
-                options: {
-                  scales: {
-                    x: { title: { display: true, text: "Time (min)" } },
-                    y: { title: { display: true, text: "Temperature (°C)" } },
-                  },
-                },
-              });
+          row.forEach((value, colIndex) => {
+            let header = headers[colIndex];
+            if (header === "rate" && value !== "" && value !== undefined) {
+              rate = parseFloat(value);
+              //console.log(rate);
+            } else if (
+              header === "temp" &&
+              value !== "" &&
+              value !== undefined
+            ) {
+              newTemp = parseFloat(value);
+              // console.log(newTemp);
+            } else if (
+              header === "hold" &&
+              value !== "" &&
+              value !== undefined
+            ) {
+              hold = parseFloat(value);
+              // console.log(hold);
             }
-          }
 
-          function openBuilder(){
-            window.open('build HTR graph.html', '_blank');
-          }
+            console.log(dataPoints);
+            // If we have a rate and a new temperature, calculate the time
+            if (rate !== null && newTemp !== null && newTemp !== temp) {
+              let deltaTemp = Math.abs(newTemp - temp);
+              let rateTime = deltaTemp / rate; // Time = ΔT / rate
+              time += rateTime;
+              temp = newTemp;
+              time = Math.round(time);
+              dataPoints.push([time, temp]); // Store new data point
+              // console.log(dataPoints);
+            }
 
-  </script>
+            if (hold > 0) {
+              time += hold;
+              time = Math.round(time);
+              dataPoints.push([time, temp]); // Store hold point
+              // console.log(dataPoints);
+            }
+          });
+        });
+        drawChart(dataPoints);
+      }
 
-</body>
+      function drawChart(dataPoints) {
+        times = dataPoints.map((point) => point[0]);
+        temps = dataPoints.map((point) => point[1]);
+
+        let ctx = document.getElementById("temperatureChart").getContext("2d");
+
+        if (temperatureChart) {
+          // Update the existing chart instead of creating a new one
+          temperatureChart.data.labels = times;
+          temperatureChart.data.datasets[0].data = temps;
+          temperatureChart.update();
+        } else {
+          temperatureChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: times,
+              datasets: [
+                {
+                  label: "Temperature (°C)",
+                  data: temps,
+                  borderWidth: 3,
+                  borderColor: "rgba(75, 192, 192, 1)", // Line color
+                  backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color
+                  fill: true,
+                  tension: 0, // Smooth lines
+                },
+              ],
+            },
+            options: {
+              scales: {
+                x: { title: { display: true, text: "Time (min)" } },
+                y: { title: { display: true, text: "Temperature (°C)" } },
+              },
+            },
+          });
+        }
+      }
+
+      function openBuilder() {
+        window.open("build HTR graph.html", "_blank");
+      }
+    </script>
+  </body>
 </html>
