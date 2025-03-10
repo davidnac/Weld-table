@@ -1,210 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Select Engine Manuals</title>
     <style>
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+      }
 
+      html {
+        height: 100vh;
+        width: 100%;
+        margin: 0;
+      }
 
-        @font-face {
-            font-family: 'Montserrat-Medium';
-            src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
-            font-weight: 500; /* Medium weight */
-            font-style: normal;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        font-family: "Montserrat-Medium", sans-serif;
+        background-color: #f3f4f6;
+        color: #1f2937;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        position: relative;
+      }
 
-        html{
-            height: 100vh;
-            width: 100%;
-            margin: 0;
-        }
+      .body-container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            font-family: 'Montserrat-Medium', sans-serif;
-            background-color: #f3f4f6;
-            color: #1f2937;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            position: relative;
-        }
+      .card-container {
+        width: 50%;
+        padding: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center; /* This centers the cards vertically */
+        gap: 16px;
+        margin: 0;
+        z-index: 2;
+      }
+      .card {
+        width: 170px;
+        background-color: white;
+        /*            background: linear-gradient(to right, #25c481, #25b7c4); */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: 13rem;
+        justify-content: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-decoration: none;
+        box-sizing: border-box;
+      }
+      .card:hover {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+      }
+      .card img {
+        margin-bottom: 10px;
+        width: 80%;
+      }
+      .card img.small {
+        margin-bottom: 10px;
+        width: 50px;
+      }
+      .card p {
+        font-size: 17px;
+        font-weight: 600;
+      }
 
-        .body-container{
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
+      .card .subtext {
+        font-size: 12px;
+        color: gray;
+      }
 
-        .card-container {
-            width: 70%;
-            padding: 16px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center; /* This centers the cards vertically */
-            gap: 16px;
-            margin: 0;
-            z-index: 2;
-        }
-        .card {
-            width: 170px;
-            background-color: white;
-/*            background: linear-gradient(to right, #25c481, #25b7c4); */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            height: 13rem;
-            justify-content: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-decoration: none;
-            box-sizing: border-box;
-        }
-        .card:hover {
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-            transform: scale(1.05);
-        }
-        .card img {
-            margin-bottom: 10px;
-            width: 80%;
-        }
-        .card img.small{
-            margin-bottom: 10px;
-            width: 50px;
-        }
-        .card p {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-        .card:link, .card:visited {
-            text-decoration: none;
-            color: inherit;
-        }
-        p{
-            margin-bottom: 0;
-        }
-        img{
-            width: 200px;
-        }
+      .card:link,
+      .card:visited {
+        text-decoration: none;
+        color: inherit;
+      }
 
-        header {
-            text-align: center;
-            padding: 20px;
-            padding-top: 80px;
-            color: white;
-            font-size: 2rem;
-            font-weight: bold;
-            background-color: rgb(0, 153, 255);
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 2;
-        }
-        svg{
-            position: absolute;
-            top: -10%;
-            left: 0;
-            right: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-        }
-        .wave {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 42vh; /* 40% of the viewport height */
-            background: rgb(0, 153, 255); /* Blue color for the wave */
-            clip-path: polygon(0 100%, 50% 60%, 100% 100%, 100% 0, 0 0);
-            z-index: 1;
-            }
+      img {
+        width: 200px;
+      }
 
+      header {
+        text-align: center;
+        padding: 20px;
+        padding-top: 80px;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        background-color: rgb(0, 153, 255);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+      }
+      svg {
+        position: absolute;
+        top: -10%;
+        left: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+      }
+      .wave {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 42vh; /* 40% of the viewport height */
+        background: rgb(0, 153, 255); /* Blue color for the wave */
+        clip-path: polygon(0 100%, 50% 60%, 100% 100%, 100% 0, 0 0);
+        z-index: 1;
+      }
     </style>
-
-</head>
-<body>
-
-
+  </head>
+  <body>
     <div class="wave"></div>
 
     <div class="body-container">
-        <header>IAI MRO MATERIALS LAB TOOLS</header>
+      <header>IAI MRO MATERIALS LAB TOOLS</header>
 
-    <div class="card-container" id="manualContainer">
-
-        <a href="Logbook.html" target="_blank"class="card"  >
-            <p>Logbbok</p>
-            <p style="font-size: 0.8rem; color: gray;">Lab logs</p>
+      <div class="card-container" id="manualContainer">
+        <a href="heat treat tools.html" target="_blank" class="card">
+          <p class="header p">Heat Treatment Tools</p>
+          <p class="subtext">Heat treatments tables, HTR Builder</p>
+        </a>
+        <a href="shot peen tools.html" target="_blank" class="card">
+          <p>Shot Peening Tools</p>
+          <p class="subtext">Shot peening requirments, curve solver</p>
+        </a>
+        <a href="welding tools.html" target="_blank" class="card">
+          <p>Welding and Brazing Tools</p>
+          <p class="subtext">Welding and brazing selection tables.</p>
+        </a>
+        <a href="materials analysis tools.html" target="_blank" class="card">
+          <p>Materials Analysis Tools</p>
+          <p class="subtext">EDS Chemical composition, XRD</p>
+        </a>
+        <a href="manual tools.html" target="_blank" class="card">
+          <p>Manual tools</p>
+          <p class="subtext">Repair Manuals, Logbook and Specidications</p>
+        </a>
+        <a href="hardness tools.html" target="_blank" class="card">
+          <p>Hardness Tools</p>
+          <p class="subtext">
+            Hardness conversion, convex correction & min thickness tables
+          </p>
         </a>
 
-        <a href="manuals search.html" target="_blank" class="card" >
-            <p>Manual Selection</p>
-            <p style="font-size: 0.8rem; color: gray;">Browse engine Repair & Inspection Manuals</p>
+        <a href="Etchants table.html" target="_blank" class="card">
+          <p>Etchants table</p>
+          <p class="subtext">Find etchant per material and purpouse</p>
         </a>
 
-        <a href="Welding table.html" target="_blank" class="card" >
-            <p>Welding Wire Selection</p>
-            <p style="font-size: 0.8rem; color: gray;">Find the correct welding material</p>
+        <a href="Aluminum conductivity.html" target="_blank" class="card">
+          <p>Aluminum conductivity</p>
+          <p class="subtext">
+            Aluminum conductivity to detect heat treatment phase
+          </p>
         </a>
-
-        <a href="Brazing table.html" target="_blank" class="card" >
-            <p>Brazing Materials</p>
-            <p style="font-size: 0.8rem; color: gray;">Brazing materials data and usage</p>
-        </a>
-
-        <a href="Etchants table.html" target="_blank"class="card"  >
-            <p>Etchants table</p>
-            <p style="font-size: 0.8rem; color: gray;">Find etchand for material</p>
-        </a>
-
-        <a href="Heat treatments table.html" target="_blank" class="card">
-            <p>Heat Treatments Selction</p>
-            <p style="font-size: 0.8rem; color: gray;">Find the correct heat treatment</p>
-        </a>
-
-        <a href="build HTR graph.html" target="_blank"class="card"  >
-            <p>HTR Graph builder</p>
-            <p style="font-size: 0.8rem; color: gray;">HTR Graph builder</p>
-        </a>
-
-        <a href="element table.html" target="_blank"class="card"  >
-            <p>Material Composition</p>
-            <p style="font-size: 0.8rem; color: gray;">Find a material base on its elemnts composition</p>
-        </a>
-
-        <a href="shot peen.html" target="_blank"class="card"  >
-            <p>Shot peen Solver</p>
-            <p style="font-size: 0.8rem; color: gray;">Shot peen curve Solver to find intensity and time</p>
-        </a>
-
-        <a href="xrd.html" target="_blank"class="card"  >
-            <p>X-ray diffraction</p>
-            <p style="font-size: 0.8rem; color: gray;">X-ray diffraction phase analysis</p>
-        </a>
-        <a href="Aluminum conductivity.html" target="_blank"class="card"  >
-            <p>Aluminum conductivity</p>
-            <p style="font-size: 0.8rem; color: gray;">Aluminum conductivity to detect heat treatment phase</p>
-        </a>
-        <a href="hardness table.html" target="_blank"class="card"  >
-            <p>Hardness conversion table</p>
-            <p style="font-size: 0.8rem; color: gray;">Hardness conversion table for nickel alloys</p>
-        </a>
-
+      </div>
     </div>
-</div>
-
-</body>
+  </body>
 </html>

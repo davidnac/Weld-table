@@ -1,1369 +1,1420 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Searchable Etchants Table</title>
     <style>
-
-    @font-face {
-        font-family: 'Montserrat-Medium';
-        src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
         font-weight: 500; /* Medium weight */
         font-style: normal;
-    }
-
-
-        body {
-            font-family: 'Montserrat-Medium', sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 25px;
-            margin-top: 30px;
-        }
-        input {
-            padding: 10px;
-            width: 25%;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .controls {
-            margin-bottom: 20px;
-        }
-        select {
-            width: 270px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 5px;
-        }
-        .table-container {
-            width: 97%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            height: 71vh; /* Fixed height of the table container */
-            overflow-y: auto; /* Enable vertical scrolling */
-            margin-bottom: 22px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 15px;
-            font-size: 15px;
-            text-align: center;
-        }
-
-
-        th {
-            background-color: #98D8EF;
-            color: white;
-            cursor: pointer;
-            position: sticky;
-            top: 0; /* Make header sticky */
-            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .sort-icon {
-            margin-left: 5px;
-            font-size: 12px;
-        }
-        tr:hover {
-            background-color: #e0f7fa;
-        }
-
-
-        br {
-            display: block;
-            content: "";
-            margin-bottom: 10px; /* Adjust the space */
-        }
-        .highlighted {
-            background-color: #FFD95F !important;
-        }
-
-        .section a{
-          color: #3674B5;
-          margin-left: 12px;
-          margin-right: 12px;
-          text-align: center;
-          font-size: 14px;
-          text-transform: uppercase;
-          text-decoration: none;
-       }
-
-       ul {
-         list-style-type: none;
-         text-align: left;
-         padding-left: 25px; /* remove default padding */
       }
-       li {
-         padding: 5px 0;
-         font-size: 13px;
-       }
-       h4{
-         padding-left: 25px;
-       }
 
-       /* Navbar styles */
-       .navbar {
-           display: flex;
-           flex-direction: row;
-           justify-content: space-between;
-           align-items: center;
-           background-color: #3674B5;
-           padding: 15px 30px;
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 25px;
+        margin-top: 30px;
+      }
+      input {
+        padding: 10px;
+        width: 25%;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .controls {
+        margin-bottom: 20px;
+      }
+      select {
+        width: 270px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 5px;
+      }
+      .table-container {
+        width: 97%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        height: 71vh; /* Fixed height of the table container */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 22px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+        font-size: 15px;
+        text-align: center;
+      }
 
-           width: 94%;
-           margin: 15px auto;
-           margin-bottom: 50px;
-           background: white;
-           border-radius: 10px;
-           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-       }
+      th {
+        background-color: #98d8ef;
+        color: white;
+        cursor: pointer;
+        position: sticky;
+        top: 0; /* Make header sticky */
+        z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .sort-icon {
+        margin-left: 5px;
+        font-size: 12px;
+      }
+      tr:hover {
+        background-color: #e0f7fa;
+      }
 
-       .navbar .logo {
-           font-size: 18px;
-           font-weight: bold;
-           color: #1F497D;
-           text-transform: uppercase;
-       }
+      br {
+        display: block;
+        content: "";
+        margin-bottom: 10px; /* Adjust the space */
+      }
+      .highlighted {
+        background-color: #ffd95f !important;
+      }
 
-        .icons {
-           display: flex;
-           flex-direction: row;
-           gap: 15px;
-       }
+      .section a {
+        color: #3674b5;
+        margin-left: 12px;
+        margin-right: 12px;
+        text-align: center;
+        font-size: 14px;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
 
-       .navbar .icon {
-           color: white;
-           font-size: 20px;
-           cursor: pointer;
-       }
+      ul {
+        list-style-type: none;
+        text-align: left;
+        padding-left: 25px; /* remove default padding */
+      }
+      li {
+        padding: 5px 0;
+        font-size: 13px;
+      }
+      h4 {
+        padding-left: 25px;
+      }
 
-       .navbar .icon:hover {
-           color: #FFD95F;
-       }
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
 
+        width: 94%;
+        margin: 15px auto;
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
 
-       img{
-           height: 40px;
-           width: auto;
-       }
+      .navbar .logo {
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+        text-transform: uppercase;
+      }
 
-       .logo-container{
-           display: flex;
-           flex-direction: row;
-           align-items: center;
-           gap: 20px;
-       }
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+      }
 
-       .navbar .ThemeBtn-container {
-         height: 45px;
-         width: 45px;
-         border-radius: 100%;
-         opacity: 1;
-         background-color: transparnt;
-         display: flex;
-         align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
-       }
+      .navbar .icon {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
 
-       .navbar .ThemeBtn-container:hover {
-         background-color: #98D8EF;
-         fill: white ;
-         transition: all 0.5s ease;
-       }
+      .navbar .icon:hover {
+        color: #ffd95f;
+      }
 
-       .clearButton {
-          display: none;
-          cursor: pointer;
-          font-size: 26px;
-          color: gray;
-          padding-left: 6px;
-       }
+      img {
+        height: 40px;
+        width: auto;
+      }
 
-       .svg-button{
-          border: none;
-          cursor: pointer;
-          background-color: transparent !important;
-          fill: #AC1754 ;
-          transform: scale(1.2);
-          margin: 4px;
-          margin-bottom: 0;
-          margin-right: 1px;
-        }
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
 
-        .svg-button:hover{
-          fill: white;
-        }
+      .navbar .ThemeBtn-container {
+        height: 45px;
+        width: 45px;
+        border-radius: 100%;
+        opacity: 1;
+        background-color: transparnt;
+        display: flex;
+        align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+      }
 
-       /* Search bar container */
-       .search-container {
-           display: flex;
-           justify-content: center; /* Center horizontally */
-           margin-top: 30px; /* Adjust space above the search bar */
-       }
+      .navbar .ThemeBtn-container:hover {
+        background-color: #98d8ef;
+        fill: white;
+        transition: all 0.5s ease;
+      }
 
-       .navbar input {
-           padding: 10px;
-           width: 400px; /* Width of the search bar */
-           font-size: 16px;
-           border: 1px solid #ccc;
-           border-radius: 5px;
-           background-color: rgb(244, 244, 244);
-       }
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
 
+      .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
 
+      .svg-button:hover {
+        fill: white;
+      }
 
+      /* Search bar container */
+      .search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
+      }
+
+      .navbar input {
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
+      }
     </style>
-
-
-</head>
-<body>
-
-  <!-- Navbar -->
-  <div class="navbar">
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
       <div class="logo-container">
-          <img src="Images/IAI logo.webp" alt="Book Logo">
-          <div class="logo">ASTM E407 Etchants</div>
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">ASTM E407 Etchants</div>
       </div>
 
       <div>
-          <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
-         <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
-         <select id="tableSelect" onchange="changeTable()">
-           <option value="dataTable2">Etchant preperation</option>
-           <option value="dataTable3">Etchant usage</option>
-         </select>
+        <input
+          type="text"
+          id="search"
+          onkeyup="searchTable()"
+          placeholder="Search for anything in the table..."
+        />
+        <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
+        <select id="tableSelect" onchange="changeTable()">
+          <option value="dataTable2">Etchant preperation</option>
+          <option value="dataTable3">Etchant usage</option>
+        </select>
       </div>
-
 
       <div class="icons">
-        <div class="ThemeBtn-container" style="display: none;">
+        <div class="ThemeBtn-container" style="display: none">
           <button id="clearSearch" class="svg-button" onclick="clearSearch()">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
-            </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+            >
+              <path
+                d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
-
-  </div>
-
-
+    </div>
 
     <div class="table-container">
-        <table id="dataTable2">
-      <thead>
+      <table id="dataTable2">
+        <thead>
           <tr>
-              <th>Etchant No.</th>
-              <th>Name</th>
-              <th>Chemical</th>
-              <th>ml</th>
-              <th>Usage</th>
+            <th>Etchant No.</th>
+            <th>Name</th>
+            <th>Chemical</th>
+            <th>ml</th>
+            <th>Usage</th>
           </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
           <tr>
-              <td>-</td>
-              <td>2% HF</td>
-              <td>Hf<br>Water</td>
-              <td>2<br>98</td>
-              <td>Titanium Alpha case etch</td>
-          </tr>
-
-          <tr>
-              <td>187</td>
-              <td>Kroll</td>
-              <td>Hf<br>HNO3<br>Water</td>
-              <td>10<br>30<br>50</td>
-              <td>Titanium alloys</td>
+            <td>-</td>
+            <td>2% HF</td>
+            <td>Hf<br />Water</td>
+            <td>2<br />98</td>
+            <td>Titanium Alpha case etch</td>
           </tr>
 
           <tr>
-              <td>109</td>
-              <td>-</td>
-              <td>HCl<br>HNO3<br>CuCl2<br>Water</td>
-              <td>50<br>25<br>1g<br>150</td>
-              <td>Nonstainless maraging steels</td>
-          </tr>
-
-
-          <tr>
-              <td>3</td>
-              <td>Kellers</td>
-              <td>Hf<br>HCl<br>HNO3<br>Water</td>
-              <td>2<br>3<br>5<br>190</td>
-              <td>Aluminium alloys</td>
+            <td>187</td>
+            <td>Kroll</td>
+            <td>Hf<br />HNO3<br />Water</td>
+            <td>10<br />30<br />50</td>
+            <td>Titanium alloys</td>
           </tr>
 
           <tr>
-              <td>-</td>
-              <td>-</td>
-              <td>HCl<br>Oxalic acid</td>
-              <td>190<br>10g</td>
-              <td>Haynes 230</td>
+            <td>109</td>
+            <td>-</td>
+            <td>HCl<br />HNO3<br />CuCl2<br />Water</td>
+            <td>50<br />25<br />1g<br />150</td>
+            <td>Nonstainless maraging steels</td>
           </tr>
 
           <tr>
-              <td>74</td>
-              <td>Nital</td>
-              <td>HNO3<br>Ethanol or Methanol 95%</td>
-              <td>4<br>100</td>
-              <td>Iron base steel / Cast iron, non-heat treated or welded steels</td>
+            <td>3</td>
+            <td>Kellers</td>
+            <td>Hf<br />HCl<br />HNO3<br />Water</td>
+            <td>2<br />3<br />5<br />190</td>
+            <td>Aluminium alloys</td>
           </tr>
 
           <tr>
-              <td>76</td>
-              <td>Picral</td>
-              <td>Picric acid<br>Ethanol or Methanol 95%<</td>
-              <td>4g<br>100</td>
-              <td></td>
+            <td>-</td>
+            <td>-</td>
+            <td>HCl<br />Oxalic acid</td>
+            <td>190<br />10g</td>
+            <td>Haynes 230</td>
           </tr>
 
           <tr>
-              <td>80</td>
-              <td>Viellas</td>
-              <td>HCl<br>Picric acid<br>Ethanol or Methanol 95%</td>
-              <td>5<br>1g<br>100</td>
-              <td>-</td>
+            <td>74</td>
+            <td>Nital</td>
+            <td>HNO3<br />Ethanol or Methanol 95%</td>
+            <td>4<br />100</td>
+            <td>
+              Iron base steel / Cast iron, non-heat treated or welded steels
+            </td>
           </tr>
 
           <tr>
-              <td>79</td>
-              <td>Fry`s</td>
-              <td>Hf<br>HCl<br>CuCl2<br>Water</td>
-              <td>2<br>40<br>5g<br>30</td>
-              <td>Aluminium alloys</td>
-          </tr>
-        
-          <tr>
-              <td>94</td>
-              <td>Kallings</td>
-              <td>HCl<br>CuCl2<br>Ethanol or Methanol 95%</td>
-              <td>100<br>5g<br>100</td>
-              <td>Nickel alloys, Stainless steel - see welds</td>
+            <td>76</td>
+            <td>Picral</td>
+            <td>Picric acid<br />Ethanol or Methanol 95%<</td>
+            <td>4g<br />100</td>
+            <td></td>
           </tr>
 
           <tr>
-              <td>-</td>
-              <td>Carpenters</td>
-              <td>FeCl3<br>CuCl2<br>Hydrochoric acid<br>Nitric acid<br>Ethanol or Methanol 95%</td>
-              <td>8.5g<br>2.4g<br>122<br>6<br>122</td>
-              <td>300 Series Stainless Steel</td>
+            <td>80</td>
+            <td>Viellas</td>
+            <td>HCl<br />Picric acid<br />Ethanol or Methanol 95%</td>
+            <td>5<br />1g<br />100</td>
+            <td>-</td>
           </tr>
 
           <tr>
-              <td>-</td>
-              <td>Adlers</td>
-              <td>Copper ammonium chloride<br>FeCl3<br>Hydrochoric acid<br>Water</td>
-              <td>9g<br>45g<br>150<br>75</td>
-              <td>300 Series Stainless Steel</td>
+            <td>79</td>
+            <td>Fry`s</td>
+            <td>Hf<br />HCl<br />CuCl2<br />Water</td>
+            <td>2<br />40<br />5g<br />30</td>
+            <td>Aluminium alloys</td>
           </tr>
 
           <tr>
-              <td>20</td>
-              <td>-</td>
-              <td>H2O2 30%<br>HCl</td>
-              <td>5<br>100</td>
-              <td>Cobalt alloys (CM64, T800)</td>
+            <td>94</td>
+            <td>Kallings</td>
+            <td>HCl<br />CuCl2<br />Ethanol or Methanol 95%</td>
+            <td>100<br />5g<br />100</td>
+            <td>Nickel alloys, Stainless steel - see welds</td>
           </tr>
 
-      </tbody>
-  </table>
+          <tr>
+            <td>-</td>
+            <td>Carpenters</td>
+            <td>
+              FeCl3<br />CuCl2<br />Hydrochoric acid<br />Nitric acid<br />Ethanol
+              or Methanol 95%
+            </td>
+            <td>8.5g<br />2.4g<br />122<br />6<br />122</td>
+            <td>300 Series Stainless Steel</td>
+          </tr>
 
-  <table id="dataTable3">
-      <tr>
+          <tr>
+            <td>-</td>
+            <td>Adlers</td>
+            <td>
+              Copper ammonium chloride<br />FeCl3<br />Hydrochoric acid<br />Water
+            </td>
+            <td>9g<br />45g<br />150<br />75</td>
+            <td>300 Series Stainless Steel</td>
+          </tr>
+
+          <tr>
+            <td>20</td>
+            <td>-</td>
+            <td>H2O2 30%<br />HCl</td>
+            <td>5<br />100</td>
+            <td>Cobalt alloys (CM64, T800)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="dataTable3">
+        <tr>
           <th>Metal</th>
           <th>Etchants</th>
           <th>Uses</th>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Aluminum Base: Pure Al</td>
           <td>1a, 2, 3</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Aluminum Base: Pure Al</td>
-          <td>4, 5<br>1b</td>
-          <td>Grain structure under polarized light, grain boundaries and slip lines</td>
-      </tr>
-      <tr>
+          <td>4, 5<br />1b</td>
+          <td>
+            Grain structure under polarized light, grain boundaries and slip
+            lines
+          </td>
+        </tr>
+        <tr>
           <td>1000 series</td>
-          <td>1a, 3, 2<br>4, 5</td>
-          <td>General structure<br>Grain structure under polarized light</td>
-      </tr>
-      <tr>
+          <td>1a, 3, 2<br />4, 5</td>
+          <td>General structure<br />Grain structure under polarized light</td>
+        </tr>
+        <tr>
           <td>1000 series</td>
           <td>6, 7</td>
           <td>Phase identifications</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>2000 series</td>
-          <td>3, 2, 1a<br>8a, 6, 7</td>
-          <td>General structure<br>Phase identifications</td>
-      </tr>
-      <tr>
+          <td>3, 2, 1a<br />8a, 6, 7</td>
+          <td>General structure<br />Phase identifications</td>
+        </tr>
+        <tr>
           <td>3000 series</td>
-          <td>3, 1a<br>4, 5<br>8a, 6, 7</td>
-          <td>General structure<br>Grain structure under polarized light<br>Phase identifications</td>
-      </tr>
-      <tr>
+          <td>3, 1a<br />4, 5<br />8a, 6, 7</td>
+          <td>
+            General structure<br />Grain structure under polarized light<br />Phase
+            identifications
+          </td>
+        </tr>
+        <tr>
           <td>4000 series</td>
           <td>3, 1a</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>5000 series</td>
-          <td>3, 1a, 2, 6, 8a<br>4, 5</td>
-          <td>General structure<br>Grain structure under polarized light</td>
-      </tr>
-      <tr>
+          <td>3, 1a, 2, 6, 8a<br />4, 5</td>
+          <td>General structure<br />Grain structure under polarized light</td>
+        </tr>
+        <tr>
           <td>6000 series</td>
-          <td>3, 1a, 2, 6, 8a, 222<br>4, 5<br>1a, 2, 7, 6, 8a</td>
-          <td>General structure<br>Grain structure under polarized light<br>Phase identifications</td>
-      </tr>
-      <tr>
+          <td>3, 1a, 2, 6, 8a, 222<br />4, 5<br />1a, 2, 7, 6, 8a</td>
+          <td>
+            General structure<br />Grain structure under polarized light<br />Phase
+            identifications
+          </td>
+        </tr>
+        <tr>
           <td>7000 series</td>
-          <td>3, 1a, 2<br>4, 5<br>3b, 6</td>
-          <td>General structure<br>Grain structure under polarized light<br>Phase identifications</td>
-      </tr>
-      <tr>
+          <td>3, 1a, 2<br />4, 5<br />3b, 6</td>
+          <td>
+            General structure<br />Grain structure under polarized light<br />Phase
+            identifications
+          </td>
+        </tr>
+        <tr>
           <td>Beryllium Base: Pure Be</td>
           <td>9, 10</td>
           <td>General structure via polarized light</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Be alloys</td>
           <td>11</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Chromium Base</td>
           <td>12, 13c</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Cobalt Base: Pure Co</td>
           <td>14, 15, 16, 17</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Hard-facing and tool metals High-temperature alloys</td>
-          <td>18, 19, 20<br>20, 18, 16, 21, 22b, 24, 25<br>19</td>
-          <td>General structure<br>General structure<br>Phase identification</td>
-      </tr>
-      <tr>
+          <td>18, 19, 20<br />20, 18, 16, 21, 22b, 24, 25<br />19</td>
+          <td>
+            General structure<br />General structure<br />Phase identification
+          </td>
+        </tr>
+        <tr>
           <td>Columbium Base (see niobium base)</td>
           <td></td>
           <td></td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Copper Base: Pure Cu</td>
           <td>26, 27, 28, 29, 30, 31d, 32, 33, 34b, 35</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Copper Base: Pure Cu</td>
-          <td>36, 37, 38, 39, 40, 41, 42, 8b, 210, 215<br>43, 28</td>
+          <td>36, 37, 38, 39, 40, 41, 42, 8b, 210, 215<br />43, 28</td>
           <td>Chemical polish and etch</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Cu-Al (aluminum bronze)</td>
-          <td>44, 31d, 34b, 35, 36, 37, 38, 39, 40,<br>45, 215</td>
+          <td>44, 31d, 34b, 35, 36, 37, 38, 39, 40,<br />45, 215</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Cu-Be</td>
           <td>46, 41, 45</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Cu-Cr</td>
           <td>41</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Cu-Mn</td>
           <td>41</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Cu-Ni</td>
           <td>34, 47, 48, 40, 49, 50</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Cu-Si</td>
           <td>41</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Cu-Sn (tin bronze)</td>
           <td>51, 52</td>
           <td>General structure</td>
-      </tr>
-      <tr>
-          <td>Admiralty metal Gilding metal Cartridge brass Free-cutting brass Nickel silver</td>
-          <td>8b<br>31d, 32, 33, 41, 42, 49</td>
-          <td>General structure<br>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
+          <td>
+            Admiralty metal Gilding metal Cartridge brass Free-cutting brass
+            Nickel silver
+          </td>
+          <td>8b<br />31d, 32, 33, 41, 42, 49</td>
+          <td>General structure<br />General structure</td>
+        </tr>
+        <tr>
           <td>Erbium Base</td>
           <td>55, 56</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Gadolinium Base</td>
           <td>55, 56, 57</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Germanium Base</td>
           <td>58, 59, 60</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Gold Base: Pure Au</td>
           <td>61, 62</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Gold Base: Pure Au</td>
           <td>63</td>
           <td>Chemical polish and etch</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Au alloys</td>
           <td>64b, 62</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Au alloys</td>
           <td>63</td>
           <td>Chemical polish and etch</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>&gt;90% Noble Metals</td>
           <td>61</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>&lt;90% Noble Metals</td>
           <td>65</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Hafnium Base</td>
           <td>66, 67, 68, 69, 70</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Hafnium Base</td>
           <td>71</td>
           <td>Grain structure under polarized light</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Hafnium Base</td>
           <td>72</td>
           <td>Chemical polish and etch</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Holmium Base</td>
           <td>55, 56</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Iridium Base</td>
           <td>73c</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Iron Base: Pure Fe</td>
           <td>74a</td>
           <td>Grain boundaries</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Iron Base: Pure Fe</td>
           <td>75</td>
           <td>Substructure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Iron Base: Pure Fe</td>
           <td>210</td>
           <td>Colors ferrite grains</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Fe + C</td>
           <td>76, 74a, 77, 78, 79</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Fe + &lt;1C + &lt;4% Additions</td>
           <td>80, 81, 82</td>
-          <td>Prior austenitic grain boundaries in martensitic and bainitic steels</td>
-      </tr>
-      <tr>
-        <td>Fe + &lt;1C + &lt;4% Additions</td>
+          <td>
+            Prior austenitic grain boundaries in martensitic and bainitic steels
+          </td>
+        </tr>
+        <tr>
+          <td>Fe + &lt;1C + &lt;4% Additions</td>
           <td>78, 222a</td>
           <td>Untempered martensite</td>
-      </tr>
-      <tr>
-        <td>Fe + &lt;1C + &lt;4% Additions</td>
+        </tr>
+        <tr>
+          <td>Fe + &lt;1C + &lt;4% Additions</td>
           <td>31b, 78</td>
-          <td>Carbides and phosphides (matrix darkened, carbides and phosphides remain bright)</td>
-      </tr>
-      <tr>
-        <td>Fe + &lt;1C + &lt;4% Additions</td>
+          <td>
+            Carbides and phosphides (matrix darkened, carbides and phosphides
+            remain bright)
+          </td>
+        </tr>
+        <tr>
+          <td>Fe + &lt;1C + &lt;4% Additions</td>
           <td>83</td>
-          <td>Cementite attacked rapidly, sustenite less, ferrite and iron phosphide least</td>
-      </tr>
-      <tr>
-        <td>Fe + &lt;1C + &lt;4% Additions</td>
+          <td>
+            Cementite attacked rapidly, sustenite less, ferrite and iron
+            phosphide least
+          </td>
+        </tr>
+        <tr>
+          <td>Fe + &lt;1C + &lt;4% Additions</td>
           <td>84</td>
           <td>Overheating and burning</td>
-      </tr>
-      <tr>
-        <td>Fe + &lt;1C + &lt;4% Additions</td>
+        </tr>
+        <tr>
+          <td>Fe + &lt;1C + &lt;4% Additions</td>
           <td>85</td>
           <td>Stains carbides</td>
-      </tr>
-      <tr>
-        <td>Fe + &lt;1C + &lt;4% Additions</td>
+        </tr>
+        <tr>
+          <td>Fe + &lt;1C + &lt;4% Additions</td>
           <td>86</td>
           <td>Chemical polish-etch</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
           <td>80, 87, 88, 89, 34, 40, 92, 93, 94, 95, 91, 226</td>
           <td>General structure</td>
-      </tr>
-      <tr>
-        <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
+        </tr>
+        <tr>
+          <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
           <td>96, 97, 98</td>
           <td>Signs phase</td>
-      </tr>
-      <tr>
-        <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
+        </tr>
+        <tr>
+          <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
           <td>31c</td>
           <td>Carbides</td>
-      </tr>
-      <tr>
-        <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
+        </tr>
+        <tr>
+          <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
           <td>86</td>
           <td>Chemical polish-etch</td>
-      </tr>
-      <tr>
-        <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
+        </tr>
+        <tr>
+          <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
           <td>219</td>
           <td>Grain boundary etch</td>
-      </tr>
-      <tr>
-        <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
+        </tr>
+        <tr>
+          <td>Fe + 12–30 Cr + &lt;6 Ni (400 Series)</td>
           <td>220</td>
           <td>Darkens delta ferrite</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Fe + 12–20 Cr + 4–10 Ni + <7%</td>
           <td>80, 31c, 89, 99, 100, 91</td>
           <td>General structure</td>
-      </tr>
-      <tr>
-          <td>Other elements (controlled transformation, precipitation hardening, stainless maraging alloys)</td>
+        </tr>
+        <tr>
+          <td>
+            Other elements (controlled transformation, precipitation hardening,
+            stainless maraging alloys)
+          </td>
           <td>31c</td>
           <td>Carbides</td>
-      </tr>
-      <tr>
-          <td>Other elements (controlled transformation, precipitation hardening, stainless maraging alloys)</td>
+        </tr>
+        <tr>
+          <td>
+            Other elements (controlled transformation, precipitation hardening,
+            stainless maraging alloys)
+          </td>
           <td>86</td>
           <td>Chemical polish-etch</td>
-      </tr>
-      <tr>
-          <td>Other elements (controlled transformation, precipitation hardening, stainless maraging alloys)</td>
+        </tr>
+        <tr>
+          <td>
+            Other elements (controlled transformation, precipitation hardening,
+            stainless maraging alloys)
+          </td>
           <td>220</td>
           <td>Darkens delta ferrite</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Fe + 15–30 Cr + 6–40 Ni + <5%</td>
           <td>13b, 89, 87, 88, 83a, 80, 94, 95, 91, 101, 212, 221, 226</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Other elements (300 Series)</td>
           <td>13a, 102, 31c, 48c, 213</td>
           <td>Carbides and sensitization</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Other elements (300 Series)</td>
           <td>48, 96, 97, 98</td>
           <td>Stains sigma phase</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Fe + 16–25 Cr + 3–6 Ni + 5–10 Mn (200 series)</td>
           <td>103, 104, 98</td>
           <td>Delineates sigma phase and welds of dissimilar metals</td>
-      </tr>
-      <tr>
-        <td>Fe + 16–25 Cr + 3–6 Ni + 5–10 Mn (200 series)</td>
+        </tr>
+        <tr>
+          <td>Fe + 16–25 Cr + 3–6 Ni + 5–10 Mn (200 series)</td>
           <td>86</td>
           <td>Chemical polish-etch</td>
-      </tr>
-      <tr>
-        <td>Fe + 16–25 Cr + 3–6 Ni + 5–10 Mn (200 series)</td>
+        </tr>
+        <tr>
+          <td>Fe + 16–25 Cr + 3–6 Ni + 5–10 Mn (200 series)</td>
           <td>219</td>
           <td>Grain boundary etch (no twins)</td>
-      </tr>
-      <tr>
-        <td>Fe + 16–25 Cr + 3–6 Ni + 5–10 Mn (200 series)</td>
+        </tr>
+        <tr>
+          <td>Fe + 16–25 Cr + 3–6 Ni + 5–10 Mn (200 series)</td>
           <td>220</td>
           <td>Darkens delta ferrite</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>High Temperature</td>
           <td>89, 25, 105, 106, 97, 212, 221</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>High Temperature</td>
           <td>107, 108, 213</td>
           <td>γ' precipitate</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>High Temperature</td>
           <td>86</td>
           <td>Chemical polish-etch</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Nonstainless Maraging Steels</td>
           <td>109, 89, 99, 100, 221</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Nonstainless Maraging Steels</td>
           <td>83b</td>
           <td>Grain boundaries</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Nonstainless Maraging Steels</td>
           <td>86</td>
           <td>Chemical polish-etch</td>
-      </tr>
+        </tr>
 
-      <tr>
+        <tr>
           <td>Tool Steels</td>
           <td>74a, 80, 14</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Tool Steels</td>
           <td>110</td>
           <td>Grain boundaries in tempered tool steel</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Tool Steels</td>
           <td>210, 211</td>
           <td>Colors ferrite, lower alloy grades</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Tool Steels</td>
           <td>214</td>
           <td>Colors cementite</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Tool Steels</td>
           <td>224, 225</td>
           <td>Carbides attacked and colored</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>86, 87, 94, 221, 226</td>
           <td>General etch</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>111</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>111</td>
           <td>γ' depletion</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Lead Base</td>
           <td>NA</td>
           <td>NA</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Pure Pb</td>
           <td>57, 112</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Pb + <2 Sb</td>
           <td>114, 115, 57, 74b</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Pb + >2 Sb</td>
           <td>114, 57, 74b</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Magnesium Base</td>
           <td>118, 119, 74a, 120, 121, 122</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Mg-Al, Mg-Al-Zn (Al + Zn <5%)</td>
           <td>118, 119, 74a, 125, 124, 123, 122</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Mg-Zn-Zr</td>
           <td>118, 119, 74a, 1d, 128, 124, 126, 127, 121, 122</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Molybdenum Base</td>
           <td>98c, 129, 130, 131</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Nickel Base</td>
           <td>NA</td>
           <td>NA</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Pure Ni and high Ni alloys</td>
           <td>133, 134, 47, 135, 136, 25, 108, 31c</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Ni-Ag</td>
           <td>38, 138, 50, 139</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Ni-Al</td>
           <td>50, 140, 141, 142, 89, 143</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Ni-Cr</td>
           <td>144, 50, 83, 134, 145, 98, 146, 147, 13a</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Ni-Fe</td>
           <td>50, 140, 141, 83, 134, 148, 40, 107, 149</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>94, 105, 138, 153, 12, 87, 89, 212, 226</td>
           <td>General structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>25, 94</td>
           <td>Grain size</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>107, 111, 13a</td>
           <td>Reveals microstructural inhomogeneity</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>133</td>
           <td>Grain boundary sulfidation</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>154</td>
           <td>Fine precipitation structure</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>19b, 155, 156</td>
           <td>Differential matrix and nonmetallic staining</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>22a</td>
           <td>For passive alloys (for example, UNS Alloy N06625)</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>157</td>
           <td>Specific for UNS Alloy N10004</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>107, 154</td>
-          <td>Submicroscopic structure in aged superalloys, particularly for electron microscopy. Stains the matrix when γ' precipitates are present, γ' banding</td>
-      </tr>
-      <tr>
+          <td>
+            Submicroscopic structure in aged superalloys, particularly for
+            electron microscopy. Stains the matrix when γ' precipitates are
+            present, γ' banding
+          </td>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>18</td>
           <td>Pre-etch activation for passive specimens</td>
-      </tr>
-      <tr>
+        </tr>
+        <tr>
           <td>Superalloys</td>
           <td>213</td>
           <td>Colors carbide and γ'</td>
-      </tr>
-      <tr>
-         <td>Tantalum Base</td>
-         <td>NA</td>
-         <td>NA</td>
-     </tr>
-     <tr>
-         <td>Pure Ta</td>
-         <td>177</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Ta alloys</td>
-         <td>159, 66, 178, 163, 161, 179</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Ta alloys</td>
-         <td>164</td>
-         <td>Grain boundaries and inclusions</td>
-     </tr>
-     <tr>
-         <td>Ta alloys</td>
-         <td>158</td>
-         <td>Grain boundaries—retains carbide precipitate</td>
-     </tr>
-     <tr>
-         <td>Thorium Base</td>
-         <td>NA</td>
-         <td>NA</td>
-     </tr>
-     <tr>
-         <td>Pure Th</td>
-         <td>185</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Th alloys</td>
-         <td>185</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Tin Base</td>
-         <td>NA</td>
-         <td>NA</td>
-     </tr>
-     <tr>
-         <td>Pure Sn</td>
-         <td>74d, 180, 151</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Pure Sn</td>
-         <td>181</td>
-         <td>Grain boundaries</td>
-     </tr>
-     <tr>
-         <td>Sn-Cd</td>
-         <td>74d</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Sn-Fe</td>
-         <td>74d, 177a</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Sn-Pb</td>
-         <td>182, 183, 74b</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Sn-Pb</td>
-         <td>116</td>
-         <td>Darkens Pb in Sn-Pb eutectic</td>
-     </tr>
-     <tr>
-         <td>Sn coatings (on steel)</td>
-         <td>183</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Babbitts</td>
-         <td>184</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Sn-Sb-Cu</td>
-         <td>74b</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Titanium Base</td>
-         <td>NA</td>
-         <td>NA</td>
-     </tr>
-     <tr>
-         <td>Pure Titanium</td>
-         <td>186, 187, 67, 68, 69, 217</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Pure Titanium</td>
-         <td>188</td>
-         <td>Removes stain</td>
-     </tr>
-     <tr>
-         <td>Pure Titanium</td>
-         <td>72</td>
-         <td>Chemical polish and etch</td>
-     </tr>
-     <tr>
-         <td>Titanium-5 Al-2,5 Sn</td>
-         <td>189</td>
-         <td>Reveals hydrides</td>
-     </tr>
-     <tr>
-         <td>Titanium-6 Al-6 V-2 Sn</td>
-         <td>190</td>
-         <td>Stains alpha and transformed beta, retained beta remains white</td>
-     </tr>
-     <tr>
-         <td>Titanium-Al-Zr</td>
-         <td>191</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Titanium-8Mn</td>
-         <td>192</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Titanium-13 V-11 Cr-3 Al (aged)</td>
-         <td>192</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Titanium-Si</td>
-         <td>193</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Titanium alloys</td>
-         <td>186, 187, 192, 194, 158, 132b, 1c, 67, 68, 69, 3a, 218</td>
-         <td>General structure</td>
-     </tr>
-     <tr>
-         <td>Titanium alloys</td>
-         <td>11, 1c</td>
-         <td>Reveals alpha case</td>
-     </tr>
-     <tr>
-         <td>Titanium alloys</td>
-         <td>72, 192, 178</td>
-         <td>Chemical polish and etch</td>
-     </tr>
-     <tr>
-         <td>Titanium alloys</td>
-         <td>170a</td>
-         <td>Outlines and darkens hydrides in some alloys</td>
-     </tr>
-     <tr>
-         <td>Titanium alloys</td>
-         <td>188</td>
-         <td>Removes stain</td>
-     </tr>
-      <tr>
+        </tr>
+        <tr>
+          <td>Tantalum Base</td>
+          <td>NA</td>
+          <td>NA</td>
+        </tr>
+        <tr>
+          <td>Pure Ta</td>
+          <td>177</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Ta alloys</td>
+          <td>159, 66, 178, 163, 161, 179</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Ta alloys</td>
+          <td>164</td>
+          <td>Grain boundaries and inclusions</td>
+        </tr>
+        <tr>
+          <td>Ta alloys</td>
+          <td>158</td>
+          <td>Grain boundaries—retains carbide precipitate</td>
+        </tr>
+        <tr>
+          <td>Thorium Base</td>
+          <td>NA</td>
+          <td>NA</td>
+        </tr>
+        <tr>
+          <td>Pure Th</td>
+          <td>185</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Th alloys</td>
+          <td>185</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Tin Base</td>
+          <td>NA</td>
+          <td>NA</td>
+        </tr>
+        <tr>
+          <td>Pure Sn</td>
+          <td>74d, 180, 151</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Pure Sn</td>
+          <td>181</td>
+          <td>Grain boundaries</td>
+        </tr>
+        <tr>
+          <td>Sn-Cd</td>
+          <td>74d</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Sn-Fe</td>
+          <td>74d, 177a</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Sn-Pb</td>
+          <td>182, 183, 74b</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Sn-Pb</td>
+          <td>116</td>
+          <td>Darkens Pb in Sn-Pb eutectic</td>
+        </tr>
+        <tr>
+          <td>Sn coatings (on steel)</td>
+          <td>183</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Babbitts</td>
+          <td>184</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Sn-Sb-Cu</td>
+          <td>74b</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Titanium Base</td>
+          <td>NA</td>
+          <td>NA</td>
+        </tr>
+        <tr>
+          <td>Pure Titanium</td>
+          <td>186, 187, 67, 68, 69, 217</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Pure Titanium</td>
+          <td>188</td>
+          <td>Removes stain</td>
+        </tr>
+        <tr>
+          <td>Pure Titanium</td>
+          <td>72</td>
+          <td>Chemical polish and etch</td>
+        </tr>
+        <tr>
+          <td>Titanium-5 Al-2,5 Sn</td>
+          <td>189</td>
+          <td>Reveals hydrides</td>
+        </tr>
+        <tr>
+          <td>Titanium-6 Al-6 V-2 Sn</td>
+          <td>190</td>
+          <td>
+            Stains alpha and transformed beta, retained beta remains white
+          </td>
+        </tr>
+        <tr>
+          <td>Titanium-Al-Zr</td>
+          <td>191</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Titanium-8Mn</td>
+          <td>192</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Titanium-13 V-11 Cr-3 Al (aged)</td>
+          <td>192</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Titanium-Si</td>
+          <td>193</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Titanium alloys</td>
+          <td>186, 187, 192, 194, 158, 132b, 1c, 67, 68, 69, 3a, 218</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Titanium alloys</td>
+          <td>11, 1c</td>
+          <td>Reveals alpha case</td>
+        </tr>
+        <tr>
+          <td>Titanium alloys</td>
+          <td>72, 192, 178</td>
+          <td>Chemical polish and etch</td>
+        </tr>
+        <tr>
+          <td>Titanium alloys</td>
+          <td>170a</td>
+          <td>Outlines and darkens hydrides in some alloys</td>
+        </tr>
+        <tr>
+          <td>Titanium alloys</td>
+          <td>188</td>
+          <td>Removes stain</td>
+        </tr>
+        <tr>
           <td>Tungsten Base</td>
           <td>NA</td>
           <td>NA</td>
-      </tr>
-  <tr>
-    <td>Pure W</td>
-    <td>98c, 131</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>As cast</td>
-    <td>132a</td>
-    <td>Chemical polish prior to etching</td>
-</tr>
-<tr>
-    <td>W-Th</td>
-    <td>209</td>
-    <td>General structure</td>
-</tr>
+        </tr>
+        <tr>
+          <td>Pure W</td>
+          <td>98c, 131</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>As cast</td>
+          <td>132a</td>
+          <td>Chemical polish prior to etching</td>
+        </tr>
+        <tr>
+          <td>W-Th</td>
+          <td>209</td>
+          <td>General structure</td>
+        </tr>
 
-<tr>
-    <td>Pure Uranium</td>
-    <td>67, 69, 195, 196</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Uranium + Zr</td>
-    <td>68</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Uranium beryllides</td>
-    <td>170a</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Uranium alloys</td>
-    <td>67, 69, 195, 96</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Uranium alloys</td>
-    <td>207</td>
-    <td>Carbides</td>
-</tr>
+        <tr>
+          <td>Pure Uranium</td>
+          <td>67, 69, 195, 196</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Uranium + Zr</td>
+          <td>68</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Uranium beryllides</td>
+          <td>170a</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Uranium alloys</td>
+          <td>67, 69, 195, 96</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Uranium alloys</td>
+          <td>207</td>
+          <td>Carbides</td>
+        </tr>
 
-<tr>
-    <td>Pure Vanadium</td>
-    <td>170b, 165b</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Pure Vanadium</td>
-    <td>197, 198</td>
-    <td>Grain boundaries</td>
-</tr>
-<tr>
-    <td>Vanadium alloys</td>
-    <td>199, 198</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Zinc Base</td>
-    <td></td>
-    <td></td>
-</tr>
-<tr>
-    <td>Pure Zn</td>
-    <td>200a</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Zn-Co</td>
-    <td>177</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Zn-Cu</td>
-    <td>201</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Zn-Fe</td>
-    <td>203, 74a</td>
-    <td>Distinguishes gamma (γ) and epsilon (ε) structure of galvanized sheet</td>
-</tr>
-<tr>
-    <td>Die castings</td>
-    <td>202</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Zirconium Base</td>
-    <td>66, 67, 204, 68, 69, 205</td>
-    <td>General structure</td>
-</tr>
-<tr>
-    <td>Zirconium Base</td>
-    <td>206</td>
-    <td>Electrolytic polish and etch</td>
-</tr>
-<tr>
-    <td>Zirconium Base</td>
-    <td>71</td>
-    <td>Grain structure under polarized light</td>
-</tr>
-<tr>
-    <td>Zirconium Base</td>
-    <td>72</td>
-    <td>Chemical polish and etch</td>
-</tr>
-  </table>
-
+        <tr>
+          <td>Pure Vanadium</td>
+          <td>170b, 165b</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Pure Vanadium</td>
+          <td>197, 198</td>
+          <td>Grain boundaries</td>
+        </tr>
+        <tr>
+          <td>Vanadium alloys</td>
+          <td>199, 198</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Zinc Base</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Pure Zn</td>
+          <td>200a</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Zn-Co</td>
+          <td>177</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Zn-Cu</td>
+          <td>201</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Zn-Fe</td>
+          <td>203, 74a</td>
+          <td>
+            Distinguishes gamma (γ) and epsilon (ε) structure of galvanized
+            sheet
+          </td>
+        </tr>
+        <tr>
+          <td>Die castings</td>
+          <td>202</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Zirconium Base</td>
+          <td>66, 67, 204, 68, 69, 205</td>
+          <td>General structure</td>
+        </tr>
+        <tr>
+          <td>Zirconium Base</td>
+          <td>206</td>
+          <td>Electrolytic polish and etch</td>
+        </tr>
+        <tr>
+          <td>Zirconium Base</td>
+          <td>71</td>
+          <td>Grain structure under polarized light</td>
+        </tr>
+        <tr>
+          <td>Zirconium Base</td>
+          <td>72</td>
+          <td>Chemical polish and etch</td>
+        </tr>
+      </table>
     </div>
 
-
     <script>
+      window.onload = function () {
+        document.getElementById("tableSelect").selectedIndex = 0;
+        changeTable();
+      };
 
-        window.onload = function() {
-            document.getElementById("tableSelect").selectedIndex = 0;
-            changeTable();
-        }
+      //highlight clicked rows
+      document.addEventListener("DOMContentLoaded", function () {
+        let rows = document.querySelectorAll(
+          "#dataTable tbody tr, #dataTable2 tbody tr"
+        );
 
-        //highlight clicked rows
-        document.addEventListener("DOMContentLoaded", function() {
-            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+        rows.forEach((row) => {
+          row.addEventListener("click", function (event) {
+            if (row.classList.contains("highlighted")) {
+              row.classList.remove("highlighted");
+            } else {
+              rows.forEach((r) => r.classList.remove("highlighted"));
+              row.classList.add("highlighted");
+            }
+            event.stopPropagation();
+          });
 
-            rows.forEach(row => {
-                row.addEventListener("click", function(event) {
-                    if (row.classList.contains("highlighted")) {
-                        row.classList.remove("highlighted");
-                    } else {
-                        rows.forEach(r => r.classList.remove("highlighted"));
-                        row.classList.add("highlighted");
-                    }
-                    event.stopPropagation();
-                });
-
-                  // Double-click event to call a function
-                  row.addEventListener("dblclick", function() {
-                    openModal(row);
-                });
-
-            });
-
-
-            document.addEventListener("click", function() {
-                rows.forEach(row => row.classList.remove("highlighted"));
-            });
+          // Double-click event to call a function
+          row.addEventListener("dblclick", function () {
+            openModal(row);
+          });
         });
 
+        document.addEventListener("click", function () {
+          rows.forEach((row) => row.classList.remove("highlighted"));
+        });
+      });
 
+      function searchTable() {
+        let input = document.getElementById("search");
+        let searchValue = input.value.trim();
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-                function searchTable() {
-                  let input = document.getElementById("search");
-                  let searchValue = input.value.trim();
-                  let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+        // Show the clear button only if there is text in the search box
+        clearBtnContainer.style.display = searchValue ? "flex" : "none";
 
-                  // Show the clear button only if there is text in the search box
-                  clearBtnContainer.style.display = searchValue ? "flex" : "none";
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
 
-                  let table = document.querySelector("table:not([style*='display: none'])");
-                  if (!table) return;
+        let rows = table.getElementsByTagName("tr");
 
-                  let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+          if (rows[i].getElementsByTagName("th").length > 0) {
+            continue; // Skip header rows
+          }
 
-                  for (let i = 1; i < rows.length; i++) {
-                      if (rows[i].getElementsByTagName("th").length > 0) {
-                          continue; // Skip header rows
-                      }
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
 
-                      let cells = rows[i].getElementsByTagName("td");
-                      let found = false;
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
 
-                      for (let j = 0; j < cells.length; j++) {
-                          let cell = cells[j];
+            // Clear previous highlights: remove all <span> elements and preserve their content
+            cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, "");
 
-                          // Clear previous highlights: remove all <span> elements and preserve their content
-                          cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
+            if (
+              searchValue &&
+              cell.textContent.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              highlightTextInElement(cell, searchValue);
+              found = true;
+            }
+          }
 
-                          if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
-                              highlightTextInElement(cell, searchValue);
-                              found = true;
-                          }
-                      }
+          // Show row if a match is found, otherwise hide it
+          rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        }
+      }
 
-                      // Show row if a match is found, otherwise hide it
-                      rows[i].style.display = searchValue ? (found ? "" : "none") : "";
-                  }
+      // Recursive function to highlight text while preserving HTML structure
+      function highlightTextInElement(element, searchValue) {
+        let regex = new RegExp(
+          `(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`,
+          "gi"
+        ); // Escape special characters
+
+        function highlightNode(node) {
+          if (node.nodeType === 3) {
+            // TEXT_NODE
+            let parent = node.parentNode;
+            let text = node.nodeValue;
+
+            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+              let tempWrapper = document.createElement("span");
+              tempWrapper.innerHTML = text.replace(
+                regex,
+                `<span style="color: red; font-weight: bold;">$1</span>`
+              );
+
+              while (tempWrapper.firstChild) {
+                parent.insertBefore(tempWrapper.firstChild, node);
               }
+              parent.removeChild(node);
+            }
+          } else {
+            // Recursively process child nodes
+            for (let i = node.childNodes.length - 1; i >= 0; i--) {
+              highlightNode(node.childNodes[i]);
+            }
+          }
+        }
 
-                // Recursive function to highlight text while preserving HTML structure
-                function highlightTextInElement(element, searchValue) {
-                    let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+        highlightNode(element);
+      }
 
-                    function highlightNode(node) {
-                        if (node.nodeType === 3) { // TEXT_NODE
-                            let parent = node.parentNode;
-                            let text = node.nodeValue;
+      function clearSearch() {
+        let input = document.getElementById("search");
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-                            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
-                                let tempWrapper = document.createElement("span");
-                                tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+        // Clear the search input
+        input.value = "";
+        clearBtnContainer.style.display = "none"; // Hide the clear button
 
-                                while (tempWrapper.firstChild) {
-                                    parent.insertBefore(tempWrapper.firstChild, node);
-                                }
-                                parent.removeChild(node);
-                            }
-                        } else {
-                            // Recursively process child nodes
-                            for (let i = node.childNodes.length - 1; i >= 0; i--) {
-                                highlightNode(node.childNodes[i]);
-                            }
-                        }
-                    }
+        // Reset the table to show all rows
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
 
-                    highlightNode(element);
-                }
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+          rows[i].style.display = ""; // Make all rows visible again
 
+          // Remove any highlighting from cells
+          let cells = rows[i].getElementsByTagName("td");
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
 
-                function clearSearch() {
-                    let input = document.getElementById("search");
-                    let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+            // Remove previous highlights: remove all <span> elements and preserve their content
+            let spans = cell.querySelectorAll("span");
+            spans.forEach((span) => {
+              span.replaceWith(...span.childNodes); // Remove <span> and keep its children
+            });
+          }
+        }
+      }
 
-                    // Clear the search input
-                    input.value = "";
-                    clearBtnContainer.style.display = "none"; // Hide the clear button
+      function changeTable() {
+        let selectedTable = document.getElementById("tableSelect").value;
+        document.querySelectorAll("table").forEach((table) => {
+          table.style.display = table.id === selectedTable ? "table" : "none";
+        });
 
-                    // Reset the table to show all rows
-                    let table = document.querySelector("table:not([style*='display: none'])");
-                    if (!table) return;
+        let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
 
-                    let rows = table.getElementsByTagName("tr");
-                    for (let i = 1; i < rows.length; i++) {
-                        rows[i].style.display = ""; // Make all rows visible again
+        if (selectedTable === "dataTable2") {
+          ulElement.forEach((element) => {
+            element.style.display = "block";
+          });
+        } else {
+          ulElement.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
 
-                        // Remove any highlighting from cells
-                        let cells = rows[i].getElementsByTagName("td");
-                        for (let j = 0; j < cells.length; j++) {
-                            let cell = cells[j];
-
-                            // Remove previous highlights: remove all <span> elements and preserve their content
-                            let spans = cell.querySelectorAll("span");
-                            spans.forEach(span => {
-                                span.replaceWith(...span.childNodes); // Remove <span> and keep its children
-                            });
-                        }
-                    }
-                }
-
-
-                function changeTable() {
-                   let selectedTable = document.getElementById("tableSelect").value;
-                   document.querySelectorAll("table").forEach(table => {
-                       table.style.display = (table.id === selectedTable) ? "table" : "none";
-                   });
-
-                   let ulElement = document.querySelectorAll(".pwm"); // Change "myList" to your actual <ul> ID
-
-                   if (selectedTable === "dataTable2") {
-                       ulElement.forEach(element => {
-                           element.style.display = 'block';
-                       });
-                   } else {
-                     ulElement.forEach(element => {
-                           element.style.display = 'none';
-                       });
-                   }
-
-
-                   searchTable();
-               }
-
-
+        searchTable();
+      }
     </script>
-</body>
+  </body>
 </html>

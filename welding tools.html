@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select Engine Manuals</title>
+    <style>
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+      }
+
+      html {
+        height: 100vh;
+        width: 100%;
+        margin: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        font-family: "Montserrat-Medium", sans-serif;
+        background-color: #f3f4f6;
+        color: #1f2937;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        position: relative;
+      }
+
+      .body-container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
+
+      .card-container {
+        width: 70%;
+        padding: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center; /* This centers the cards vertically */
+        gap: 16px;
+        margin: 0;
+        z-index: 2;
+      }
+      .card {
+        width: 170px;
+        background-color: white;
+        /*            background: linear-gradient(to right, #25c481, #25b7c4); */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: 13rem;
+        justify-content: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-decoration: none;
+        box-sizing: border-box;
+      }
+      .card:hover {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+      }
+      .card img {
+        margin-bottom: 10px;
+        width: 80%;
+      }
+      .card img.small {
+        margin-bottom: 10px;
+        width: 50px;
+      }
+      .card p {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+      .card:link,
+      .card:visited {
+        text-decoration: none;
+        color: inherit;
+      }
+      p {
+        margin-bottom: 0;
+      }
+      img {
+        width: 200px;
+      }
+
+      header {
+        text-align: center;
+        padding: 20px;
+        padding-top: 80px;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        background-color: rgb(0, 153, 255);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+      }
+      svg {
+        position: absolute;
+        top: -10%;
+        left: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+      }
+      .wave {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 42vh; /* 40% of the viewport height */
+        background: rgb(0, 153, 255); /* Blue color for the wave */
+        clip-path: polygon(0 100%, 50% 60%, 100% 100%, 100% 0, 0 0);
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wave"></div>
+
+    <div class="body-container">
+      <header>WELDING & BRAZING TOOLS</header>
+
+      <div class="card-container" id="manualContainer">
+        <a href="Welding table.html" class="card">
+          <p>Welding Selection Tables</p>
+        </a>
+        <a href="Brazing table.html" class="card">
+          <p>Brazing Selection Table</p>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

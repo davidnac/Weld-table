@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSV to HTML Table</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+        min-width: 70px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="file" id="csvFileInput" accept=".csv" />
+    <div id="tableContainer"></div>
+
+    <script>
+        document
+    .getElementById("csvFileInput")
+    .addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const csvText = e.target.result;
+        document.getElementById("tableContainer").innerHTML =
+          csvToHtmlTable(csvText);
+      };
+      reader.readAsText(file);
+    });
+
+  function csvToHtmlTable(csvText) {
+    const rows = csvText
+      .trim()
+      .split("\n")
+      .map((row) => row.split(",")); // Split by commas
+
+    if (rows.length < 2) return "No valid data found";
+
+    let html = "<table><thead><tr>";
+
+    // Generate header, keeping first two columns separate
+    let headers = rows[0];
+    html += `<th>${headers[0]}</th><th>${headers[1]}</th>`;
+    for (let j = 2; j < headers.length - 1; j += 2) {
+      html += `<th>${headers[j]}-${headers[j + 1]}</th>`;
+    }
+    html += "</tr></thead><tbody>";
+
+    // Process data rows
+    for (let i = 1; i < rows.length; i++) {
+      let row = rows[i];
+      html += `<tr><td>${row[0]}</td><td>${row[1]}</td>`; // Keep first two columns separate
+      for (let j = 2; j < row.length - 1; j += 2) {
+        // Format numbers with 2 decimal places
+        let value1 = parseFloat(row[j]);
+        let value2 = parseFloat(row[j + 1]);
+        html += `<td>${isNaN(value1) ? row[j] : value1.toFixed(2)} - ${isNaN(value2) ? row[j + 1] : value2.toFixed(2)}</td>`;
+      }
+      html += "</tr>";
+    }
+
+    html += "</tbody></table>";
+    return html;
+  }
+    </script>
+  </body>
+</html>
