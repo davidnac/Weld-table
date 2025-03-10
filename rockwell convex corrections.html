@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Searchable Brazing Table</title>
+    <style>
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
+      }
+
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 25px;
+        margin-top: 30px;
+      }
+
+      select {
+        width: 350px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 5px;
+      }
+      .table-container {
+        width: 95%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        height: 78vh; /* Fixed height of the table container */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 22px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+        font-size: 14px;
+      }
+
+      table th:not(:last-child),
+      table td:not(:last-child) {
+        text-align: center;
+      }
+
+      table td:last-child {
+        font-size: 14px; /* Adjust the font size as needed */
+      }
+
+      th {
+        background-color: #98d8ef;
+        color: white;
+        text-align: center;
+        vertical-align: top;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .sort-icon {
+        margin-left: 5px;
+        font-size: 12px;
+      }
+      tr:hover {
+        background-color: #e0f7fa;
+      }
+
+      br {
+        display: block;
+        content: "";
+        margin-bottom: 10px; /* Adjust the space */
+      }
+      .highlighted {
+        background-color: #ffd95f !important;
+      }
+      thead {
+        position: sticky;
+        top: 0; /* Make header sticky */
+        z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+      }
+      thead input {
+        width: 67px;
+        border: none;
+        padding: 6px 10px;
+        text-align: center;
+      }
+
+      .section a {
+        color: #3674b5;
+        margin-left: 12px;
+        margin-right: 12px;
+        text-align: center;
+        font-size: 14px;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
+
+      ul {
+        list-style-type: none;
+        text-align: left;
+        padding-left: 25px; /* remove default padding */
+      }
+      li {
+        padding: 5px 0;
+        font-size: 13px;
+      }
+      h4 {
+        padding-left: 25px;
+      }
+
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
+
+        width: 94%;
+        margin: 15px auto;
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar .logo {
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+        text-transform: uppercase;
+      }
+
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+      }
+
+      .navbar .icon {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .navbar .icon:hover {
+        color: #ffd95f;
+      }
+
+      img {
+        height: 40px;
+        width: auto;
+      }
+
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .navbar .ThemeBtn-container {
+        height: 45px;
+        width: 45px;
+        border-radius: 100%;
+        opacity: 1;
+        background-color: transparnt;
+        display: flex;
+        align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+      }
+
+      .navbar .ThemeBtn-container:hover {
+        background-color: #98d8ef;
+        fill: white;
+        transition: all 0.5s ease;
+      }
+
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
+
+      .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
+
+      .svg-button:hover {
+        fill: white;
+      }
+
+      /* Search bar container */
+      .search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
+      }
+
+      .navbar input {
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="logo-container">
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">
+          Corrections to be ADDED for Rockwell test on Convex Cylindrical
+          Surfaces
+        </div>
+      </div>
+
+      <div>
+        <select id="tableSelect" onchange="changeTable()">
+          <option value="dataTable">Corrections for HRA, HRC, HRD</option>
+          <option value="dataTable1">Corrections for HRB, HRF, HRG</option>
+          <option value="dataTable2">Corrections for HRN</option>
+          <option value="dataTable3">Corrections for HRT</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <h2>
+        Corrections to be ADDED to Rockwell test based on D Values, Diameters of
+        Convex Cylindrical Surfaces
+      </h2>
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>Hardness Reading</th>
+            <th>
+              1/4” <br />
+              6.4mm
+            </th>
+            <th>
+              3/8” <br />
+              10mm
+            </th>
+            <th>
+              1/2” <br />
+              13mm
+            </th>
+            <th>
+              5/8” <br />
+              16mm
+            </th>
+            <th>
+              3/4” <br />
+              19mm
+            </th>
+            <th>
+              7/8” <br />
+              22mm
+            </th>
+            <th>
+              1” <br />
+              25mm
+            </th>
+            <th>
+              1-1/4” <br />
+              32mm
+            </th>
+            <th>
+              1-1/2” <br />
+              38mm
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>20</td>
+            <td>6.0</td>
+            <td>4.5</td>
+            <td>3.5</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>25</td>
+            <td>5.5</td>
+            <td>4.0</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>30</td>
+            <td>5.0</td>
+            <td>3.5</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>35</td>
+            <td>4.0</td>
+            <td>3.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>40</td>
+            <td>3.5</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>45</td>
+            <td>3.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>50</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>55</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>60</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>65</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>70</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>75</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>80</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>85</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>90</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="dataTable1">
+        <thead>
+          <tr>
+            <th>Hardness Reading</th>
+            <th>
+              1/4” <br />
+              6.4mm
+            </th>
+            <th>
+              3/8” <br />
+              10mm
+            </th>
+            <th>
+              1/2” <br />
+              13mm
+            </th>
+            <th>
+              5/8” <br />
+              16mm
+            </th>
+            <th>
+              3/4” <br />
+              19mm
+            </th>
+            <th>
+              7/8” <br />
+              22mm
+            </th>
+            <th>
+              1” <br />
+              25mm
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0</td>
+            <td>12.5</td>
+            <td>8.5</td>
+            <td>6.5</td>
+            <td>5.5</td>
+            <td>4.5</td>
+            <td>3.5</td>
+            <td>3.0</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>12.0</td>
+            <td>8.0</td>
+            <td>6.0</td>
+            <td>5.0</td>
+            <td>4.0</td>
+            <td>3.5</td>
+            <td>3.0</td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td>11.0</td>
+            <td>7.5</td>
+            <td>5.5</td>
+            <td>4.5</td>
+            <td>4.0</td>
+            <td>3.5</td>
+            <td>3.0</td>
+          </tr>
+          <tr>
+            <td>30</td>
+            <td>10.0</td>
+            <td>6.5</td>
+            <td>5.0</td>
+            <td>4.5</td>
+            <td>3.5</td>
+            <td>3.0</td>
+            <td>2.5</td>
+          </tr>
+          <tr>
+            <td>40</td>
+            <td>9.0</td>
+            <td>6.0</td>
+            <td>4.5</td>
+            <td>4.0</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>2.5</td>
+          </tr>
+          <tr>
+            <td>50</td>
+            <td>8.0</td>
+            <td>5.5</td>
+            <td>4.0</td>
+            <td>3.5</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>60</td>
+            <td>7.0</td>
+            <td>5.0</td>
+            <td>3.5</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>70</td>
+            <td>6.0</td>
+            <td>4.0</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+          </tr>
+          <tr>
+            <td>80</td>
+            <td>5.0</td>
+            <td>3.5</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.5</td>
+          </tr>
+          <tr>
+            <td>90</td>
+            <td>4.0</td>
+            <td>3.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>100</td>
+            <td>3.5</td>
+            <td>2.5</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="dataTable2">
+        <thead>
+          <tr>
+            <th>Hardness Reading</th>
+            <th>
+              1⁄8 in. <br />
+              (3.2 mm)
+            </th>
+            <th>
+              1⁄4 in. <br />
+              (6.4 mm)
+            </th>
+            <th>
+              3⁄8 in. <br />
+              (10 mm)
+            </th>
+            <th>
+              1⁄2 in. <br />
+              (13 mm)
+            </th>
+            <th>
+              3⁄4 in. <br />
+              (19 mm)
+            </th>
+            <th>
+              1 in. <br />
+              (25 mm)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>20</td>
+            <td>6.0</td>
+            <td>3.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.5</td>
+          </tr>
+          <tr>
+            <td>25</td>
+            <td>5.5</td>
+            <td>3.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>30</td>
+            <td>5.5</td>
+            <td>3.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>35</td>
+            <td>5.0</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>40</td>
+            <td>4.5</td>
+            <td>2.5</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>45</td>
+            <td>4.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>50</td>
+            <td>3.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>55</td>
+            <td>3.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>60</td>
+            <td>3.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>65</td>
+            <td>2.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>70</td>
+            <td>2.0</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>75</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>80</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>85</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>90</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table id="dataTable3">
+        <thead>
+          <tr>
+            <th>Hardness Reading</th>
+            <th>
+              1⁄8 in. <br />
+              (3.2 mm)
+            </th>
+            <th>
+              1⁄4 in. <br />
+              (6.4 mm)
+            </th>
+            <th>
+              3⁄8 in. <br />
+              (10 mm)
+            </th>
+            <th>
+              1⁄2 in. <br />
+              (13 mm)
+            </th>
+            <th>
+              5⁄8 in. <br />
+              (16 mm)
+            </th>
+            <th>
+              3⁄4 in. <br />
+              (19 mm)
+            </th>
+            <th>
+              1 in. <br />
+              (25 mm)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>20</td>
+            <td>13.0</td>
+            <td>9.0</td>
+            <td>6.0</td>
+            <td>4.5</td>
+            <td>4.5</td>
+            <td>3.0</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>30</td>
+            <td>11.5</td>
+            <td>7.5</td>
+            <td>5.0</td>
+            <td>3.5</td>
+            <td>3.5</td>
+            <td>2.5</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>40</td>
+            <td>10.0</td>
+            <td>6.5</td>
+            <td>4.5</td>
+            <td>3.5</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>2.0</td>
+          </tr>
+          <tr>
+            <td>50</td>
+            <td>8.5</td>
+            <td>5.5</td>
+            <td>4.0</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+          </tr>
+          <tr>
+            <td>60</td>
+            <td>6.5</td>
+            <td>4.5</td>
+            <td>3.0</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+          </tr>
+          <tr>
+            <td>70</td>
+            <td>5.0</td>
+            <td>3.5</td>
+            <td>2.5</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>80</td>
+            <td>3.0</td>
+            <td>2.0</td>
+            <td>1.5</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>90</td>
+            <td>1.5</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+            <td>0.5</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      window.onload = function () {
+        document.getElementById("tableSelect").selectedIndex = 0;
+        changeTable();
+      };
+
+      function changeTable() {
+        let selectedTable = document.getElementById("tableSelect").value;
+        document.querySelectorAll("table").forEach((table) => {
+          table.style.display = table.id === selectedTable ? "table" : "none";
+        });
+
+        let ulElement = document.querySelectorAll(".nickelHardness"); // Change "myList" to your actual <ul> ID
+        let pwclElement = document.querySelectorAll(".steelHardnessC"); // Change "myList" to your actual <ul> ID
+        //  let clElement = document.querySelectorAll(".steelHardnessB"); // Change "myList" to your actual <ul> ID
+
+        if (selectedTable === "dataTable") {
+          ulElement.forEach((element) => {
+            element.style.display = "block";
+          });
+        } else {
+          ulElement.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
+
+        if (selectedTable === "dataTable1") {
+          pwclElement.forEach((element) => {
+            element.style.display = "block";
+          });
+        } else {
+          pwclElement.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
+
+        /*
+          if (selectedTable === "dataTable2") {
+            clElement.forEach(element => {
+                  element.style.display = 'block';
+              });
+          } else {
+            clElement.forEach(element => {
+                  element.style.display = 'none';
+              });
+          }*/
+      }
+
+      //highlight clicked rows
+      document.addEventListener("DOMContentLoaded", function () {
+        let rows = document.querySelectorAll(
+          "#dataTable tbody tr, #dataTable2 tbody tr"
+        );
+
+        rows.forEach((row) => {
+          row.addEventListener("click", function (event) {
+            if (row.classList.contains("highlighted")) {
+              row.classList.remove("highlighted");
+            } else {
+              rows.forEach((r) => r.classList.remove("highlighted"));
+              row.classList.add("highlighted");
+            }
+            event.stopPropagation();
+          });
+
+          // Double-click event to call a function
+          row.addEventListener("dblclick", function () {
+            openModal(row);
+          });
+        });
+
+        document.addEventListener("click", function () {
+          rows.forEach((row) => row.classList.remove("highlighted"));
+        });
+      });
+
+      function searchTable() {
+        let input = document.getElementById("search");
+        let searchValue = input.value.trim();
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+
+        // Show the clear button only if there is text in the search box
+        clearBtnContainer.style.display = searchValue ? "flex" : "none";
+
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
+
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+          if (rows[i].getElementsByTagName("th").length > 0) {
+            continue; // Skip header rows
+          }
+
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
+
+            // Clear previous highlights: remove all <span> elements and preserve their content
+            cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, "");
+
+            if (
+              searchValue &&
+              cell.textContent.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              highlightTextInElement(cell, searchValue);
+              found = true;
+            }
+          }
+
+          // Show row if a match is found, otherwise hide it
+          rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        }
+      }
+
+      // Recursive function to highlight text while preserving HTML structure
+      function highlightTextInElement(element, searchValue) {
+        let regex = new RegExp(
+          `(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`,
+          "gi"
+        ); // Escape special characters
+
+        function highlightNode(node) {
+          if (node.nodeType === 3) {
+            // TEXT_NODE
+            let parent = node.parentNode;
+            let text = node.nodeValue;
+
+            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+              let tempWrapper = document.createElement("span");
+              tempWrapper.innerHTML = text.replace(
+                regex,
+                `<span style="color: red; font-weight: bold;">$1</span>`
+              );
+
+              while (tempWrapper.firstChild) {
+                parent.insertBefore(tempWrapper.firstChild, node);
+              }
+              parent.removeChild(node);
+            }
+          } else {
+            // Recursively process child nodes
+            for (let i = node.childNodes.length - 1; i >= 0; i--) {
+              highlightNode(node.childNodes[i]);
+            }
+          }
+        }
+
+        highlightNode(element);
+      }
+
+      function clearSearch() {
+        let input = document.getElementById("search");
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+
+        // Clear the search input
+        input.value = "";
+        clearBtnContainer.style.display = "none"; // Hide the clear button
+
+        // Reset the table to show all rows
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
+
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+          rows[i].style.display = ""; // Make all rows visible again
+
+          // Remove any highlighting
+          let cells = rows[i].getElementsByTagName("td");
+          for (let j = 0; j < cells.length; j++) {
+            cells[j].innerHTML = cells[j].textContent;
+          }
+        }
+      }
+
+      function filterTable(input) {
+        let colIndex = Array.from(
+          input.parentElement.parentElement.children
+        ).indexOf(input.parentElement);
+        let searchValue = input.value;
+        let table = document.getElementById("dataTable2");
+        let rows = table
+          .getElementsByTagName("tbody")[0]
+          .getElementsByTagName("tr");
+
+        if (searchValue.trim() === "") {
+          for (let row of rows) {
+            row.style.display = "";
+          }
+          return;
+        }
+
+        let exactMatch = false;
+        let closestBelow = null,
+          closestAbove = null;
+        searchValue = parseFloat(searchValue);
+
+        for (let row of rows) {
+          let cells = row.getElementsByTagName("td");
+          if (colIndex >= cells.length) continue;
+          let cell = cells[colIndex];
+          let cellValue = parseFloat(cell.textContent.trim());
+
+          if (!isNaN(searchValue)) {
+            if (cellValue === searchValue) {
+              exactMatch = true;
+            } else if (
+              cellValue < searchValue &&
+              (!closestBelow || cellValue > closestBelow)
+            ) {
+              closestBelow = cellValue;
+            } else if (
+              cellValue > searchValue &&
+              (!closestAbove || cellValue < closestAbove)
+            ) {
+              closestAbove = cellValue;
+            }
+          }
+        }
+
+        for (let row of rows) {
+          let cells = row.getElementsByTagName("td");
+          if (colIndex >= cells.length) continue;
+          let cell = cells[colIndex];
+          let cellValue = parseFloat(cell.textContent.trim());
+
+          if (exactMatch) {
+            row.style.display = cellValue === searchValue ? "" : "none";
+          } else {
+            row.style.display =
+              cellValue === closestBelow || cellValue === closestAbove
+                ? ""
+                : "none";
+          }
+        }
+      }
+
+      function tableToCSV(tableId) {
+        var table = document.getElementById(tableId);
+        var rows = table.querySelectorAll("tr");
+        var csv = [];
+
+        rows.forEach((row) => {
+          var cells = row.querySelectorAll("th, td");
+          var rowData = [];
+
+          cells.forEach((cell) => {
+            rowData.push(cell.textContent.trim());
+          });
+
+          csv.push(rowData.join(","));
+        });
+
+        return csv.join("\n");
+      }
+
+      function downloadCSV(tableId, filename = "table.csv") {
+        var csvData = tableToCSV(tableId);
+
+        // Create a Blob with CSV data
+        var blob = new Blob([csvData], { type: "text/csv" });
+
+        // Create a temporary link element to trigger the download
+        var link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+
+        // Trigger the download by clicking the link
+        link.click();
+      }
+
+      // Example usage: Call this function with the table ID to download the CSV
+      // downloadCSV('minThickHrn');
+    </script>
+  </body>
+</html>
