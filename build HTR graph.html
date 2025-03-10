@@ -16,7 +16,6 @@
     -->
 
     <style>
-
       @font-face {
         font-family: "Montserrat-Medium";
         src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
@@ -34,9 +33,9 @@
         padding-left: 15px;
         padding-right: 15px;
         padding-bottom: 160px;
-       }
+      }
 
-      .cards-left-right{
+      .cards-left-right {
         display: flex;
         flex-direction: row;
         margin: 15px;
@@ -251,228 +250,246 @@
         margin: 0;
       }
 
-      h2{
+      h2 {
         margin-top: 6px;
       }
 
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
 
-             /* Navbar styles */
-             .navbar {
-                 display: flex;
-                 flex-direction: row;
-                 justify-content: space-between;
-                 align-items: center;
-                 background-color: #3674B5;
-                 padding: 15px 30px;
+        width: 95%;
+        margin: 15px auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
 
-                 width: 95%;
-                 margin: 15px auto;
-                 background: white;
-                 border-radius: 10px;
-                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-             }
+      .navbar .logo {
+        font-size: 21px;
+        font-weight: bold;
+        color: black;
+        text-transform: uppercase;
+      }
 
-             .navbar .logo {
-                 font-size: 21px;
-                 font-weight: bold;
-                 color: #1F497D;
-                 text-transform: uppercase;
-             }
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+      }
 
-              .icons {
-                 display: flex;
-                 flex-direction: row;
-                 gap: 15px;
-             }
+      .navbar .icon {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
 
-             .navbar .icon {
-                 color: white;
-                 font-size: 20px;
-                 cursor: pointer;
-             }
+      .navbar .icon:hover {
+        color: #ffd95f;
+      }
 
-             .navbar .icon:hover {
-                 color: #FFD95F;
-             }
+      img {
+        height: 40px;
+        width: auto;
+      }
 
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
 
-             img{
-                 height: 40px;
-                 width: auto;
-             }
+      .navbar .ThemeBtn-container {
+        height: 45px;
+        width: 45px;
+        border-radius: 100%;
+        opacity: 1;
+        background-color: transparnt;
+        display: flex;
+        align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+      }
 
-             .logo-container{
-                 display: flex;
-                 flex-direction: row;
-                 align-items: center;
-                 gap: 20px;
-             }
+      .navbar .ThemeBtn-container:hover {
+        background-color: #98d8ef;
+        fill: white;
+        transition: all 0.5s ease;
+      }
 
-             .navbar .ThemeBtn-container {
-               height: 45px;
-               width: 45px;
-               border-radius: 100%;
-               opacity: 1;
-               background-color: transparnt;
-               display: flex;
-               align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
-             }
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
 
-             .navbar .ThemeBtn-container:hover {
-               background-color: #98D8EF;
-               fill: white ;
-               transition: all 0.5s ease;
-             }
+      .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
 
-             .clearButton {
-                display: none;
-                cursor: pointer;
-                font-size: 26px;
-                color: gray;
-                padding-left: 6px;
-             }
+      .svg-button:hover {
+        fill: white;
+      }
 
-             .svg-button{
-                border: none;
-                cursor: pointer;
-                background-color: transparent !important;
-                fill: #AC1754 ;
-                transform: scale(1.2);
-                margin: 4px;
-                margin-bottom: 0;
-                margin-right: 1px;
-              }
+      /* Search bar container */
+      .search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
+      }
 
-              .svg-button:hover{
-                fill: white;
-              }
-
-             /* Search bar container */
-             .search-container {
-                 display: flex;
-                 justify-content: center; /* Center horizontally */
-                 margin-top: 30px; /* Adjust space above the search bar */
-             }
-
-             .navbar input {
-                 padding: 10px;
-                 width: 400px; /* Width of the search bar */
-                 font-size: 16px;
-                 border: 1px solid #ccc;
-                 border-radius: 5px;
-                 background-color: rgb(244, 244, 244);
-             }
-
+      .navbar input {
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
+      }
     </style>
   </head>
 
   <body>
-
     <!-- Navbar -->
     <div class="navbar">
-        <div class="logo-container">
-            <img src="Images/IAI logo.webp" alt="Book Logo">
-            <div class="logo">HTR Graph Builder</div>
-        </div>
-
+      <div class="logo-container">
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">HTR Graph Builder</div>
+      </div>
     </div>
 
     <div class="cards-left-right">
-        <div class="card card-left">
-          <div class="graph-header-container">
-            <h2>Temperature vs Time Graph Builder</h2>
-            <button class="graphBtn" onclick="filterTable()">Generate Graph</button>
-          </div>
-
-          <canvas id="temperatureChart"></canvas>
-          <!-- The canvas where the graph will be drawn -->
-
-          <div class="graph-header-container">
-            <h2>Data set points</h2>
-            <button class="copy" onclick="copyArrayToClipboard()">
-              Copy Data set to Clipboard
-            </button>
-          </div>
-
-          <p id="temperatureDisplay"></p>
-          <p id="timeDisplay"></p>
+      <div class="card card-left">
+        <div class="graph-header-container">
+          <h2>Temperature vs Time Graph Builder</h2>
+          <button class="graphBtn" onclick="filterTable()">
+            Generate Graph
+          </button>
         </div>
 
+        <canvas id="temperatureChart"></canvas>
+        <!-- The canvas where the graph will be drawn -->
 
-          <div class="card-right card">
-            <h2>Data Input</h2>
+        <div class="graph-header-container">
+          <h2>Data set points</h2>
+          <button class="copy" onclick="copyArrayToClipboard()">
+            Copy Data set to Clipboard
+          </button>
+        </div>
 
-            <label for="wordInputText"></label>
-            <textarea name="" id="wordInputText" onkeyup="importToTable()"></textarea>
-            <button class="cleat-btn" onclick="clearTextarea()">
-              Clear Textarea
-            </button>
+        <p id="temperatureDisplay"></p>
+        <p id="timeDisplay"></p>
+      </div>
 
-            <table id="inputTable">
-              <thead>
-                <tr>
-                  <th>Heat up Temp, °C</th>
-                  <th>Heat up rate, °C/min</th>
-                  <th>Hold Temp, °C</th>
-                  <th>Hold time, min</th>
-                  <th>Media</th>
-                  <th>Cool rate, °C/min</th>
-                  <th>Cool temp, °C</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><input type="text" value="Room" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="10" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="538" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="120" /></td>
-                  <td><input type="text" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="1" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="718" /></td>
-                </tr>
-                <tr>
-                  <td><input type="text" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="10" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="718" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="120" /></td>
-                  <td><input type="text" value="Argon" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="10" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="20" /></td>
-                </tr>
-                <tr>
-                  <td><input type="text" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                </tr>
-                <tr>
-                  <td><input type="text" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                </tr>
-                <tr>
-                  <td><input type="text" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                  <td><input type="text" required pattern="[0-9]+" value="-" /></td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="card-right card">
+        <h2>Data Input</h2>
 
-            <button class="cleat-btn" onclick="clearTable()">Clear Table</button>
-          </div>
-</div>
-          <div id="toast"></div>
+        <label for="wordInputText"></label>
+        <textarea
+          name=""
+          id="wordInputText"
+          onkeyup="importToTable()"
+        ></textarea>
+        <button class="cleat-btn" onclick="clearTextarea()">
+          Clear Textarea
+        </button>
+
+        <table id="inputTable">
+          <thead>
+            <tr>
+              <th>Heat up Temp, °C</th>
+              <th>Heat up rate, °C/min</th>
+              <th>Hold Temp, °C</th>
+              <th>Hold time, min</th>
+              <th>Media</th>
+              <th>Cool rate, °C/min</th>
+              <th>Cool temp, °C</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" value="Room" /></td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="10" />
+              </td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="538" />
+              </td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="120" />
+              </td>
+              <td><input type="text" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="1" /></td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="718" />
+              </td>
+            </tr>
+            <tr>
+              <td><input type="text" value="-" /></td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="10" />
+              </td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="718" />
+              </td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="120" />
+              </td>
+              <td><input type="text" value="Argon" /></td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="10" />
+              </td>
+              <td>
+                <input type="text" required pattern="[0-9]+" value="20" />
+              </td>
+            </tr>
+            <tr>
+              <td><input type="text" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            </tr>
+            <tr>
+              <td><input type="text" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            </tr>
+            <tr>
+              <td><input type="text" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+              <td><input type="text" required pattern="[0-9]+" value="-" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="cleat-btn" onclick="clearTable()">Clear Table</button>
+      </div>
+    </div>
+    <div id="toast"></div>
 
     <script>
       let temperatureChart = null; // Global variable for the chart instance
@@ -706,7 +723,6 @@
       }
 
       filterTable();
-
     </script>
   </body>
 </html>
