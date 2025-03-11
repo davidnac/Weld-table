@@ -26,37 +26,35 @@
     <div id="tableContainer"></div>
 
     <script>
-        document
-    .getElementById("csvFileInput")
-    .addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (!file) return;
+      document
+        .getElementById("csvFileInput")
+        .addEventListener("change", function (event) {
+          const file = event.target.files[0];
+          if (!file) return;
 
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const csvText = e.target.result;
-        document.getElementById("tableContainer").innerHTML =
-          csvToHtmlTable(csvText);
-      };
-      reader.readAsText(file);
-    });
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const csvText = e.target.result;
+            document.getElementById("tableContainer").innerHTML =
+              csvToHtmlTable(csvText);
+          };
+          reader.readAsText(file);
+        });
 
-
-
-    function csvToHtmlTable(csvText) {
-      
-
+      function csvToHtmlTable(csvText) {
         const rows = csvText
           .trim()
           .split("\n")
           .map((row) => row.split(",")); // Split by commas
+
+        console.log("Parsed CSV Rows:", rows); // Debugging log
 
         if (rows.length < 2) return "No valid data found";
 
         let html = "<table><thead><tr>";
 
         // Generate header row, merging columns
-        let headers = rows[0].map(header => header.replace(/-/g, "")); // Remove '-' from headers
+        let headers = rows[0].map((header) => header.replace(/-/g, "")); // Remove '-' from headers
         html += `<th>${headers[0]}</th><th>${headers[1]}</th>`;
         for (let j = 2; j < headers.length - 1; j += 2) {
           html += `<th>${headers[j]}-${headers[j + 1]}</th>`;
@@ -67,7 +65,7 @@
         html += `<th class="maxWide">
                     <input type="text" id="materialSearch" placeholder="Search material...">
                 </th>`;
-        for (let j = 1; j < headers.length - 1; j++) {
+        for (let j = 1; j < headers.length / 2; j++) {
           html += `<th>
                       <input type="text" class="filter" oninput="validateInput(this)">
                       <span class="error-message"></span>
@@ -78,12 +76,14 @@
         // Process data rows, merging columns
         for (let i = 1; i < rows.length; i++) {
           let row = rows[i];
-          html += `<tr><td>${row[0]}</td><td>${row[1]}</td>`;
-          for (let j = 2; j < row.length - 1; j += 2) {
+          html += `<tr><td>${row[0]}</td>`;
+          for (let j = 1; j < row.length - 1; j += 2) {
             // Format numbers with 2 decimal places
             let value1 = parseFloat(row[j]);
             let value2 = parseFloat(row[j + 1]);
-            html += `<td>${isNaN(value1) ? row[j] : value1.toFixed(2)} - ${isNaN(value2) ? row[j + 1] : value2.toFixed(2)}</td>`;
+            html += `<td>${isNaN(value1) ? row[j] : value1.toFixed(2)} - ${
+              isNaN(value2) ? row[j + 1] : value2.toFixed(2)
+            }</td>`;
           }
           html += "</tr>";
         }
@@ -95,19 +95,20 @@
         let doc = parser.parseFromString(html, "text/html");
         let thElements = doc.querySelectorAll("thead th");
 
-        for (let i = 1; i < thElements.length; i++) { // Skip the first column
-            let th = thElements[i];
-            let originalText = th.textContent.trim();
-            let element = elements.find(el => originalText.includes(el.symbol));
-            if (element) {
-                th.innerHTML = `${element.name} (${originalText}) % <span class="sort-icon">⇅</span>`;
-                th.setAttribute("onclick", "sortTable(this)");
-            }
+        for (let i = 1; i < thElements.length; i++) {
+          // Skip the first column
+          let th = thElements[i];
+          let originalText = th.textContent.trim();
+          originalText = originalText.replace(/-/g, "");
+          let element = elements.find((el) => el.symbol === originalText);
+          if (element) {
+            th.innerHTML = `${element.name} (${originalText}) % <span class="sort-icon">⇅</span>`;
+            th.setAttribute("onclick", "sortTable(this)");
+          }
         }
 
         return doc.body.innerHTML;
-    }
-
+      }
 
       const elements = [
         { symbol: "H", name: "Hydrogen", row: 1, col: 1, wt: 100 },
@@ -886,7 +887,6 @@
         "Mn",
         "W",
       ]);
-
     </script>
   </body>
 </html>
