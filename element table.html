@@ -23,7 +23,7 @@
         margin-bottom: 25px;
         margin-top: 30px;
       }
-      
+
       .controls {
         display: flex;
         justify-content: space-between; /* Centers horizontally */
@@ -100,7 +100,7 @@
         align-items: center;
         text-align: center;
         cursor: pointer;
-        
+
       }
       tr:nth-child(even) {
         background-color: #f9f9f9;
@@ -2337,6 +2337,9 @@
             <td>-</td>
             <td>-</td>
           </tr>
+          <tr>
+            <td>M50</td><td>0 - 0.3</td><td>-</td><td>3.75 - 4.5</td><td>3.9 - 4.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0.78 - 0.88</td><td>0.15 - 0.45</td><td>0.2 - 0.6</td><td>-</td><td>0.8 - 1.25</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -2452,7 +2455,7 @@
               }
             } else if(cellText.toLowerCase() === "bal." || cellText.toLowerCase() === "balance"){
               console.log("in balance")
-              cellValue = calculateBalance(row, colIndex); // Compute balance 
+              cellValue = calculateBalance(row, colIndex); // Compute balance
               console.log(cellValue)
             }else{
               cellValue = parseFloat(cellText);
