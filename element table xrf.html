@@ -54,7 +54,6 @@
         border-collapse: collapse;
       }
 
-
       th,
       td {
         padding: 15px 7px;
@@ -66,18 +65,18 @@
         text-align: center;
       }
 
-      th{
+      th {
         vertical-align: top;
         position: relative; /* Ensure relative positioning for absolute elements */
       }
 
-      thead{
+      thead {
         position: sticky;
         top: 0; /* Make header sticky */
         z-index: 3; /* Ensure header stays above table content - was 1 i changed to 0 */
       }
 
-      thead input{
+      thead input {
         border: none;
         border-radius: none;
         min-width: 100px;
@@ -99,7 +98,6 @@
         align-items: center;
         text-align: center;
         cursor: pointer;
-
       }
       tr:nth-child(even) {
         background-color: #f9f9f9;
@@ -479,7 +477,16 @@
       </div>
 
       <div>
-        <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15" oninput="filterTable()"/>
+        <input
+          class="small"
+          type="number"
+          id="sensitivity"
+          placeholder="Sensitivity, %"
+          min="0"
+          max="100"
+          value="15"
+          oninput="filterTable()"
+        />
         <span class="error-message"></span>
       </div>
 
@@ -2384,7 +2391,7 @@
 
     <script>
       ///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
-/*
+      /*
       // Add event listener for clicks on the inputs
       document.querySelectorAll(".filter").forEach((input) => {
         input.addEventListener("click", function () {
@@ -2414,7 +2421,6 @@
 
         return null; // Return null if no header is found
       }*/
-
 
       const elements = [
         { symbol: "H", name: "Hydrogen", row: 1, col: 1, wt: 100 },
@@ -3194,10 +3200,9 @@
         "Ag",
       ]);
 
-
       ///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
 
-/*
+      /*
       document.addEventListener("DOMContentLoaded", function () {
         //search bar
         document
@@ -3212,15 +3217,17 @@
           });
       });*/
       function initializeMaterialSearch() {
-        document.getElementById("materialSearch").addEventListener("input", function () {
-          clearFilters(); // Clear filters before searching
-          let searchValue = this.value.toLowerCase();
+        document
+          .getElementById("materialSearch")
+          .addEventListener("input", function () {
+            clearFilters(); // Clear filters before searching
+            let searchValue = this.value.toLowerCase();
 
-          document.querySelectorAll("#data-table tbody tr").forEach((row) => {
-            let material = row.cells[0].textContent.toLowerCase();
-            row.style.display = material.includes(searchValue) ? "" : "none";
+            document.querySelectorAll("#data-table tbody tr").forEach((row) => {
+              let material = row.cells[0].textContent.toLowerCase();
+              row.style.display = material.includes(searchValue) ? "" : "none";
+            });
           });
-        });
       }
 
       //filter table
@@ -3267,11 +3274,14 @@
               } else {
                 cellValue = parseFloat(cellText); // Fallback in case of malformed data
               }
-            } else if(cellText.toLowerCase() === "bal." || cellText.toLowerCase() === "balance"){
-              console.log("in balance")
+            } else if (
+              cellText.toLowerCase() === "bal." ||
+              cellText.toLowerCase() === "balance"
+            ) {
+              console.log("in balance");
               cellValue = calculateBalance(row, colIndex); // Compute balance
-              console.log(cellValue)
-            }else{
+              console.log(cellValue);
+            } else {
               cellValue = parseFloat(cellText);
             }
 
@@ -3302,33 +3312,33 @@
       }
 
       document
-        .querySelector("#data-table tbody")
+        .querySelector(".table-container")
         .addEventListener("dblclick", function (event) {
-          let row = event.target.closest("tr");
-          if (!row) return; // Ensure row is valid
+          let row = event.target.closest("tr"); // Ensure the click is on a row
+          if (!row || row.parentNode.tagName !== "TBODY") return; // Ensure it's a valid row inside tbody
 
           let spectral = [];
           let headers =
-            document.querySelector("#data-table thead").rows[0].cells;
+            document.querySelector("#data-table thead")?.rows[0]?.cells;
           let materialName = "";
+
+          if (!headers) return; // Ensure headers exist
 
           Array.from(row.cells).forEach((cell, colIndex) => {
             if (colIndex === 0) {
               materialName = cell.textContent;
               return; // Skip the first column (index 0)
             }
-            //let value = parseFloat(cell.textContent.trim());
+
             let value = parseCellValue(cell.textContent, row, colIndex);
-            console.log(value);
             if (!isNaN(value) && value > 0) {
               let elementName = headers[colIndex].textContent.trim();
-              console.log(elementName);
               let element = elements.find((e) => elementName.includes(e.name));
-              console.log(element);
+
               if (element) {
                 element.wt = value;
                 spectral.push({ ...element });
-                element.wt = 100;
+                element.wt = 100; // Reset element weight after pushing
               }
             }
           });
@@ -3337,17 +3347,17 @@
           drawChart(spectral);
 
           // Open modal
-          document.querySelector("#modal-spectral-table h3").textContent =
-            materialName;
-          document.getElementById("modal-spectral-table").style.display =
-            "flex";
+          let modal = document.getElementById("modal-spectral-table");
+          if (modal) {
+            modal.querySelector("h3").textContent = materialName;
+            modal.style.display = "flex";
+          }
         });
 
       let sortDirections = {}; // Store sort directions for each column
 
       //sort columns
       function sortTable(cell) {
-
         let table = document.getElementById("data-table");
         let tbody = table.querySelector("tbody"); // Ensure tbody is selected
         let rows = Array.from(tbody.rows); // Get only tbody rows (skip the header)
@@ -3379,15 +3389,16 @@
         rows.forEach((row) => tbody.appendChild(row));
       }
 
-
-
       // Parse cell value to handle ranges and other types of values
       function parseCellValue(value, row = null, colIndex = null) {
         value = value.trim();
 
         if (value === "-") return 0; // "-" is treated as zero
 
-        if (value.toLowerCase() === "bal." || value.toLowerCase() === "balance") {
+        if (
+          value.toLowerCase() === "bal." ||
+          value.toLowerCase() === "balance"
+        ) {
           return calculateBalance(row, colIndex); // Compute balance dynamically
         }
 
@@ -3408,8 +3419,6 @@
         return parseFloat(value) || 0; // Convert to number, default to 0
       }
 
-
-
       // Calculate balance from row by summing other cell values
       function calculateBalance(row, colIndex) {
         let total = 0;
@@ -3423,7 +3432,6 @@
         }
         return 100 - total; // Balance is 100 - SUM(other values)
       }
-
 
       //clear all inputs
       function clearInputs() {
@@ -3457,24 +3465,24 @@
       }
 
       //Highlight row on click
-      document.querySelectorAll("#data-table tbody tr").forEach((row) => {
-        row.addEventListener("click", function (event) {
-          let isHighlighted = this.classList.contains("highlight");
+      document
+        .querySelector(".table-container")
+        .addEventListener("click", function (event) {
+          let row = event.target.closest("tr"); // Ensure the click is on a row
+          if (!row || row.parentNode.tagName !== "TBODY") return; // Ignore clicks outside tbody
+
+          let isHighlighted = row.classList.contains("highlight");
 
           // Remove highlight from all rows
           document
-            .querySelectorAll("#data-table tbody tr")
+            .querySelectorAll(".table-container tbody tr")
             .forEach((r) => r.classList.remove("highlight"));
 
           // Toggle highlight on the clicked row
           if (!isHighlighted) {
-            this.classList.add("highlight");
+            row.classList.add("highlight");
           }
-
-          // Stop click from propagating to the document listener
-          event.stopPropagation();
         });
-      });
 
       /*
 
@@ -3561,7 +3569,7 @@
           link.click();
         });
 
-/*
+      /*
       document
         .getElementById("importCSV")
         .addEventListener("change", function (event) {
@@ -3602,7 +3610,7 @@
 
       ////////////////////////////////LOAD FROM XRF///////////////////////////////////
 
-/*
+      /*
       document
         .getElementById("importCSV")
         .addEventListener("change", function (event) {
@@ -3619,27 +3627,30 @@
         });
 */
 
+      let columnOrder = []; // Array to store the indexes of selected columns
 
-    function initializeCSVImport(inputId, tableContainerSelector) {
-        document.getElementById(inputId).addEventListener("change", function (event) {
+      function initializeCSVImport(inputId, tableContainerSelector) {
+        document
+          .getElementById(inputId)
+          .addEventListener("change", function (event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = function (e) {
-                const csvText = e.target.result;
-                document.querySelector(tableContainerSelector).innerHTML = csvToHtmlTable(csvText);
+              const csvText = e.target.result;
+              document.querySelector(tableContainerSelector).innerHTML =
+                csvToHtmlTable(csvText);
 
-                // Ensure the table is created before hiding and sorting columns
-                setTimeout(() => {
-                    hideUnselectedColumns("data-table");
-                    sortColumnsByOrder("data-table", columnOrder); // Make sure columnOrder is defined
-                }, 0);
+              // Ensure the table is created before hiding and sorting columns
+              setTimeout(() => {
+                hideUnselectedColumns("data-table");
+                sortColumnsByOrder("data-table", columnOrder); // Make sure columnOrder is defined
+              }, 0);
             };
             reader.readAsText(file);
-        });
-    }
-
+          });
+      }
 
       function csvToHtmlTable(csvText) {
         const rows = csvText
@@ -3655,10 +3666,12 @@
 
         // Generate header row, merging columns
         let headers = rows[0].map((header) => header.replace(/-/g, "")); // Remove '-' from headers
-        html += `<th>${headers[0]}</th><th>${headers[1]}</th>`;
+        html += `<th onclick="sortTable(this)">${headers[0]} <span class="sort-icon">⇅</span> </th><th>${headers[1]}</th>`;
+
         for (let j = 2; j < headers.length - 1; j += 2) {
           html += `<th>${headers[j]}-${headers[j + 1]}</th>`;
         }
+
         html += "</tr><tr>"; // Add another row for filters
 
         // Add filter inputs
@@ -3681,9 +3694,14 @@
             // Format numbers with 2 decimal places
             let value1 = parseFloat(row[j]);
             let value2 = parseFloat(row[j + 1]);
-            html += `<td>${isNaN(value1) ? row[j] : value1.toFixed(2)} - ${
-              isNaN(value2) ? row[j + 1] : value2.toFixed(2)
-            }</td>`;
+
+            if (`${value1.toFixed(2)}-${value2.toFixed(2)}` === "0.00-0.00") {
+              html += "<td>-</td>";
+            } else {
+              html += `<td>${isNaN(value1) ? row[j] : value1.toFixed(2)} - ${
+                isNaN(value2) ? row[j + 1] : value2.toFixed(2)
+              }</td>`;
+            }
           }
           html += "</tr>";
         }
@@ -3710,20 +3728,18 @@
         return doc.body.innerHTML;
       }
 
-
       // Use MutationObserver to detect when the input is added
-          const observer = new MutationObserver(() => {
-            const input = document.getElementById("importCSV");
-            if (input) {
-                initializeCSVImport("importCSV", ".table-container");
-                observer.disconnect(); // Stop observing after finding the input
-            }
-          });
+      const observer = new MutationObserver(() => {
+        const input = document.getElementById("importCSV");
+        if (input) {
+          initializeCSVImport("importCSV", ".table-container");
+          observer.disconnect(); // Stop observing after finding the input
+        }
+      });
 
-          // Start observing the document body for new elements
-          observer.observe(document.body, { childList: true, subtree: true });
+      // Start observing the document body for new elements
+      observer.observe(document.body, { childList: true, subtree: true });
       ////////////////////////////////LOAD FROM XRF///////////////////////////////////
-
 
       //save new html file
       function saveHtmlToFile() {
@@ -3916,8 +3932,6 @@
 
       //////////////////MODAL CODE ////////////////////////////
 
-
-
       //create periodic table
       const table = document.getElementById("periodic-table");
 
@@ -3986,8 +4000,6 @@
         }
       };
 
-
-
       function hideUnselectedColumns(tableId) {
         const table = document.getElementById(tableId);
         if (!table) return;
@@ -4000,8 +4012,6 @@
         const headers = thead.querySelectorAll("th");
         const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
         const secondRow = thead.rows[1]; // Select the second row of the <thead>
-
-        let columnOrder = []; // Array to store the indexes of selected columns
 
         headers.forEach((th, index) => {
           const text = th.textContent.trim();
@@ -4056,7 +4066,7 @@
         });
 
         // Sort the columns after hiding/showing them
-        sortColumnsByOrder(tableId, columnOrder);
+        //sortColumnsByOrder(tableId, columnOrder);
       }
 
       function sortColumnsByOrder(tableId, columnOrder) {
@@ -4071,7 +4081,11 @@
         const selectedSymbols = Array.from(selectedElements); // Convert Set to ordered array
 
         // Sort columnOrder based on the order in selectedElements
-        columnOrder.sort((a, b) => selectedSymbols.indexOf(a.symbol) - selectedSymbols.indexOf(b.symbol));
+        columnOrder.sort(
+          (a, b) =>
+            selectedSymbols.indexOf(a.symbol) -
+            selectedSymbols.indexOf(b.symbol)
+        );
 
         // Rearrange columns in thead and tbody
         [thead, tbody].forEach((section) => {
@@ -4082,36 +4096,6 @@
           });
         });
       }
-
-
-      function sortColumnsByOrder(tableId, columnOrder) {
-      const table = document.getElementById(tableId);
-      if (!table) return;
-
-      const thead = table.querySelector("thead");
-      const tbody = table.querySelector("tbody");
-
-      if (!thead || !tbody) return;
-
-      const selectedSymbols = Array.from(selectedElements); // Convert Set to ordered array
-
-      // Sort columnOrder based on the order in selectedElements
-      columnOrder.sort((a, b) => selectedSymbols.indexOf(a.symbol) - selectedSymbols.indexOf(b.symbol));
-
-      // Rearrange columns in thead and tbody
-      [thead, tbody].forEach((section) => {
-        section.querySelectorAll("tr").forEach((row) => {
-          let cells = Array.from(row.children);
-          let newOrder = columnOrder.map(({ index }) => cells[index]).filter(Boolean); // Filter out undefined
-
-          newOrder.forEach((cell) => {
-            if (cell) row.appendChild(cell); // Append only if cell exists
-          });
-        });
-      });
-    }
-
-
 
       let spectralChart = null;
       const ctx = document.getElementById("myChart").getContext("2d");
