@@ -23,7 +23,7 @@
   </head>
   <body>
     <input type="file" id="csvFileInput" accept=".csv" />
-    <div id="tableContainer"></div>
+    <div class="table-container"></div>
 
     <script>
       document
@@ -35,7 +35,7 @@
           const reader = new FileReader();
           reader.onload = function (e) {
             const csvText = e.target.result;
-            document.getElementById("tableContainer").innerHTML =
+            document.querySelector(".table-container").innerHTML =
               csvToHtmlTable(csvText);
           };
           reader.readAsText(file);
@@ -51,7 +51,7 @@
 
         if (rows.length < 2) return "No valid data found";
 
-        let html = "<table><thead><tr>";
+        let html = "<table id='data-table'><thead><tr>";
 
         // Generate header row, merging columns
         let headers = rows[0].map((header) => header.replace(/-/g, "")); // Remove '-' from headers
