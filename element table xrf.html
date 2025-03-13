@@ -3185,7 +3185,7 @@
         },
       ];
 
-      const selectedElements = new Set([
+      const defaultElements = new Set([
         "Ni",
         "Co",
         "Ti",
@@ -3201,6 +3201,21 @@
         "W",
         "Ag",
       ]);
+
+      let selectedElements = [];
+
+      // Load from localStorage
+      function loadSelectedElements() {
+        const storedElements = localStorage.getItem("selectedElements");
+        return storedElements
+          ? new Set(JSON.parse(storedElements))
+          : new Set(defaultElements);
+      }
+
+      // Save to localStorage
+      function saveSelectedElements(elements) {
+        localStorage.setItem("selectedElements", JSON.stringify([...elements]));
+      }
 
       ///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
 
@@ -3937,6 +3952,8 @@
       //create periodic table
       const table = document.getElementById("periodic-table");
 
+      selectedElements = loadSelectedElements();
+
       for (let row = 1; row <= 9; row++) {
         for (let col = 1; col <= 18; col++) {
           const element = elements.find((e) => e.row === row && e.col === col);
@@ -3975,6 +3992,7 @@
 
       document.querySelector(".modal-content-periodic-table .close").onclick =
         () => {
+          saveSelectedElements(selectedElements);
           hideUnselectedColumns("data-table");
           document.getElementById("modal-periodic-table").style.display =
             "none";
@@ -3982,6 +4000,7 @@
 
       window.onclick = (event) => {
         if (event.target === document.getElementById("modal-periodic-table")) {
+          saveSelectedElements(selectedElements);
           hideUnselectedColumns("data-table");
           document.getElementById("modal-periodic-table").style.display =
             "none";
@@ -3991,7 +4010,7 @@
       //FOR SPECTRAL MODAL
 
       document.querySelector("#modal-spectral-table .close").onclick = () => {
-        hideUnselectedColumns("data-table");
+        //  hideUnselectedColumns("data-table");
         document.getElementById("modal-spectral-table").style.display = "none";
       };
 
@@ -4003,6 +4022,7 @@
       };
 
       function hideUnselectedColumns(tableId) {
+        selectedElements = loadSelectedElements();
         const table = document.getElementById(tableId);
         if (!table) return;
 
