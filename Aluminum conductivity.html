@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Conductivity Table</title>
+    <link rel="shortcut icon" href="Images/favicon.png" type="image/png" />
+
     <style>
       @font-face {
         font-family: "Montserrat-Medium";
@@ -222,2514 +224,2699 @@
       }
     </style>
   </head>
-<body>
-
-  <!-- Navbar -->
-  <div class="navbar">
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
       <div class="logo-container">
-          <img src="Images/IAI logo.webp" alt="Book Logo">
-          <div class="logo">Aluminum Conductivity</div>
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">Aluminum Conductivity</div>
       </div>
 
       <div>
-          <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
-         <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
+        <input
+          type="text"
+          id="search"
+          onkeyup="searchTable()"
+          placeholder="Search for anything in the table..."
+        />
+        <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
       </div>
-
 
       <div class="icons">
-        <div class="ThemeBtn-container" style="display: none;">
+        <div class="ThemeBtn-container" style="display: none">
           <button id="clearSearch" class="svg-button" onclick="clearSearch()">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
-            </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+            >
+              <path
+                d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
-
-  </div>
-
-
-    <div class="table-container">
-        <table id="dataTable2">
-              <tbody>
-                <tr>
-                  <th>Group</th>
-                  <th>Material</th>
-                  <th>Conductivity (% IACS)</th>
-                  <th>Conductivity (Siemens/m)</th>
-                  <th>Resistivity (Ohm-m)</th>
-                  <th>Reference</th>
-                  <th>Notes</th>
-                </tr>
-
-
-                <tr>
-                  <td>Aluminum</td>
-                  <td>Pure</td>
-                  <td>61.00</td>
-                  <td>3.538E+07</td>
-                  <td>2.826E-08</td>
-                  <td>ECTM</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum</td>
-                  <td>99.99%</td>
-                  <td>64.94</td>
-                  <td>3.767E+07</td>
-                  <td>2.655E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum</td>
-                  <td>99.99%</td>
-                  <td>64.94</td>
-                  <td>3.767E+07</td>
-                  <td>2.655E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum</td>
-                  <td>Red X-8 Cond. Stress Relieved</td>
-                  <td>29.00</td>
-                  <td>1.682E+07</td>
-                  <td>5.945E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum</td>
-                  <td>Red X-8 As Cast</td>
-                  <td>26.00</td>
-                  <td>1.508E+07</td>
-                  <td>6.631E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                <td>Aluminum</td>
-                  <td>11S Cond. T3</td>
-                  <td>40.00</td>
-                  <td>2.320E+07</td>
-                  <td>4.310E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                <td>Aluminum</td>
-                  <td>13</td>
-                  <td>39.00</td>
-                  <td>2.262E+07</td>
-                  <td>4.421E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                <td>Aluminum</td>
-                  <td>14S Cond. "0"</td>
-                  <td>50.00</td>
-                  <td>2.900E+07</td>
-                  <td>3.448E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                <td>Aluminum</td>
-                  <td>14S Cond. T6</td>
-                  <td>40.00</td>
-                  <td>2.320E+07</td>
-                  <td>4.310E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                <td>Aluminum</td>
-                  <td>17S Cond. "0"</td>
-                  <td>45.00</td>
-                  <td>2.610E+07</td>
-                  <td>3.831E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>17S Cond. T4</td>
-                  <td>30.00</td>
-                  <td>1.740E+07</td>
-                  <td>5.747E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum</td>
-                  <td>18S Cond. "0"</td>
-                  <td>50.00</td>
-                  <td>2.900E+07</td>
-                  <td>3.448E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum</td>
-                  <td>18S Cond. T61</td>
-                  <td>40.00</td>
-                  <td>2.320E+07</td>
-                  <td>4.310E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum</td>
-                  <td>2S Cond. "0"</td>
-                  <td>59.00</td>
-                  <td>3.422E+07</td>
-                  <td>2.922E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>2S Cond. H18</td>
-                  <td>57.00</td>
-                  <td>3.306E+07</td>
-                  <td>3.025E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>24S Cond. "0"</td>
-                  <td>50.00</td>
-                  <td>2.900E+07</td>
-                  <td>3.448E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>24S Cond. T4</td>
-                  <td>30.00</td>
-                  <td>1.740E+07</td>
-                  <td>5.747E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>24S Cond. T6</td>
-                  <td>40.00</td>
-                  <td>2.320E+07</td>
-                  <td>4.310E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>3S Cond. "0"</td>
-                  <td>50.00</td>
-                  <td>2.900E+07</td>
-                  <td>3.448E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>3S Cond. H 12</td>
-                  <td>42.00</td>
-                  <td>2.436E+07</td>
-                  <td>4.105E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>3S Cond. H 14</td>
-                  <td>41.00</td>
-                  <td>2.378E+07</td>
-                  <td>4.205E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>3S Cond. H 18</td>
-                  <td>40.00</td>
-                  <td>2.320E+07</td>
-                  <td>4.310E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>32S Cond. "0"</td>
-                  <td>40.00</td>
-                  <td>2.320E+07</td>
-                  <td>4.310E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>32S Cond. T6</td>
-                  <td>35.00</td>
-                  <td>2.030E+07</td>
-                  <td>4.926E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>40E</td>
-                  <td>35.00</td>
-                  <td>2.030E+07</td>
-                  <td>4.926E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>43 (Annealed)</td>
-                  <td>42.00</td>
-                  <td>2.436E+07</td>
-                  <td>4.105E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>43 As Cast</td>
-                  <td>37.00</td>
-                  <td>2.146E+07</td>
-                  <td>4.660E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>A51S Cond. "0"</td>
-                  <td>55.00</td>
-                  <td>3.190E+07</td>
-                  <td>3.135E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>A51S Cond. T4 and T6</td>
-                  <td>45.00</td>
-                  <td>2.610E+07</td>
-                  <td>3.831E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>52S Cond. "0" and H 38</td>
-                  <td>35.00</td>
-                  <td>2.030E+07</td>
-                  <td>4.926E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>53S Cond. "0"</td>
-                  <td>45.00</td>
-                  <td>2.610E+07</td>
-                  <td>3.831E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>53S Cond. T4 and T6</td>
-                  <td>40.00</td>
-                  <td>2.320E+07</td>
-                  <td>4.310E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>56S Cond. "0"</td>
-                  <td>29.00</td>
-                  <td>1.682E+07</td>
-                  <td>5.945E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>56S Cond. H 38</td>
-                  <td>27.00</td>
-                  <td>1.566E+07</td>
-                  <td>6.386E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>61S Cond. "0"</td>
-                  <td>45.00</td>
-                  <td>2.610E+07</td>
-                  <td>3.831E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>61S Cond. T4 and T6</td>
-                  <td>40.00</td>
-                  <td>2.320E+07</td>
-                  <td>4.310E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>75S Cond. T6</td>
-                  <td>30.00</td>
-                  <td>1.740E+07</td>
-                  <td>5.747E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum</td>
-                  <td>85</td>
-                  <td>28.00</td>
-                  <td>1.624E+07</td>
-                  <td>6.158E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-
-                <tr>
-                  <td>Aluminum Allcast</td>
-                  <td>As Cast</td>
-                  <td>27.00</td>
-                  <td>1.566E+07</td>
-                  <td>6.386E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum Allcast</td>
-                  <td>Cond. Sol. H.T. &amp; Stress Relieved</td>
-                  <td>36.00</td>
-                  <td>2.088E+07</td>
-                  <td>4.789E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum Allcast</td>
-                  <td>Sol H.T. and Aged</td>
-                  <td>30.00</td>
-                  <td>1.740E+07</td>
-                  <td>5.747E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>Aluminum Allcast</td>
-                  <td>Stress Relieved</td>
-                  <td>30.00</td>
-                  <td>1.740E+07</td>
-                  <td>5.747E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-
-
-
-
-
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1050-0</td>
-                  <td>61.30</td>
-                  <td>-</td>
-                  <td>2.810E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1060-O</td>
-                  <td>62.00</td>
-                  <td>-</td>
-                  <td>2.780E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1060-H18</td>
-                  <td>61.00</td>
-                  <td>-</td>
-                  <td>2.780E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1100</td>
-                  <td>57.00 - 61.80</td>
-                  <td>3.445E+07</td>
-                  <td>2.903E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1100-O</td>
-                  <td>59.00</td>
-                  <td>-</td>
-                  <td>2.920E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1100-H18</td>
-                  <td>57.00</td>
-                  <td>-</td>
-                  <td>3.020E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1145-O</td>
-                  <td>61.00</td>
-                  <td>-</td>
-                  <td>2.830E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1145-H18</td>
-                  <td>60.00</td>
-                  <td>-</td>
-                  <td>2.830E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1199-O</td>
-                  <td>64.50</td>
-                  <td>-</td>
-                  <td>2.670E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1350-O</td>
-                  <td>61.80</td>
-                  <td>-</td>
-                  <td>2.790E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>1350-Hx</td>
-                  <td>61.00</td>
-                  <td>-</td>
-                  <td>2.820E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2011-T3</td>
-                  <td>36.00 - 36.50</td>
-                  <td>2.103E+07</td>
-                  <td>4.756E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2011-T3 and T4</td>
-                  <td>39.00</td>
-                  <td>-</td>
-                  <td>4.400E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2011-T8</td>
-                  <td>45.00</td>
-                  <td>-</td>
-                  <td>3.800E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2014-F and -0</td>
-                  <td>48.60 - 50.70</td>
-                  <td>2.880E+07</td>
-                  <td>3.473E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2014-O</td>
-                  <td>50.00</td>
-                  <td>-</td>
-                  <td>3.400E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2014-T3 and -T4</td>
-                  <td>32.50 - 34.80</td>
-                  <td>1.952E+07</td>
-                  <td>5.124E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2014-T3, T4, and T451</td>
-                  <td>34.00</td>
-                  <td>-</td>
-                  <td>5.100E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2014-T6</td>
-                  <td>38.00 - 39.70</td>
-                  <td>2.253E+07</td>
-                  <td>4.438E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2014-T6, T651, and T652</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.300E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2017-F</td>
-                  <td>49.30 - 49.50</td>
-                  <td>2.865E+07</td>
-                  <td>3.490E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2017-O</td>
-                  <td>50.00</td>
-                  <td>-</td>
-                  <td>3.500E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2017-T4</td>
-                  <td>34.00</td>
-                  <td>-</td>
-                  <td>5.000E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2024-F</td>
-                  <td>46.80 - 48.50</td>
-                  <td>2.764E+07</td>
-                  <td>3.618E-08</td>
-                  <td>NDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2024-O</td>
-                  <td>50.00</td>
-                  <td>-</td>
-                  <td>3.400E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2024-T3</td>
-                  <td>28.60 - 36.10</td>
-                  <td>1.876E+07</td>
-                  <td>5.330E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2024-T36</td>
-                  <td>29.10 - 29.50</td>
-                  <td>1.699E+07</td>
-                  <td>5.884E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2024-T3, T36, T351, T361, and T4</td>
-                  <td>30.00</td>
-                  <td>-</td>
-                  <td>5.700E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2024-T4</td>
-                  <td>28.80 - 31.00</td>
-                  <td>1.734E+07</td>
-                  <td>5.766E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2024-T6, T81, T851, and T861</td>
-                  <td>38.00</td>
-                  <td>-</td>
-                  <td>4.500E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2036-O</td>
-                  <td>52.00</td>
-                  <td>-</td>
-                  <td>3.320E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2036-T4</td>
-                  <td>41.00</td>
-                  <td>-</td>
-                  <td>4.210E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2048-T851</td>
-                  <td>42.00</td>
-                  <td>-</td>
-                  <td>4.000E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2124-O</td>
-                  <td>50.00</td>
-                  <td>-</td>
-                  <td>3.450E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2124-T851</td>
-                  <td>39.00</td>
-                  <td>-</td>
-                  <td>4.421E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2127-T4</td>
-                  <td>42.10 - 42.40</td>
-                  <td>2.451E+07</td>
-                  <td>4.081E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2218-T61</td>
-                  <td>37.40</td>
-                  <td>2.169E+07</td>
-                  <td>4.610E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2218-T61</td>
-                  <td>38.00</td>
-                  <td>-</td>
-                  <td>4.500E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2218-T72</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.300E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2219-O</td>
-                  <td>44.00</td>
-                  <td>-</td>
-                  <td>3.900E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2219-T31, T37, and T351</td>
-                  <td>28.00</td>
-                  <td>-</td>
-                  <td>6.200E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2219-T62, T81, T87, and T851</td>
-                  <td>30.00</td>
-                  <td>-</td>
-                  <td>5.700E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2319-O</td>
-                  <td>44.00</td>
-                  <td>-</td>
-                  <td>3.900E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2618</td>
-                  <td>40.20</td>
-                  <td>2.332E+07</td>
-                  <td>4.289E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>2618-T61</td>
-                  <td>37.00</td>
-                  <td>-</td>
-                  <td>4.700E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3003-O</td>
-                  <td>44.70 - 49.80</td>
-                  <td>2.741E+07</td>
-                  <td>3.649E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3003-O</td>
-                  <td>50.00</td>
-                  <td>-</td>
-                  <td>3.400E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3003-H14 and -H12</td>
-                  <td>37.80 - 51.50</td>
-                  <td>2.590E+07</td>
-                  <td>3.861E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3003-H12</td>
-                  <td>42.00</td>
-                  <td>-</td>
-                  <td>4.100E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3003-H14</td>
-                  <td>41.00</td>
-                  <td>-</td>
-                  <td>4.200E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3003-H18</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.300E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3003-H24 and -H28</td>
-                  <td>37.80 - 47.50</td>
-                  <td>2.474E+07</td>
-                  <td>4.043E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3004</td>
-                  <td>39.40 - 43.50</td>
-                  <td>2.404E+07</td>
-                  <td>4.160E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3004-O</td>
-                  <td>42.00</td>
-                  <td>-</td>
-                  <td>4.100E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>X3005-O</td>
-                  <td>50.10 - 50.30</td>
-                  <td>2.912E+07</td>
-                  <td>3.435E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>3105-O</td>
-                  <td>45.00</td>
-                  <td>-</td>
-                  <td>3.830E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>4032-O</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.310E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>4032-T6</td>
-                  <td>35.30 - 36.30</td>
-                  <td>2.076E+07</td>
-                  <td>4.816E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>4032-T6</td>
-                  <td>36.00</td>
-                  <td>-</td>
-                  <td>4.790E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>4043-F</td>
-                  <td>52.30 - 54.30</td>
-                  <td>3.091E+07</td>
-                  <td>3.235E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>4043-O</td>
-                  <td>42.00</td>
-                  <td>-</td>
-                  <td>4.100E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5005</td>
-                  <td>52.30 - 52.80</td>
-                  <td>3.048E+07</td>
-                  <td>3.281E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5005-O and H38</td>
-                  <td>52.00</td>
-                  <td>-</td>
-                  <td>3.320E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5050</td>
-                  <td>48.30 - 49.80</td>
-                  <td>2.845E+07</td>
-                  <td>3.515E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5050-O and H38</td>
-                  <td>50.00</td>
-                  <td>-</td>
-                  <td>3.400E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5052</td>
-                  <td>33.60 - 37.60</td>
-                  <td>2.065E+07</td>
-                  <td>4.843E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5052-O and H38</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>4.930E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5056</td>
-                  <td>28.10 - 29.80</td>
-                  <td>1.679E+07</td>
-                  <td>5.956E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5056-O</td>
-                  <td>29.00</td>
-                  <td>-</td>
-                  <td>5.900E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5056-H38</td>
-                  <td>27.00</td>
-                  <td>-</td>
-                  <td>6.400E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5083</td>
-                  <td>29.00</td>
-                  <td>-</td>
-                  <td>5.950E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5086</td>
-                  <td>31.00</td>
-                  <td>-</td>
-                  <td>5.600E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5154</td>
-                  <td>30.50 - 32.80</td>
-                  <td>1.836E+07</td>
-                  <td>5.448E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5154</td>
-                  <td>32.00</td>
-                  <td>-</td>
-                  <td>5.390E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5182</td>
-                  <td>31.00</td>
-                  <td>-</td>
-                  <td>5.560E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5252</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>4.900E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5254</td>
-                  <td>32.00</td>
-                  <td>-</td>
-                  <td>5.400E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5356-O</td>
-                  <td>29.00</td>
-                  <td>-</td>
-                  <td>5.940E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5357</td>
-                  <td>42.30 - 47.00</td>
-                  <td>2.590E+07</td>
-                  <td>3.861E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5454</td>
-                  <td>34.00</td>
-                  <td>-</td>
-                  <td>5.100E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5456</td>
-                  <td>29.00</td>
-                  <td>-</td>
-                  <td>5.950E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5457</td>
-                  <td>46.00</td>
-                  <td>-</td>
-                  <td>3.750E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5652</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>4.900E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>5657</td>
-                  <td>54.00</td>
-                  <td>-</td>
-                  <td>3.200E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6005-T5</td>
-                  <td>49.00</td>
-                  <td>-</td>
-                  <td>3.500E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6009-O</td>
-                  <td>54.00</td>
-                  <td>-</td>
-                  <td>3.190E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6009-T4</td>
-                  <td>44.00</td>
-                  <td>-</td>
-                  <td>3.920E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6009-T6</td>
-                  <td>47.00</td>
-                  <td>-</td>
-                  <td>3.670E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6010-O</td>
-                  <td>53.00</td>
-                  <td>-</td>
-                  <td>3.250E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6010-T4</td>
-                  <td>39.00</td>
-                  <td>-</td>
-                  <td>4.420E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6010-T6</td>
-                  <td>44.00</td>
-                  <td>-</td>
-                  <td>3.920E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6053</td>
-                  <td>39.30 - 48.00</td>
-                  <td>2.532E+07</td>
-                  <td>3.950E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6061-F and -0</td>
-                  <td>42.30 - 48.50</td>
-                  <td>2.633E+07</td>
-                  <td>3.798E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6061-O</td>
-                  <td>47.00</td>
-                  <td>-</td>
-                  <td>3.700E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6061-T4</td>
-                  <td>37.60 - 40.50</td>
-                  <td>2.265E+07</td>
-                  <td>4.415E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6061-T4</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.300E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6061-T6 and -T9</td>
-                  <td>40.00 - 44.80</td>
-                  <td>2.459E+07</td>
-                  <td>4.066E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6061-T6</td>
-                  <td>43.00</td>
-                  <td>-</td>
-                  <td>4.000E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6062-F</td>
-                  <td>47.00 - 51.00</td>
-                  <td>2.842E+07</td>
-                  <td>3.519E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6062-T4</td>
-                  <td>43.50 - 44.00</td>
-                  <td>2.538E+07</td>
-                  <td>3.941E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6062-T6</td>
-                  <td>44.70 - 49.50</td>
-                  <td>2.732E+07</td>
-                  <td>3.661E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6063-O</td>
-                  <td>58.00</td>
-                  <td>-</td>
-                  <td>3.000E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6063-T1</td>
-                  <td>50.00</td>
-                  <td>-</td>
-                  <td>3.500E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6063-T5</td>
-                  <td>55.00</td>
-                  <td>-</td>
-                  <td>3.200E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6063-T6 and T83</td>
-                  <td>53.00</td>
-                  <td>-</td>
-                  <td>3.300E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6066-O</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.300E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6066-T6</td>
-                  <td>37.00</td>
-                  <td>-</td>
-                  <td>4.700E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6070-T6</td>
-                  <td>44.00</td>
-                  <td>-</td>
-                  <td>3.900E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6101-T6</td>
-                  <td>57.00</td>
-                  <td>-</td>
-                  <td>3.020E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6101-T61</td>
-                  <td>59.00</td>
-                  <td>-</td>
-                  <td>2.920E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6101-T63</td>
-                  <td>58.00</td>
-                  <td>-</td>
-                  <td>2.970E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6101-T64</td>
-                  <td>60.00</td>
-                  <td>-</td>
-                  <td>2.870E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6101-T65</td>
-                  <td>58.00</td>
-                  <td>-</td>
-                  <td>2.970E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6151-0</td>
-                  <td>53.30 - 55.00</td>
-                  <td>3.141E+07</td>
-                  <td>3.184E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6151-O</td>
-                  <td>54.00</td>
-                  <td>-</td>
-                  <td>3.200E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6151-T4</td>
-                  <td>41.50 - 43.30</td>
-                  <td>2.459E+07</td>
-                  <td>4.066E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6151-T6</td>
-                  <td>42.00</td>
-                  <td>-</td>
-                  <td>4.100E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6151-T6</td>
-                  <td>43.90 - 45.00</td>
-                  <td>2.578E+07</td>
-                  <td>3.879E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6151-T6</td>
-                  <td>45.00</td>
-                  <td>-</td>
-                  <td>3.800E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6201-T81</td>
-                  <td>54.00</td>
-                  <td>-</td>
-                  <td>3.200E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6205-T1</td>
-                  <td>45.00</td>
-                  <td>-</td>
-                  <td>3.700E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6205-T5</td>
-                  <td>49.00</td>
-                  <td>-</td>
-                  <td>3.500E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6262-T9</td>
-                  <td>44.00</td>
-                  <td>-</td>
-                  <td>3.900E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6351-T6</td>
-                  <td>46.00</td>
-                  <td>-</td>
-                  <td>3.800E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6463-T1</td>
-                  <td>50.00</td>
-                  <td>-</td>
-                  <td>3.400E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6463-T5</td>
-                  <td>55.00</td>
-                  <td>-</td>
-                  <td>3.100E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6463-T6</td>
-                  <td>53.00</td>
-                  <td>-</td>
-                  <td>3.300E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6951-F</td>
-                  <td>53.00 - 53.10</td>
-                  <td>3.077E+07</td>
-                  <td>3.250E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>6951-0</td>
-                  <td>55.70 - 56.50</td>
-                  <td>3.254E+07</td>
-                  <td>3.073E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7005-O</td>
-                  <td>43.00</td>
-                  <td>-</td>
-                  <td>4.010E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7005-T53, T5351, T63, and T6351</td>
-                  <td>38.00</td>
-                  <td>-</td>
-                  <td>4.540E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7005-T6</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>4.930E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7039</td>
-                  <td>32-40</td>
-                  <td>-</td>
-                  <td>4.3E-8--5.4E-8</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7049</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.300E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7050-O</td>
-                  <td>47.00</td>
-                  <td>-</td>
-                  <td>3.670E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7050-T76 and T7651</td>
-                  <td>39.50</td>
-                  <td>-</td>
-                  <td>4.360E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7050-T736 and T73651</td>
-                  <td>40.50</td>
-                  <td>-</td>
-                  <td>4.260E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7072</td>
-                  <td>60.00 - 60.10</td>
-                  <td>3.483E+07</td>
-                  <td>2.871E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7072-O</td>
-                  <td>60.00</td>
-                  <td>-</td>
-                  <td>2.870E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7075-F</td>
-                  <td>44.50 - 47.80</td>
-                  <td>2.677E+07</td>
-                  <td>3.736E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7075-T6</td>
-                  <td>31.40 - 34.80</td>
-                  <td>1.920E+07</td>
-                  <td>5.209E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7075-T6</td>
-                  <td>32.00</td>
-                  <td>1.856E+07</td>
-                  <td>5.388E-08</td>
-                  <td>ECTM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7075-W</td>
-                  <td>27.00 - 37.00</td>
-                  <td>1.856E+07</td>
-                  <td>5.388E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7075-T6, T62, T651, and T652</td>
-                  <td>33.00</td>
-                  <td>-</td>
-                  <td>5.220E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7075-T76 and T7651</td>
-                  <td>38.50</td>
-                  <td>-</td>
-                  <td>4.480E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7075-T73, T7351, and T7352</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.310E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7076</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>3.750E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7175-O</td>
-                  <td>46.00</td>
-                  <td>-</td>
-                  <td>3.750E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7175-T66</td>
-                  <td>36.00</td>
-                  <td>-</td>
-                  <td>4.790E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7175-T736 and T73652</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.310E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7178-O</td>
-                  <td>46.00</td>
-                  <td>-</td>
-                  <td>3.750E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7178-T6 and T651</td>
-                  <td>32.00</td>
-                  <td>-</td>
-                  <td>5.390E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7178-T76 and T7651</td>
-                  <td>39.00</td>
-                  <td>-</td>
-                  <td>4.420E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>X7178-F and -0</td>
-                  <td>45.50 - 46.00</td>
-                  <td>2.654E+07</td>
-                  <td>3.769E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>X7178-W and T6</td>
-                  <td>26.80 - 32.60</td>
-                  <td>1.723E+07</td>
-                  <td>5.805E-08</td>
-                  <td>
-                    NDT
-                  </td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7475-O</td>
-                  <td>46.00</td>
-                  <td>-</td>
-                  <td>3.750E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7475-T61 and T651</td>
-                  <td>36.00</td>
-                  <td>-</td>
-                  <td>4.790E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7475-T761 and T7651</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.310E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloy (Wrought)</td>
-                  <td>7475-T7351</td>
-                  <td>42.00</td>
-                  <td>-</td>
-                  <td>4.110E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-
-
-
-
-
-
-
-
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>122 Perm. As Cast</td>
-                  <td>34.00</td>
-                  <td>1.972E+07</td>
-                  <td>5.071E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>122 Sand Cond. T2</td>
-                  <td>41.00</td>
-                  <td>2.378E+07</td>
-                  <td>4.205E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>122 Sand Cond. T61</td>
-                  <td>33.00</td>
-                  <td>1.914E+07</td>
-                  <td>5.225E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>113</td>
-                  <td>30.00</td>
-                  <td>1.740E+07</td>
-                  <td>5.747E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>C113</td>
-                  <td>27.00</td>
-                  <td>1.566E+07</td>
-                  <td>6.386E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>A 132 Cond. T551</td>
-                  <td>29.00</td>
-                  <td>1.682E+07</td>
-                  <td>5.945E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>201.0-T6</td>
-                  <td>27-32</td>
-                  <td>-</td>
-                  <td>4.5E-8--6.4E-8</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>206.0-T6</td>
-                  <td>27-32</td>
-                  <td>-</td>
-                  <td>5.4E-8--6.4E-8</td>
-                  <td>ALASM</td>
-                  <td>Conductivity converted from Resistivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>206.0-T7</td>
-                  <td>32-34</td>
-                  <td>-</td>
-                  <td>5.0E-8--5.4E-8</td>
-                  <td>ALASM</td>
-                  <td>Conductivity converted from Resistivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>208.0 as-cast</td>
-                  <td>31.00</td>
-                  <td>-</td>
-                  <td>5.560E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(208.0) 108</td>
-                  <td>31.00</td>
-                  <td>1.798E+07</td>
-                  <td>5.562E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>208.0 annealed</td>
-                  <td>38.00</td>
-                  <td>-</td>
-                  <td>4.540E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>214</td>
-                  <td>35.00</td>
-                  <td>2.030E+07</td>
-                  <td>4.926E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>A214</td>
-                  <td>33.00</td>
-                  <td>1.914E+07</td>
-                  <td>5.225E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>218</td>
-                  <td>24.00</td>
-                  <td>1.392E+07</td>
-                  <td>7.184E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>220</td>
-                  <td>21.00</td>
-                  <td>1.218E+07</td>
-                  <td>8.210E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>242.0-T21, sand</td>
-                  <td>44.00</td>
-                  <td>-</td>
-                  <td>3.920E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(242.0) 142 Sand Cond. T21</td>
-                  <td>44.00</td>
-                  <td>2.552E+07</td>
-                  <td>3.918E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>242.0-T571, sand</td>
-                  <td>34.00</td>
-                  <td>-</td>
-                  <td>5.070E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(242.0) 142 Sand Cond. T571</td>
-                  <td>34.00</td>
-                  <td>1.972E+07</td>
-                  <td>5.071E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>242.0-T77, sand</td>
-                  <td>38.00</td>
-                  <td>-</td>
-                  <td>4.540E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(242.0) 142 Sand Cond. T77</td>
-                  <td>37.00</td>
-                  <td>2.146E+07</td>
-                  <td>4.660E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>242.0-T61, permanent mold</td>
-                  <td>33.00</td>
-                  <td>-</td>
-                  <td>5.220E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>295.0-T4</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>4.930E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(295.0) 195 Cond. T4</td>
-                  <td>35.00</td>
-                  <td>2.030E+07</td>
-                  <td>4.926E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>295.0-T62</td>
-                  <td>37.00</td>
-                  <td>-</td>
-                  <td>4.930E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(295.0) 195 Cond. T62</td>
-                  <td>37.00</td>
-                  <td>2.146E+07</td>
-                  <td>4.660E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>296.0-T4 and T6</td>
-                  <td>33.00</td>
-                  <td>-</td>
-                  <td>5.220E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(296.0) B 195 Cond. T4</td>
-                  <td>35.00</td>
-                  <td>2.030E+07</td>
-                  <td>4.926E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(296.0) B 195 Cond. T6</td>
-                  <td>36.00</td>
-                  <td>2.088E+07</td>
-                  <td>4.789E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>308.0</td>
-                  <td>37.00</td>
-                  <td>-</td>
-                  <td>4.660E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>(308.0) A 108</td>
-                  <td>37.00</td>
-                  <td>2.146E+07</td>
-                  <td>4.660E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>R 317</td>
-                  <td>30.00</td>
-                  <td>1.740E+07</td>
-                  <td>5.747E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>319.0</td>
-                  <td>27.00</td>
-                  <td>-</td>
-                  <td>6.390E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>319 Sand</td>
-                  <td>27.00</td>
-                  <td>1.566E+07</td>
-                  <td>6.386E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>319 Perm.</td>
-                  <td>28.00</td>
-                  <td>1.624E+07</td>
-                  <td>6.158E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>336.0-T551</td>
-                  <td>29.00</td>
-                  <td>-</td>
-                  <td>5.950E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355.0-T51, sand</td>
-                  <td>43.00</td>
-                  <td>-</td>
-                  <td>4.010E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355 Sand Cond. T51</td>
-                  <td>43.00</td>
-                  <td>2.494E+07</td>
-                  <td>4.010E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355.0-T6, sand</td>
-                  <td>36.00</td>
-                  <td>-</td>
-                  <td>4.790E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355 Sand Cond. T6</td>
-                  <td>36.00</td>
-                  <td>2.088E+07</td>
-                  <td>4.789E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355.0-T61, sand</td>
-                  <td>39.00</td>
-                  <td>-</td>
-                  <td>4.420E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355 Sand Cond. T61</td>
-                  <td>37.00</td>
-                  <td>2.146E+07</td>
-                  <td>4.660E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355.0-T7, sand</td>
-                  <td>42.00</td>
-                  <td>-</td>
-                  <td>4.100E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355 Sand Cond. T7</td>
-                  <td>42.00</td>
-                  <td>2.436E+07</td>
-                  <td>4.105E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355.0-T6, permanent mold</td>
-                  <td>39.00</td>
-                  <td>-</td>
-                  <td>4.420E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>355 Perm.  Cond. T6</td>
-                  <td>39.00</td>
-                  <td>2.262E+07</td>
-                  <td>4.421E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>356.0-T51, sand</td>
-                  <td>43.00</td>
-                  <td>-</td>
-                  <td>4.010E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>356 Sand Cond. T51</td>
-                  <td>43.00</td>
-                  <td>2.494E+07</td>
-                  <td>4.010E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>356.0-T6, sand</td>
-                  <td>39.00</td>
-                  <td>-</td>
-                  <td>4.420E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td> 356 Sand Cond. T6</td>
-                  <td>39.00</td>
-                  <td>2.262E+07</td>
-                  <td>4.421E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>356.0-T7, sand</td>
-                  <td>40.00</td>
-                  <td>-</td>
-                  <td>4.310E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>356.0-T6, permanent mold</td>
-                  <td>41.00</td>
-                  <td>-</td>
-                  <td>4.210E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>360.0</td>
-                  <td>28.00</td>
-                  <td>-</td>
-                  <td>6.160E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>A360.0</td>
-                  <td>30.00</td>
-                  <td>-</td>
-                  <td>5.747E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>360</td>
-                  <td>37.00</td>
-                  <td>2.146E+07</td>
-                  <td>4.660E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>380.0</td>
-                  <td>27.00</td>
-                  <td>-</td>
-                  <td>6.500E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>380</td>
-                  <td>27.00</td>
-                  <td>1.566E+07</td>
-                  <td>6.386E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>383.0</td>
-                  <td>23.00</td>
-                  <td>-</td>
-                  <td>7.496E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>384.0</td>
-                  <td>22.00</td>
-                  <td>-</td>
-                  <td>7.837E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>A384.0</td>
-                  <td>23.00</td>
-                  <td>-</td>
-                  <td>7.496E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>390.0-F</td>
-                  <td>27.00</td>
-                  <td>-</td>
-                  <td>6.386E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>390.0-T5</td>
-                  <td>25.00</td>
-                  <td>-</td>
-                  <td>6.896E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>413.0</td>
-                  <td>31.00</td>
-                  <td>-</td>
-                  <td>5.56E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>443.0 As-Cast</td>
-                  <td>37.00</td>
-                  <td>-</td>
-                  <td>4.660E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>443.0 Annealed</td>
-                  <td>42.05</td>
-                  <td>-</td>
-                  <td>4.100E-08</td>
-                  <td>ALASM</td>
-                  <td>Conductivity converted from Resistivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>514.0</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>4.930E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>518.0</td>
-                  <td>25.00</td>
-                  <td>-</td>
-                  <td>6.896E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>520.0-T4</td>
-                  <td>21.00</td>
-                  <td>-</td>
-                  <td>8.210E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>535.0</td>
-                  <td>20.00</td>
-                  <td>-</td>
-                  <td>7.500E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>712.0</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>4.930E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>713.0</td>
-                  <td>35.00</td>
-                  <td>-</td>
-                  <td>4.926E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>750</td>
-                  <td>45.00</td>
-                  <td>2.610E+07</td>
-                  <td>3.831E-08</td>
-                  <td>CSNDT</td>
-                  <td>-</td>
-                </tr>
-                <tr> <td>Aluminum Alloys (Cast)</td>
-                  <td>771.0</td>
-                  <td>27.00</td>
-                  <td>-</td>
-                  <td>6.386E-08</td>
-                  <td>ALASM</td>
-                  <td>Resistivity converted from conductivity</td>
-                </tr>
-                <tr>
-                  <td>Aluminum Alloys (Cast)</td>
-                  <td>850.0</td>
-                  <td>47.00</td>
-                  <td>-</td>
-                  <td>3.670E-08</td>
-                  <td>ALASM</td>
-                  <td>-</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div>
-              <h3>General Notes</h3>
-                <ul>
-                  <li>1. ALASM = ASM Specialty Handbook Aluminum and Aluminum Alloys.</li>
-                  <li>2. CSNDT = CSNDT compiled by Eddy Current Technology Incorporated.</li>
-                  <li>3. ECTM = Eddy Current Testing Manual on Eddy Current Method compiled by Eddy Current Technology Incorporated.</li>
-                  <li>4. NDT Mag = NDT Magazine Sept/Oct 1955, Cosgrove Article compiled by Eddy Current Technology Incorporated.</li>
-                </ul>
-           </div>
-
     </div>
 
+    <div class="table-container">
+      <table id="dataTable2">
+        <tbody>
+          <tr>
+            <th>Group</th>
+            <th>Material</th>
+            <th>Conductivity (% IACS)</th>
+            <th>Conductivity (Siemens/m)</th>
+            <th>Resistivity (Ohm-m)</th>
+            <th>Reference</th>
+            <th>Notes</th>
+          </tr>
+
+          <tr>
+            <td>Aluminum</td>
+            <td>Pure</td>
+            <td>61.00</td>
+            <td>3.538E+07</td>
+            <td>2.826E-08</td>
+            <td>ECTM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>99.99%</td>
+            <td>64.94</td>
+            <td>3.767E+07</td>
+            <td>2.655E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>99.99%</td>
+            <td>64.94</td>
+            <td>3.767E+07</td>
+            <td>2.655E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>Red X-8 Cond. Stress Relieved</td>
+            <td>29.00</td>
+            <td>1.682E+07</td>
+            <td>5.945E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>Red X-8 As Cast</td>
+            <td>26.00</td>
+            <td>1.508E+07</td>
+            <td>6.631E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>11S Cond. T3</td>
+            <td>40.00</td>
+            <td>2.320E+07</td>
+            <td>4.310E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>13</td>
+            <td>39.00</td>
+            <td>2.262E+07</td>
+            <td>4.421E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>14S Cond. "0"</td>
+            <td>50.00</td>
+            <td>2.900E+07</td>
+            <td>3.448E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>14S Cond. T6</td>
+            <td>40.00</td>
+            <td>2.320E+07</td>
+            <td>4.310E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>17S Cond. "0"</td>
+            <td>45.00</td>
+            <td>2.610E+07</td>
+            <td>3.831E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>17S Cond. T4</td>
+            <td>30.00</td>
+            <td>1.740E+07</td>
+            <td>5.747E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>18S Cond. "0"</td>
+            <td>50.00</td>
+            <td>2.900E+07</td>
+            <td>3.448E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>18S Cond. T61</td>
+            <td>40.00</td>
+            <td>2.320E+07</td>
+            <td>4.310E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>2S Cond. "0"</td>
+            <td>59.00</td>
+            <td>3.422E+07</td>
+            <td>2.922E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>2S Cond. H18</td>
+            <td>57.00</td>
+            <td>3.306E+07</td>
+            <td>3.025E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>24S Cond. "0"</td>
+            <td>50.00</td>
+            <td>2.900E+07</td>
+            <td>3.448E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>24S Cond. T4</td>
+            <td>30.00</td>
+            <td>1.740E+07</td>
+            <td>5.747E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>24S Cond. T6</td>
+            <td>40.00</td>
+            <td>2.320E+07</td>
+            <td>4.310E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>3S Cond. "0"</td>
+            <td>50.00</td>
+            <td>2.900E+07</td>
+            <td>3.448E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>3S Cond. H 12</td>
+            <td>42.00</td>
+            <td>2.436E+07</td>
+            <td>4.105E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>3S Cond. H 14</td>
+            <td>41.00</td>
+            <td>2.378E+07</td>
+            <td>4.205E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>3S Cond. H 18</td>
+            <td>40.00</td>
+            <td>2.320E+07</td>
+            <td>4.310E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>32S Cond. "0"</td>
+            <td>40.00</td>
+            <td>2.320E+07</td>
+            <td>4.310E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>32S Cond. T6</td>
+            <td>35.00</td>
+            <td>2.030E+07</td>
+            <td>4.926E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>40E</td>
+            <td>35.00</td>
+            <td>2.030E+07</td>
+            <td>4.926E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>43 (Annealed)</td>
+            <td>42.00</td>
+            <td>2.436E+07</td>
+            <td>4.105E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>43 As Cast</td>
+            <td>37.00</td>
+            <td>2.146E+07</td>
+            <td>4.660E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>A51S Cond. "0"</td>
+            <td>55.00</td>
+            <td>3.190E+07</td>
+            <td>3.135E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>A51S Cond. T4 and T6</td>
+            <td>45.00</td>
+            <td>2.610E+07</td>
+            <td>3.831E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>52S Cond. "0" and H 38</td>
+            <td>35.00</td>
+            <td>2.030E+07</td>
+            <td>4.926E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>53S Cond. "0"</td>
+            <td>45.00</td>
+            <td>2.610E+07</td>
+            <td>3.831E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>53S Cond. T4 and T6</td>
+            <td>40.00</td>
+            <td>2.320E+07</td>
+            <td>4.310E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>56S Cond. "0"</td>
+            <td>29.00</td>
+            <td>1.682E+07</td>
+            <td>5.945E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>56S Cond. H 38</td>
+            <td>27.00</td>
+            <td>1.566E+07</td>
+            <td>6.386E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>61S Cond. "0"</td>
+            <td>45.00</td>
+            <td>2.610E+07</td>
+            <td>3.831E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>61S Cond. T4 and T6</td>
+            <td>40.00</td>
+            <td>2.320E+07</td>
+            <td>4.310E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>75S Cond. T6</td>
+            <td>30.00</td>
+            <td>1.740E+07</td>
+            <td>5.747E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum</td>
+            <td>85</td>
+            <td>28.00</td>
+            <td>1.624E+07</td>
+            <td>6.158E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td>Aluminum Allcast</td>
+            <td>As Cast</td>
+            <td>27.00</td>
+            <td>1.566E+07</td>
+            <td>6.386E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Allcast</td>
+            <td>Cond. Sol. H.T. &amp; Stress Relieved</td>
+            <td>36.00</td>
+            <td>2.088E+07</td>
+            <td>4.789E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Allcast</td>
+            <td>Sol H.T. and Aged</td>
+            <td>30.00</td>
+            <td>1.740E+07</td>
+            <td>5.747E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Allcast</td>
+            <td>Stress Relieved</td>
+            <td>30.00</td>
+            <td>1.740E+07</td>
+            <td>5.747E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1050-0</td>
+            <td>61.30</td>
+            <td>-</td>
+            <td>2.810E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1060-O</td>
+            <td>62.00</td>
+            <td>-</td>
+            <td>2.780E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1060-H18</td>
+            <td>61.00</td>
+            <td>-</td>
+            <td>2.780E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1100</td>
+            <td>57.00 - 61.80</td>
+            <td>3.445E+07</td>
+            <td>2.903E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1100-O</td>
+            <td>59.00</td>
+            <td>-</td>
+            <td>2.920E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1100-H18</td>
+            <td>57.00</td>
+            <td>-</td>
+            <td>3.020E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1145-O</td>
+            <td>61.00</td>
+            <td>-</td>
+            <td>2.830E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1145-H18</td>
+            <td>60.00</td>
+            <td>-</td>
+            <td>2.830E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1199-O</td>
+            <td>64.50</td>
+            <td>-</td>
+            <td>2.670E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1350-O</td>
+            <td>61.80</td>
+            <td>-</td>
+            <td>2.790E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>1350-Hx</td>
+            <td>61.00</td>
+            <td>-</td>
+            <td>2.820E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2011-T3</td>
+            <td>36.00 - 36.50</td>
+            <td>2.103E+07</td>
+            <td>4.756E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2011-T3 and T4</td>
+            <td>39.00</td>
+            <td>-</td>
+            <td>4.400E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2011-T8</td>
+            <td>45.00</td>
+            <td>-</td>
+            <td>3.800E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2014-F and -0</td>
+            <td>48.60 - 50.70</td>
+            <td>2.880E+07</td>
+            <td>3.473E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2014-O</td>
+            <td>50.00</td>
+            <td>-</td>
+            <td>3.400E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2014-T3 and -T4</td>
+            <td>32.50 - 34.80</td>
+            <td>1.952E+07</td>
+            <td>5.124E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2014-T3, T4, and T451</td>
+            <td>34.00</td>
+            <td>-</td>
+            <td>5.100E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2014-T6</td>
+            <td>38.00 - 39.70</td>
+            <td>2.253E+07</td>
+            <td>4.438E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2014-T6, T651, and T652</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.300E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2017-F</td>
+            <td>49.30 - 49.50</td>
+            <td>2.865E+07</td>
+            <td>3.490E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2017-O</td>
+            <td>50.00</td>
+            <td>-</td>
+            <td>3.500E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2017-T4</td>
+            <td>34.00</td>
+            <td>-</td>
+            <td>5.000E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2024-F</td>
+            <td>46.80 - 48.50</td>
+            <td>2.764E+07</td>
+            <td>3.618E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2024-O</td>
+            <td>50.00</td>
+            <td>-</td>
+            <td>3.400E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2024-T3</td>
+            <td>28.60 - 36.10</td>
+            <td>1.876E+07</td>
+            <td>5.330E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2024-T36</td>
+            <td>29.10 - 29.50</td>
+            <td>1.699E+07</td>
+            <td>5.884E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2024-T3, T36, T351, T361, and T4</td>
+            <td>30.00</td>
+            <td>-</td>
+            <td>5.700E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2024-T4</td>
+            <td>28.80 - 31.00</td>
+            <td>1.734E+07</td>
+            <td>5.766E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2024-T6, T81, T851, and T861</td>
+            <td>38.00</td>
+            <td>-</td>
+            <td>4.500E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2036-O</td>
+            <td>52.00</td>
+            <td>-</td>
+            <td>3.320E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2036-T4</td>
+            <td>41.00</td>
+            <td>-</td>
+            <td>4.210E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2048-T851</td>
+            <td>42.00</td>
+            <td>-</td>
+            <td>4.000E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2124-O</td>
+            <td>50.00</td>
+            <td>-</td>
+            <td>3.450E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2124-T851</td>
+            <td>39.00</td>
+            <td>-</td>
+            <td>4.421E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2127-T4</td>
+            <td>42.10 - 42.40</td>
+            <td>2.451E+07</td>
+            <td>4.081E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2218-T61</td>
+            <td>37.40</td>
+            <td>2.169E+07</td>
+            <td>4.610E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2218-T61</td>
+            <td>38.00</td>
+            <td>-</td>
+            <td>4.500E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2218-T72</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.300E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2219-O</td>
+            <td>44.00</td>
+            <td>-</td>
+            <td>3.900E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2219-T31, T37, and T351</td>
+            <td>28.00</td>
+            <td>-</td>
+            <td>6.200E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2219-T62, T81, T87, and T851</td>
+            <td>30.00</td>
+            <td>-</td>
+            <td>5.700E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2319-O</td>
+            <td>44.00</td>
+            <td>-</td>
+            <td>3.900E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2618</td>
+            <td>40.20</td>
+            <td>2.332E+07</td>
+            <td>4.289E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>2618-T61</td>
+            <td>37.00</td>
+            <td>-</td>
+            <td>4.700E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3003-O</td>
+            <td>44.70 - 49.80</td>
+            <td>2.741E+07</td>
+            <td>3.649E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3003-O</td>
+            <td>50.00</td>
+            <td>-</td>
+            <td>3.400E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3003-H14 and -H12</td>
+            <td>37.80 - 51.50</td>
+            <td>2.590E+07</td>
+            <td>3.861E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3003-H12</td>
+            <td>42.00</td>
+            <td>-</td>
+            <td>4.100E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3003-H14</td>
+            <td>41.00</td>
+            <td>-</td>
+            <td>4.200E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3003-H18</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.300E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3003-H24 and -H28</td>
+            <td>37.80 - 47.50</td>
+            <td>2.474E+07</td>
+            <td>4.043E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3004</td>
+            <td>39.40 - 43.50</td>
+            <td>2.404E+07</td>
+            <td>4.160E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3004-O</td>
+            <td>42.00</td>
+            <td>-</td>
+            <td>4.100E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>X3005-O</td>
+            <td>50.10 - 50.30</td>
+            <td>2.912E+07</td>
+            <td>3.435E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>3105-O</td>
+            <td>45.00</td>
+            <td>-</td>
+            <td>3.830E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>4032-O</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.310E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>4032-T6</td>
+            <td>35.30 - 36.30</td>
+            <td>2.076E+07</td>
+            <td>4.816E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>4032-T6</td>
+            <td>36.00</td>
+            <td>-</td>
+            <td>4.790E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>4043-F</td>
+            <td>52.30 - 54.30</td>
+            <td>3.091E+07</td>
+            <td>3.235E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>4043-O</td>
+            <td>42.00</td>
+            <td>-</td>
+            <td>4.100E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5005</td>
+            <td>52.30 - 52.80</td>
+            <td>3.048E+07</td>
+            <td>3.281E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5005-O and H38</td>
+            <td>52.00</td>
+            <td>-</td>
+            <td>3.320E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5050</td>
+            <td>48.30 - 49.80</td>
+            <td>2.845E+07</td>
+            <td>3.515E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5050-O and H38</td>
+            <td>50.00</td>
+            <td>-</td>
+            <td>3.400E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5052</td>
+            <td>33.60 - 37.60</td>
+            <td>2.065E+07</td>
+            <td>4.843E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5052-O and H38</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>4.930E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5056</td>
+            <td>28.10 - 29.80</td>
+            <td>1.679E+07</td>
+            <td>5.956E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5056-O</td>
+            <td>29.00</td>
+            <td>-</td>
+            <td>5.900E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5056-H38</td>
+            <td>27.00</td>
+            <td>-</td>
+            <td>6.400E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5083</td>
+            <td>29.00</td>
+            <td>-</td>
+            <td>5.950E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5086</td>
+            <td>31.00</td>
+            <td>-</td>
+            <td>5.600E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5154</td>
+            <td>30.50 - 32.80</td>
+            <td>1.836E+07</td>
+            <td>5.448E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5154</td>
+            <td>32.00</td>
+            <td>-</td>
+            <td>5.390E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5182</td>
+            <td>31.00</td>
+            <td>-</td>
+            <td>5.560E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5252</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>4.900E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5254</td>
+            <td>32.00</td>
+            <td>-</td>
+            <td>5.400E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5356-O</td>
+            <td>29.00</td>
+            <td>-</td>
+            <td>5.940E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5357</td>
+            <td>42.30 - 47.00</td>
+            <td>2.590E+07</td>
+            <td>3.861E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5454</td>
+            <td>34.00</td>
+            <td>-</td>
+            <td>5.100E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5456</td>
+            <td>29.00</td>
+            <td>-</td>
+            <td>5.950E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5457</td>
+            <td>46.00</td>
+            <td>-</td>
+            <td>3.750E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5652</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>4.900E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>5657</td>
+            <td>54.00</td>
+            <td>-</td>
+            <td>3.200E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6005-T5</td>
+            <td>49.00</td>
+            <td>-</td>
+            <td>3.500E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6009-O</td>
+            <td>54.00</td>
+            <td>-</td>
+            <td>3.190E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6009-T4</td>
+            <td>44.00</td>
+            <td>-</td>
+            <td>3.920E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6009-T6</td>
+            <td>47.00</td>
+            <td>-</td>
+            <td>3.670E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6010-O</td>
+            <td>53.00</td>
+            <td>-</td>
+            <td>3.250E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6010-T4</td>
+            <td>39.00</td>
+            <td>-</td>
+            <td>4.420E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6010-T6</td>
+            <td>44.00</td>
+            <td>-</td>
+            <td>3.920E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6053</td>
+            <td>39.30 - 48.00</td>
+            <td>2.532E+07</td>
+            <td>3.950E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6061-F and -0</td>
+            <td>42.30 - 48.50</td>
+            <td>2.633E+07</td>
+            <td>3.798E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6061-O</td>
+            <td>47.00</td>
+            <td>-</td>
+            <td>3.700E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6061-T4</td>
+            <td>37.60 - 40.50</td>
+            <td>2.265E+07</td>
+            <td>4.415E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6061-T4</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.300E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6061-T6 and -T9</td>
+            <td>40.00 - 44.80</td>
+            <td>2.459E+07</td>
+            <td>4.066E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6061-T6</td>
+            <td>43.00</td>
+            <td>-</td>
+            <td>4.000E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6062-F</td>
+            <td>47.00 - 51.00</td>
+            <td>2.842E+07</td>
+            <td>3.519E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6062-T4</td>
+            <td>43.50 - 44.00</td>
+            <td>2.538E+07</td>
+            <td>3.941E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6062-T6</td>
+            <td>44.70 - 49.50</td>
+            <td>2.732E+07</td>
+            <td>3.661E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6063-O</td>
+            <td>58.00</td>
+            <td>-</td>
+            <td>3.000E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6063-T1</td>
+            <td>50.00</td>
+            <td>-</td>
+            <td>3.500E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6063-T5</td>
+            <td>55.00</td>
+            <td>-</td>
+            <td>3.200E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6063-T6 and T83</td>
+            <td>53.00</td>
+            <td>-</td>
+            <td>3.300E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6066-O</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.300E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6066-T6</td>
+            <td>37.00</td>
+            <td>-</td>
+            <td>4.700E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6070-T6</td>
+            <td>44.00</td>
+            <td>-</td>
+            <td>3.900E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6101-T6</td>
+            <td>57.00</td>
+            <td>-</td>
+            <td>3.020E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6101-T61</td>
+            <td>59.00</td>
+            <td>-</td>
+            <td>2.920E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6101-T63</td>
+            <td>58.00</td>
+            <td>-</td>
+            <td>2.970E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6101-T64</td>
+            <td>60.00</td>
+            <td>-</td>
+            <td>2.870E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6101-T65</td>
+            <td>58.00</td>
+            <td>-</td>
+            <td>2.970E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6151-0</td>
+            <td>53.30 - 55.00</td>
+            <td>3.141E+07</td>
+            <td>3.184E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6151-O</td>
+            <td>54.00</td>
+            <td>-</td>
+            <td>3.200E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6151-T4</td>
+            <td>41.50 - 43.30</td>
+            <td>2.459E+07</td>
+            <td>4.066E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6151-T6</td>
+            <td>42.00</td>
+            <td>-</td>
+            <td>4.100E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6151-T6</td>
+            <td>43.90 - 45.00</td>
+            <td>2.578E+07</td>
+            <td>3.879E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6151-T6</td>
+            <td>45.00</td>
+            <td>-</td>
+            <td>3.800E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6201-T81</td>
+            <td>54.00</td>
+            <td>-</td>
+            <td>3.200E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6205-T1</td>
+            <td>45.00</td>
+            <td>-</td>
+            <td>3.700E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6205-T5</td>
+            <td>49.00</td>
+            <td>-</td>
+            <td>3.500E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6262-T9</td>
+            <td>44.00</td>
+            <td>-</td>
+            <td>3.900E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6351-T6</td>
+            <td>46.00</td>
+            <td>-</td>
+            <td>3.800E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6463-T1</td>
+            <td>50.00</td>
+            <td>-</td>
+            <td>3.400E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6463-T5</td>
+            <td>55.00</td>
+            <td>-</td>
+            <td>3.100E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6463-T6</td>
+            <td>53.00</td>
+            <td>-</td>
+            <td>3.300E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6951-F</td>
+            <td>53.00 - 53.10</td>
+            <td>3.077E+07</td>
+            <td>3.250E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>6951-0</td>
+            <td>55.70 - 56.50</td>
+            <td>3.254E+07</td>
+            <td>3.073E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7005-O</td>
+            <td>43.00</td>
+            <td>-</td>
+            <td>4.010E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7005-T53, T5351, T63, and T6351</td>
+            <td>38.00</td>
+            <td>-</td>
+            <td>4.540E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7005-T6</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>4.930E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7039</td>
+            <td>32-40</td>
+            <td>-</td>
+            <td>4.3E-8--5.4E-8</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7049</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.300E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7050-O</td>
+            <td>47.00</td>
+            <td>-</td>
+            <td>3.670E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7050-T76 and T7651</td>
+            <td>39.50</td>
+            <td>-</td>
+            <td>4.360E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7050-T736 and T73651</td>
+            <td>40.50</td>
+            <td>-</td>
+            <td>4.260E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7072</td>
+            <td>60.00 - 60.10</td>
+            <td>3.483E+07</td>
+            <td>2.871E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7072-O</td>
+            <td>60.00</td>
+            <td>-</td>
+            <td>2.870E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7075-F</td>
+            <td>44.50 - 47.80</td>
+            <td>2.677E+07</td>
+            <td>3.736E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7075-T6</td>
+            <td>31.40 - 34.80</td>
+            <td>1.920E+07</td>
+            <td>5.209E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7075-T6</td>
+            <td>32.00</td>
+            <td>1.856E+07</td>
+            <td>5.388E-08</td>
+            <td>ECTM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7075-W</td>
+            <td>27.00 - 37.00</td>
+            <td>1.856E+07</td>
+            <td>5.388E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7075-T6, T62, T651, and T652</td>
+            <td>33.00</td>
+            <td>-</td>
+            <td>5.220E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7075-T76 and T7651</td>
+            <td>38.50</td>
+            <td>-</td>
+            <td>4.480E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7075-T73, T7351, and T7352</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.310E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7076</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>3.750E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7175-O</td>
+            <td>46.00</td>
+            <td>-</td>
+            <td>3.750E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7175-T66</td>
+            <td>36.00</td>
+            <td>-</td>
+            <td>4.790E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7175-T736 and T73652</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.310E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7178-O</td>
+            <td>46.00</td>
+            <td>-</td>
+            <td>3.750E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7178-T6 and T651</td>
+            <td>32.00</td>
+            <td>-</td>
+            <td>5.390E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7178-T76 and T7651</td>
+            <td>39.00</td>
+            <td>-</td>
+            <td>4.420E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>X7178-F and -0</td>
+            <td>45.50 - 46.00</td>
+            <td>2.654E+07</td>
+            <td>3.769E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>X7178-W and T6</td>
+            <td>26.80 - 32.60</td>
+            <td>1.723E+07</td>
+            <td>5.805E-08</td>
+            <td>NDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7475-O</td>
+            <td>46.00</td>
+            <td>-</td>
+            <td>3.750E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7475-T61 and T651</td>
+            <td>36.00</td>
+            <td>-</td>
+            <td>4.790E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7475-T761 and T7651</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.310E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy (Wrought)</td>
+            <td>7475-T7351</td>
+            <td>42.00</td>
+            <td>-</td>
+            <td>4.110E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>122 Perm. As Cast</td>
+            <td>34.00</td>
+            <td>1.972E+07</td>
+            <td>5.071E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>122 Sand Cond. T2</td>
+            <td>41.00</td>
+            <td>2.378E+07</td>
+            <td>4.205E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>122 Sand Cond. T61</td>
+            <td>33.00</td>
+            <td>1.914E+07</td>
+            <td>5.225E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>113</td>
+            <td>30.00</td>
+            <td>1.740E+07</td>
+            <td>5.747E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>C113</td>
+            <td>27.00</td>
+            <td>1.566E+07</td>
+            <td>6.386E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>A 132 Cond. T551</td>
+            <td>29.00</td>
+            <td>1.682E+07</td>
+            <td>5.945E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>201.0-T6</td>
+            <td>27-32</td>
+            <td>-</td>
+            <td>4.5E-8--6.4E-8</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>206.0-T6</td>
+            <td>27-32</td>
+            <td>-</td>
+            <td>5.4E-8--6.4E-8</td>
+            <td>ALASM</td>
+            <td>Conductivity converted from Resistivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>206.0-T7</td>
+            <td>32-34</td>
+            <td>-</td>
+            <td>5.0E-8--5.4E-8</td>
+            <td>ALASM</td>
+            <td>Conductivity converted from Resistivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>208.0 as-cast</td>
+            <td>31.00</td>
+            <td>-</td>
+            <td>5.560E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(208.0) 108</td>
+            <td>31.00</td>
+            <td>1.798E+07</td>
+            <td>5.562E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>208.0 annealed</td>
+            <td>38.00</td>
+            <td>-</td>
+            <td>4.540E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>214</td>
+            <td>35.00</td>
+            <td>2.030E+07</td>
+            <td>4.926E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>A214</td>
+            <td>33.00</td>
+            <td>1.914E+07</td>
+            <td>5.225E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>218</td>
+            <td>24.00</td>
+            <td>1.392E+07</td>
+            <td>7.184E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>220</td>
+            <td>21.00</td>
+            <td>1.218E+07</td>
+            <td>8.210E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>242.0-T21, sand</td>
+            <td>44.00</td>
+            <td>-</td>
+            <td>3.920E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(242.0) 142 Sand Cond. T21</td>
+            <td>44.00</td>
+            <td>2.552E+07</td>
+            <td>3.918E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>242.0-T571, sand</td>
+            <td>34.00</td>
+            <td>-</td>
+            <td>5.070E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(242.0) 142 Sand Cond. T571</td>
+            <td>34.00</td>
+            <td>1.972E+07</td>
+            <td>5.071E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>242.0-T77, sand</td>
+            <td>38.00</td>
+            <td>-</td>
+            <td>4.540E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(242.0) 142 Sand Cond. T77</td>
+            <td>37.00</td>
+            <td>2.146E+07</td>
+            <td>4.660E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>242.0-T61, permanent mold</td>
+            <td>33.00</td>
+            <td>-</td>
+            <td>5.220E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>295.0-T4</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>4.930E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(295.0) 195 Cond. T4</td>
+            <td>35.00</td>
+            <td>2.030E+07</td>
+            <td>4.926E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>295.0-T62</td>
+            <td>37.00</td>
+            <td>-</td>
+            <td>4.930E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(295.0) 195 Cond. T62</td>
+            <td>37.00</td>
+            <td>2.146E+07</td>
+            <td>4.660E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>296.0-T4 and T6</td>
+            <td>33.00</td>
+            <td>-</td>
+            <td>5.220E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(296.0) B 195 Cond. T4</td>
+            <td>35.00</td>
+            <td>2.030E+07</td>
+            <td>4.926E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(296.0) B 195 Cond. T6</td>
+            <td>36.00</td>
+            <td>2.088E+07</td>
+            <td>4.789E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>308.0</td>
+            <td>37.00</td>
+            <td>-</td>
+            <td>4.660E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>(308.0) A 108</td>
+            <td>37.00</td>
+            <td>2.146E+07</td>
+            <td>4.660E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>R 317</td>
+            <td>30.00</td>
+            <td>1.740E+07</td>
+            <td>5.747E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>319.0</td>
+            <td>27.00</td>
+            <td>-</td>
+            <td>6.390E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>319 Sand</td>
+            <td>27.00</td>
+            <td>1.566E+07</td>
+            <td>6.386E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>319 Perm.</td>
+            <td>28.00</td>
+            <td>1.624E+07</td>
+            <td>6.158E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>336.0-T551</td>
+            <td>29.00</td>
+            <td>-</td>
+            <td>5.950E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355.0-T51, sand</td>
+            <td>43.00</td>
+            <td>-</td>
+            <td>4.010E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355 Sand Cond. T51</td>
+            <td>43.00</td>
+            <td>2.494E+07</td>
+            <td>4.010E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355.0-T6, sand</td>
+            <td>36.00</td>
+            <td>-</td>
+            <td>4.790E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355 Sand Cond. T6</td>
+            <td>36.00</td>
+            <td>2.088E+07</td>
+            <td>4.789E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355.0-T61, sand</td>
+            <td>39.00</td>
+            <td>-</td>
+            <td>4.420E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355 Sand Cond. T61</td>
+            <td>37.00</td>
+            <td>2.146E+07</td>
+            <td>4.660E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355.0-T7, sand</td>
+            <td>42.00</td>
+            <td>-</td>
+            <td>4.100E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355 Sand Cond. T7</td>
+            <td>42.00</td>
+            <td>2.436E+07</td>
+            <td>4.105E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355.0-T6, permanent mold</td>
+            <td>39.00</td>
+            <td>-</td>
+            <td>4.420E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>355 Perm. Cond. T6</td>
+            <td>39.00</td>
+            <td>2.262E+07</td>
+            <td>4.421E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>356.0-T51, sand</td>
+            <td>43.00</td>
+            <td>-</td>
+            <td>4.010E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>356 Sand Cond. T51</td>
+            <td>43.00</td>
+            <td>2.494E+07</td>
+            <td>4.010E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>356.0-T6, sand</td>
+            <td>39.00</td>
+            <td>-</td>
+            <td>4.420E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td> 356 Sand Cond. T6</td>
+            <td>39.00</td>
+            <td>2.262E+07</td>
+            <td>4.421E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>356.0-T7, sand</td>
+            <td>40.00</td>
+            <td>-</td>
+            <td>4.310E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>356.0-T6, permanent mold</td>
+            <td>41.00</td>
+            <td>-</td>
+            <td>4.210E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>360.0</td>
+            <td>28.00</td>
+            <td>-</td>
+            <td>6.160E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>A360.0</td>
+            <td>30.00</td>
+            <td>-</td>
+            <td>5.747E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>360</td>
+            <td>37.00</td>
+            <td>2.146E+07</td>
+            <td>4.660E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>380.0</td>
+            <td>27.00</td>
+            <td>-</td>
+            <td>6.500E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>380</td>
+            <td>27.00</td>
+            <td>1.566E+07</td>
+            <td>6.386E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>383.0</td>
+            <td>23.00</td>
+            <td>-</td>
+            <td>7.496E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>384.0</td>
+            <td>22.00</td>
+            <td>-</td>
+            <td>7.837E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>A384.0</td>
+            <td>23.00</td>
+            <td>-</td>
+            <td>7.496E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>390.0-F</td>
+            <td>27.00</td>
+            <td>-</td>
+            <td>6.386E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>390.0-T5</td>
+            <td>25.00</td>
+            <td>-</td>
+            <td>6.896E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>413.0</td>
+            <td>31.00</td>
+            <td>-</td>
+            <td>5.56E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>443.0 As-Cast</td>
+            <td>37.00</td>
+            <td>-</td>
+            <td>4.660E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>443.0 Annealed</td>
+            <td>42.05</td>
+            <td>-</td>
+            <td>4.100E-08</td>
+            <td>ALASM</td>
+            <td>Conductivity converted from Resistivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>514.0</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>4.930E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>518.0</td>
+            <td>25.00</td>
+            <td>-</td>
+            <td>6.896E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>520.0-T4</td>
+            <td>21.00</td>
+            <td>-</td>
+            <td>8.210E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>535.0</td>
+            <td>20.00</td>
+            <td>-</td>
+            <td>7.500E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>712.0</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>4.930E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>713.0</td>
+            <td>35.00</td>
+            <td>-</td>
+            <td>4.926E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>750</td>
+            <td>45.00</td>
+            <td>2.610E+07</td>
+            <td>3.831E-08</td>
+            <td>CSNDT</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>771.0</td>
+            <td>27.00</td>
+            <td>-</td>
+            <td>6.386E-08</td>
+            <td>ALASM</td>
+            <td>Resistivity converted from conductivity</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloys (Cast)</td>
+            <td>850.0</td>
+            <td>47.00</td>
+            <td>-</td>
+            <td>3.670E-08</td>
+            <td>ALASM</td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div>
+        <h3>General Notes</h3>
+        <ul>
+          <li>
+            1. ALASM = ASM Specialty Handbook Aluminum and Aluminum Alloys.
+          </li>
+          <li>
+            2. CSNDT = CSNDT compiled by Eddy Current Technology Incorporated.
+          </li>
+          <li>
+            3. ECTM = Eddy Current Testing Manual on Eddy Current Method
+            compiled by Eddy Current Technology Incorporated.
+          </li>
+          <li>
+            4. NDT Mag = NDT Magazine Sept/Oct 1955, Cosgrove Article compiled
+            by Eddy Current Technology Incorporated.
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <script>
+      //highlight clicked rows
+      document.addEventListener("DOMContentLoaded", function () {
+        let rows = document.querySelectorAll(
+          "#dataTable tbody tr, #dataTable2 tbody tr"
+        );
 
+        rows.forEach((row) => {
+          row.addEventListener("click", function (event) {
+            if (row.classList.contains("highlighted")) {
+              row.classList.remove("highlighted");
+            } else {
+              rows.forEach((r) => r.classList.remove("highlighted"));
+              row.classList.add("highlighted");
+            }
+            event.stopPropagation();
+          });
 
-        //highlight clicked rows
-        document.addEventListener("DOMContentLoaded", function() {
-            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
-
-            rows.forEach(row => {
-                row.addEventListener("click", function(event) {
-                    if (row.classList.contains("highlighted")) {
-                        row.classList.remove("highlighted");
-                    } else {
-                        rows.forEach(r => r.classList.remove("highlighted"));
-                        row.classList.add("highlighted");
-                    }
-                    event.stopPropagation();
-                });
-
-                  // Double-click event to call a function
-                  row.addEventListener("dblclick", function() {
-                    openModal(row);
-                });
-
-            });
-
-
-            document.addEventListener("click", function() {
-                rows.forEach(row => row.classList.remove("highlighted"));
-            });
+          // Double-click event to call a function
+          row.addEventListener("dblclick", function () {
+            openModal(row);
+          });
         });
 
+        document.addEventListener("click", function () {
+          rows.forEach((row) => row.classList.remove("highlighted"));
+        });
+      });
 
+      function searchTable() {
+        let input = document.getElementById("search");
+        let searchValue = input.value.trim();
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-        function searchTable() {
-          let input = document.getElementById("search");
-          let searchValue = input.value.trim();
-          let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+        // Show the clear button only if there is text in the search box
+        clearBtnContainer.style.display = searchValue ? "flex" : "none";
 
-          // Show the clear button only if there is text in the search box
-          clearBtnContainer.style.display = searchValue ? "flex" : "none";
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
 
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
+        let rows = table.getElementsByTagName("tr");
 
-          let rows = table.getElementsByTagName("tr");
-
-          for (let i = 1; i < rows.length; i++) {
-              if (rows[i].getElementsByTagName("th").length > 0) {
-                  continue; // Skip header rows
-              }
-
-              let cells = rows[i].getElementsByTagName("td");
-              let found = false;
-
-              for (let j = 0; j < cells.length; j++) {
-                  let cell = cells[j];
-
-                  // Clear previous highlights: remove all <span> elements and preserve their content
-                  cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
-
-                  if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
-                      highlightTextInElement(cell, searchValue);
-                      found = true;
-                  }
-              }
-
-              // Show row if a match is found, otherwise hide it
-              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        for (let i = 1; i < rows.length; i++) {
+          if (rows[i].getElementsByTagName("th").length > 0) {
+            continue; // Skip header rows
           }
+
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
+
+            // Clear previous highlights: remove all <span> elements and preserve their content
+            cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, "");
+
+            if (
+              searchValue &&
+              cell.textContent.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              highlightTextInElement(cell, searchValue);
+              found = true;
+            }
+          }
+
+          // Show row if a match is found, otherwise hide it
+          rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        }
       }
 
-        // Recursive function to highlight text while preserving HTML structure
-        function highlightTextInElement(element, searchValue) {
-            let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+      // Recursive function to highlight text while preserving HTML structure
+      function highlightTextInElement(element, searchValue) {
+        let regex = new RegExp(
+          `(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`,
+          "gi"
+        ); // Escape special characters
 
-            function highlightNode(node) {
-                if (node.nodeType === 3) { // TEXT_NODE
-                    let parent = node.parentNode;
-                    let text = node.nodeValue;
+        function highlightNode(node) {
+          if (node.nodeType === 3) {
+            // TEXT_NODE
+            let parent = node.parentNode;
+            let text = node.nodeValue;
 
-                    if (text.toLowerCase().includes(searchValue.toLowerCase())) {
-                        let tempWrapper = document.createElement("span");
-                        tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+              let tempWrapper = document.createElement("span");
+              tempWrapper.innerHTML = text.replace(
+                regex,
+                `<span style="color: red; font-weight: bold;">$1</span>`
+              );
 
-                        while (tempWrapper.firstChild) {
-                            parent.insertBefore(tempWrapper.firstChild, node);
-                        }
-                        parent.removeChild(node);
-                    }
-                } else {
-                    // Recursively process child nodes
-                    for (let i = node.childNodes.length - 1; i >= 0; i--) {
-                        highlightNode(node.childNodes[i]);
-                    }
-                }
+              while (tempWrapper.firstChild) {
+                parent.insertBefore(tempWrapper.firstChild, node);
+              }
+              parent.removeChild(node);
             }
-
-            highlightNode(element);
+          } else {
+            // Recursively process child nodes
+            for (let i = node.childNodes.length - 1; i >= 0; i--) {
+              highlightNode(node.childNodes[i]);
+            }
+          }
         }
 
-
-      function clearSearch() {
-          let input = document.getElementById("search");
-          let clearBtnContainer = document.querySelector(".ThemeBtn-container");
-
-          // Clear the search input
-          input.value = "";
-          clearBtnContainer.style.display = "none"; // Hide the clear button
-
-          // Reset the table to show all rows
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
-
-          let rows = table.getElementsByTagName("tr");
-          for (let i = 1; i < rows.length; i++) {
-              rows[i].style.display = ""; // Make all rows visible again
-
-              // Remove any highlighting
-              let cells = rows[i].getElementsByTagName("td");
-              for (let j = 0; j < cells.length; j++) {
-                  cells[j].innerHTML = cells[j].textContent;
-              }
-          }
+        highlightNode(element);
       }
 
+      function clearSearch() {
+        let input = document.getElementById("search");
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+
+        // Clear the search input
+        input.value = "";
+        clearBtnContainer.style.display = "none"; // Hide the clear button
+
+        // Reset the table to show all rows
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
+
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+          rows[i].style.display = ""; // Make all rows visible again
+
+          // Remove any highlighting
+          let cells = rows[i].getElementsByTagName("td");
+          for (let j = 0; j < cells.length; j++) {
+            cells[j].innerHTML = cells[j].textContent;
+          }
+        }
+      }
     </script>
-</body>
+  </body>
 </html>

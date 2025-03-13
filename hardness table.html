@@ -1,1225 +1,1528 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Searchable Brazing Table</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hardness conversion</title>
+    <link rel="shortcut icon" href="Images/favicon.png" type="image/png" />
+
     <style>
-
-        @font-face {
-            font-family: 'Montserrat-Medium';
-            src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
-            font-weight: 500; /* Medium weight */
-            font-style: normal;
-        }
-
-        body {
-            font-family: 'Montserrat-Medium', sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 25px;
-            margin-top: 30px;
-        }
-
-        select {
-            width: 290px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 5px;
-        }
-        .table-container {
-            width: 98%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            height: 78vh; /* Fixed height of the table container */
-            overflow-y: auto; /* Enable vertical scrolling */
-            margin-bottom: 22px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 15px;
-            font-size: 14px;
-        }
-
-
-        table th:not(:last-child),
-        table td:not(:last-child) {
-            text-align: center;
-        }
-
-
-        table td:last-child {
-          font-size: 14px; /* Adjust the font size as needed */
-        }
-
-        th {
-            background-color: #98D8EF;
-            color: white;
-            text-align: center;
-            vertical-align: top;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .sort-icon {
-            margin-left: 5px;
-            font-size: 12px;
-        }
-        tr:hover {
-            background-color: #e0f7fa;
-        }
-
-        br {
-            display: block;
-            content: "";
-            margin-bottom: 10px; /* Adjust the space */
-        }
-        .highlighted {
-            background-color: #FFD95F !important;
-        }
-        thead{
-            position: sticky;
-            top: 0; /* Make header sticky */
-            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
-        }
-        thead input{
-          width: 67px;
-          border: none;
-          padding: 6px 10px;
-          text-align: center;
-        }
-
-        .section a{
-          color: #3674B5;
-          margin-left: 12px;
-          margin-right: 12px;
-          text-align: center;
-          font-size: 14px;
-          text-transform: uppercase;
-          text-decoration: none;
-       }
-
-       ul {
-         list-style-type: none;
-         text-align: left;
-         padding-left: 25px; /* remove default padding */
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
+        font-weight: 500; /* Medium weight */
+        font-style: normal;
       }
-       li {
-         padding: 5px 0;
-         font-size: 13px;
-       }
-       h4{
-         padding-left: 25px;
-       }
 
-       /* Navbar styles */
-       .navbar {
-           display: flex;
-           flex-direction: row;
-           justify-content: space-between;
-           align-items: center;
-           background-color: #3674B5;
-           padding: 15px 30px;
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 25px;
+        margin-top: 30px;
+      }
 
-           width: 94%;
-           margin: 15px auto;
-           margin-bottom: 50px;
-           background: white;
-           border-radius: 10px;
-           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-       }
+      select {
+        width: 290px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 5px;
+      }
+      .table-container {
+        width: 98%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        height: 78vh; /* Fixed height of the table container */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 22px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+        font-size: 14px;
+      }
 
-       .navbar .logo {
-           font-size: 18px;
-           font-weight: bold;
-           color: black;
-           text-transform: uppercase;
-       }
+      table th:not(:last-child),
+      table td:not(:last-child) {
+        text-align: center;
+      }
 
-        .icons {
-           display: flex;
-           flex-direction: row;
-           gap: 15px;
-       }
+      table td:last-child {
+        font-size: 14px; /* Adjust the font size as needed */
+      }
 
-       .navbar .icon {
-           color: white;
-           font-size: 20px;
-           cursor: pointer;
-       }
+      th {
+        background-color: #98d8ef;
+        color: white;
+        text-align: center;
+        vertical-align: top;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .sort-icon {
+        margin-left: 5px;
+        font-size: 12px;
+      }
+      tr:hover {
+        background-color: #e0f7fa;
+      }
 
-       .navbar .icon:hover {
-           color: #FFD95F;
-       }
+      br {
+        display: block;
+        content: "";
+        margin-bottom: 10px; /* Adjust the space */
+      }
+      .highlighted {
+        background-color: #ffd95f !important;
+      }
+      thead {
+        position: sticky;
+        top: 0; /* Make header sticky */
+        z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+      }
+      thead input {
+        width: 67px;
+        border: none;
+        padding: 6px 10px;
+        text-align: center;
+      }
 
+      .section a {
+        color: #3674b5;
+        margin-left: 12px;
+        margin-right: 12px;
+        text-align: center;
+        font-size: 14px;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
 
-       img{
-           height: 40px;
-           width: auto;
-       }
+      ul {
+        list-style-type: none;
+        text-align: left;
+        padding-left: 25px; /* remove default padding */
+      }
+      li {
+        padding: 5px 0;
+        font-size: 13px;
+      }
+      h4 {
+        padding-left: 25px;
+      }
 
-       .logo-container{
-           display: flex;
-           flex-direction: row;
-           align-items: center;
-           gap: 20px;
-       }
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
 
-       .navbar .ThemeBtn-container {
-         height: 45px;
-         width: 45px;
-         border-radius: 100%;
-         opacity: 1;
-         background-color: transparnt;
-         display: flex;
-         align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
-       }
+        width: 94%;
+        margin: 15px auto;
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
 
-       .navbar .ThemeBtn-container:hover {
-         background-color: #98D8EF;
-         fill: white ;
-         transition: all 0.5s ease;
-       }
+      .navbar .logo {
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+        text-transform: uppercase;
+      }
 
-       .clearButton {
-          display: none;
-          cursor: pointer;
-          font-size: 26px;
-          color: gray;
-          padding-left: 6px;
-       }
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+      }
 
-       .svg-button{
-          border: none;
-          cursor: pointer;
-          background-color: transparent !important;
-          fill: #AC1754 ;
-          transform: scale(1.2);
-          margin: 4px;
-          margin-bottom: 0;
-          margin-right: 1px;
-        }
+      .navbar .icon {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
 
-        .svg-button:hover{
-          fill: white;
-        }
+      .navbar .icon:hover {
+        color: #ffd95f;
+      }
 
-       /* Search bar container */
-       .search-container {
-           display: flex;
-           justify-content: center; /* Center horizontally */
-           margin-top: 30px; /* Adjust space above the search bar */
-       }
+      img {
+        height: 40px;
+        width: auto;
+      }
 
-       .navbar input {
-           padding: 10px;
-           width: 400px; /* Width of the search bar */
-           font-size: 16px;
-           border: 1px solid #ccc;
-           border-radius: 5px;
-           background-color: rgb(244, 244, 244);
-       }
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
 
+      .navbar .ThemeBtn-container {
+        height: 45px;
+        width: 45px;
+        border-radius: 100%;
+        opacity: 1;
+        background-color: transparnt;
+        display: flex;
+        align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+      }
 
+      .navbar .ThemeBtn-container:hover {
+        background-color: #98d8ef;
+        fill: white;
+        transition: all 0.5s ease;
+      }
+
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
+
+      .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
+
+      .svg-button:hover {
+        fill: white;
+      }
+
+      /* Search bar container */
+      .search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
+      }
+
+      .navbar input {
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
+      }
     </style>
-
-
-</head>
-<body>
-
-  <!-- Navbar -->
-  <div class="navbar">
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
       <div class="logo-container">
-          <img src="Images/IAI logo.webp" alt="Book Logo">
-          <div class="logo">Approximate Hardness Conversion Numbers per ASTM E140</div>
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">
+          Approximate Hardness Conversion Numbers per ASTM E140
+        </div>
       </div>
 
       <div>
-       <select id="tableSelect" onchange="changeTable()">
-         <option value="dataTable">Nickel and High-Nickel Alloys</option>
-         <option value="dataTable1">HRC Non-Austenitic Steels</option>
-         <option value="dataTable2">HRB Non-Austenitic Steels</option>
-       </select>
-     </div>
-  </div>
-
+        <select id="tableSelect" onchange="changeTable()">
+          <option value="dataTable">Nickel and High-Nickel Alloys</option>
+          <option value="dataTable1">HRC Non-Austenitic Steels</option>
+          <option value="dataTable2">HRB Non-Austenitic Steels</option>
+        </select>
+      </div>
+    </div>
 
     <div class="table-container">
-        <table id="dataTable">
-            <thead>
-                <th>Knoop <br> indenter 500 and 1000 gf (HK)</th>
-                <th>Vickers <br> 1, 5, 10, 30 kgf (HV)</th>
-                <th>Brinell <br> 10-mm Standard Ball, 3000 kgf (HBS)</th>
-                <th>Rockwell A <br> Scale 60 kgf Diamond (HRA)</th>
-                <th>Rockwell B <br> Scale 100 kgf 1/16-in. (1.588 mm) Ball (HRB)</th>
-                <th>Rockwell C <br> Scale 150 kgf Diamond (HRC)</th>
-                <th>Rockwell D <br> Scale 100 kgf Diamond (HRD)</th>
-                <th>Rockwell E <br> Scale 100 kgf 1/8-in. (3.175 mm) Ball (HRE)</th>
-                <th>Rockwell F <br> Scale 60 kgf 1/16-in. (1.588 mm) Ball (HRF)</th>
-                <th>Rockwell G <br> Scale 150 kgf 1/16-in. (1.588 mm) Ball (HRG)</th>
-                <th>Rockwell K <br> Scale 150 kgf 1/8-in. (3.175 mm) Ball (HRK)</th>
-                <th>Rockwell 15N <br> Scale 15-kgf Superficial Diamond (HR15N)</th>
-                <th>Rockwell 30N <br> Scale 30-kgf Superficial Diamond (HR30N)</th>
-                <th>Rockwell 45N <br> Scale 45-kgf Superficial Diamond (HR45N)</th>
-                <th>Rockwell 15T <br> Scale 15-kgf 1/16-in. (1.588 mm) Ball (HR15T)</th>
-                <th>Rockwell 30T <br> Scale 30-kgf 1/16-in. (1.588 mm) Ball (HR30T)</th>
-                <th>Rockwell 45T <br> Scale 45-kgf 1/16-in. (1.588 mm) Ball (HR45T)</th>
-              </tr>
-              <tr>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-                <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            </tr>
-            </thead>
-            <tbody>
-              <tr><td>-</td>
-                <td>513</td>
-                <td>479</td>
-                <td>75.5</td>
-                <td>-</td>
-                <td>50.0</td>
-                <td>63.0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>85.5</td>
-                <td>68.0</td>
-                <td>54.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr><td>-</td>
-                <td>481</td>
-                <td>450</td>
-                <td>74.5</td>
-                <td>-</td>
-                <td>48.0</td>
-                <td>61.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>84.5</td>
-                <td>66.5</td>
-                <td>52.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr><td>-</td>
-                <td>452</td>
-                <td>425</td>
-                <td>73.5</td>
-                <td>-</td>
-                <td>46.0</td>
-                <td>60.0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>83.5</td>
-                <td>64.5</td>
-                <td>50.0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr><td>-</td>
-                <td>427</td>
-                <td>403</td>
-                <td>72.5</td>
-                <td>-</td>
-                <td>44.0</td>
-                <td>58.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>82.5</td>
-                <td>63.0</td>
-                <td>47.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr><td>-</td>
-                <td>404</td>
-                <td>382</td>
-                <td>71.5</td>
-                <td>-</td>
-                <td>42.0</td>
-                <td>57.0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>81.5</td>
-                <td>61.0</td>
-                <td>45.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr><td>436</td>
-                <td>382</td>
-                <td>363</td>
-                <td>70.5</td>
-                <td>-</td>
-                <td>40.0</td>
-                <td>55.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>80.5</td>
-                <td>59.5</td>
-                <td>43.0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr><td>413</td>
-                <td>362</td>
-                <td>346</td>
-                <td>69.5</td>
-                <td>-</td>
-                <td>38.0</td>
-                <td>54.0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>79.5</td>
-                <td>58.0</td>
-                <td>41.0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr><td>392</td>
-                <td>344</td>
-                <td>329</td>
-                <td>68.5</td>
-                <td>-</td>
-                <td>36.0</td>
-                <td>52.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>78.5</td>
-                <td>56.0</td>
-                <td>38.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr><td>372</td>
-                <td>326</td>
-                <td>313</td>
-                <td>67.5</td>
-                <td>-</td>
-                <td>34.0</td>
-                <td>50.5</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>77.5</td>
-                <td>54.5</td>
-                <td>36.0</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-
-              <tr><td>352</td>
-                  <td>309</td>
-                  <td>298</td>
-                  <td>66.5</td>
-                  <td>106</td>
-                  <td>32.0</td>
-                  <td>49.5</td>
-                  <td>-</td>
-                  <td>116.5</td>
-                  <td>94.0</td>
-                  <td>-</td>
-                  <td>76.5</td>
-                  <td>52.5</td>
-                  <td>34.0</td>
-                  <td>94.5</td>
-                  <td>85.5</td>
-                  <td>77.0</td>
-                </tr>
-                <tr><td>325</td>
-                  <td>285</td>
-                  <td>275</td>
-                  <td>64.5</td>
-                  <td>104</td>
-                  <td>28.5</td>
-                  <td>46.5</td>
-                  <td>-</td>
-                  <td>115.5</td>
-                  <td>91.0</td>
-                  <td>-</td>
-                  <td>75.0</td>
-                  <td>49.5</td>
-                  <td>30.0</td>
-                  <td>94.0</td>
-                  <td>84.5</td>
-                  <td>75.0</td>
-                </tr>
-                <tr><td>304</td>
-                  <td>266</td>
-                  <td>258</td>
-                  <td>63.0</td>
-                  <td>102</td>
-                  <td>25.5</td>
-                  <td>44.5</td>
-                  <td>-</td>
-                  <td>114.5</td>
-                  <td>87.5</td>
-                  <td>-</td>
-                  <td>73.5</td>
-                  <td>47.0</td>
-                  <td>26.5</td>
-                  <td>93.0</td>
-                  <td>83.0</td>
-                  <td>73.0</td>
-                </tr>
-                <tr><td>283</td>
-                  <td>248</td>
-                  <td>241</td>
-                  <td>61.5</td>
-                  <td>100</td>
-                  <td>22.5</td>
-                  <td>42.0</td>
-                  <td>-</td>
-                  <td>113.0</td>
-                  <td>84.5</td>
-                  <td>-</td>
-                  <td>72.0</td>
-                  <td>44.5</td>
-                  <td>23.0</td>
-                  <td>92.5</td>
-                  <td>81.5</td>
-                  <td>71.0</td>
-                </tr>
-                <tr><td>267</td>
-                  <td>234</td>
-                  <td>228</td>
-                  <td>60.5</td>
-                  <td>98</td>
-                  <td>20.0</td>
-                  <td>40.0</td>
-                  <td>-</td>
-                  <td>112.0</td>
-                  <td>81.5</td>
-                  <td>-</td>
-                  <td>70.5</td>
-                  <td>42.0</td>
-                  <td>20.0</td>
-                  <td>92.0</td>
-                  <td>80.5</td>
-                  <td>69.0</td>
-                </tr>
-                <tr><td>251</td>
-                  <td>220</td>
-                  <td>215</td>
-                  <td>59.0</td>
-                  <td>96</td>
-                  <td>17.0</td>
-                  <td>38.0</td>
-                  <td>-</td>
-                  <td>111.0</td>
-                  <td>78.5</td>
-                  <td>100.0</td>
-                  <td>69.0</td>
-                  <td>39.5</td>
-                  <td>17.0</td>
-                  <td>91.0</td>
-                  <td>79.0</td>
-                  <td>67.0</td>
-                </tr>
-                <tr><td>239</td>
-                  <td>209</td>
-                  <td>204</td>
-                  <td>57.5</td>
-                  <td>94</td>
-                  <td>14.5</td>
-                  <td>36.0</td>
-                  <td>-</td>
-                  <td>110.0</td>
-                  <td>75.5</td>
-                  <td>98.0</td>
-                  <td>68.0</td>
-                  <td>37.5</td>
-                  <td>14.0</td>
-                  <td>90.5</td>
-                  <td>77.5</td>
-                  <td>65.0</td>
-                </tr>
-                <tr><td>226</td>
-                  <td>198</td>
-                  <td>194</td>
-                  <td>56.5</td>
-                  <td>92</td>
-                  <td>12.0</td>
-                  <td>34.0</td>
-                  <td>-</td>
-                  <td>108.5</td>
-                  <td>72.0</td>
-                  <td>96.5</td>
-                  <td>66.5</td>
-                  <td>35.5</td>
-                  <td>11.0</td>
-                  <td>89.5</td>
-                  <td>76.0</td>
-                  <td>63.0</td>
-                </tr>
-                <tr><td>215</td>
-                  <td>188</td>
-                  <td>184</td>
-                  <td>55.0</td>
-                  <td>90</td>
-                  <td>9.0</td>
-                  <td>32.0</td>
-                  <td>108.5</td>
-                  <td>107.5</td>
-                  <td>69.0</td>
-                  <td>94.5</td>
-                  <td>65.0</td>
-                  <td>32.5</td>
-                  <td>7.5</td>
-                  <td>89.0</td>
-                  <td>75.0</td>
-                  <td>61.0</td>
-                </tr>
-                <tr><td>204</td>
-                  <td>179</td>
-                  <td>176</td>
-                  <td>53.5</td>
-                  <td>88</td>
-                  <td>6.5</td>
-                  <td>30.0</td>
-                  <td>107.0</td>
-                  <td>106.5</td>
-                  <td>65.5</td>
-                  <td>93.0</td>
-                  <td>64.0</td>
-                  <td>30.5</td>
-                  <td>5.0</td>
-                  <td>88.0</td>
-                  <td>73.5</td>
-                  <td>59.5</td>
-                </tr>
-                <tr><td>195</td>
-                  <td>171</td>
-                  <td>168</td>
-                  <td>52.5</td>
-                  <td>86</td>
-                  <td>4.0</td>
-                  <td>28.0</td>
-                  <td>106.0</td>
-                  <td>105.0</td>
-                  <td>62.5</td>
-                  <td>91.0</td>
-                  <td>62.5</td>
-                  <td>28.5</td>
-                  <td>2.0</td>
-                  <td>87.5</td>
-                  <td>72.0</td>
-                  <td>57.5</td>
-                </tr>
-                <tr><td>187</td>
-                  <td>164</td>
-                  <td>161</td>
-                  <td>51.5</td>
-                  <td>84</td>
-                  <td>2.0</td>
-                  <td>26.5</td>
-                  <td>104.5</td>
-                  <td>104.0</td>
-                  <td>59.5</td>
-                  <td>89.0</td>
-                  <td>61.5</td>
-                  <td>26.5</td>
-                  <td>(−0.5)</td>
-                  <td>87.0</td>
-                  <td>70.5</td>
-                  <td>55.5</td>
-                </tr>
-                <tr><td>179</td>
-                  <td>157</td>
-                  <td>155</td>
-                  <td>50.0</td>
-                  <td>82</td>
-                  <td>-</td>
-                  <td>24.5</td>
-                  <td>103.0</td>
-                  <td>103.0</td>
-                  <td>56.5</td>
-                  <td>87.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>86.0</td>
-                  <td>69.5</td>
-                  <td>53.5</td>
-                </tr>
-                <tr><td>173</td>
-                  <td>151</td>
-                  <td>149</td>
-                  <td>49.0</td>
-                  <td>80</td>
-                  <td>-</td>
-                  <td>22.5</td>
-                  <td>102.0</td>
-                  <td>101.5</td>
-                  <td>53.0</td>
-                  <td>85.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>85.5</td>
-                  <td>68.0</td>
-                  <td>51.5</td>
-                </tr>
-                <tr><td>166</td>
-                  <td>145</td>
-                  <td>144</td>
-                  <td>47.5</td>
-                  <td>78</td>
-                  <td>-</td>
-                  <td>21.0</td>
-                  <td>100.5</td>
-                  <td>100.5</td>
-                  <td>50.0</td>
-                  <td>83.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>84.5</td>
-                  <td>66.5</td>
-                  <td>49.5</td>
-                </tr>
-                <tr><td>160</td>
-                  <td>140</td>
-                  <td>139</td>
-                  <td>46.5</td>
-                  <td>76</td>
-                  <td>-</td>
-                  <td>19.0</td>
-                  <td>99.5</td>
-                  <td>99.5</td>
-                  <td>47.0</td>
-                  <td>82.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>84.0</td>
-                  <td>65.5</td>
-                  <td>47.5</td>
-                </tr>
-                <tr><td>154</td>
-                  <td>135</td>
-                  <td>134</td>
-                  <td>45.5</td>
-                  <td>74</td>
-                  <td>-</td>
-                  <td>17.5</td>
-                  <td>98.0</td>
-                  <td>98.5</td>
-                  <td>43.5</td>
-                  <td>80.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>83.0</td>
-                  <td>64.0</td>
-                  <td>45.5</td>
-                </tr>
-                <tr><td>149</td>
-                  <td>130</td>
-                  <td>129</td>
-                  <td>44.0</td>
-                  <td>72</td>
-                  <td>-</td>
-                  <td>16.0</td>
-                  <td>97.0</td>
-                  <td>97.0</td>
-                  <td>40.5</td>
-                  <td>78.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>82.5</td>
-                  <td>62.5</td>
-                  <td>43.5</td>
-                </tr>
-                <tr><td>144</td>
-                  <td>126</td>
-                  <td>125</td>
-                  <td>43.0</td>
-                  <td>70</td>
-                  <td>-</td>
-                  <td>14.5</td>
-                  <td>95.5</td>
-                  <td>96.0</td>
-                  <td>37.5</td>
-                  <td>76.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>82.0</td>
-                  <td>61.0</td>
-                  <td>41.5</td>
-                </tr>
-                <tr><td>140</td>
-                  <td>122</td>
-                  <td>121</td>
-                  <td>42.0</td>
-                  <td>68</td>
-                  <td>-</td>
-                  <td>13.0</td>
-                  <td>94.5</td>
-                  <td>95.0</td>
-                  <td>34.5</td>
-                  <td>74.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>81.0</td>
-                  <td>60.0</td>
-                  <td>39.5</td>
-                </tr>
-                <tr><td>136</td>
-                  <td>119</td>
-                  <td>118</td>
-                  <td>41.0</td>
-                  <td>66</td>
-                  <td>-</td>
-                  <td>11.5</td>
-                  <td>93.0</td>
-                  <td>93.5</td>
-                  <td>31.0</td>
-                  <td>72.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>80.5</td>
-                  <td>58.5</td>
-                  <td>37.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>119</td>
-                  <td>118</td>
-                  <td>41.0</td>
-                  <td>66</td>
-                  <td>-</td>
-                  <td>11.5</td>
-                  <td>93.0</td>
-                  <td>93.5</td>
-                  <td>31.0</td>
-                  <td>72.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>80.5</td>
-                  <td>58.5</td>
-                  <td>37.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>115</td>
-                  <td>114</td>
-                  <td>40.0</td>
-                  <td>64</td>
-                  <td>-</td>
-                  <td>10.0</td>
-                  <td>91.5</td>
-                  <td>92.5</td>
-                  <td>-</td>
-                  <td>71.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>79.5</td>
-                  <td>57.0</td>
-                  <td>35.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>112</td>
-                  <td>111</td>
-                  <td>39.0</td>
-                  <td>62</td>
-                  <td>-</td>
-                  <td>8.0</td>
-                  <td>90.5</td>
-                  <td>91.5</td>
-                  <td>-</td>
-                  <td>69.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>79.0</td>
-                  <td>56.0</td>
-                  <td>33.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>108</td>
-                  <td>108</td>
-                  <td>-</td>
-                  <td>60</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>89.0</td>
-                  <td>90.0</td>
-                  <td>-</td>
-                  <td>67.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>78.5</td>
-                  <td>54.5</td>
-                  <td>31.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>106</td>
-                  <td>106</td>
-                  <td>-</td>
-                  <td>58</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>88.0</td>
-                  <td>89.0</td>
-                  <td>-</td>
-                  <td>65.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>77.5</td>
-                  <td>53.0</td>
-                  <td>29.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>103</td>
-                  <td>103</td>
-                  <td>-</td>
-                  <td>56</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>86.5</td>
-                  <td>88.0</td>
-                  <td>-</td>
-                  <td>63.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>77.0</td>
-                  <td>51.5</td>
-                  <td>27.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>100</td>
-                  <td>100</td>
-                  <td>-</td>
-                  <td>54</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>85.5</td>
-                  <td>87.0</td>
-                  <td>-</td>
-                  <td>62.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>76.0</td>
-                  <td>50.5</td>
-                  <td>25.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>98</td>
-                  <td>98</td>
-                  <td>-</td>
-                  <td>52</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>84.0</td>
-                  <td>85.5</td>
-                  <td>-</td>
-                  <td>60.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>75.5</td>
-                  <td>49.0</td>
-                  <td>23.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>95</td>
-                  <td>95</td>
-                  <td>-</td>
-                  <td>50</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>83.0</td>
-                  <td>84.5</td>
-                  <td>-</td>
-                  <td>58.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>74.5</td>
-                  <td>47.5</td>
-                  <td>21.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>93</td>
-                  <td>93</td>
-                  <td>-</td>
-                  <td>48</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>81.5</td>
-                  <td>83.5</td>
-                  <td>-</td>
-                  <td>56.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>74.0</td>
-                  <td>46.5</td>
-                  <td>19.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>91</td>
-                  <td>91</td>
-                  <td>-</td>
-                  <td>46</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>80.5</td>
-                  <td>82.0</td>
-                  <td>-</td>
-                  <td>54.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>73.5</td>
-                  <td>45.0</td>
-                  <td>17.0</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>89</td>
-                  <td>89</td>
-                  <td>-</td>
-                  <td>44</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>79.0</td>
-                  <td>81.0</td>
-                  <td>-</td>
-                  <td>52.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>72.5</td>
-                  <td>43.5</td>
-                  <td>14.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>87</td>
-                  <td>87</td>
-                  <td>-</td>
-                  <td>42</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>78.0</td>
-                  <td>80.0</td>
-                  <td>-</td>
-                  <td>51.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>72.0</td>
-                  <td>42.0</td>
-                  <td>12.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>85</td>
-                  <td>85</td>
-                  <td>-</td>
-                  <td>40</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>76.5</td>
-                  <td>79.0</td>
-                  <td>-</td>
-                  <td>49.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>71.0</td>
-                  <td>41.0</td>
-                  <td>10.0</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>83</td>
-                  <td>83</td>
-                  <td>-</td>
-                  <td>38</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>75.0</td>
-                  <td>77.5</td>
-                  <td>-</td>
-                  <td>47.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>70.5</td>
-                  <td>39.5</td>
-                  <td>7.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>81</td>
-                  <td>81</td>
-                  <td>-</td>
-                  <td>36</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>74.0</td>
-                  <td>76.5</td>
-                  <td>-</td>
-                  <td>45.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>70.0</td>
-                  <td>38.0</td>
-                  <td>5.5</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>79</td>
-                  <td>79</td>
-                  <td>-</td>
-                  <td>34</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>72.5</td>
-                  <td>75.5</td>
-                  <td>-</td>
-                  <td>43.5</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>69.0</td>
-                  <td>36.5</td>
-                  <td>3.0</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>78</td>
-                  <td>78</td>
-                  <td>-</td>
-                  <td>32</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>71.5</td>
-                  <td>74.0</td>
-                  <td>-</td>
-                  <td>42.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>68.5</td>
-                  <td>35.5</td>
-                  <td>1.0</td>
-                </tr>
-                <tr><td>-</td>
-                  <td>77</td>
-                  <td>77</td>
-                  <td>-</td>
-                  <td>30</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>70.0</td>
-                  <td>73.0</td>
-                  <td>-</td>
-                  <td>40.0</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>67.5</td>
-                  <td>34.0</td>
-                  <td>(−1.5)</td>
-            </tbody>
-          </table>
-
-        <div class="nickelHardness">
-            <h3>General Notes</h3>
-              <ul>
-                <li>1. The use of hardness scales for hardness values shown in parentheses is not recommended since they are beyond the ranges recommended for accuracy.Such values are shown for
-                    comparativepurposesonly,where comparisons may be desired and the recommended machine and scale are not available.</li>
-                <li>2. In tableheadings, kgf or gf refers to total test force.</li>
-              </ul>
-         </div>
-
-         <table id="dataTable1">
-          <thead>
+      <table id="dataTable">
+        <thead>
           <tr>
-            <th>Rockwell C <br> 150kgf (HRC)</th>
-            <th>Vickers <br> (HV)</th>
-            <th>Brinell <br> (HBS)</th>
-            <th>Brinell <br> (HBW)</th>
-            <th>Knoop <br> 500-gf and Over (HK)</th>
-            <th>Rockwell A <br> Scale 60 kgf (HRA)</th>
-            <th>Rockwell D <br> Scale 100 kgf (HRD)</th>
-            <th>Rockwell 15N <br> Superficial Scale 15 kgf (HR15N)</th>
-            <th>Rockwell 30N <br> Superficial Scale 30 kgf (HR30N)</th>
-            <th>Rockwell 45N <br> Superficial Scale 45 kgf (HR45N)</th>
-            <th>Scleroscope <br> Hardness Number</th>
+            <th>
+              Knoop <br />
+              indenter 500 and 1000 gf (HK)
+            </th>
+            <th>
+              Vickers <br />
+              1, 5, 10, 30 kgf (HV)
+            </th>
+            <th>
+              Brinell <br />
+              10-mm Standard Ball, 3000 kgf (HBS)
+            </th>
+            <th>
+              Rockwell A <br />
+              Scale 60 kgf Diamond (HRA)
+            </th>
+            <th>
+              Rockwell B <br />
+              Scale 100 kgf 1/16-in. (1.588 mm) Ball (HRB)
+            </th>
+            <th>
+              Rockwell C <br />
+              Scale 150 kgf Diamond (HRC)
+            </th>
+            <th>
+              Rockwell D <br />
+              Scale 100 kgf Diamond (HRD)
+            </th>
+            <th>
+              Rockwell E <br />
+              Scale 100 kgf 1/8-in. (3.175 mm) Ball (HRE)
+            </th>
+            <th>
+              Rockwell F <br />
+              Scale 60 kgf 1/16-in. (1.588 mm) Ball (HRF)
+            </th>
+            <th>
+              Rockwell G <br />
+              Scale 150 kgf 1/16-in. (1.588 mm) Ball (HRG)
+            </th>
+            <th>
+              Rockwell K <br />
+              Scale 150 kgf 1/8-in. (3.175 mm) Ball (HRK)
+            </th>
+            <th>
+              Rockwell 15N <br />
+              Scale 15-kgf Superficial Diamond (HR15N)
+            </th>
+            <th>
+              Rockwell 30N <br />
+              Scale 30-kgf Superficial Diamond (HR30N)
+            </th>
+            <th>
+              Rockwell 45N <br />
+              Scale 45-kgf Superficial Diamond (HR45N)
+            </th>
+            <th>
+              Rockwell 15T <br />
+              Scale 15-kgf 1/16-in. (1.588 mm) Ball (HR15T)
+            </th>
+            <th>
+              Rockwell 30T <br />
+              Scale 30-kgf 1/16-in. (1.588 mm) Ball (HR30T)
+            </th>
+            <th>
+              Rockwell 45T <br />
+              Scale 45-kgf 1/16-in. (1.588 mm) Ball (HR45T)
+            </th>
           </tr>
           <tr>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-        </tr>
-      </thead>
-      <tbody>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>-</td>
+            <td>513</td>
+            <td>479</td>
+            <td>75.5</td>
+            <td>-</td>
+            <td>50.0</td>
+            <td>63.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>85.5</td>
+            <td>68.0</td>
+            <td>54.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>481</td>
+            <td>450</td>
+            <td>74.5</td>
+            <td>-</td>
+            <td>48.0</td>
+            <td>61.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>84.5</td>
+            <td>66.5</td>
+            <td>52.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>452</td>
+            <td>425</td>
+            <td>73.5</td>
+            <td>-</td>
+            <td>46.0</td>
+            <td>60.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>83.5</td>
+            <td>64.5</td>
+            <td>50.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>427</td>
+            <td>403</td>
+            <td>72.5</td>
+            <td>-</td>
+            <td>44.0</td>
+            <td>58.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>82.5</td>
+            <td>63.0</td>
+            <td>47.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>404</td>
+            <td>382</td>
+            <td>71.5</td>
+            <td>-</td>
+            <td>42.0</td>
+            <td>57.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>81.5</td>
+            <td>61.0</td>
+            <td>45.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>436</td>
+            <td>382</td>
+            <td>363</td>
+            <td>70.5</td>
+            <td>-</td>
+            <td>40.0</td>
+            <td>55.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>80.5</td>
+            <td>59.5</td>
+            <td>43.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>413</td>
+            <td>362</td>
+            <td>346</td>
+            <td>69.5</td>
+            <td>-</td>
+            <td>38.0</td>
+            <td>54.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>79.5</td>
+            <td>58.0</td>
+            <td>41.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>392</td>
+            <td>344</td>
+            <td>329</td>
+            <td>68.5</td>
+            <td>-</td>
+            <td>36.0</td>
+            <td>52.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>78.5</td>
+            <td>56.0</td>
+            <td>38.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>372</td>
+            <td>326</td>
+            <td>313</td>
+            <td>67.5</td>
+            <td>-</td>
+            <td>34.0</td>
+            <td>50.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>77.5</td>
+            <td>54.5</td>
+            <td>36.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td>352</td>
+            <td>309</td>
+            <td>298</td>
+            <td>66.5</td>
+            <td>106</td>
+            <td>32.0</td>
+            <td>49.5</td>
+            <td>-</td>
+            <td>116.5</td>
+            <td>94.0</td>
+            <td>-</td>
+            <td>76.5</td>
+            <td>52.5</td>
+            <td>34.0</td>
+            <td>94.5</td>
+            <td>85.5</td>
+            <td>77.0</td>
+          </tr>
+          <tr>
+            <td>325</td>
+            <td>285</td>
+            <td>275</td>
+            <td>64.5</td>
+            <td>104</td>
+            <td>28.5</td>
+            <td>46.5</td>
+            <td>-</td>
+            <td>115.5</td>
+            <td>91.0</td>
+            <td>-</td>
+            <td>75.0</td>
+            <td>49.5</td>
+            <td>30.0</td>
+            <td>94.0</td>
+            <td>84.5</td>
+            <td>75.0</td>
+          </tr>
+          <tr>
+            <td>304</td>
+            <td>266</td>
+            <td>258</td>
+            <td>63.0</td>
+            <td>102</td>
+            <td>25.5</td>
+            <td>44.5</td>
+            <td>-</td>
+            <td>114.5</td>
+            <td>87.5</td>
+            <td>-</td>
+            <td>73.5</td>
+            <td>47.0</td>
+            <td>26.5</td>
+            <td>93.0</td>
+            <td>83.0</td>
+            <td>73.0</td>
+          </tr>
+          <tr>
+            <td>283</td>
+            <td>248</td>
+            <td>241</td>
+            <td>61.5</td>
+            <td>100</td>
+            <td>22.5</td>
+            <td>42.0</td>
+            <td>-</td>
+            <td>113.0</td>
+            <td>84.5</td>
+            <td>-</td>
+            <td>72.0</td>
+            <td>44.5</td>
+            <td>23.0</td>
+            <td>92.5</td>
+            <td>81.5</td>
+            <td>71.0</td>
+          </tr>
+          <tr>
+            <td>267</td>
+            <td>234</td>
+            <td>228</td>
+            <td>60.5</td>
+            <td>98</td>
+            <td>20.0</td>
+            <td>40.0</td>
+            <td>-</td>
+            <td>112.0</td>
+            <td>81.5</td>
+            <td>-</td>
+            <td>70.5</td>
+            <td>42.0</td>
+            <td>20.0</td>
+            <td>92.0</td>
+            <td>80.5</td>
+            <td>69.0</td>
+          </tr>
+          <tr>
+            <td>251</td>
+            <td>220</td>
+            <td>215</td>
+            <td>59.0</td>
+            <td>96</td>
+            <td>17.0</td>
+            <td>38.0</td>
+            <td>-</td>
+            <td>111.0</td>
+            <td>78.5</td>
+            <td>100.0</td>
+            <td>69.0</td>
+            <td>39.5</td>
+            <td>17.0</td>
+            <td>91.0</td>
+            <td>79.0</td>
+            <td>67.0</td>
+          </tr>
+          <tr>
+            <td>239</td>
+            <td>209</td>
+            <td>204</td>
+            <td>57.5</td>
+            <td>94</td>
+            <td>14.5</td>
+            <td>36.0</td>
+            <td>-</td>
+            <td>110.0</td>
+            <td>75.5</td>
+            <td>98.0</td>
+            <td>68.0</td>
+            <td>37.5</td>
+            <td>14.0</td>
+            <td>90.5</td>
+            <td>77.5</td>
+            <td>65.0</td>
+          </tr>
+          <tr>
+            <td>226</td>
+            <td>198</td>
+            <td>194</td>
+            <td>56.5</td>
+            <td>92</td>
+            <td>12.0</td>
+            <td>34.0</td>
+            <td>-</td>
+            <td>108.5</td>
+            <td>72.0</td>
+            <td>96.5</td>
+            <td>66.5</td>
+            <td>35.5</td>
+            <td>11.0</td>
+            <td>89.5</td>
+            <td>76.0</td>
+            <td>63.0</td>
+          </tr>
+          <tr>
+            <td>215</td>
+            <td>188</td>
+            <td>184</td>
+            <td>55.0</td>
+            <td>90</td>
+            <td>9.0</td>
+            <td>32.0</td>
+            <td>108.5</td>
+            <td>107.5</td>
+            <td>69.0</td>
+            <td>94.5</td>
+            <td>65.0</td>
+            <td>32.5</td>
+            <td>7.5</td>
+            <td>89.0</td>
+            <td>75.0</td>
+            <td>61.0</td>
+          </tr>
+          <tr>
+            <td>204</td>
+            <td>179</td>
+            <td>176</td>
+            <td>53.5</td>
+            <td>88</td>
+            <td>6.5</td>
+            <td>30.0</td>
+            <td>107.0</td>
+            <td>106.5</td>
+            <td>65.5</td>
+            <td>93.0</td>
+            <td>64.0</td>
+            <td>30.5</td>
+            <td>5.0</td>
+            <td>88.0</td>
+            <td>73.5</td>
+            <td>59.5</td>
+          </tr>
+          <tr>
+            <td>195</td>
+            <td>171</td>
+            <td>168</td>
+            <td>52.5</td>
+            <td>86</td>
+            <td>4.0</td>
+            <td>28.0</td>
+            <td>106.0</td>
+            <td>105.0</td>
+            <td>62.5</td>
+            <td>91.0</td>
+            <td>62.5</td>
+            <td>28.5</td>
+            <td>2.0</td>
+            <td>87.5</td>
+            <td>72.0</td>
+            <td>57.5</td>
+          </tr>
+          <tr>
+            <td>187</td>
+            <td>164</td>
+            <td>161</td>
+            <td>51.5</td>
+            <td>84</td>
+            <td>2.0</td>
+            <td>26.5</td>
+            <td>104.5</td>
+            <td>104.0</td>
+            <td>59.5</td>
+            <td>89.0</td>
+            <td>61.5</td>
+            <td>26.5</td>
+            <td>(−0.5)</td>
+            <td>87.0</td>
+            <td>70.5</td>
+            <td>55.5</td>
+          </tr>
+          <tr>
+            <td>179</td>
+            <td>157</td>
+            <td>155</td>
+            <td>50.0</td>
+            <td>82</td>
+            <td>-</td>
+            <td>24.5</td>
+            <td>103.0</td>
+            <td>103.0</td>
+            <td>56.5</td>
+            <td>87.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>86.0</td>
+            <td>69.5</td>
+            <td>53.5</td>
+          </tr>
+          <tr>
+            <td>173</td>
+            <td>151</td>
+            <td>149</td>
+            <td>49.0</td>
+            <td>80</td>
+            <td>-</td>
+            <td>22.5</td>
+            <td>102.0</td>
+            <td>101.5</td>
+            <td>53.0</td>
+            <td>85.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>85.5</td>
+            <td>68.0</td>
+            <td>51.5</td>
+          </tr>
+          <tr>
+            <td>166</td>
+            <td>145</td>
+            <td>144</td>
+            <td>47.5</td>
+            <td>78</td>
+            <td>-</td>
+            <td>21.0</td>
+            <td>100.5</td>
+            <td>100.5</td>
+            <td>50.0</td>
+            <td>83.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>84.5</td>
+            <td>66.5</td>
+            <td>49.5</td>
+          </tr>
+          <tr>
+            <td>160</td>
+            <td>140</td>
+            <td>139</td>
+            <td>46.5</td>
+            <td>76</td>
+            <td>-</td>
+            <td>19.0</td>
+            <td>99.5</td>
+            <td>99.5</td>
+            <td>47.0</td>
+            <td>82.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>84.0</td>
+            <td>65.5</td>
+            <td>47.5</td>
+          </tr>
+          <tr>
+            <td>154</td>
+            <td>135</td>
+            <td>134</td>
+            <td>45.5</td>
+            <td>74</td>
+            <td>-</td>
+            <td>17.5</td>
+            <td>98.0</td>
+            <td>98.5</td>
+            <td>43.5</td>
+            <td>80.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>83.0</td>
+            <td>64.0</td>
+            <td>45.5</td>
+          </tr>
+          <tr>
+            <td>149</td>
+            <td>130</td>
+            <td>129</td>
+            <td>44.0</td>
+            <td>72</td>
+            <td>-</td>
+            <td>16.0</td>
+            <td>97.0</td>
+            <td>97.0</td>
+            <td>40.5</td>
+            <td>78.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>82.5</td>
+            <td>62.5</td>
+            <td>43.5</td>
+          </tr>
+          <tr>
+            <td>144</td>
+            <td>126</td>
+            <td>125</td>
+            <td>43.0</td>
+            <td>70</td>
+            <td>-</td>
+            <td>14.5</td>
+            <td>95.5</td>
+            <td>96.0</td>
+            <td>37.5</td>
+            <td>76.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>82.0</td>
+            <td>61.0</td>
+            <td>41.5</td>
+          </tr>
+          <tr>
+            <td>140</td>
+            <td>122</td>
+            <td>121</td>
+            <td>42.0</td>
+            <td>68</td>
+            <td>-</td>
+            <td>13.0</td>
+            <td>94.5</td>
+            <td>95.0</td>
+            <td>34.5</td>
+            <td>74.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>81.0</td>
+            <td>60.0</td>
+            <td>39.5</td>
+          </tr>
+          <tr>
+            <td>136</td>
+            <td>119</td>
+            <td>118</td>
+            <td>41.0</td>
+            <td>66</td>
+            <td>-</td>
+            <td>11.5</td>
+            <td>93.0</td>
+            <td>93.5</td>
+            <td>31.0</td>
+            <td>72.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>80.5</td>
+            <td>58.5</td>
+            <td>37.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>119</td>
+            <td>118</td>
+            <td>41.0</td>
+            <td>66</td>
+            <td>-</td>
+            <td>11.5</td>
+            <td>93.0</td>
+            <td>93.5</td>
+            <td>31.0</td>
+            <td>72.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>80.5</td>
+            <td>58.5</td>
+            <td>37.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>115</td>
+            <td>114</td>
+            <td>40.0</td>
+            <td>64</td>
+            <td>-</td>
+            <td>10.0</td>
+            <td>91.5</td>
+            <td>92.5</td>
+            <td>-</td>
+            <td>71.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>79.5</td>
+            <td>57.0</td>
+            <td>35.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>112</td>
+            <td>111</td>
+            <td>39.0</td>
+            <td>62</td>
+            <td>-</td>
+            <td>8.0</td>
+            <td>90.5</td>
+            <td>91.5</td>
+            <td>-</td>
+            <td>69.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>79.0</td>
+            <td>56.0</td>
+            <td>33.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>108</td>
+            <td>108</td>
+            <td>-</td>
+            <td>60</td>
+            <td>-</td>
+            <td>-</td>
+            <td>89.0</td>
+            <td>90.0</td>
+            <td>-</td>
+            <td>67.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>78.5</td>
+            <td>54.5</td>
+            <td>31.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>106</td>
+            <td>106</td>
+            <td>-</td>
+            <td>58</td>
+            <td>-</td>
+            <td>-</td>
+            <td>88.0</td>
+            <td>89.0</td>
+            <td>-</td>
+            <td>65.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>77.5</td>
+            <td>53.0</td>
+            <td>29.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>103</td>
+            <td>103</td>
+            <td>-</td>
+            <td>56</td>
+            <td>-</td>
+            <td>-</td>
+            <td>86.5</td>
+            <td>88.0</td>
+            <td>-</td>
+            <td>63.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>77.0</td>
+            <td>51.5</td>
+            <td>27.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>100</td>
+            <td>100</td>
+            <td>-</td>
+            <td>54</td>
+            <td>-</td>
+            <td>-</td>
+            <td>85.5</td>
+            <td>87.0</td>
+            <td>-</td>
+            <td>62.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>76.0</td>
+            <td>50.5</td>
+            <td>25.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>98</td>
+            <td>98</td>
+            <td>-</td>
+            <td>52</td>
+            <td>-</td>
+            <td>-</td>
+            <td>84.0</td>
+            <td>85.5</td>
+            <td>-</td>
+            <td>60.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>75.5</td>
+            <td>49.0</td>
+            <td>23.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>95</td>
+            <td>95</td>
+            <td>-</td>
+            <td>50</td>
+            <td>-</td>
+            <td>-</td>
+            <td>83.0</td>
+            <td>84.5</td>
+            <td>-</td>
+            <td>58.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>74.5</td>
+            <td>47.5</td>
+            <td>21.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>93</td>
+            <td>93</td>
+            <td>-</td>
+            <td>48</td>
+            <td>-</td>
+            <td>-</td>
+            <td>81.5</td>
+            <td>83.5</td>
+            <td>-</td>
+            <td>56.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>74.0</td>
+            <td>46.5</td>
+            <td>19.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>91</td>
+            <td>91</td>
+            <td>-</td>
+            <td>46</td>
+            <td>-</td>
+            <td>-</td>
+            <td>80.5</td>
+            <td>82.0</td>
+            <td>-</td>
+            <td>54.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>73.5</td>
+            <td>45.0</td>
+            <td>17.0</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>89</td>
+            <td>89</td>
+            <td>-</td>
+            <td>44</td>
+            <td>-</td>
+            <td>-</td>
+            <td>79.0</td>
+            <td>81.0</td>
+            <td>-</td>
+            <td>52.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>72.5</td>
+            <td>43.5</td>
+            <td>14.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>87</td>
+            <td>87</td>
+            <td>-</td>
+            <td>42</td>
+            <td>-</td>
+            <td>-</td>
+            <td>78.0</td>
+            <td>80.0</td>
+            <td>-</td>
+            <td>51.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>72.0</td>
+            <td>42.0</td>
+            <td>12.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>85</td>
+            <td>85</td>
+            <td>-</td>
+            <td>40</td>
+            <td>-</td>
+            <td>-</td>
+            <td>76.5</td>
+            <td>79.0</td>
+            <td>-</td>
+            <td>49.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>71.0</td>
+            <td>41.0</td>
+            <td>10.0</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>83</td>
+            <td>83</td>
+            <td>-</td>
+            <td>38</td>
+            <td>-</td>
+            <td>-</td>
+            <td>75.0</td>
+            <td>77.5</td>
+            <td>-</td>
+            <td>47.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>70.5</td>
+            <td>39.5</td>
+            <td>7.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>81</td>
+            <td>81</td>
+            <td>-</td>
+            <td>36</td>
+            <td>-</td>
+            <td>-</td>
+            <td>74.0</td>
+            <td>76.5</td>
+            <td>-</td>
+            <td>45.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>70.0</td>
+            <td>38.0</td>
+            <td>5.5</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>79</td>
+            <td>79</td>
+            <td>-</td>
+            <td>34</td>
+            <td>-</td>
+            <td>-</td>
+            <td>72.5</td>
+            <td>75.5</td>
+            <td>-</td>
+            <td>43.5</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>69.0</td>
+            <td>36.5</td>
+            <td>3.0</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>78</td>
+            <td>78</td>
+            <td>-</td>
+            <td>32</td>
+            <td>-</td>
+            <td>-</td>
+            <td>71.5</td>
+            <td>74.0</td>
+            <td>-</td>
+            <td>42.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>68.5</td>
+            <td>35.5</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>-</td>
+            <td>77</td>
+            <td>77</td>
+            <td>-</td>
+            <td>30</td>
+            <td>-</td>
+            <td>-</td>
+            <td>70.0</td>
+            <td>73.0</td>
+            <td>-</td>
+            <td>40.0</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>67.5</td>
+            <td>34.0</td>
+            <td>(−1.5)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="nickelHardness">
+        <h3>General Notes</h3>
+        <ul>
+          <li>
+            1. The use of hardness scales for hardness values shown in
+            parentheses is not recommended since they are beyond the ranges
+            recommended for accuracy.Such values are shown for
+            comparativepurposesonly,where comparisons may be desired and the
+            recommended machine and scale are not available.
+          </li>
+          <li>2. In tableheadings, kgf or gf refers to total test force.</li>
+        </ul>
+      </div>
+
+      <table id="dataTable1">
+        <thead>
+          <tr>
+            <th>
+              Rockwell C <br />
+              150kgf (HRC)
+            </th>
+            <th>
+              Vickers <br />
+              (HV)
+            </th>
+            <th>
+              Brinell <br />
+              (HBS)
+            </th>
+            <th>
+              Brinell <br />
+              (HBW)
+            </th>
+            <th>
+              Knoop <br />
+              500-gf and Over (HK)
+            </th>
+            <th>
+              Rockwell A <br />
+              Scale 60 kgf (HRA)
+            </th>
+            <th>
+              Rockwell D <br />
+              Scale 100 kgf (HRD)
+            </th>
+            <th>
+              Rockwell 15N <br />
+              Superficial Scale 15 kgf (HR15N)
+            </th>
+            <th>
+              Rockwell 30N <br />
+              Superficial Scale 30 kgf (HR30N)
+            </th>
+            <th>
+              Rockwell 45N <br />
+              Superficial Scale 45 kgf (HR45N)
+            </th>
+            <th>
+              Scleroscope <br />
+              Hardness Number
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
             <td>68</td>
             <td>940</td>
@@ -1624,411 +1927,487 @@
             <td>50.4</td>
           </tr>
           <tr>
-      <td>37</td>
-      <td>363</td>
-      <td>344</td>
-      <td>344</td>
-      <td>370</td>
-      <td>68.9</td>
-      <td>53.1</td>
-      <td>78.8</td>
-      <td>56.8</td>
-      <td>39.6</td>
-      <td>49.3</td>
-      </tr>
-      <tr>
-      <td>36</td>
-      <td>354</td>
-      <td>336</td>
-      <td>336</td>
-      <td>360</td>
-      <td>68.4</td>
-      <td>52.3</td>
-      <td>78.3</td>
-      <td>55.9</td>
-      <td>38.4</td>
-      <td>48.2</td>
-      </tr>
-      <tr>
-      <td>35</td>
-      <td>345</td>
-      <td>327</td>
-      <td>327</td>
-      <td>351</td>
-      <td>67.9</td>
-      <td>51.5</td>
-      <td>77.7</td>
-      <td>55.0</td>
-      <td>37.2</td>
-      <td>47.1</td>
-      </tr>
-      <tr>
-      <td>34</td>
-      <td>336</td>
-      <td>319</td>
-      <td>319</td>
-      <td>342</td>
-      <td>67.4</td>
-      <td>50.8</td>
-      <td>77.2</td>
-      <td>54.2</td>
-      <td>36.1</td>
-      <td>46.1</td>
-      </tr>
-      <tr>
-      <td>33</td>
-      <td>327</td>
-      <td>311</td>
-      <td>311</td>
-      <td>334</td>
-      <td>66.8</td>
-      <td>50.0</td>
-      <td>76.6</td>
-      <td>53.3</td>
-      <td>34.9</td>
-      <td>45.1</td>
-      </tr>
-      <tr>
-      <td>32</td>
-      <td>318</td>
-      <td>301</td>
-      <td>301</td>
-      <td>326</td>
-      <td>66.3</td>
-      <td>49.2</td>
-      <td>76.1</td>
-      <td>52.1</td>
-      <td>33.7</td>
-      <td>44.1</td>
-      </tr>
-      <tr>
-      <td>31</td>
-      <td>310</td>
-      <td>294</td>
-      <td>294</td>
-      <td>318</td>
-      <td>65.8</td>
-      <td>48.4</td>
-      <td>75.6</td>
-      <td>51.3</td>
-      <td>32.5</td>
-      <td>43.1</td>
-      </tr>
-      <tr>
-      <td>30</td>
-      <td>302</td>
-      <td>286</td>
-      <td>286</td>
-      <td>311</td>
-      <td>65.3</td>
-      <td>47.7</td>
-      <td>75.0</td>
-      <td>50.4</td>
-      <td>31.3</td>
-      <td>42.2</td>
-      </tr>
-      <tr>
-      <td>29</td>
-      <td>294</td>
-      <td>279</td>
-      <td>279</td>
-      <td>304</td>
-      <td>64.8</td>
-      <td>47.0</td>
-      <td>74.5</td>
-      <td>49.5</td>
-      <td>30.1</td>
-      <td>41.3</td>
-      </tr>
-      <tr>
-      <td>28</td>
-      <td>286</td>
-      <td>271</td>
-      <td>271</td>
-      <td>297</td>
-      <td>64.3</td>
-      <td>46.1</td>
-      <td>73.9</td>
-      <td>48.6</td>
-      <td>28.9</td>
-      <td>40.4</td>
-      </tr>
-      <tr>
-      <td>27</td>
-      <td>279</td>
-      <td>264</td>
-      <td>264</td>
-      <td>290</td>
-      <td>63.8</td>
-      <td>45.2</td>
-      <td>73.3</td>
-      <td>47.7</td>
-      <td>27.8</td>
-      <td>39.5</td>
-      </tr>
-      <tr>
-      <td>26</td>
-      <td>272</td>
-      <td>258</td>
-      <td>258</td>
-      <td>284</td>
-      <td>63.3</td>
-      <td>44.6</td>
-      <td>72.8</td>
-      <td>46.8</td>
-      <td>26.7</td>
-      <td>38.7</td>
-      </tr>
-      <tr>
-      <td>25</td>
-      <td>266</td>
-      <td>253</td>
-      <td>253</td>
-      <td>278</td>
-      <td>62.8</td>
-      <td>43.8</td>
-      <td>72.2</td>
-      <td>45.9</td>
-      <td>25.5</td>
-      <td>37.8</td>
-      </tr>
-      <tr>
-      <td>24</td>
-      <td>260</td>
-      <td>247</td>
-      <td>247</td>
-      <td>272</td>
-      <td>62.4</td>
-      <td>43.1</td>
-      <td>71.6</td>
-      <td>45.0</td>
-      <td>24.3</td>
-      <td>37.0</td>
-      </tr>
-      <tr>
-      <td>23</td>
-      <td>254</td>
-      <td>243</td>
-      <td>243</td>
-      <td>266</td>
-      <td>62.0</td>
-      <td>42.1</td>
-      <td>71.0</td>
-      <td>44.0</td>
-      <td>23.1</td>
-      <td>36.3</td>
-      </tr>
-      <tr>
-      <td>22</td>
-      <td>248</td>
-      <td>237</td>
-      <td>237</td>
-      <td>261</td>
-      <td>61.5</td>
-      <td>41.6</td>
-      <td>70.5</td>
-      <td>43.2</td>
-      <td>22.0</td>
-      <td>35.5</td>
-      </tr>
-      <tr>
-      <td>21</td>
-      <td>243</td>
-      <td>231</td>
-      <td>231</td>
-      <td>256</td>
-      <td>61.0</td>
-      <td>40.9</td>
-      <td>69.9</td>
-      <td>42.3</td>
-      <td>20.7</td>
-      <td>34.8</td>
-      </tr>
-      <tr>
-      <td>20</td>
-      <td>238</td>
-      <td>226</td>
-      <td>226</td>
-      <td>251</td>
-      <td>60.5</td>
-      <td>40.1</td>
-      <td>69.4</td>
-      <td>41.5</td>
-      <td>19.6</td>
-      <td>34.2</td>
-      </tr>
-    </tbody>
-    </table>
+            <td>37</td>
+            <td>363</td>
+            <td>344</td>
+            <td>344</td>
+            <td>370</td>
+            <td>68.9</td>
+            <td>53.1</td>
+            <td>78.8</td>
+            <td>56.8</td>
+            <td>39.6</td>
+            <td>49.3</td>
+          </tr>
+          <tr>
+            <td>36</td>
+            <td>354</td>
+            <td>336</td>
+            <td>336</td>
+            <td>360</td>
+            <td>68.4</td>
+            <td>52.3</td>
+            <td>78.3</td>
+            <td>55.9</td>
+            <td>38.4</td>
+            <td>48.2</td>
+          </tr>
+          <tr>
+            <td>35</td>
+            <td>345</td>
+            <td>327</td>
+            <td>327</td>
+            <td>351</td>
+            <td>67.9</td>
+            <td>51.5</td>
+            <td>77.7</td>
+            <td>55.0</td>
+            <td>37.2</td>
+            <td>47.1</td>
+          </tr>
+          <tr>
+            <td>34</td>
+            <td>336</td>
+            <td>319</td>
+            <td>319</td>
+            <td>342</td>
+            <td>67.4</td>
+            <td>50.8</td>
+            <td>77.2</td>
+            <td>54.2</td>
+            <td>36.1</td>
+            <td>46.1</td>
+          </tr>
+          <tr>
+            <td>33</td>
+            <td>327</td>
+            <td>311</td>
+            <td>311</td>
+            <td>334</td>
+            <td>66.8</td>
+            <td>50.0</td>
+            <td>76.6</td>
+            <td>53.3</td>
+            <td>34.9</td>
+            <td>45.1</td>
+          </tr>
+          <tr>
+            <td>32</td>
+            <td>318</td>
+            <td>301</td>
+            <td>301</td>
+            <td>326</td>
+            <td>66.3</td>
+            <td>49.2</td>
+            <td>76.1</td>
+            <td>52.1</td>
+            <td>33.7</td>
+            <td>44.1</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>310</td>
+            <td>294</td>
+            <td>294</td>
+            <td>318</td>
+            <td>65.8</td>
+            <td>48.4</td>
+            <td>75.6</td>
+            <td>51.3</td>
+            <td>32.5</td>
+            <td>43.1</td>
+          </tr>
+          <tr>
+            <td>30</td>
+            <td>302</td>
+            <td>286</td>
+            <td>286</td>
+            <td>311</td>
+            <td>65.3</td>
+            <td>47.7</td>
+            <td>75.0</td>
+            <td>50.4</td>
+            <td>31.3</td>
+            <td>42.2</td>
+          </tr>
+          <tr>
+            <td>29</td>
+            <td>294</td>
+            <td>279</td>
+            <td>279</td>
+            <td>304</td>
+            <td>64.8</td>
+            <td>47.0</td>
+            <td>74.5</td>
+            <td>49.5</td>
+            <td>30.1</td>
+            <td>41.3</td>
+          </tr>
+          <tr>
+            <td>28</td>
+            <td>286</td>
+            <td>271</td>
+            <td>271</td>
+            <td>297</td>
+            <td>64.3</td>
+            <td>46.1</td>
+            <td>73.9</td>
+            <td>48.6</td>
+            <td>28.9</td>
+            <td>40.4</td>
+          </tr>
+          <tr>
+            <td>27</td>
+            <td>279</td>
+            <td>264</td>
+            <td>264</td>
+            <td>290</td>
+            <td>63.8</td>
+            <td>45.2</td>
+            <td>73.3</td>
+            <td>47.7</td>
+            <td>27.8</td>
+            <td>39.5</td>
+          </tr>
+          <tr>
+            <td>26</td>
+            <td>272</td>
+            <td>258</td>
+            <td>258</td>
+            <td>284</td>
+            <td>63.3</td>
+            <td>44.6</td>
+            <td>72.8</td>
+            <td>46.8</td>
+            <td>26.7</td>
+            <td>38.7</td>
+          </tr>
+          <tr>
+            <td>25</td>
+            <td>266</td>
+            <td>253</td>
+            <td>253</td>
+            <td>278</td>
+            <td>62.8</td>
+            <td>43.8</td>
+            <td>72.2</td>
+            <td>45.9</td>
+            <td>25.5</td>
+            <td>37.8</td>
+          </tr>
+          <tr>
+            <td>24</td>
+            <td>260</td>
+            <td>247</td>
+            <td>247</td>
+            <td>272</td>
+            <td>62.4</td>
+            <td>43.1</td>
+            <td>71.6</td>
+            <td>45.0</td>
+            <td>24.3</td>
+            <td>37.0</td>
+          </tr>
+          <tr>
+            <td>23</td>
+            <td>254</td>
+            <td>243</td>
+            <td>243</td>
+            <td>266</td>
+            <td>62.0</td>
+            <td>42.1</td>
+            <td>71.0</td>
+            <td>44.0</td>
+            <td>23.1</td>
+            <td>36.3</td>
+          </tr>
+          <tr>
+            <td>22</td>
+            <td>248</td>
+            <td>237</td>
+            <td>237</td>
+            <td>261</td>
+            <td>61.5</td>
+            <td>41.6</td>
+            <td>70.5</td>
+            <td>43.2</td>
+            <td>22.0</td>
+            <td>35.5</td>
+          </tr>
+          <tr>
+            <td>21</td>
+            <td>243</td>
+            <td>231</td>
+            <td>231</td>
+            <td>256</td>
+            <td>61.0</td>
+            <td>40.9</td>
+            <td>69.9</td>
+            <td>42.3</td>
+            <td>20.7</td>
+            <td>34.8</td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td>238</td>
+            <td>226</td>
+            <td>226</td>
+            <td>251</td>
+            <td>60.5</td>
+            <td>40.1</td>
+            <td>69.4</td>
+            <td>41.5</td>
+            <td>19.6</td>
+            <td>34.2</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div class="steelHardnessC">
-      <h3>General Notes</h3>
+      <div class="steelHardnessC">
+        <h3>General Notes</h3>
         <ul>
-          <li>1. Scleroscope hardness conversions are based on Vickers—Sc leroscope hardness relationships developed from Vickers hardness data provided by the National
-            Bureau of Standards for 13 steel reference blocks, Scleroscope hardness values obtained on these blocks by the Shore Instrument and Mfg. Co., Inc., the Roll
-            Manufacturers Institute, and members of this institute, and also on hardness conversions previously publishedby the American Society for Metals and the Roll
-            Manufacturers Institute.</li>
+          <li>
+            1. Scleroscope hardness conversions are based on Vickers—Sc
+            leroscope hardness relationships developed from Vickers hardness
+            data provided by the National Bureau of Standards for 13 steel
+            reference blocks, Scleroscope hardness values obtained on these
+            blocks by the Shore Instrument and Mfg. Co., Inc., the Roll
+            Manufacturers Institute, and members of this institute, and also on
+            hardness conversions previously publishedby the American Society for
+            Metals and the Roll Manufacturers Institute.
+          </li>
 
-            <li>2. Brinell hardness numbers in parentheses are outside the range recommended for Brinell hardness testing.</li>
+          <li>
+            2. Brinell hardness numbers in parentheses are outside the range
+            recommended for Brinell hardness testing.
+          </li>
         </ul>
-   </div>
+      </div>
 
-    <table id="dataTable2">
-      <thead>
+      <table id="dataTable2">
+        <thead>
           <tr>
-              <th>Rockwell B <br> 100 kgf (HRB)</th>
-              <th>Vickers <br> (HV)</th>
-              <th>Brinell <br>3000 kgf (HBS)</th>
-              <th>Knoop <br> 500 gf and Over (HK)</th>
-              <th>Rockwell A <br> 60 kgf (HRA)</th>
-              <th>Rockwell F <br> 60 kgf (HRF)</th>
-              <th>Rockwell 15T <br> Superficial Scale 15 kgf (HR15T)</th>
-              <th>Rockwell 30T <br> Superficial Scale 30 kgf (HR30T)</th>
-              <th>Rockwell 45T <br> Superficial Scale 45 kgf (HR45T)</th>
+            <th>
+              Rockwell B <br />
+              100 kgf (HRB)
+            </th>
+            <th>
+              Vickers <br />
+              (HV)
+            </th>
+            <th>Brinell <br />3000 kgf (HBS)</th>
+            <th>
+              Knoop <br />
+              500 gf and Over (HK)
+            </th>
+            <th>
+              Rockwell A <br />
+              60 kgf (HRA)
+            </th>
+            <th>
+              Rockwell F <br />
+              60 kgf (HRF)
+            </th>
+            <th>
+              Rockwell 15T <br />
+              Superficial Scale 15 kgf (HR15T)
+            </th>
+            <th>
+              Rockwell 30T <br />
+              Superficial Scale 30 kgf (HR30T)
+            </th>
+            <th>
+              Rockwell 45T <br />
+              Superficial Scale 45 kgf (HR45T)
+            </th>
           </tr>
           <tr>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-            <th><input type="text" oninput="filterTable(this)" placeholder="Value..."></th>
-        </tr>
-      </thead>
-      <tbody>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                oninput="filterTable(this)"
+                placeholder="Value..."
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
-              <td>100</td>
-              <td>240</td>
-              <td>240</td>
-              <td>251</td>
-              <td>61.5</td>
-              <td>-</td>
-              <td>93.1</td>
-              <td>83.1</td>
-              <td>72.9</td>
-
+            <td>100</td>
+            <td>240</td>
+            <td>240</td>
+            <td>251</td>
+            <td>61.5</td>
+            <td>-</td>
+            <td>93.1</td>
+            <td>83.1</td>
+            <td>72.9</td>
           </tr>
           <tr>
-              <td>99</td>
-              <td>234</td>
-              <td>234</td>
-              <td>246</td>
-              <td>60.9</td>
-              <td>-</td>
-              <td>92.8</td>
-              <td>82.5</td>
-              <td>71.9</td>
-
+            <td>99</td>
+            <td>234</td>
+            <td>234</td>
+            <td>246</td>
+            <td>60.9</td>
+            <td>-</td>
+            <td>92.8</td>
+            <td>82.5</td>
+            <td>71.9</td>
           </tr>
           <tr>
-              <td>98</td>
-              <td>228</td>
-              <td>228</td>
-              <td>241</td>
-              <td>60.2</td>
-              <td>-</td>
-              <td>92.5</td>
-              <td>81.8</td>
-              <td>70.9</td>
-
+            <td>98</td>
+            <td>228</td>
+            <td>228</td>
+            <td>241</td>
+            <td>60.2</td>
+            <td>-</td>
+            <td>92.5</td>
+            <td>81.8</td>
+            <td>70.9</td>
           </tr>
           <tr>
-              <td>97</td>
-              <td>222</td>
-              <td>222</td>
-              <td>236</td>
-              <td>59.5</td>
-              <td>-</td>
-              <td>92.1</td>
-              <td>81.1</td>
-              <td>69.9</td>
-
+            <td>97</td>
+            <td>222</td>
+            <td>222</td>
+            <td>236</td>
+            <td>59.5</td>
+            <td>-</td>
+            <td>92.1</td>
+            <td>81.1</td>
+            <td>69.9</td>
           </tr>
           <tr>
-              <td>96</td>
-              <td>216</td>
-              <td>216</td>
-              <td>231</td>
-              <td>58.9</td>
-              <td>-</td>
-              <td>91.8</td>
-              <td>80.4</td>
-              <td>68.9</td>
-
+            <td>96</td>
+            <td>216</td>
+            <td>216</td>
+            <td>231</td>
+            <td>58.9</td>
+            <td>-</td>
+            <td>91.8</td>
+            <td>80.4</td>
+            <td>68.9</td>
           </tr>
           <tr>
-              <td>95</td>
-              <td>210</td>
-              <td>210</td>
-              <td>226</td>
-              <td>58.3</td>
-              <td>-</td>
-              <td>91.5</td>
-              <td>79.8</td>
-              <td>67.9</td>
-
+            <td>95</td>
+            <td>210</td>
+            <td>210</td>
+            <td>226</td>
+            <td>58.3</td>
+            <td>-</td>
+            <td>91.5</td>
+            <td>79.8</td>
+            <td>67.9</td>
           </tr>
           <tr>
-              <td>94</td>
-              <td>205</td>
-              <td>205</td>
-              <td>221</td>
-              <td>57.6</td>
-              <td>-</td>
-              <td>91.2</td>
-              <td>79.1</td>
-              <td>66.9</td>
-
+            <td>94</td>
+            <td>205</td>
+            <td>205</td>
+            <td>221</td>
+            <td>57.6</td>
+            <td>-</td>
+            <td>91.2</td>
+            <td>79.1</td>
+            <td>66.9</td>
           </tr>
           <tr>
-              <td>93</td>
-              <td>200</td>
-              <td>200</td>
-              <td>216</td>
-              <td>57.0</td>
-              <td>-</td>
-              <td>90.8</td>
-              <td>78.4</td>
-              <td>65.9</td>
-
+            <td>93</td>
+            <td>200</td>
+            <td>200</td>
+            <td>216</td>
+            <td>57.0</td>
+            <td>-</td>
+            <td>90.8</td>
+            <td>78.4</td>
+            <td>65.9</td>
           </tr>
           <tr>
-              <td>92</td>
-              <td>195</td>
-              <td>195</td>
-              <td>211</td>
-              <td>56.4</td>
-              <td>-</td>
-              <td>90.5</td>
-              <td>77.8</td>
-              <td>64.8</td>
-
+            <td>92</td>
+            <td>195</td>
+            <td>195</td>
+            <td>211</td>
+            <td>56.4</td>
+            <td>-</td>
+            <td>90.5</td>
+            <td>77.8</td>
+            <td>64.8</td>
           </tr>
           <tr>
-              <td>91</td>
-              <td>190</td>
-              <td>190</td>
-              <td>206</td>
-              <td>55.8</td>
-              <td>-</td>
-              <td>90.2</td>
-              <td>77.1</td>
-              <td>63.8</td>
-
+            <td>91</td>
+            <td>190</td>
+            <td>190</td>
+            <td>206</td>
+            <td>55.8</td>
+            <td>-</td>
+            <td>90.2</td>
+            <td>77.1</td>
+            <td>63.8</td>
           </tr>
           <tr>
-              <td>90</td>
-              <td>185</td>
-              <td>185</td>
-              <td>201</td>
-              <td>55.2</td>
-              <td>-</td>
-              <td>89.9</td>
-              <td>76.4</td>
-              <td>62.8</td>
-
+            <td>90</td>
+            <td>185</td>
+            <td>185</td>
+            <td>201</td>
+            <td>55.2</td>
+            <td>-</td>
+            <td>89.9</td>
+            <td>76.4</td>
+            <td>62.8</td>
           </tr>
           <tr>
             <td>89</td>
@@ -2040,9 +2419,8 @@
             <td>89.5</td>
             <td>75.8</td>
             <td>61.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>88</td>
             <td>176</td>
             <td>176</td>
@@ -2052,9 +2430,8 @@
             <td>89.2</td>
             <td>75.1</td>
             <td>60.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>87</td>
             <td>172</td>
             <td>172</td>
@@ -2064,9 +2441,8 @@
             <td>88.9</td>
             <td>74.4</td>
             <td>59.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>86</td>
             <td>169</td>
             <td>169</td>
@@ -2076,9 +2452,8 @@
             <td>88.6</td>
             <td>73.8</td>
             <td>58.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>85</td>
             <td>165</td>
             <td>165</td>
@@ -2088,9 +2463,8 @@
             <td>88.2</td>
             <td>73.1</td>
             <td>57.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>84</td>
             <td>162</td>
             <td>162</td>
@@ -2100,9 +2474,8 @@
             <td>87.9</td>
             <td>72.4</td>
             <td>56.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>83</td>
             <td>159</td>
             <td>159</td>
@@ -2112,9 +2485,8 @@
             <td>87.6</td>
             <td>71.8</td>
             <td>55.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>82</td>
             <td>156</td>
             <td>156</td>
@@ -2124,9 +2496,8 @@
             <td>87.3</td>
             <td>71.1</td>
             <td>54.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>81</td>
             <td>153</td>
             <td>153</td>
@@ -2136,9 +2507,8 @@
             <td>86.9</td>
             <td>70.4</td>
             <td>53.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>80</td>
             <td>150</td>
             <td>150</td>
@@ -2148,9 +2518,8 @@
             <td>86.6</td>
             <td>69.7</td>
             <td>52.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>79</td>
             <td>147</td>
             <td>147</td>
@@ -2160,9 +2529,8 @@
             <td>86.3</td>
             <td>69.1</td>
             <td>51.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>78</td>
             <td>144</td>
             <td>144</td>
@@ -2172,9 +2540,8 @@
             <td>86.0</td>
             <td>68.4</td>
             <td>50.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>77</td>
             <td>141</td>
             <td>141</td>
@@ -2184,9 +2551,8 @@
             <td>85.6</td>
             <td>67.7</td>
             <td>49.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>76</td>
             <td>139</td>
             <td>139</td>
@@ -2196,9 +2562,8 @@
             <td>85.3</td>
             <td>67.1</td>
             <td>48.8</td>
-
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td>75</td>
             <td>137</td>
             <td>137</td>
@@ -2208,830 +2573,543 @@
             <td>85.0</td>
             <td>66.4</td>
             <td>47.8</td>
-
-        </tr>
-        <tr>
-          <td>74</td>
-          <td>135</td>
-          <td>135</td>
-          <td>147</td>
-          <td>46.3</td>
-          <td>99.1</td>
-          <td>84.7</td>
-          <td>65.7</td>
-          <td>46.8</td>
-
-      </tr>
-      <tr>
-          <td>73</td>
-          <td>132</td>
-          <td>132</td>
-          <td>145</td>
-          <td>45.8</td>
-          <td>98.5</td>
-          <td>84.3</td>
-          <td>65.1</td>
-          <td>45.8</td>
-
-      </tr>
-      <tr>
-          <td>72</td>
-          <td>130</td>
-          <td>130</td>
-          <td>143</td>
-          <td>45.3</td>
-          <td>98.0</td>
-          <td>84.0</td>
-          <td>64.4</td>
-          <td>44.8</td>
-
-      </tr>
-      <tr>
-          <td>71</td>
-          <td>127</td>
-          <td>127</td>
-          <td>141</td>
-          <td>44.8</td>
-          <td>97.4</td>
-          <td>83.7</td>
-          <td>63.7</td>
-          <td>43.8</td>
-
-      </tr>
-      <tr>
-          <td>70</td>
-          <td>125</td>
-          <td>125</td>
-          <td>139</td>
-          <td>44.3</td>
-          <td>96.8</td>
-          <td>83.4</td>
-          <td>63.1</td>
-          <td>42.8</td>
-
-      </tr>
-      <tr>
-          <td>69</td>
-          <td>123</td>
-          <td>123</td>
-          <td>137</td>
-          <td>43.8</td>
-          <td>96.2</td>
-          <td>83.0</td>
-          <td>62.4</td>
-          <td>41.8</td>
-
-      </tr>
-      <tr>
-          <td>68</td>
-          <td>121</td>
-          <td>121</td>
-          <td>135</td>
-          <td>43.3</td>
-          <td>95.6</td>
-          <td>82.7</td>
-          <td>61.7</td>
-          <td>40.8</td>
-
-      </tr>
-      <tr>
-          <td>67</td>
-          <td>119</td>
-          <td>119</td>
-          <td>133</td>
-          <td>42.8</td>
-          <td>95.1</td>
-          <td>82.4</td>
-          <td>61.0</td>
-          <td>39.8</td>
-
-      </tr>
-      <tr>
-          <td>66</td>
-          <td>117</td>
-          <td>117</td>
-          <td>131</td>
-          <td>42.3</td>
-          <td>94.5</td>
-          <td>82.1</td>
-          <td>60.4</td>
-          <td>38.7</td>
-
-      </tr>
-      <tr>
-          <td>65</td>
-          <td>116</td>
-          <td>116</td>
-          <td>129</td>
-          <td>41.8</td>
-          <td>93.9</td>
-          <td>81.8</td>
-          <td>59.7</td>
-          <td>37.7</td>
-
-      </tr>
-      <tr>
-          <td>64</td>
-          <td>114</td>
-          <td>114</td>
-          <td>127</td>
-          <td>41.4</td>
-          <td>93.4</td>
-          <td>81.4</td>
-          <td>59.0</td>
-          <td>36.7</td>
-
-      </tr>
-      <tr>
-          <td>63</td>
-          <td>112</td>
-          <td>112</td>
-          <td>125</td>
-          <td>40.9</td>
-          <td>92.8</td>
-          <td>81.1</td>
-          <td>58.4</td>
-          <td>35.7</td>
-
-      </tr>
-      <tr>
-          <td>62</td>
-          <td>110</td>
-          <td>110</td>
-          <td>124</td>
-          <td>40.4</td>
-          <td>92.2</td>
-          <td>80.8</td>
-          <td>57.7</td>
-          <td>34.7</td>
-
-      </tr>
-      <tr>
-          <td>61</td>
-          <td>108</td>
-          <td>108</td>
-          <td>122</td>
-          <td>40.0</td>
-          <td>91.7</td>
-          <td>80.5</td>
-          <td>57.0</td>
-          <td>33.7</td>
-
-      </tr>
-      <tr>
-          <td>60</td>
-          <td>107</td>
-          <td>107</td>
-          <td>120</td>
-          <td>39.5</td>
-          <td>91.1</td>
-          <td>80.1</td>
-          <td>56.4</td>
-          <td>32.7</td>
-
-      </tr>
-      <tr>
-        <td>59</td>
-        <td>106</td>
-        <td>106</td>
-        <td>118</td>
-        <td>39.0</td>
-        <td>90.5</td>
-        <td>79.8</td>
-        <td>55.7</td>
-        <td>31.7</td>
-
-    </tr>
-    <tr>
-        <td>58</td>
-        <td>104</td>
-        <td>104</td>
-        <td>117</td>
-        <td>38.6</td>
-        <td>90.0</td>
-        <td>79.5</td>
-        <td>55.0</td>
-        <td>30.7</td>
-
-    </tr>
-    <tr>
-        <td>57</td>
-        <td>103</td>
-        <td>103</td>
-        <td>115</td>
-        <td>38.1</td>
-        <td>89.4</td>
-        <td>79.2</td>
-        <td>54.4</td>
-        <td>29.7</td>
-
-    </tr>
-    <tr>
-        <td>56</td>
-        <td>101</td>
-        <td>101</td>
-        <td>114</td>
-        <td>37.7</td>
-        <td>88.8</td>
-        <td>78.8</td>
-        <td>53.7</td>
-        <td>28.7</td>
-
-    </tr>
-    <tr>
-        <td>55</td>
-        <td>100</td>
-        <td>100</td>
-        <td>112</td>
-        <td>37.2</td>
-        <td>88.2</td>
-        <td>78.5</td>
-        <td>53.0</td>
-        <td>27.7</td>
-
-    </tr>
-    <tr>
-      <td>54</td>
-      <td>-</td>
-      <td>-</td>
-      <td>111</td>
-      <td>36.8</td>
-      <td>87.7</td>
-      <td>78.2</td>
-      <td>52.4</td>
-      <td>26.7</td>
-
-  </tr>
-  <tr>
-      <td>53</td>
-      <td>-</td>
-      <td>-</td>
-      <td>110</td>
-      <td>36.3</td>
-      <td>87.1</td>
-      <td>77.9</td>
-      <td>51.7</td>
-      <td>25.7</td>
-
-  </tr>
-  <tr>
-      <td>52</td>
-      <td>-</td>
-      <td>-</td>
-      <td>109</td>
-      <td>35.9</td>
-      <td>86.5</td>
-      <td>77.5</td>
-      <td>51.0</td>
-      <td>24.7</td>
-
-  </tr>
-  <tr>
-      <td>51</td>
-      <td>-</td>
-      <td>-</td>
-      <td>108</td>
-      <td>35.5</td>
-      <td>86.0</td>
-      <td>77.2</td>
-      <td>50.3</td>
-      <td>23.7</td>
-
-  </tr>
-  <tr>
-      <td>50</td>
-      <td>-</td>
-      <td>-</td>
-      <td>107</td>
-      <td>35.0</td>
-      <td>85.4</td>
-      <td>76.9</td>
-      <td>49.7</td>
-      <td>22.7</td>
-
-  </tr>
-  <tr>
-      <td>49</td>
-      <td>-</td>
-      <td>-</td>
-      <td>106</td>
-      <td>34.6</td>
-      <td>84.8</td>
-      <td>76.6</td>
-      <td>49.0</td>
-      <td>21.7</td>
-
-  </tr>
-  <tr>
-      <td>48</td>
-      <td>-</td>
-      <td>-</td>
-      <td>105</td>
-      <td>34.1</td>
-      <td>84.3</td>
-      <td>76.2</td>
-      <td>48.3</td>
-      <td>20.7</td>
-
-  </tr>
-  <tr>
-      <td>47</td>
-      <td>-</td>
-      <td>-</td>
-      <td>104</td>
-      <td>33.7</td>
-      <td>83.7</td>
-      <td>75.9</td>
-      <td>47.7</td>
-      <td>19.7</td>
-
-  </tr>
-  <tr>
-      <td>46</td>
-      <td>-</td>
-      <td>-</td>
-      <td>103</td>
-      <td>33.3</td>
-      <td>83.1</td>
-      <td>75.6</td>
-      <td>47.0</td>
-      <td>18.7</td>
-
-  </tr>
-  <tr>
-      <td>45</td>
-      <td>-</td>
-      <td>-</td>
-      <td>102</td>
-      <td>32.9</td>
-      <td>82.6</td>
-      <td>75.3</td>
-      <td>46.3</td>
-      <td>17.7</td>
-
-  </tr>
-  <tr>
-      <td>44</td>
-      <td>-</td>
-      <td>-</td>
-      <td>101</td>
-      <td>32.4</td>
-      <td>82.0</td>
-      <td>74.9</td>
-      <td>45.7</td>
-      <td>16.7</td>
-
-  </tr>
-  <tr>
-      <td>43</td>
-      <td>-</td>
-      <td>-</td>
-      <td>100</td>
-      <td>32.0</td>
-      <td>81.4</td>
-      <td>74.6</td>
-      <td>45.0</td>
-      <td>15.7</td>
-
-  </tr>
-  <tr>
-      <td>42</td>
-      <td>-</td>
-      <td>-</td>
-      <td>99</td>
-      <td>31.6</td>
-      <td>80.8</td>
-      <td>74.3</td>
-      <td>44.3</td>
-      <td>14.7</td>
-
-  </tr>
-  <tr>
-      <td>41</td>
-      <td>-</td>
-      <td>-</td>
-      <td>98</td>
-      <td>31.2</td>
-      <td>80.3</td>
-      <td>74.0</td>
-      <td>43.7</td>
-      <td>13.6</td>
-
-  </tr>
-  <tr>
-      <td>40</td>
-      <td>-</td>
-      <td>-</td>
-      <td>97</td>
-      <td>30.7</td>
-      <td>79.7</td>
-      <td>73.6</td>
-      <td>43.0</td>
-      <td>12.6</td>
-
-  </tr>
-  <tr>
-    <td>39</td>
-    <td>-</td>
-    <td>-</td>
-    <td>96</td>
-    <td>30.3</td>
-    <td>79.1</td>
-    <td>73.3</td>
-    <td>42.3</td>
-    <td>11.6</td>
-
-</tr>
-<tr>
-    <td>38</td>
-    <td>-</td>
-    <td>-</td>
-    <td>95</td>
-    <td>29.9</td>
-    <td>78.6</td>
-    <td>73.0</td>
-    <td>41.6</td>
-    <td>10.6</td>
-
-</tr>
-<tr>
-    <td>37</td>
-    <td>-</td>
-    <td>-</td>
-    <td>94</td>
-    <td>29.5</td>
-    <td>78.0</td>
-    <td>72.7</td>
-    <td>41.0</td>
-    <td>9.6</td>
-
-</tr>
-<tr>
-    <td>36</td>
-    <td>-</td>
-    <td>-</td>
-    <td>93</td>
-    <td>29.1</td>
-    <td>77.4</td>
-    <td>72.3</td>
-    <td>40.3</td>
-    <td>8.6</td>
-
-</tr>
-<tr>
-    <td>35</td>
-    <td>-</td>
-    <td>-</td>
-    <td>92</td>
-    <td>28.7</td>
-    <td>76.9</td>
-    <td>72.0</td>
-    <td>39.6</td>
-    <td>7.6</td>
-
-</tr>
-<tr>
-    <td>34</td>
-    <td>-</td>
-    <td>-</td>
-    <td>91</td>
-    <td>28.2</td>
-    <td>76.3</td>
-    <td>71.7</td>
-    <td>39.0</td>
-    <td>6.6</td>
-
-</tr>
-<tr>
-    <td>33</td>
-    <td>-</td>
-    <td>-</td>
-    <td>90</td>
-    <td>27.8</td>
-    <td>75.7</td>
-    <td>71.4</td>
-    <td>38.3</td>
-    <td>5.6</td>
-
-</tr>
-<tr>
-    <td>32</td>
-    <td>-</td>
-    <td>-</td>
-    <td>89</td>
-    <td>27.4</td>
-    <td>75.2</td>
-    <td>71.0</td>
-    <td>37.6</td>
-    <td>4.6</td>
-</tr>
-<tr>
-    <td>31</td>
-    <td>-</td>
-    <td>-</td>
-    <td>88</td>
-    <td>27.0</td>
-    <td>74.6</td>
-    <td>70.7</td>
-    <td>37.0</td>
-    <td>3.6</td>
-</tr>
-<tr>
-    <td>30</td>
-    <td>-</td>
-    <td>-</td>
-    <td>87</td>
-    <td>26.6</td>
-    <td>74.0</td>
-    <td>70.4</td>
-    <td>36.3</td>
-    <td>2.6</td>
-</tr>
-      </tbody>
-  </table>
-
-
-  <h2>Corrections to be ADDED to Rockwell Scale A, C, and D Values, Diameters of Convex Cylindrical Surfaces</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Reading</th>
-            <th>1/4” <br> 6.4mm</th>
-            <th>3/8” <br> 10mm</th>
-            <th>1/2” <br> 13mm</th>
-            <th>5/8” <br> 16mm</th>
-            <th>3/4” <br> 19mm</th>
-            <th>7/8” <br> 22mm</th>
-            <th>1” <br> 25mm</th>
-            <th>1-1/4” <br> 32mm</th>
-            <th>1-1/2” <br> 38mm</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>20</td><td>6.0</td><td>4.5</td><td>3.5</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.5</td><td>1.0</td><td>1.0</td></tr>
-        <tr><td>25</td><td>5.5</td><td>4.0</td><td>3.0</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td><td>1.0</td></tr>
-        <tr><td>30</td><td>5.0</td><td>3.5</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.5</td><td>1.0</td><td>1.0</td><td>1.0</td></tr>
-        <tr><td>35</td><td>4.0</td><td>3.0</td><td>2.0</td><td>1.5</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td></tr>
-        <tr><td>40</td><td>3.5</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td></tr>
-        <tr><td>45</td><td>3.0</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td></tr>
-        <tr><td>50</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td></tr>
-        <tr><td>55</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td></tr>
-        <tr><td>60</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>0</td></tr>
-        <tr><td>65</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>0</td></tr>
-        <tr><td>70</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>0</td></tr>
-        <tr><td>75</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>0</td><td>0</td></tr>
-        <tr><td>80</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-        <tr><td>85</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-        <tr><td>90</td><td>0.5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-    </tbody>
-</table>
-
-<h2>Corrections to be ADDED to Rockwell Scale B, F, and G Values, Diameters of Convex Cylindrical Surfaces</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Reading</th>
-            <th>1/4” <br> 6.4mm</th>
-            <th>3/8” <br> 10mm</th>
-            <th>1/2” <br> 13mm</th>
-            <th>5/8” <br> 16mm</th>
-            <th>3/4” <br> 19mm</th>
-            <th>7/8” <br> 22mm</th>
-            <th>1” <br> 25mm</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>0</td><td>12.5</td><td>8.5</td><td>6.5</td><td>5.5</td><td>4.5</td><td>3.5</td><td>3.0</td></tr>
-        <tr><td>10</td><td>12.0</td><td>8.0</td><td>6.0</td><td>5.0</td><td>4.0</td><td>3.5</td><td>3.0</td></tr>
-        <tr><td>20</td><td>11.0</td><td>7.5</td><td>5.5</td><td>4.5</td><td>4.0</td><td>3.5</td><td>3.0</td></tr>
-        <tr><td>30</td><td>10.0</td><td>6.5</td><td>5.0</td><td>4.5</td><td>3.5</td><td>3.0</td><td>2.5</td></tr>
-        <tr><td>40</td><td>9.0</td><td>6.0</td><td>4.5</td><td>4.0</td><td>3.0</td><td>2.5</td><td>2.5</td></tr>
-        <tr><td>50</td><td>8.0</td><td>5.5</td><td>4.0</td><td>3.5</td><td>3.0</td><td>2.5</td><td>2.0</td></tr>
-        <tr><td>60</td><td>7.0</td><td>5.0</td><td>3.5</td><td>3.0</td><td>2.5</td><td>2.0</td><td>2.0</td></tr>
-        <tr><td>70</td><td>6.0</td><td>4.0</td><td>3.0</td><td>2.5</td><td>2.0</td><td>2.0</td><td>1.5</td></tr>
-        <tr><td>80</td><td>5.0</td><td>3.5</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.5</td><td>1.5</td></tr>
-        <tr><td>90</td><td>4.0</td><td>3.0</td><td>2.0</td><td>1.5</td><td>1.5</td><td>1.5</td><td>1.0</td></tr>
-        <tr><td>100</td><td>3.5</td><td>2.5</td><td>1.5</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td></tr>
-    </tbody>
-</table>
-
-<h2>Corrections to be ADDED to Rockwell Scale 15N, 30N, and 45N Values, Diameters of Convex Cylindrical Surfaces</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Hardness Reading</th>
-            <th>1⁄8 in. (3.2 mm)</th>
-            <th>1⁄4 in. (6.4 mm)</th>
-            <th>3⁄8 in. (10 mm)</th>
-            <th>1⁄2 in. (13 mm)</th>
-            <th>3⁄4 in. (19 mm)</th>
-            <th>1 in. (25 mm)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>20</td><td>6.0</td><td>3.0</td><td>2.0</td><td>1.5</td><td>1.5</td><td>1.5</td></tr>
-        <tr><td>25</td><td>5.5</td><td>3.0</td><td>2.0</td><td>1.5</td><td>1.5</td><td>1.0</td></tr>
-        <tr><td>30</td><td>5.5</td><td>3.0</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td></tr>
-        <tr><td>35</td><td>5.0</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td></tr>
-        <tr><td>40</td><td>4.5</td><td>2.5</td><td>1.5</td><td>1.5</td><td>1.0</td><td>1.0</td></tr>
-        <tr><td>45</td><td>4.0</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td><td>1.0</td></tr>
-        <tr><td>50</td><td>3.5</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td></tr>
-        <tr><td>55</td><td>3.5</td><td>2.0</td><td>1.5</td><td>1.0</td><td>0.5</td><td>0.5</td></tr>
-        <tr><td>60</td><td>3.0</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td></tr>
-        <tr><td>65</td><td>2.5</td><td>1.5</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td></tr>
-        <tr><td>70</td><td>2.0</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td></tr>
-        <tr><td>75</td><td>1.5</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td></tr>
-        <tr><td>80</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>0</td></tr>
-        <tr><td>85</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>0</td></tr>
-        <tr><td>90</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-    </tbody>
-</table>
-
-<h2>Corrections to be ADDED to Rockwell Scale 15T, 30T, and 45T Values, Diameters of Convex Cylindrical Surfaces</h2>
-<table>
-    <thead>
-        <tr>
-            <th>1⁄8 in. (3.2 mm)</th>
-            <th>1⁄4 in. (6.4 mm)</th>
-            <th>3⁄8 in. (10 mm)</th>
-            <th>1⁄2 in. (13 mm)</th>
-            <th>5⁄8 in. (16 mm)</th>
-            <th>3⁄4 in. (19 mm)</th>
-            <th>1 in. (25 mm)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>20</td><td>13.0</td><td>9.0</td><td>6.0</td><td>4.5</td><td>4.5</td><td>3.0</td><td>2.0</td></tr>
-        <tr><td>30</td><td>11.5</td><td>7.5</td><td>5.0</td><td>3.5</td><td>3.5</td><td>2.5</td><td>2.0</td></tr>
-        <tr><td>40</td><td>10.0</td><td>6.5</td><td>4.5</td><td>3.5</td><td>3.0</td><td>2.5</td><td>2.0</td></tr>
-        <tr><td>50</td><td>8.5</td><td>5.5</td><td>4.0</td><td>3.0</td><td>2.5</td><td>2.0</td><td>1.5</td></tr>
-        <tr><td>60</td><td>6.5</td><td>4.5</td><td>3.0</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.5</td></tr>
-        <tr><td>70</td><td>5.0</td><td>3.5</td><td>2.5</td><td>2.0</td><td>1.5</td><td>1.0</td><td>1.0</td></tr>
-        <tr><td>80</td><td>3.0</td><td>2.0</td><td>1.5</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td></tr>
-        <tr><td>90</td><td>1.5</td><td>1.0</td><td>1.0</td><td>0.5</td><td>0.5</td><td>0.5</td><td>0.5</td></tr>
-    </tbody>
-</table>
-
-<h2>min thicknes for diamond</h2>
-<table>
-    <thead>
-        <tr>
-            <th>min thickness in.</th>
-            <th>min thickness mm</th>
-            <th>HRA</th>
-            <th>Approximate Hardness C-Scale A</th>
-            <th>HRC</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>0.014</td><td>0.36</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.016</td><td>0.41</td><td>86</td><td>69</td><td>...</td></tr>
-        <tr><td>0.018</td><td>0.46</td><td>84</td><td>65</td><td>...</td></tr>
-        <tr><td>0.020</td><td>0.51</td><td>82</td><td>61.5</td><td>...</td></tr>
-        <tr><td>0.022</td><td>0.56</td><td>79</td><td>56</td><td>69</td></tr>
-        <tr><td>0.024</td><td>0.61</td><td>76</td><td>50</td><td>67</td></tr>
-        <tr><td>0.026</td><td>0.66</td><td>71</td><td>41</td><td>65</td></tr>
-        <tr><td>0.028</td><td>0.71</td><td>67</td><td>32</td><td>62</td></tr>
-        <tr><td>0.030</td><td>0.76</td><td>60</td><td>19</td><td>57</td></tr>
-        <tr><td>0.032</td><td>0.81</td><td>...</td><td>...</td><td>52</td></tr>
-        <tr><td>0.034</td><td>0.86</td><td>...</td><td>...</td><td>45</td></tr>
-        <tr><td>0.036</td><td>0.91</td><td>...</td><td>...</td><td>37</td></tr>
-        <tr><td>0.038</td><td>0.96</td><td>...</td><td>...</td><td>28</td></tr>
-        <tr><td>0.040</td><td>1.02</td><td>...</td><td>...</td><td>20</td></tr>
-    </tbody>
-</table>
-
-<table>
-    <thead>
-        <tr>
-            <th>in.</th>
-            <th>mm</th>
-            <th>Hardness Reading 15N</th>
-            <th>Approximate Hardness C-ScaleA</th>
-            <th>Hardness Reading 30N</th>
-            <th>Approximate Hardness C-ScaleA</th>
-            <th>Hardness Reading 45N</th>
-            <th>Approximate Hardness C-ScaleA</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>0.006</td><td>0.15</td><td>92</td><td>65</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.008</td><td>0.20</td><td>90</td><td>60</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.010</td><td>0.25</td><td>88</td><td>55</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.012</td><td>0.30</td><td>83</td><td>45</td><td>82</td><td>65</td><td>77</td><td>69.5</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.014</td><td>0.36</td><td>76</td><td>32</td><td>78.5</td><td>61</td><td>74</td><td>67</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.016</td><td>0.41</td><td>68</td><td>18</td><td>74</td><td>56</td><td>72</td><td>65</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.018</td><td>0.46</td><td>...</td><td>...</td><td>66</td><td>47</td><td>68</td><td>61</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.020</td><td>0.51</td><td>...</td><td>...</td><td>57</td><td>37</td><td>63</td><td>57</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.022</td><td>0.56</td><td>...</td><td>...</td><td>47</td><td>26</td><td>58</td><td>52.5</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.024</td><td>0.61</td><td>...</td><td>...</td><td>...</td><td>...</td><td>51</td><td>47</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.026</td><td>0.66</td><td>...</td><td>...</td><td>...</td><td>...</td><td>37</td><td>35</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.028</td><td>0.71</td><td>...</td><td>...</td><td>...</td><td>...</td><td>20</td><td>20.5</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.030</td><td>0.76</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-    </tbody>
-</table>
-
-
-
-<h2>min thicknes for 1/16 ball</h2>
-<table>
-    <thead>
-        <tr>
-            <th>min thickness in.</th>
-            <th>min thickness mm</th>
-            <th>HRF</th>
-            <th>Approximate Hardness F conveted to B</th>
-            <th>HRB</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>0.022</td><td>0.56</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.024</td><td>0.61</td><td>98</td><td>72</td><td>94</td></tr>
-        <tr><td>0.026</td><td>0.66</td><td>91</td><td>60</td><td>87</td></tr>
-        <tr><td>0.028</td><td>0.71</td><td>85</td><td>49</td><td>80</td></tr>
-        <tr><td>0.030</td><td>0.76</td><td>77</td><td>35</td><td>71</td></tr>
-        <tr><td>0.032</td><td>0.81</td><td>69</td><td>21</td><td>62</td></tr>
-        <tr><td>0.034</td><td>0.86</td><td>...</td><td>...</td><td>52</td></tr>
-        <tr><td>0.036</td><td>0.91</td><td>...</td><td>...</td><td>40</td></tr>
-        <tr><td>0.038</td><td>0.96</td><td>...</td><td>...</td><td>28</td></tr>
-        <tr><td>0.040</td><td>1.02</td><td>...</td><td>...</td><td>...</td></tr>
-    </tbody>
-</table>
-
-
-<table>
-    <thead>
-        <tr>
-            <th>in.</th>
-            <th>mm</th>
-            <th>Hardness Reading 15T</th>
-            <th>Approximate Hardness C-ScaleA</th>
-            <th>Hardness Reading 30T</th>
-            <th>Approximate Hardness C-ScaleA</th>
-            <th>Hardness Reading 45T</th>
-            <th>Approximate Hardness C-ScaleA</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <td>0.010</td><td>0.25</td><td>91</td><td>93</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.012</td><td>0.30</td><td>86</td><td>78</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.014</td><td>0.36</td><td>81</td><td>62</td><td>80</td><td>96</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.016</td><td>0.41</td><td>75</td><td>44</td><td>72</td><td>84</td><td>71</td><td>99</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.018</td><td>0.46</td><td>68</td><td>24</td><td>64</td><td>71</td><td>62</td><td>90</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.020</td><td>0.51</td><td>...</td><td>...</td><td>55</td><td>58</td><td>53</td><td>80</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.022</td><td>0.56</td><td>...</td><td>...</td><td>45</td><td>43</td><td>43</td><td>70</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.024</td><td>0.61</td><td>...</td><td>...</td><td>34</td><td>28</td><td>31</td><td>58</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.026</td><td>0.66</td><td>...</td><td>...</td><td>...</td><td>...</td><td>18</td><td>45</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.028</td><td>0.71</td><td>...</td><td>...</td><td>...</td><td>...</td><td>4</td><td>32</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
-        <tr><td>0.030</td><td>0.76</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td>
-</tr>
-    </tbody>
-</table>
-
-
+          </tr>
+          <tr>
+            <td>74</td>
+            <td>135</td>
+            <td>135</td>
+            <td>147</td>
+            <td>46.3</td>
+            <td>99.1</td>
+            <td>84.7</td>
+            <td>65.7</td>
+            <td>46.8</td>
+          </tr>
+          <tr>
+            <td>73</td>
+            <td>132</td>
+            <td>132</td>
+            <td>145</td>
+            <td>45.8</td>
+            <td>98.5</td>
+            <td>84.3</td>
+            <td>65.1</td>
+            <td>45.8</td>
+          </tr>
+          <tr>
+            <td>72</td>
+            <td>130</td>
+            <td>130</td>
+            <td>143</td>
+            <td>45.3</td>
+            <td>98.0</td>
+            <td>84.0</td>
+            <td>64.4</td>
+            <td>44.8</td>
+          </tr>
+          <tr>
+            <td>71</td>
+            <td>127</td>
+            <td>127</td>
+            <td>141</td>
+            <td>44.8</td>
+            <td>97.4</td>
+            <td>83.7</td>
+            <td>63.7</td>
+            <td>43.8</td>
+          </tr>
+          <tr>
+            <td>70</td>
+            <td>125</td>
+            <td>125</td>
+            <td>139</td>
+            <td>44.3</td>
+            <td>96.8</td>
+            <td>83.4</td>
+            <td>63.1</td>
+            <td>42.8</td>
+          </tr>
+          <tr>
+            <td>69</td>
+            <td>123</td>
+            <td>123</td>
+            <td>137</td>
+            <td>43.8</td>
+            <td>96.2</td>
+            <td>83.0</td>
+            <td>62.4</td>
+            <td>41.8</td>
+          </tr>
+          <tr>
+            <td>68</td>
+            <td>121</td>
+            <td>121</td>
+            <td>135</td>
+            <td>43.3</td>
+            <td>95.6</td>
+            <td>82.7</td>
+            <td>61.7</td>
+            <td>40.8</td>
+          </tr>
+          <tr>
+            <td>67</td>
+            <td>119</td>
+            <td>119</td>
+            <td>133</td>
+            <td>42.8</td>
+            <td>95.1</td>
+            <td>82.4</td>
+            <td>61.0</td>
+            <td>39.8</td>
+          </tr>
+          <tr>
+            <td>66</td>
+            <td>117</td>
+            <td>117</td>
+            <td>131</td>
+            <td>42.3</td>
+            <td>94.5</td>
+            <td>82.1</td>
+            <td>60.4</td>
+            <td>38.7</td>
+          </tr>
+          <tr>
+            <td>65</td>
+            <td>116</td>
+            <td>116</td>
+            <td>129</td>
+            <td>41.8</td>
+            <td>93.9</td>
+            <td>81.8</td>
+            <td>59.7</td>
+            <td>37.7</td>
+          </tr>
+          <tr>
+            <td>64</td>
+            <td>114</td>
+            <td>114</td>
+            <td>127</td>
+            <td>41.4</td>
+            <td>93.4</td>
+            <td>81.4</td>
+            <td>59.0</td>
+            <td>36.7</td>
+          </tr>
+          <tr>
+            <td>63</td>
+            <td>112</td>
+            <td>112</td>
+            <td>125</td>
+            <td>40.9</td>
+            <td>92.8</td>
+            <td>81.1</td>
+            <td>58.4</td>
+            <td>35.7</td>
+          </tr>
+          <tr>
+            <td>62</td>
+            <td>110</td>
+            <td>110</td>
+            <td>124</td>
+            <td>40.4</td>
+            <td>92.2</td>
+            <td>80.8</td>
+            <td>57.7</td>
+            <td>34.7</td>
+          </tr>
+          <tr>
+            <td>61</td>
+            <td>108</td>
+            <td>108</td>
+            <td>122</td>
+            <td>40.0</td>
+            <td>91.7</td>
+            <td>80.5</td>
+            <td>57.0</td>
+            <td>33.7</td>
+          </tr>
+          <tr>
+            <td>60</td>
+            <td>107</td>
+            <td>107</td>
+            <td>120</td>
+            <td>39.5</td>
+            <td>91.1</td>
+            <td>80.1</td>
+            <td>56.4</td>
+            <td>32.7</td>
+          </tr>
+          <tr>
+            <td>59</td>
+            <td>106</td>
+            <td>106</td>
+            <td>118</td>
+            <td>39.0</td>
+            <td>90.5</td>
+            <td>79.8</td>
+            <td>55.7</td>
+            <td>31.7</td>
+          </tr>
+          <tr>
+            <td>58</td>
+            <td>104</td>
+            <td>104</td>
+            <td>117</td>
+            <td>38.6</td>
+            <td>90.0</td>
+            <td>79.5</td>
+            <td>55.0</td>
+            <td>30.7</td>
+          </tr>
+          <tr>
+            <td>57</td>
+            <td>103</td>
+            <td>103</td>
+            <td>115</td>
+            <td>38.1</td>
+            <td>89.4</td>
+            <td>79.2</td>
+            <td>54.4</td>
+            <td>29.7</td>
+          </tr>
+          <tr>
+            <td>56</td>
+            <td>101</td>
+            <td>101</td>
+            <td>114</td>
+            <td>37.7</td>
+            <td>88.8</td>
+            <td>78.8</td>
+            <td>53.7</td>
+            <td>28.7</td>
+          </tr>
+          <tr>
+            <td>55</td>
+            <td>100</td>
+            <td>100</td>
+            <td>112</td>
+            <td>37.2</td>
+            <td>88.2</td>
+            <td>78.5</td>
+            <td>53.0</td>
+            <td>27.7</td>
+          </tr>
+          <tr>
+            <td>54</td>
+            <td>-</td>
+            <td>-</td>
+            <td>111</td>
+            <td>36.8</td>
+            <td>87.7</td>
+            <td>78.2</td>
+            <td>52.4</td>
+            <td>26.7</td>
+          </tr>
+          <tr>
+            <td>53</td>
+            <td>-</td>
+            <td>-</td>
+            <td>110</td>
+            <td>36.3</td>
+            <td>87.1</td>
+            <td>77.9</td>
+            <td>51.7</td>
+            <td>25.7</td>
+          </tr>
+          <tr>
+            <td>52</td>
+            <td>-</td>
+            <td>-</td>
+            <td>109</td>
+            <td>35.9</td>
+            <td>86.5</td>
+            <td>77.5</td>
+            <td>51.0</td>
+            <td>24.7</td>
+          </tr>
+          <tr>
+            <td>51</td>
+            <td>-</td>
+            <td>-</td>
+            <td>108</td>
+            <td>35.5</td>
+            <td>86.0</td>
+            <td>77.2</td>
+            <td>50.3</td>
+            <td>23.7</td>
+          </tr>
+          <tr>
+            <td>50</td>
+            <td>-</td>
+            <td>-</td>
+            <td>107</td>
+            <td>35.0</td>
+            <td>85.4</td>
+            <td>76.9</td>
+            <td>49.7</td>
+            <td>22.7</td>
+          </tr>
+          <tr>
+            <td>49</td>
+            <td>-</td>
+            <td>-</td>
+            <td>106</td>
+            <td>34.6</td>
+            <td>84.8</td>
+            <td>76.6</td>
+            <td>49.0</td>
+            <td>21.7</td>
+          </tr>
+          <tr>
+            <td>48</td>
+            <td>-</td>
+            <td>-</td>
+            <td>105</td>
+            <td>34.1</td>
+            <td>84.3</td>
+            <td>76.2</td>
+            <td>48.3</td>
+            <td>20.7</td>
+          </tr>
+          <tr>
+            <td>47</td>
+            <td>-</td>
+            <td>-</td>
+            <td>104</td>
+            <td>33.7</td>
+            <td>83.7</td>
+            <td>75.9</td>
+            <td>47.7</td>
+            <td>19.7</td>
+          </tr>
+          <tr>
+            <td>46</td>
+            <td>-</td>
+            <td>-</td>
+            <td>103</td>
+            <td>33.3</td>
+            <td>83.1</td>
+            <td>75.6</td>
+            <td>47.0</td>
+            <td>18.7</td>
+          </tr>
+          <tr>
+            <td>45</td>
+            <td>-</td>
+            <td>-</td>
+            <td>102</td>
+            <td>32.9</td>
+            <td>82.6</td>
+            <td>75.3</td>
+            <td>46.3</td>
+            <td>17.7</td>
+          </tr>
+          <tr>
+            <td>44</td>
+            <td>-</td>
+            <td>-</td>
+            <td>101</td>
+            <td>32.4</td>
+            <td>82.0</td>
+            <td>74.9</td>
+            <td>45.7</td>
+            <td>16.7</td>
+          </tr>
+          <tr>
+            <td>43</td>
+            <td>-</td>
+            <td>-</td>
+            <td>100</td>
+            <td>32.0</td>
+            <td>81.4</td>
+            <td>74.6</td>
+            <td>45.0</td>
+            <td>15.7</td>
+          </tr>
+          <tr>
+            <td>42</td>
+            <td>-</td>
+            <td>-</td>
+            <td>99</td>
+            <td>31.6</td>
+            <td>80.8</td>
+            <td>74.3</td>
+            <td>44.3</td>
+            <td>14.7</td>
+          </tr>
+          <tr>
+            <td>41</td>
+            <td>-</td>
+            <td>-</td>
+            <td>98</td>
+            <td>31.2</td>
+            <td>80.3</td>
+            <td>74.0</td>
+            <td>43.7</td>
+            <td>13.6</td>
+          </tr>
+          <tr>
+            <td>40</td>
+            <td>-</td>
+            <td>-</td>
+            <td>97</td>
+            <td>30.7</td>
+            <td>79.7</td>
+            <td>73.6</td>
+            <td>43.0</td>
+            <td>12.6</td>
+          </tr>
+          <tr>
+            <td>39</td>
+            <td>-</td>
+            <td>-</td>
+            <td>96</td>
+            <td>30.3</td>
+            <td>79.1</td>
+            <td>73.3</td>
+            <td>42.3</td>
+            <td>11.6</td>
+          </tr>
+          <tr>
+            <td>38</td>
+            <td>-</td>
+            <td>-</td>
+            <td>95</td>
+            <td>29.9</td>
+            <td>78.6</td>
+            <td>73.0</td>
+            <td>41.6</td>
+            <td>10.6</td>
+          </tr>
+          <tr>
+            <td>37</td>
+            <td>-</td>
+            <td>-</td>
+            <td>94</td>
+            <td>29.5</td>
+            <td>78.0</td>
+            <td>72.7</td>
+            <td>41.0</td>
+            <td>9.6</td>
+          </tr>
+          <tr>
+            <td>36</td>
+            <td>-</td>
+            <td>-</td>
+            <td>93</td>
+            <td>29.1</td>
+            <td>77.4</td>
+            <td>72.3</td>
+            <td>40.3</td>
+            <td>8.6</td>
+          </tr>
+          <tr>
+            <td>35</td>
+            <td>-</td>
+            <td>-</td>
+            <td>92</td>
+            <td>28.7</td>
+            <td>76.9</td>
+            <td>72.0</td>
+            <td>39.6</td>
+            <td>7.6</td>
+          </tr>
+          <tr>
+            <td>34</td>
+            <td>-</td>
+            <td>-</td>
+            <td>91</td>
+            <td>28.2</td>
+            <td>76.3</td>
+            <td>71.7</td>
+            <td>39.0</td>
+            <td>6.6</td>
+          </tr>
+          <tr>
+            <td>33</td>
+            <td>-</td>
+            <td>-</td>
+            <td>90</td>
+            <td>27.8</td>
+            <td>75.7</td>
+            <td>71.4</td>
+            <td>38.3</td>
+            <td>5.6</td>
+          </tr>
+          <tr>
+            <td>32</td>
+            <td>-</td>
+            <td>-</td>
+            <td>89</td>
+            <td>27.4</td>
+            <td>75.2</td>
+            <td>71.0</td>
+            <td>37.6</td>
+            <td>4.6</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>-</td>
+            <td>-</td>
+            <td>88</td>
+            <td>27.0</td>
+            <td>74.6</td>
+            <td>70.7</td>
+            <td>37.0</td>
+            <td>3.6</td>
+          </tr>
+          <tr>
+            <td>30</td>
+            <td>-</td>
+            <td>-</td>
+            <td>87</td>
+            <td>26.6</td>
+            <td>74.0</td>
+            <td>70.4</td>
+            <td>36.3</td>
+            <td>2.6</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-
     <script>
+      window.onload = function () {
+        document.getElementById("tableSelect").selectedIndex = 0;
+        changeTable();
+      };
 
+      function changeTable() {
+        let selectedTable = document.getElementById("tableSelect").value;
+        document.querySelectorAll("table").forEach((table) => {
+          table.style.display = table.id === selectedTable ? "table" : "none";
+        });
 
-          window.onload = function() {
-              document.getElementById("tableSelect").selectedIndex = 0;
-              changeTable();
-          }
-
-          function changeTable() {
-          let selectedTable = document.getElementById("tableSelect").value;
-          document.querySelectorAll("table").forEach(table => {
-              table.style.display = (table.id === selectedTable) ? "table" : "none";
-          });
-
-          let ulElement = document.querySelectorAll(".nickelHardness"); // Change "myList" to your actual <ul> ID
-          let pwclElement = document.querySelectorAll(".steelHardnessC"); // Change "myList" to your actual <ul> ID
+        let ulElement = document.querySelectorAll(".nickelHardness"); // Change "myList" to your actual <ul> ID
+        let pwclElement = document.querySelectorAll(".steelHardnessC"); // Change "myList" to your actual <ul> ID
         //  let clElement = document.querySelectorAll(".steelHardnessB"); // Change "myList" to your actual <ul> ID
 
-          if (selectedTable === "dataTable") {
-              ulElement.forEach(element => {
-                  element.style.display = 'block';
-              });
-          } else {
-            ulElement.forEach(element => {
-                  element.style.display = 'none';
-              });
-          }
+        if (selectedTable === "dataTable") {
+          ulElement.forEach((element) => {
+            element.style.display = "block";
+          });
+        } else {
+          ulElement.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
 
-          if (selectedTable === "dataTable1") {
-            pwclElement.forEach(element => {
-                  element.style.display = 'block';
-              });
-          } else {
-            pwclElement.forEach(element => {
-                  element.style.display = 'none';
-              });
-          }
+        if (selectedTable === "dataTable1") {
+          pwclElement.forEach((element) => {
+            element.style.display = "block";
+          });
+        } else {
+          pwclElement.forEach((element) => {
+            element.style.display = "none";
+          });
+        }
 
-          /*
+        /*
           if (selectedTable === "dataTable2") {
             clElement.forEach(element => {
                   element.style.display = 'block';
@@ -3041,217 +3119,239 @@
                   element.style.display = 'none';
               });
           }*/
-
       }
 
+      //highlight clicked rows
+      document.addEventListener("DOMContentLoaded", function () {
+        let rows = document.querySelectorAll(
+          "#dataTable tbody tr, #dataTable2 tbody tr"
+        );
 
-        //highlight clicked rows
-        document.addEventListener("DOMContentLoaded", function() {
-            let rows = document.querySelectorAll("#dataTable tbody tr, #dataTable2 tbody tr");
+        rows.forEach((row) => {
+          row.addEventListener("click", function (event) {
+            if (row.classList.contains("highlighted")) {
+              row.classList.remove("highlighted");
+            } else {
+              rows.forEach((r) => r.classList.remove("highlighted"));
+              row.classList.add("highlighted");
+            }
+            event.stopPropagation();
+          });
 
-            rows.forEach(row => {
-                row.addEventListener("click", function(event) {
-                    if (row.classList.contains("highlighted")) {
-                        row.classList.remove("highlighted");
-                    } else {
-                        rows.forEach(r => r.classList.remove("highlighted"));
-                        row.classList.add("highlighted");
-                    }
-                    event.stopPropagation();
-                });
-
-                  // Double-click event to call a function
-                  row.addEventListener("dblclick", function() {
-                    openModal(row);
-                });
-
-            });
-
-
-            document.addEventListener("click", function() {
-                rows.forEach(row => row.classList.remove("highlighted"));
-            });
+          // Double-click event to call a function
+          row.addEventListener("dblclick", function () {
+            openModal(row);
+          });
         });
 
+        document.addEventListener("click", function () {
+          rows.forEach((row) => row.classList.remove("highlighted"));
+        });
+      });
 
+      function searchTable() {
+        let input = document.getElementById("search");
+        let searchValue = input.value.trim();
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-        function searchTable() {
-          let input = document.getElementById("search");
-          let searchValue = input.value.trim();
-          let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+        // Show the clear button only if there is text in the search box
+        clearBtnContainer.style.display = searchValue ? "flex" : "none";
 
-          // Show the clear button only if there is text in the search box
-          clearBtnContainer.style.display = searchValue ? "flex" : "none";
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
 
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
+        let rows = table.getElementsByTagName("tr");
 
-          let rows = table.getElementsByTagName("tr");
-
-          for (let i = 1; i < rows.length; i++) {
-              if (rows[i].getElementsByTagName("th").length > 0) {
-                  continue; // Skip header rows
-              }
-
-              let cells = rows[i].getElementsByTagName("td");
-              let found = false;
-
-              for (let j = 0; j < cells.length; j++) {
-                  let cell = cells[j];
-
-                  // Clear previous highlights: remove all <span> elements and preserve their content
-                  cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
-
-                  if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
-                      highlightTextInElement(cell, searchValue);
-                      found = true;
-                  }
-              }
-
-              // Show row if a match is found, otherwise hide it
-              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        for (let i = 1; i < rows.length; i++) {
+          if (rows[i].getElementsByTagName("th").length > 0) {
+            continue; // Skip header rows
           }
+
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
+
+            // Clear previous highlights: remove all <span> elements and preserve their content
+            cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, "");
+
+            if (
+              searchValue &&
+              cell.textContent.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              highlightTextInElement(cell, searchValue);
+              found = true;
+            }
+          }
+
+          // Show row if a match is found, otherwise hide it
+          rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        }
       }
 
-        // Recursive function to highlight text while preserving HTML structure
-        function highlightTextInElement(element, searchValue) {
-            let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+      // Recursive function to highlight text while preserving HTML structure
+      function highlightTextInElement(element, searchValue) {
+        let regex = new RegExp(
+          `(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`,
+          "gi"
+        ); // Escape special characters
 
-            function highlightNode(node) {
-                if (node.nodeType === 3) { // TEXT_NODE
-                    let parent = node.parentNode;
-                    let text = node.nodeValue;
+        function highlightNode(node) {
+          if (node.nodeType === 3) {
+            // TEXT_NODE
+            let parent = node.parentNode;
+            let text = node.nodeValue;
 
-                    if (text.toLowerCase().includes(searchValue.toLowerCase())) {
-                        let tempWrapper = document.createElement("span");
-                        tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+              let tempWrapper = document.createElement("span");
+              tempWrapper.innerHTML = text.replace(
+                regex,
+                `<span style="color: red; font-weight: bold;">$1</span>`
+              );
 
-                        while (tempWrapper.firstChild) {
-                            parent.insertBefore(tempWrapper.firstChild, node);
-                        }
-                        parent.removeChild(node);
-                    }
-                } else {
-                    // Recursively process child nodes
-                    for (let i = node.childNodes.length - 1; i >= 0; i--) {
-                        highlightNode(node.childNodes[i]);
-                    }
-                }
+              while (tempWrapper.firstChild) {
+                parent.insertBefore(tempWrapper.firstChild, node);
+              }
+              parent.removeChild(node);
             }
-
-            highlightNode(element);
+          } else {
+            // Recursively process child nodes
+            for (let i = node.childNodes.length - 1; i >= 0; i--) {
+              highlightNode(node.childNodes[i]);
+            }
+          }
         }
 
+        highlightNode(element);
+      }
 
       function clearSearch() {
-          let input = document.getElementById("search");
-          let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+        let input = document.getElementById("search");
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-          // Clear the search input
-          input.value = "";
-          clearBtnContainer.style.display = "none"; // Hide the clear button
+        // Clear the search input
+        input.value = "";
+        clearBtnContainer.style.display = "none"; // Hide the clear button
 
-          // Reset the table to show all rows
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
+        // Reset the table to show all rows
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
 
-          let rows = table.getElementsByTagName("tr");
-          for (let i = 1; i < rows.length; i++) {
-              rows[i].style.display = ""; // Make all rows visible again
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+          rows[i].style.display = ""; // Make all rows visible again
 
-              // Remove any highlighting
-              let cells = rows[i].getElementsByTagName("td");
-              for (let j = 0; j < cells.length; j++) {
-                  cells[j].innerHTML = cells[j].textContent;
-              }
+          // Remove any highlighting
+          let cells = rows[i].getElementsByTagName("td");
+          for (let j = 0; j < cells.length; j++) {
+            cells[j].innerHTML = cells[j].textContent;
           }
+        }
       }
 
       function filterTable(input) {
-        let colIndex = Array.from(input.parentElement.parentElement.children).indexOf(input.parentElement);
+        let colIndex = Array.from(
+          input.parentElement.parentElement.children
+        ).indexOf(input.parentElement);
         let searchValue = input.value;
         let table = document.getElementById("dataTable2");
-        let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        let rows = table
+          .getElementsByTagName("tbody")[0]
+          .getElementsByTagName("tr");
 
         if (searchValue.trim() === "") {
-            for (let row of rows) {
-                row.style.display = "";
-            }
-            return;
+          for (let row of rows) {
+            row.style.display = "";
+          }
+          return;
         }
 
         let exactMatch = false;
-        let closestBelow = null, closestAbove = null;
+        let closestBelow = null,
+          closestAbove = null;
         searchValue = parseFloat(searchValue);
 
         for (let row of rows) {
-            let cells = row.getElementsByTagName("td");
-            if (colIndex >= cells.length) continue;
-            let cell = cells[colIndex];
-            let cellValue = parseFloat(cell.textContent.trim());
+          let cells = row.getElementsByTagName("td");
+          if (colIndex >= cells.length) continue;
+          let cell = cells[colIndex];
+          let cellValue = parseFloat(cell.textContent.trim());
 
-            if (!isNaN(searchValue)) {
-                if (cellValue === searchValue) {
-                    exactMatch = true;
-                } else if (cellValue < searchValue && (!closestBelow || cellValue > closestBelow)) {
-                    closestBelow = cellValue;
-                } else if (cellValue > searchValue && (!closestAbove || cellValue < closestAbove)) {
-                    closestAbove = cellValue;
-                }
+          if (!isNaN(searchValue)) {
+            if (cellValue === searchValue) {
+              exactMatch = true;
+            } else if (
+              cellValue < searchValue &&
+              (!closestBelow || cellValue > closestBelow)
+            ) {
+              closestBelow = cellValue;
+            } else if (
+              cellValue > searchValue &&
+              (!closestAbove || cellValue < closestAbove)
+            ) {
+              closestAbove = cellValue;
             }
+          }
         }
 
         for (let row of rows) {
-            let cells = row.getElementsByTagName("td");
-            if (colIndex >= cells.length) continue;
-            let cell = cells[colIndex];
-            let cellValue = parseFloat(cell.textContent.trim());
+          let cells = row.getElementsByTagName("td");
+          if (colIndex >= cells.length) continue;
+          let cell = cells[colIndex];
+          let cellValue = parseFloat(cell.textContent.trim());
 
-            if (exactMatch) {
-                row.style.display = cellValue === searchValue ? "" : "none";
-            } else {
-                row.style.display = cellValue === closestBelow || cellValue === closestAbove ? "" : "none";
-            }
+          if (exactMatch) {
+            row.style.display = cellValue === searchValue ? "" : "none";
+          } else {
+            row.style.display =
+              cellValue === closestBelow || cellValue === closestAbove
+                ? ""
+                : "none";
+          }
         }
-    }
+      }
 
       function tableToCSV(tableId) {
-      var table = document.getElementById(tableId);
-      var rows = table.querySelectorAll("tr");
-      var csv = [];
+        var table = document.getElementById(tableId);
+        var rows = table.querySelectorAll("tr");
+        var csv = [];
 
-      rows.forEach(row => {
+        rows.forEach((row) => {
           var cells = row.querySelectorAll("th, td");
           var rowData = [];
 
-          cells.forEach(cell => {
-              rowData.push(cell.textContent.trim());
+          cells.forEach((cell) => {
+            rowData.push(cell.textContent.trim());
           });
 
           csv.push(rowData.join(","));
-      });
+        });
 
-      return csv.join("\n");
-  }
+        return csv.join("\n");
+      }
 
-  function downloadCSV(tableId, filename = 'table.csv') {
-      var csvData = tableToCSV(tableId);
+      function downloadCSV(tableId, filename = "table.csv") {
+        var csvData = tableToCSV(tableId);
 
-      // Create a Blob with CSV data
-      var blob = new Blob([csvData], { type: 'text/csv' });
+        // Create a Blob with CSV data
+        var blob = new Blob([csvData], { type: "text/csv" });
 
-      // Create a temporary link element to trigger the download
-      var link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
+        // Create a temporary link element to trigger the download
+        var link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
 
-      // Trigger the download by clicking the link
-      link.click();
-  }
+        // Trigger the download by clicking the link
+        link.click();
+      }
 
-  // Example usage: Call this function with the table ID to download the CSV
-  //downloadCSV('dataTable2');
-
+      // Example usage: Call this function with the table ID to download the CSV
+      //downloadCSV('dataTable2');
     </script>
-</body>
+  </body>
 </html>

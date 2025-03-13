@@ -1,4 +1,0 @@
-
-read xrf csv database
-
-convert my table to same structure

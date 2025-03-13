@@ -1,391 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Engine Manuals</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select Manuals</title>
+    <link rel="shortcut icon" href="Images/favicon.png" type="image/png" />
+
     <style>
-        body {
-            background-color: #f3f4f6;
-            color: #1f2937;
-            font-family: Arial, sans-serif;
-        }
+      body {
+        background-color: #f3f4f6;
+        color: #1f2937;
+        font-family: Arial, sans-serif;
+      }
 
-        .search-container {
-            text-align: center;
-            margin: 1rem 0;
-        }
-        .search-container input {
-            width: 50%;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .filter-buttons {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        .filter-buttons button {
-            padding: 0.5rem 1rem;
-            margin: 0.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #578FCA;
-            color: white;
-            font-size: 1rem;
-        }
-        .filter-buttons button:hover {
-            background-color: #493D9E;
-        }
-        .container {
-            max-width: 78rem;
-            margin: 0 auto;
-            padding: 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-        }
-        .card {
-            width: 11%;
-            background-color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            height: 11rem;
-            justify-content: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-decoration: none;
-        }
-        .card:hover {
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-            transform: scale(1.05);
-        }
-        .card img {
-            margin-bottom: 25px;
-            width: 70%;
-        }
-        .card img.small{
-            margin-bottom: 25px;
-            width: 50px;
-        }
-        .card p {
-            font-size: 15px;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-        .card:link, .card:visited {
-            text-decoration: none;
-            color: inherit;
-        }
-        p{
-            margin-bottom: 0;
-        }
+      .search-container {
+        text-align: center;
+        margin: 1rem 0;
+      }
+      .search-container input {
+        width: 50%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .filter-buttons {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .filter-buttons button {
+        padding: 0.5rem 1rem;
+        margin: 0.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #578fca;
+        color: white;
+        font-size: 1rem;
+      }
+      .filter-buttons button:hover {
+        background-color: #493d9e;
+      }
+      .container {
+        max-width: 78rem;
+        margin: 0 auto;
+        padding: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+      .card {
+        width: 11%;
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: 11rem;
+        justify-content: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-decoration: none;
+      }
+      .card:hover {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+      }
+      .card img {
+        margin-bottom: 25px;
+        width: 70%;
+      }
+      .card img.small {
+        margin-bottom: 25px;
+        width: 50px;
+      }
+      .card p {
+        font-size: 15px;
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+      .card:link,
+      .card:visited {
+        text-decoration: none;
+        color: inherit;
+      }
+      p {
+        margin-bottom: 0;
+      }
 
-        /* Navbar styles */
-        .navbar {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #3674B5;
-            padding: 15px 30px;
+      /* Navbar styles */
+      .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #3674b5;
+        padding: 15px 30px;
 
-            width: 94%;
-            margin: 15px auto;
-            margin-bottom: 50px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
+        width: 94%;
+        margin: 15px auto;
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        .navbar .logo {
-            font-size: 18px;
-            font-weight: bold;
-            color: black;
-            text-transform: uppercase;
-        }
+      .navbar .logo {
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+        text-transform: uppercase;
+      }
 
-         .icons {
-            display: flex;
-            flex-direction: row;
-            gap: 15px;
-        }
+      .icons {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+      }
 
-        .navbar .icon {
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-        }
+      .navbar .icon {
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
 
-        .navbar .icon:hover {
-            color: #FFD95F;
-        }
+      .navbar .icon:hover {
+        color: #ffd95f;
+      }
 
+      .navbar img {
+        height: 40px;
+        width: auto;
+      }
 
-          .navbar img{
-            height: 40px;
-            width: auto;
-        }
+      .logo-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
 
-        .logo-container{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 20px;
-        }
+      .navbar .ThemeBtn-container {
+        height: 45px;
+        width: 45px;
+        border-radius: 100%;
+        opacity: 1;
+        background-color: transparnt;
+        display: flex;
+        align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
+      }
 
-        .navbar .ThemeBtn-container {
-          height: 45px;
-          width: 45px;
-          border-radius: 100%;
-          opacity: 1;
-          background-color: transparnt;
-          display: flex;
-          align-items: center; /* dosent work with the deafult display: block so i changed to flex so it will work*/
-        }
+      .navbar .ThemeBtn-container:hover {
+        background-color: #98d8ef;
+        fill: white;
+        transition: all 0.5s ease;
+      }
 
-        .navbar .ThemeBtn-container:hover {
-          background-color: #98D8EF;
-          fill: white ;
-          transition: all 0.5s ease;
-        }
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
 
-        .clearButton {
-           display: none;
-           cursor: pointer;
-           font-size: 26px;
-           color: gray;
-           padding-left: 6px;
-        }
+      .navbar .svg-button {
+        border: none;
+        cursor: pointer;
+        background-color: transparent !important;
+        fill: #ac1754;
+        transform: scale(1.2);
+        margin: 4px;
+        margin-bottom: 0;
+        margin-right: 1px;
+      }
 
-        .navbar .svg-button{
-           border: none;
-           cursor: pointer;
-           background-color: transparent !important;
-           fill: #AC1754 ;
-           transform: scale(1.2);
-           margin: 4px;
-           margin-bottom: 0;
-           margin-right: 1px;
-         }
+      .navbar .svg-button:hover {
+        fill: white;
+      }
 
-         .navbar .svg-button:hover{
-           fill: white;
-         }
+      /* Search bar container */
+      .search-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        margin-top: 30px; /* Adjust space above the search bar */
+      }
 
-        /* Search bar container */
-        .search-container {
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            margin-top: 30px; /* Adjust space above the search bar */
-        }
-
-        .navbar input {
-            padding: 10px;
-            width: 400px; /* Width of the search bar */
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: rgb(244, 244, 244);
-        }
-
+      .navbar input {
+        padding: 10px;
+        width: 400px; /* Width of the search bar */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(244, 244, 244);
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Navbar -->
     <div class="navbar">
-        <div class="logo-container">
-            <img src="Images/IAI logo.webp" alt="Book Logo">
-            <div class="logo">Engine Manuals</div>
+      <div class="logo-container">
+        <img src="Images/IAI logo.webp" alt="Book Logo" />
+        <div class="logo">Engine Manuals</div>
+      </div>
+
+      <div>
+        <input
+          type="text"
+          id="searchBar"
+          onkeyup="filterManuals()"
+          placeholder="Search manuals..."
+        />
+        <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
+      </div>
+
+      <div class="icons">
+        <div class="ThemeBtn-container" style="display: none">
+          <button id="clearSearch" class="svg-button" onclick="clearSearch()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+            >
+              <path
+                d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"
+              />
+            </svg>
+          </button>
         </div>
-
-        <div>
-            <input type="text" id="searchBar" onkeyup="filterManuals()" placeholder="Search manuals...">
-           <!-- <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>-->
-        </div>
-
-
-        <div class="icons">
-          <div class="ThemeBtn-container" style="display: none;">
-            <button id="clearSearch" class="svg-button" onclick="clearSearch()">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                  <path d="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z"/></svg>
-              </button>
-          </div>
-        </div>
-
+      </div>
     </div>
 
     <div class="filter-buttons">
-        <button onclick="filterByTag('all')">Show All</button>
-        <button onclick="filterByTag('IAE')">IAE</button>
-        <button onclick="filterByTag('CFM')">CFM</button>
-        <button onclick="filterByTag('GE')">GE</button>
-        <button onclick="filterByTag('Pratt & Whitney Military')">Pratt & Whitney Military</button>
-        <button onclick="filterByTag('Pratt & Whitney Civilian')">Pratt & Whitney Civilian</button>
-        <button onclick="filterByTag('Pratt & Whitney Canada')">Pratt & Whitney Canada</button>
-        <button onclick="filterByTag('Honeywell')">Honeywell</button>
-        <button onclick="filterByTag('Boeing')">Boeing</button>
-        <button onclick="filterByTag('AWS/AMS')">AWS/AMS</button>
-
+      <button onclick="filterByTag('all')">Show All</button>
+      <button onclick="filterByTag('IAE')">IAE</button>
+      <button onclick="filterByTag('CFM')">CFM</button>
+      <button onclick="filterByTag('GE')">GE</button>
+      <button onclick="filterByTag('Pratt & Whitney Military')">
+        Pratt & Whitney Military
+      </button>
+      <button onclick="filterByTag('Pratt & Whitney Civilian')">
+        Pratt & Whitney Civilian
+      </button>
+      <button onclick="filterByTag('Pratt & Whitney Canada')">
+        Pratt & Whitney Canada
+      </button>
+      <button onclick="filterByTag('Honeywell')">Honeywell</button>
+      <button onclick="filterByTag('Boeing')">Boeing</button>
+      <button onclick="filterByTag('AWS/AMS')">AWS/AMS</button>
     </div>
 
     <div class="container" id="manualContainer">
+      <a
+        href="file:///C:/path/to/manual2.pdf"
+        target="_blank"
+        class="card"
+        data-tag="CFM"
+      >
+        <img class="small" src="Images/CFM logo.png" alt="Book Logo" />
+        <p>CFM56 Repair Manual</p>
+        <p style="font-size: 0.8rem; color: gray">CFM</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual2.pdf"
+        target="_blank"
+        class="card"
+        data-tag="CFM"
+      >
+        <img class="small" src="Images/CFM logo.png" alt="Book Logo" />
+        <p>LEAP Repair Manual</p>
+        <p style="font-size: 0.8rem; color: gray">CFM</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual2.pdf"
+        target="_blank"
+        class="card"
+        data-tag="CFM"
+      >
+        <img class="small" src="Images/CFM logo.png" alt="Book Logo" />
+        <p>CFM56 LPT Blade Repair</p>
+        <p style="font-size: 0.8rem; color: gray">CFM</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual5.pdf"
+        target="_blank"
+        class="card"
+        data-tag="Honeywell"
+      >
+        <img src="Images/honeywell logo.webp" alt="Book Logo" />
+        <p>F124 Repair Manual</p>
+        <p>T.O 2-111-1</p>
+        <p style="font-size: 0.8rem; color: gray">Honeywell</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual5.pdf"
+        target="_blank"
+        class="card"
+        data-tag="Honeywell"
+      >
+        <img src="Images/honeywell logo.webp" alt="Book Logo" />
+        <p>APU</p>
+        <p>T.O 2-111-1</p>
+        <p style="font-size: 0.8rem; color: gray">Honeywell</p>
+      </a>
+      <!-- Card 3 -->
+      <a
+        href="file:///C:/path/to/manual3.pdf"
+        target="_blank"
+        class="card"
+        data-tag="GE"
+      >
+        <img src="Images/ge logo.webp" alt="Book Logo" />
+        <p>J79-J1E Engine Manual</p>
+        <p style="font-size: 0.8rem; color: gray">GE</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual1.pdf"
+        target="_blank"
+        class="card"
+        data-tag="IAE"
+      >
+        <img src="Images/iae logo.webp" alt="Book Logo" />
+        <p>V2500 Manual</p>
+        <p style="font-size: 0.8rem; color: gray">IAE</p>
+      </a>
+      <!-- Card 4 -->
+      <a
+        href="file:///C:/path/to/manual4.pdf"
+        target="_blank"
+        class="card"
+        data-tag="Pratt & Whitney Civilian"
+      >
+        <img src="Images/pratt-whitney-logo.svg" alt="Book Logo" />
+        <p>PW4000 Repair Manual</p>
+        <p style="font-size: 0.8rem; color: gray">Pratt & Whitney Civilian</p>
+      </a>
+      <!-- Card 5 -->
+      <a
+        href="f100 table.html"
+        target="_blank"
+        class="card"
+        data-tag="Pratt & Whitney Military"
+      >
+        <img src="Images/pratt-whitney-logo.svg" alt="Book Logo" />
+        <p>F100 Repair Manual</p>
+        <p style="font-size: 0.8rem; color: gray">Pratt & Whitney Military</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual4.pdf"
+        target="_blank"
+        class="card"
+        data-tag="Pratt & Whitney Military"
+      >
+        <img src="Images/pratt-whitney-logo.svg" alt="Book Logo" />
+        <p>J52 Repair Manual</p>
+        <p style="font-size: 0.8rem; color: gray">Pratt & Whitney Military</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual4.pdf"
+        target="_blank"
+        class="card"
+        data-tag="Pratt & Whitney Military"
+      >
+        <img src="pratt-whitney-logo.svg" alt="Book Logo" />
+        <p>Standard Practice Manual (SPM)</p>
+        <p>T.O 2-111-1</p>
+        <p style="font-size: 0.8rem; color: gray">Pratt & Whitney Military</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual4.pdf"
+        target="_blank"
+        class="card"
+        data-tag="Pratt & Whitney Civilian"
+      >
+        <img src="Images/pratt-whitney-logo.svg" alt="Book Logo" />
+        <p>Standard Practice Manual (SPM)</p>
+        <p>70-24-52</p>
+        <p style="font-size: 0.8rem; color: gray">Pratt & Whitney Civilian</p>
+      </a>
+      <!-- Card 6 -->
 
-        <a href="file:///C:/path/to/manual2.pdf" target="_blank" class="card" data-tag="CFM">
-            <img class="small" src="Images/CFM logo.png" alt="Book Logo">
-            <p>CFM56 Repair Manual</p>
-            <p style="font-size: 0.8rem; color: gray;">CFM</p>
-        </a>
-        <a href="file:///C:/path/to/manual2.pdf" target="_blank" class="card" data-tag="CFM">
-            <img class="small" src="Images/CFM logo.png" alt="Book Logo">
-            <p>LEAP Repair Manual</p>
-            <p style="font-size: 0.8rem; color: gray;">CFM</p>
-        </a>
-        <a href="file:///C:/path/to/manual2.pdf" target="_blank" class="card" data-tag="CFM">
-            <img class="small" src="Images/CFM logo.png" alt="Book Logo">
-            <p>CFM56 LPT Blade Repair</p>
-            <p style="font-size: 0.8rem; color: gray;">CFM</p>
-        </a>
-        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Honeywell">
-            <img src="Images/honeywell logo.webp" alt="Book Logo">
-            <p>F124 Repair Manual</p>
-            <p>T.O 2-111-1</p>
-            <p style="font-size: 0.8rem; color: gray;">Honeywell</p>
-        </a>
-        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Honeywell">
-            <img src="Images/honeywell logo.webp" alt="Book Logo">
-            <p>APU</p>
-            <p>T.O 2-111-1</p>
-            <p style="font-size: 0.8rem; color: gray;">Honeywell</p>
-        </a>
-        <!-- Card 3 -->
-        <a href="file:///C:/path/to/manual3.pdf" target="_blank" class="card" data-tag="GE">
-            <img src="Images/ge logo.webp" alt="Book Logo">
-            <p>J79-J1E Engine Manual</p>
-            <p style="font-size: 0.8rem; color: gray;">GE</p>
-        </a>
-        <a href="file:///C:/path/to/manual1.pdf" target="_blank" class="card" data-tag="IAE">
-            <img src="Images/iae logo.webp" alt="Book Logo">
-            <p>V2500 Manual</p>
-            <p style="font-size: 0.8rem; color: gray;">IAE</p>
-        </a>
-        <!-- Card 4 -->
-        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Civilian">
-            <img src="Images/pratt-whitney-logo.svg" alt="Book Logo">
-            <p>PW4000 Repair Manual</p>
-            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Civilian</p>
-        </a>
-        <!-- Card 5 -->
-        <a href="f100 table.html" target="_blank" class="card" data-tag="Pratt & Whitney Military">
-            <img src="Images/pratt-whitney-logo.svg" alt="Book Logo">
-            <p>F100 Repair Manual</p>
-            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Military</p>
-        </a>
-        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Military">
-            <img src="Images/pratt-whitney-logo.svg" alt="Book Logo">
-            <p>J52 Repair Manual</p>
-            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Military</p>
-        </a>
-        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Military">
-            <img src="pratt-whitney-logo.svg" alt="Book Logo">
-            <p>Standard Practice Manual (SPM)</p>
-            <p>T.O 2-111-1</p>
-            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Military</p>
-        </a>
-        <a href="file:///C:/path/to/manual4.pdf" target="_blank" class="card" data-tag="Pratt & Whitney Civilian">
-            <img src="Images/pratt-whitney-logo.svg" alt="Book Logo">
-            <p>Standard Practice Manual (SPM)</p>
-            <p>70-24-52</p>
-            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Civilian</p>
-        </a>
-        <!-- Card 6 -->
+      <a
+        href="file:///C:/path/to/manual5.pdf"
+        target="_blank"
+        class="card"
+        data-tag="Pratt & Whitney Canada"
+      >
+        <img src="Images/pwc logo.webp" alt="Book Logo" />
+        <p>PT6 Repair Manual</p>
+        <p>T.O 2-111-1</p>
+        <p style="font-size: 0.8rem; color: gray">Pratt & Whitney Canada</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual5.pdf"
+        target="_blank"
+        class="card"
+        data-tag="Boeing"
+      >
+        <img src="Images/boeing logo.webp" alt="Book Logo" />
+        <p>Boeing Repair Manual</p>
+        <p>T.O 2-111-1</p>
+        <p style="font-size: 0.8rem; color: gray">Boeing</p>
+      </a>
 
-        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Pratt & Whitney Canada">
-            <img src="Images/pwc logo.webp" alt="Book Logo">
-            <p>PT6 Repair Manual</p>
-            <p>T.O 2-111-1</p>
-            <p style="font-size: 0.8rem; color: gray;">Pratt & Whitney Canada</p>
-        </a>
-        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="Boeing">
-            <img src="Images/boeing logo.webp" alt="Book Logo">
-            <p>Boeing Repair Manual</p>
-            <p>T.O 2-111-1</p>
-            <p style="font-size: 0.8rem; color: gray;">Boeing</p>
-        </a>
-
-
-        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="AWS/AMS">
-            <img class="small" src="Images/aws logo.webp" alt="Book Logo">
-            <p>AWS D17.1</p>
-            <p style="font-size: 0.8rem; color: gray;">Fusion welding</p>
-        </a>
-        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="AWS/AMS">
-            <img class="small" src="Images/aws logo.webp" alt="Book Logo">
-            <p>AWS D17.2</p>
-            <p style="font-size: 0.8rem; color: gray;">Resistance welding</p>
-        </a>
-        <a href="file:///C:/path/to/manual5.pdf" target="_blank"class="card" data-tag="AWS/AMS">
-            <img class="small" src="Images/aws logo.webp" alt="Book Logo">
-            <p>AWS A5.8</p>
-            <p style="font-size: 0.8rem; color: gray;">Brazing filler metals</p>
-        </a>
-
+      <a
+        href="file:///C:/path/to/manual5.pdf"
+        target="_blank"
+        class="card"
+        data-tag="AWS/AMS"
+      >
+        <img class="small" src="Images/aws logo.webp" alt="Book Logo" />
+        <p>AWS D17.1</p>
+        <p style="font-size: 0.8rem; color: gray">Fusion welding</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual5.pdf"
+        target="_blank"
+        class="card"
+        data-tag="AWS/AMS"
+      >
+        <img class="small" src="Images/aws logo.webp" alt="Book Logo" />
+        <p>AWS D17.2</p>
+        <p style="font-size: 0.8rem; color: gray">Resistance welding</p>
+      </a>
+      <a
+        href="file:///C:/path/to/manual5.pdf"
+        target="_blank"
+        class="card"
+        data-tag="AWS/AMS"
+      >
+        <img class="small" src="Images/aws logo.webp" alt="Book Logo" />
+        <p>AWS A5.8</p>
+        <p style="font-size: 0.8rem; color: gray">Brazing filler metals</p>
+      </a>
     </div>
 
     <script>
-        function filterManuals() {
-            let searchValue = document.getElementById("searchBar").value.toLowerCase();
-            let cards = document.querySelectorAll(".card");
-            let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+      function filterManuals() {
+        let searchValue = document
+          .getElementById("searchBar")
+          .value.toLowerCase();
+        let cards = document.querySelectorAll(".card");
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
 
-            // Show the clear button only if there is text in the search box
-            clearBtnContainer.style.display = searchValue ? "flex" : "none";
+        // Show the clear button only if there is text in the search box
+        clearBtnContainer.style.display = searchValue ? "flex" : "none";
 
-            cards.forEach(card => {
-                let cardText = card.innerText.toLowerCase(); // Get all text inside the card
-                if (cardText.includes(searchValue)) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
+        cards.forEach((card) => {
+          let cardText = card.innerText.toLowerCase(); // Get all text inside the card
+          if (cardText.includes(searchValue)) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
 
-        function filterByTag(tag) {
-            let cards = document.querySelectorAll(".card");
-            cards.forEach(card => {
-                let cardTag = card.getAttribute("data-tag");
-                if (tag === 'all' || cardTag === tag) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
+      function filterByTag(tag) {
+        let cards = document.querySelectorAll(".card");
+        cards.forEach((card) => {
+          let cardTag = card.getAttribute("data-tag");
+          if (tag === "all" || cardTag === tag) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
 
-        function clearSearch() {
-            let input = document.getElementById("searchBar");
-            let clearBtnContainer = document.querySelector(".ThemeBtn-container");
-            let cards = document.querySelectorAll(".card");
+      function clearSearch() {
+        let input = document.getElementById("searchBar");
+        let clearBtnContainer = document.querySelector(".ThemeBtn-container");
+        let cards = document.querySelectorAll(".card");
 
-            // Clear the search input
-            input.value = "";
-            clearBtnContainer.style.display = "none"; // Hide the clear button
+        // Clear the search input
+        input.value = "";
+        clearBtnContainer.style.display = "none"; // Hide the clear button
 
-            cards.forEach(card => {
-                card.style.display = "flex";
-            });
-        }
-
+        cards.forEach((card) => {
+          card.style.display = "flex";
+        });
+      }
     </script>
-</body>
+  </body>
 </html>

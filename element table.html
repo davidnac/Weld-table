@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Searchable Welding Wire Table</title>
+    <title>Elements table</title>
+    <link rel="shortcut icon" href="Images/favicon.png" type="image/png" />
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -73,13 +75,13 @@
         vertical-align: top;
       }
 
-      thead{
+      thead {
         position: sticky;
         top: 0; /* Make header sticky */
         z-index: 3; /* Ensure header stays above table content - was 1 i changed to 0 */
       }
 
-      thead input{
+      thead input {
         border: none;
         border-radius: none;
       }
@@ -100,7 +102,6 @@
         align-items: center;
         text-align: center;
         cursor: pointer;
-
       }
       tr:nth-child(even) {
         background-color: #f9f9f9;
@@ -480,7 +481,16 @@
       </div>
 
       <div>
-        <input class="small" type="number" id="sensitivity" placeholder="Sensitivity, %" min="0" max="100" value="15" oninput="filterTable()"/>
+        <input
+          class="small"
+          type="number"
+          id="sensitivity"
+          placeholder="Sensitivity, %"
+          min="0"
+          max="100"
+          value="15"
+          oninput="filterTable()"
+        />
         <span class="error-message"></span>
       </div>
 
@@ -2338,7 +2348,28 @@
             <td>-</td>
           </tr>
           <tr>
-            <td>M50</td><td>0 - 0.3</td><td>-</td><td>3.75 - 4.5</td><td>3.9 - 4.75</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Bal.</td><td>0.78 - 0.88</td><td>0.15 - 0.45</td><td>0.2 - 0.6</td><td>-</td><td>0.8 - 1.25</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+            <td>M50</td>
+            <td>0 - 0.3</td>
+            <td>-</td>
+            <td>3.75 - 4.5</td>
+            <td>3.9 - 4.75</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Bal.</td>
+            <td>0.78 - 0.88</td>
+            <td>0.15 - 0.45</td>
+            <td>0.2 - 0.6</td>
+            <td>-</td>
+            <td>0.8 - 1.25</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
           </tr>
         </tbody>
       </table>
@@ -2362,7 +2393,7 @@
 
     <script>
       ///////////FIND FILTER COLUMN BY NAME, SO ORDER OF ELEMENTS IN TABLE IS UNIMPORTANT//////////////////////////
-/*
+      /*
       // Add event listener for clicks on the inputs
       document.querySelectorAll(".filter").forEach((input) => {
         input.addEventListener("click", function () {
@@ -2453,11 +2484,14 @@
               } else {
                 cellValue = parseFloat(cellText); // Fallback in case of malformed data
               }
-            } else if(cellText.toLowerCase() === "bal." || cellText.toLowerCase() === "balance"){
-              console.log("in balance")
+            } else if (
+              cellText.toLowerCase() === "bal." ||
+              cellText.toLowerCase() === "balance"
+            ) {
+              console.log("in balance");
               cellValue = calculateBalance(row, colIndex); // Compute balance
-              console.log(cellValue)
-            }else{
+              console.log(cellValue);
+            } else {
               cellValue = parseFloat(cellText);
             }
 
@@ -2533,7 +2567,6 @@
 
       //sort columns
       function sortTable(cell) {
-
         let table = document.getElementById("data-table");
         let tbody = table.querySelector("tbody"); // Ensure tbody is selected
         let rows = Array.from(tbody.rows); // Get only tbody rows (skip the header)
@@ -2565,15 +2598,16 @@
         rows.forEach((row) => tbody.appendChild(row));
       }
 
-
-
       // Parse cell value to handle ranges and other types of values
       function parseCellValue(value, row = null, colIndex = null) {
         value = value.trim();
 
         if (value === "-") return 0; // "-" is treated as zero
 
-        if (value.toLowerCase() === "bal." || value.toLowerCase() === "balance") {
+        if (
+          value.toLowerCase() === "bal." ||
+          value.toLowerCase() === "balance"
+        ) {
           return calculateBalance(row, colIndex); // Compute balance dynamically
         }
 
@@ -2594,8 +2628,6 @@
         return parseFloat(value) || 0; // Convert to number, default to 0
       }
 
-
-
       // Calculate balance from row by summing other cell values
       function calculateBalance(row, colIndex) {
         let total = 0;
@@ -2609,7 +2641,6 @@
         }
         return 100 - total; // Balance is 100 - SUM(other values)
       }
-
 
       //clear all inputs
       function clearInputs() {
@@ -3819,80 +3850,80 @@
         }
       };
       function hideUnselectedColumns(tableId) {
-  const table = document.getElementById(tableId);
-  if (!table) return;
+        const table = document.getElementById(tableId);
+        if (!table) return;
 
-  const thead = table.querySelector("thead");
-  const tbody = table.querySelector("tbody");
+        const thead = table.querySelector("thead");
+        const tbody = table.querySelector("tbody");
 
-  if (!thead || !tbody) return;
+        if (!thead || !tbody) return;
 
-  const headers = thead.querySelectorAll("th");
-  const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
+        const headers = thead.querySelectorAll("th");
+        const theadCells = thead.querySelectorAll("td"); // Select any <td> inside <thead>
 
-  // Select the second row of the <thead>
-  const secondRow = thead.rows[1];
+        // Select the second row of the <thead>
+        const secondRow = thead.rows[1];
 
-  headers.forEach((th, index) => {
-    // Extract text from <th>
-    const text = th.textContent.trim();
+        headers.forEach((th, index) => {
+          // Extract text from <th>
+          const text = th.textContent.trim();
 
-    // Extract element symbol from header text
-    const match = text.match(/\((\w+)\)/);
-    if (match) {
-      const elementSymbol = match[1]; // Extracted symbol
-      if (!selectedElements.has(elementSymbol)) {
-        // Hide the <th>
-        th.style.display = "none";
+          // Extract element symbol from header text
+          const match = text.match(/\((\w+)\)/);
+          if (match) {
+            const elementSymbol = match[1]; // Extracted symbol
+            if (!selectedElements.has(elementSymbol)) {
+              // Hide the <th>
+              th.style.display = "none";
 
-        // Hide corresponding <td> in <thead> (if present)
-        if (theadCells[index]) {
-          theadCells[index].style.display = "none";
-        }
+              // Hide corresponding <td> in <thead> (if present)
+              if (theadCells[index]) {
+                theadCells[index].style.display = "none";
+              }
 
-        // Hide corresponding column cells in tbody
-        tbody.querySelectorAll("tr").forEach((row) => {
-          const cells = row.querySelectorAll("td");
-          if (cells[index]) {
-            cells[index].style.display = "none";
+              // Hide corresponding column cells in tbody
+              tbody.querySelectorAll("tr").forEach((row) => {
+                const cells = row.querySelectorAll("td");
+                if (cells[index]) {
+                  cells[index].style.display = "none";
 
-            // Hide any inputs or elements inside the <td>
-            cells[index].querySelectorAll("*").forEach((child) => {
-              child.style.display = "none";
-            });
+                  // Hide any inputs or elements inside the <td>
+                  cells[index].querySelectorAll("*").forEach((child) => {
+                    child.style.display = "none";
+                  });
+                }
+              });
+
+              // Also hide the cell in the second row of <thead>
+              if (secondRow && secondRow.cells[index]) {
+                secondRow.cells[index].style.display = "none";
+              }
+            } else {
+              // If the element is selected, make the column visible
+              th.style.display = "";
+              if (theadCells[index]) {
+                theadCells[index].style.display = "";
+              }
+              tbody.querySelectorAll("tr").forEach((row) => {
+                const cells = row.querySelectorAll("td");
+                if (cells[index]) {
+                  cells[index].style.display = "";
+
+                  // Show any inputs or elements inside the <td>
+                  cells[index].querySelectorAll("*").forEach((child) => {
+                    child.style.display = "";
+                  });
+                }
+              });
+
+              // Make the cell in the second row of <thead> visible
+              if (secondRow && secondRow.cells[index]) {
+                secondRow.cells[index].style.display = "";
+              }
+            }
           }
         });
-
-        // Also hide the cell in the second row of <thead>
-        if (secondRow && secondRow.cells[index]) {
-          secondRow.cells[index].style.display = "none";
-        }
-      } else {
-        // If the element is selected, make the column visible
-        th.style.display = "";
-        if (theadCells[index]) {
-          theadCells[index].style.display = "";
-        }
-        tbody.querySelectorAll("tr").forEach((row) => {
-          const cells = row.querySelectorAll("td");
-          if (cells[index]) {
-            cells[index].style.display = "";
-
-            // Show any inputs or elements inside the <td>
-            cells[index].querySelectorAll("*").forEach((child) => {
-              child.style.display = "";
-            });
-          }
-        });
-
-        // Make the cell in the second row of <thead> visible
-        if (secondRow && secondRow.cells[index]) {
-          secondRow.cells[index].style.display = "";
-        }
       }
-    }
-  });
-}
       let spectralChart = null;
       const ctx = document.getElementById("myChart").getContext("2d");
 

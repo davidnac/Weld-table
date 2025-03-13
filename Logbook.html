@@ -1,319 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Searchable Brazing Table</title>
-    <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logbook</title>
+    <link rel="shortcut icon" href="Images/favicon.png" type="image/png" />
 
-    @font-face {
-        font-family: 'Montserrat-Medium';
-        src: url('Montserrat/static/Montserrat-Medium.ttf') format('truetype');
+    <style>
+      @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("Montserrat/static/Montserrat-Medium.ttf") format("truetype");
         font-weight: 500; /* Medium weight */
         font-style: normal;
-    }
-
-
-        body {
-            font-family: 'Montserrat-Medium', sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 25px;
-            margin-top: 30px;
-        }
-        input {
-            padding: 10px;
-            width: 25%;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input:focus{
-            border: solid 2px #98D8EF;
-            outline: none;
-        }
-
-        select {
-            width: 15%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 5px;
-        }
-        .table-container {
-            width: 96%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            height: 71vh; /* Fixed height of the table container */
-            overflow-y: auto; /* Enable vertical scrolling */
-            margin-bottom: 22px;
-            border-bottom: solid 2px #98D8EF;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-
-        }
-        th, td {
-            padding: 15px;
-            font-size: 15px;
-        }
-
-        th {
-            text-align: center;
-            background-color: #98D8EF;
-            color: white;
-            cursor: pointer;
-            position: sticky;
-            top: 0; /* Make header sticky */
-            z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .sort-icon {
-            margin-left: 5px;
-            font-size: 12px;
-        }
-        tr:hover {
-            background-color: #e0f7fa;
-        }
-
-
-        br {
-            display: block;
-            content: "";
-            margin-bottom: 10px; /* Adjust the space */
-        }
-        .highlighted {
-            background-color: #FFD95F !important;
-        }
-
-        .section a{
-          color: #3674B5;
-          margin-left: 12px;
-          margin-right: 12px;
-          text-align: center;
-          font-size: 14px;
-          text-transform: uppercase;
-          text-decoration: none;
-       }
-
-       ul {
-         list-style-type: none;
-         text-align: left;
-         padding-left: 25px; /* remove default padding */
       }
-       li {
-         padding: 5px 0;
-         font-size: 13px;
-       }
-       h4{
-         padding-left: 25px;
-       }
-       .controls{
-          display: flex;
-          justify-content: space-between;; /* Centers horizontally */
-          align-items: center;     /* Centers vertically */
 
-          width: 96%;
-          margin: 0 auto;
-          margin-bottom: 20px;
-       }
-       .clearButton{
-          display: none;
-          cursor: pointer;
-          font-size: 26px;
-          color: gray;
-          padding-left: 6px;
-       }
+      body {
+        font-family: "Montserrat-Medium", sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 25px;
+        margin-top: 30px;
+      }
+      input {
+        padding: 10px;
+        width: 25%;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      input:focus {
+        border: solid 2px #98d8ef;
+        outline: none;
+      }
 
-       button{
+      select {
+        width: 15%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 5px;
+      }
+      .table-container {
+        width: 96%;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        height: 71vh; /* Fixed height of the table container */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 22px;
+        border-bottom: solid 2px #98d8ef;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 15px;
+        font-size: 15px;
+      }
+
+      th {
+        text-align: center;
+        background-color: #98d8ef;
+        color: white;
+        cursor: pointer;
+        position: sticky;
+        top: 0; /* Make header sticky */
+        z-index: 0; /* Ensure header stays above table content - was 1 i changed to 0 */
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .sort-icon {
+        margin-left: 5px;
+        font-size: 12px;
+      }
+      tr:hover {
+        background-color: #e0f7fa;
+      }
+
+      br {
+        display: block;
+        content: "";
+        margin-bottom: 10px; /* Adjust the space */
+      }
+      .highlighted {
+        background-color: #ffd95f !important;
+      }
+
+      .section a {
+        color: #3674b5;
+        margin-left: 12px;
+        margin-right: 12px;
+        text-align: center;
+        font-size: 14px;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
+
+      ul {
+        list-style-type: none;
+        text-align: left;
+        padding-left: 25px; /* remove default padding */
+      }
+      li {
+        padding: 5px 0;
+        font-size: 13px;
+      }
+      h4 {
+        padding-left: 25px;
+      }
+      .controls {
+        display: flex;
+        justify-content: space-between; /* Centers horizontally */
+        align-items: center; /* Centers vertically */
+
+        width: 96%;
+        margin: 0 auto;
+        margin-bottom: 20px;
+      }
+      .clearButton {
+        display: none;
+        cursor: pointer;
+        font-size: 26px;
+        color: gray;
+        padding-left: 6px;
+      }
+
+      button {
         margin-left: 5px;
         padding: 10px 16px;
         color: white;
-        background-color: #3674B5;
+        background-color: #3674b5;
         border-radius: 5px;
         border: none;
         cursor: pointer;
-        font-family: 'Montserrat-Medium', sans-serif;
-       }
-       button:hover{
-        background-color: #578FCA;
-       }
-       .btn-delete{
-        background-color: #D70654;
-       }
-       .btn-delete:hover{
+        font-family: "Montserrat-Medium", sans-serif;
+      }
+      button:hover {
+        background-color: #578fca;
+      }
+      .btn-delete {
+        background-color: #d70654;
+      }
+      .btn-delete:hover {
         background-color: #ff4c4c;
-       }
+      }
 
-
-       .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background-color: #fff;
-            padding: 50px;
-            border-radius: 10px;
-            width: 55%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: relative;
-            text-align: left;
-        }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            row-gap: 20px;
-            column-gap: 50px;
-            align-items: center;
-        }
-        .modal-content h3{
-          margin-bottom: 30px;
-          margin-top: 0;
-        }
-        form label {
-            display: block;
-            font-weight: bold;
-        }
-        form input, form select {
-            width: 100%;
-            padding: 10px 6px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        form button {
-            background-color: #3674B5;
-            color: white;
-            border: none;
-            padding: 11px 15px;
-            cursor: pointer;
-            width: 100%;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-top: 15px;
-            margin-left: 0;
-            margin-right: 0;
-        }
-        form button:hover {
-            background-color: #578FCA;
-        }
-      </style>
-
-
-
-</head>
-<body>
-
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-content {
+        background-color: #fff;
+        padding: 50px;
+        border-radius: 10px;
+        width: 55%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+        text-align: left;
+      }
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 20px;
+        column-gap: 50px;
+        align-items: center;
+      }
+      .modal-content h3 {
+        margin-bottom: 30px;
+        margin-top: 0;
+      }
+      form label {
+        display: block;
+        font-weight: bold;
+      }
+      form input,
+      form select {
+        width: 100%;
+        padding: 10px 6px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      form button {
+        background-color: #3674b5;
+        color: white;
+        border: none;
+        padding: 11px 15px;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-top: 15px;
+        margin-left: 0;
+        margin-right: 0;
+      }
+      form button:hover {
+        background-color: #578fca;
+      }
+    </style>
+  </head>
+  <body>
     <h2>MRO Metallurgical Lab Logbook</h2>
     <div class="controls">
-      <input type="text" id="search" onkeyup="searchTable()" placeholder="Search for anything in the table...">
+      <input
+        type="text"
+        id="search"
+        onkeyup="searchTable()"
+        placeholder="Search for anything in the table..."
+      />
 
-    <div>
-        <span id="clearSearch" class="clearButton" onclick="clearSearch()">&times;</span>
+      <div>
+        <span id="clearSearch" class="clearButton" onclick="clearSearch()"
+          >&times;</span
+        >
         <button id="openModal">Add Entry</button>
         <button>Edit Operators</button>
         <button>Edit Work types</button>
-        <button id="editEntry" style="display: none;">Edit Entry</button>
-        <button id="deleteEntry" class="btn-delete" style="display: none;">Delete Entry</button>
-     </div>
-  </div>
-
-
+        <button id="editEntry" style="display: none">Edit Entry</button>
+        <button id="deleteEntry" class="btn-delete" style="display: none">
+          Delete Entry
+        </button>
+      </div>
+    </div>
 
     <div class="table-container">
-        <table id="dataTable2">
-            <thead>
-
-                <tr>
-                    <th>Work Number</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Operator</th>
-                    <th>Work Type</th>
-                    <th>Quantity</th>
-                    <th>Project/Engine Name</th>
-                    <th>Part Name</th>
-                    <th>Part Number</th>
-                    <th>Work Order</th>
-                    <th>Customer Department</th>
-                    <th>Comments</th>
-                </tr>
-            </thead>
-            <tbody>
-              <tr>
-                  <td>73712</td>
-                  <td>02-26-2025</td>
-                  <td>02-27-2025</td>
-                  <td>David nachmani</td>
-                  <td>Metallugraphy</td>
-                  <td>3</td>
-                  <td>CFM56</td>
-                  <td>Air seal</td>
-                  <td>72645</td>
-                  <td>5543342</td>
-                  <td>21e44</td>
-                  <td>none</td>
-              </tr>
-            </tbody>
-        </table>
-
+      <table id="dataTable2">
+        <thead>
+          <tr>
+            <th>Work Number</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Operator</th>
+            <th>Work Type</th>
+            <th>Quantity</th>
+            <th>Project/Engine Name</th>
+            <th>Part Name</th>
+            <th>Part Number</th>
+            <th>Work Order</th>
+            <th>Customer Department</th>
+            <th>Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>73712</td>
+            <td>02-26-2025</td>
+            <td>02-27-2025</td>
+            <td>David nachmani</td>
+            <td>Metallugraphy</td>
+            <td>3</td>
+            <td>CFM56</td>
+            <td>Air seal</td>
+            <td>72645</td>
+            <td>5543342</td>
+            <td>21e44</td>
+            <td>none</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
 
     <div id="inputModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>data</h3>
-            <form id="dataForm" class="form-grid" style="display: none;">
-                <label>Start Date: <input type="date" id="startDate"></label>
-                <label>End Date:
-                  <input type="date" id="endDate"></label>
-                <label>Operator:
-                    <select id="operator"></select>
-                </label>
-                <label>Work Type:
-                    <select id="workType"></select>
-                </label>
-                <label>Quantity: <input type="number" id="quantity"></label>
-                <label>Project/Engine Name: <input type="text" id="engineName"></label>
-                <label>Part Name: <input type="text" id="partName"></label>
-                <label>Part Number: <input type="text" id="partNumber"></label>
-                <label>Work Order: <input type="number" id="workOrder"></label>
-                <label>Customer Department: <input type="number" id="customerDept"></label>
-                <label>Comments: <input type="text" id="comments"></label>
-                <button type="submit">Save</button>
-            </form>
-        </div>
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>data</h3>
+        <form id="dataForm" class="form-grid" style="display: none">
+          <label>Start Date: <input type="date" id="startDate" /></label>
+          <label>End Date: <input type="date" id="endDate" /></label>
+          <label
+            >Operator:
+            <select id="operator"></select>
+          </label>
+          <label
+            >Work Type:
+            <select id="workType"></select>
+          </label>
+          <label>Quantity: <input type="number" id="quantity" /></label>
+          <label
+            >Project/Engine Name: <input type="text" id="engineName"
+          /></label>
+          <label>Part Name: <input type="text" id="partName" /></label>
+          <label>Part Number: <input type="text" id="partNumber" /></label>
+          <label>Work Order: <input type="number" id="workOrder" /></label>
+          <label
+            >Customer Department: <input type="number" id="customerDept"
+          /></label>
+          <label>Comments: <input type="text" id="comments" /></label>
+          <button type="submit">Save</button>
+        </form>
+      </div>
     </div>
 
-
-
     <script>
-
-       /*
+      /*
         edit and delete - hidden
         when marking row - they appear
         pressing them - opens modal with password
@@ -325,7 +326,7 @@
         input auto fill suggest
         */
 
-        document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", function () {
         let tableBody = document.querySelector("#dataTable2 tbody");
         let editButton = document.getElementById("editEntry");
         let deleteButton = document.getElementById("deleteEntry");
@@ -336,274 +337,312 @@
         let WorkNumber = 123;
 
         function highlightRow(row) {
-            document.querySelectorAll("#dataTable2 tbody tr").forEach(r => r.classList.remove("highlighted"));
-            row.classList.add("highlighted");
-            editButton.style.display = "inline-block";
-            deleteButton.style.display = "inline-block";
-            selectedRow = row;
+          document
+            .querySelectorAll("#dataTable2 tbody tr")
+            .forEach((r) => r.classList.remove("highlighted"));
+          row.classList.add("highlighted");
+          editButton.style.display = "inline-block";
+          deleteButton.style.display = "inline-block";
+          selectedRow = row;
         }
 
         function attachRowListeners(row) {
-            row.addEventListener("click", function (event) {
-                highlightRow(row);
-                event.stopPropagation();
-            });
+          row.addEventListener("click", function (event) {
+            highlightRow(row);
+            event.stopPropagation();
+          });
         }
 
-        document.querySelectorAll("#dataTable2 tbody tr").forEach(attachRowListeners);
+        document
+          .querySelectorAll("#dataTable2 tbody tr")
+          .forEach(attachRowListeners);
 
         function openModal(isEdit = false) {
-            modal.style.display = "flex";
-            form.style.display = "grid"; // Always show the form
-            populateSelect("operator", operators);
-            populateSelect("workType", workTypes);
-            if (!isEdit) {
-                form.reset();
-                let header = document.querySelector(".modal-content h3");
-                WorkNumber = getNextWorkNumber();
-                console.log(WorkNumber);
-                header.textContent = `Work No. ${WorkNumber}`;
-            }
+          modal.style.display = "flex";
+          form.style.display = "grid"; // Always show the form
+          populateSelect("operator", operators);
+          populateSelect("workType", workTypes);
+          if (!isEdit) {
+            form.reset();
+            let header = document.querySelector(".modal-content h3");
+            WorkNumber = getNextWorkNumber();
+            console.log(WorkNumber);
+            header.textContent = `Work No. ${WorkNumber}`;
+          }
         }
 
         // Open Edit Modal and Populate Data
         editButton.addEventListener("click", function (event) {
-            if (!selectedRow) return;
+          if (!selectedRow) return;
 
-            let cells = selectedRow.getElementsByTagName("td");
-            let inputs = form.querySelectorAll("input, select");
-            let header = document.querySelector(".modal-content h3");
-            WorkNumber = cells[0].textContent;
-            header.textContent = `Work No. ${WorkNumber}`;
+          let cells = selectedRow.getElementsByTagName("td");
+          let inputs = form.querySelectorAll("input, select");
+          let header = document.querySelector(".modal-content h3");
+          WorkNumber = cells[0].textContent;
+          header.textContent = `Work No. ${WorkNumber}`;
 
-            inputs.forEach((input, index) => {
-                if (input.tagName === "SELECT") {
-                    let optionExists = [...input.options].some(option => option.value === cells[index]?.textContent);
-                    if (optionExists) {
-                        input.value = cells[index]?.textContent;
-                    }
-                } else {
-                    input.value = cells[index]?.textContent || "";
-                    console.log(input)
-                    console.log(cells[index]?.textContent)
-                }
-            });
+          inputs.forEach((input, index) => {
+            if (input.tagName === "SELECT") {
+              let optionExists = [...input.options].some(
+                (option) => option.value === cells[index]?.textContent
+              );
+              if (optionExists) {
+                input.value = cells[index]?.textContent;
+              }
+            } else {
+              input.value = cells[index]?.textContent || "";
+              console.log(input);
+              console.log(cells[index]?.textContent);
+            }
+          });
 
-            openModal(true); // Open in edit mode
-            event.stopPropagation();
+          openModal(true); // Open in edit mode
+          event.stopPropagation();
         });
 
         // Open Modal for Adding New Row (Clear Form)
         openModalButton.addEventListener("click", function () {
-            openModal(false); // Open in add mode
-            selectedRow = null;
+          openModal(false); // Open in add mode
+          selectedRow = null;
         });
 
         // Save Data (New Row or Edit Existing)
         form.onsubmit = function (event) {
-            event.preventDefault();
-            let inputs = form.querySelectorAll("input, select");
+          event.preventDefault();
+          let inputs = form.querySelectorAll("input, select");
 
-            if (selectedRow) {
-              //edit row
-                let cells = selectedRow.getElementsByTagName("td");
-                cells[0].textContent = WorkNumber;
-                inputs.forEach((input, index) => {
-                    if (cells[index+1]) {
-                        cells[index+1].textContent = input.value;
-                    }
-                });
-            } else {
-              //new row
-                let newRow = tableBody.insertRow();
-                let newCell = newRow.insertCell();
-                newCell.textContent = WorkNumber;
+          if (selectedRow) {
+            //edit row
+            let cells = selectedRow.getElementsByTagName("td");
+            cells[0].textContent = WorkNumber;
+            inputs.forEach((input, index) => {
+              if (cells[index + 1]) {
+                cells[index + 1].textContent = input.value;
+              }
+            });
+          } else {
+            //new row
+            let newRow = tableBody.insertRow();
+            let newCell = newRow.insertCell();
+            newCell.textContent = WorkNumber;
 
-                inputs.forEach(input => {
-                    let newCell = newRow.insertCell();
-                    newCell.textContent = input.value;
-                });
+            inputs.forEach((input) => {
+              let newCell = newRow.insertCell();
+              newCell.textContent = input.value;
+            });
 
-                attachRowListeners(newRow);
-            }
+            attachRowListeners(newRow);
+          }
 
-            modal.style.display = "none";
+          modal.style.display = "none";
         };
 
         // Delete Row
         deleteButton.addEventListener("click", function (event) {
-            if (selectedRow) {
-                selectedRow.remove();
-                editButton.style.display = "none";
-                deleteButton.style.display = "none";
-                selectedRow = null;
-            }
-            event.stopPropagation();
+          if (selectedRow) {
+            selectedRow.remove();
+            editButton.style.display = "none";
+            deleteButton.style.display = "none";
+            selectedRow = null;
+          }
+          event.stopPropagation();
         });
 
         // Click Outside to Remove Highlight & Hide Buttons
         document.addEventListener("click", function (event) {
-            if (!event.target.closest("table") && !event.target.closest(".controls") && !event.target.closest(".modal")) {
-                document.querySelectorAll("#dataTable2 tbody tr").forEach(row => row.classList.remove("highlighted"));
-                editButton.style.display = "none";
-                deleteButton.style.display = "none";
-                selectedRow = null;
-            }
+          if (
+            !event.target.closest("table") &&
+            !event.target.closest(".controls") &&
+            !event.target.closest(".modal")
+          ) {
+            document
+              .querySelectorAll("#dataTable2 tbody tr")
+              .forEach((row) => row.classList.remove("highlighted"));
+            editButton.style.display = "none";
+            deleteButton.style.display = "none";
+            selectedRow = null;
+          }
         });
 
         // Close Modal
         document.querySelector(".close").addEventListener("click", function () {
-            modal.style.display = "none";
+          modal.style.display = "none";
         });
 
         window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        };
-    });
-
-
-
-
-
-        function searchTable() {
-          let input = document.getElementById("search");
-          let searchValue = input.value.trim();
-          let clearBtn = document.getElementById("clearSearch");
-
-          // Show the clear button only if there is text in the search box
-          clearBtn.style.display = searchValue ? "block" : "none";
-
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
-
-          let rows = table.getElementsByTagName("tr");
-
-          for (let i = 1; i < rows.length; i++) {
-              if (rows[i].getElementsByTagName("th").length > 0) {
-                  continue; // Skip header rows
-              }
-
-              let cells = rows[i].getElementsByTagName("td");
-              let found = false;
-
-              for (let j = 0; j < cells.length; j++) {
-                  let cell = cells[j];
-
-                  // Clear previous highlights: remove all <span> elements and preserve their content
-                  cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, '');
-
-                  if (searchValue && cell.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
-                      highlightTextInElement(cell, searchValue);
-                      found = true;
-                  }
-              }
-
-              // Show row if a match is found, otherwise hide it
-              rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+          if (event.target === modal) {
+            modal.style.display = "none";
           }
+        };
+      });
+
+      function searchTable() {
+        let input = document.getElementById("search");
+        let searchValue = input.value.trim();
+        let clearBtn = document.getElementById("clearSearch");
+
+        // Show the clear button only if there is text in the search box
+        clearBtn.style.display = searchValue ? "block" : "none";
+
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
+
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+          if (rows[i].getElementsByTagName("th").length > 0) {
+            continue; // Skip header rows
+          }
+
+          let cells = rows[i].getElementsByTagName("td");
+          let found = false;
+
+          for (let j = 0; j < cells.length; j++) {
+            let cell = cells[j];
+
+            // Clear previous highlights: remove all <span> elements and preserve their content
+            cell.innerHTML = cell.innerHTML.replace(/<\/?span[^>]*>/gi, "");
+
+            if (
+              searchValue &&
+              cell.textContent.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              highlightTextInElement(cell, searchValue);
+              found = true;
+            }
+          }
+
+          // Show row if a match is found, otherwise hide it
+          rows[i].style.display = searchValue ? (found ? "" : "none") : "";
+        }
       }
 
-        // Recursive function to highlight text while preserving HTML structure
-        function highlightTextInElement(element, searchValue) {
-            let regex = new RegExp(`(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi"); // Escape special characters
+      // Recursive function to highlight text while preserving HTML structure
+      function highlightTextInElement(element, searchValue) {
+        let regex = new RegExp(
+          `(${searchValue.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`,
+          "gi"
+        ); // Escape special characters
 
-            function highlightNode(node) {
-                if (node.nodeType === 3) { // TEXT_NODE
-                    let parent = node.parentNode;
-                    let text = node.nodeValue;
+        function highlightNode(node) {
+          if (node.nodeType === 3) {
+            // TEXT_NODE
+            let parent = node.parentNode;
+            let text = node.nodeValue;
 
-                    if (text.toLowerCase().includes(searchValue.toLowerCase())) {
-                        let tempWrapper = document.createElement("span");
-                        tempWrapper.innerHTML = text.replace(regex, `<span style="color: red; font-weight: bold;">$1</span>`);
+            if (text.toLowerCase().includes(searchValue.toLowerCase())) {
+              let tempWrapper = document.createElement("span");
+              tempWrapper.innerHTML = text.replace(
+                regex,
+                `<span style="color: red; font-weight: bold;">$1</span>`
+              );
 
-                        while (tempWrapper.firstChild) {
-                            parent.insertBefore(tempWrapper.firstChild, node);
-                        }
-                        parent.removeChild(node);
-                    }
-                } else {
-                    // Recursively process child nodes
-                    for (let i = node.childNodes.length - 1; i >= 0; i--) {
-                        highlightNode(node.childNodes[i]);
-                    }
-                }
+              while (tempWrapper.firstChild) {
+                parent.insertBefore(tempWrapper.firstChild, node);
+              }
+              parent.removeChild(node);
             }
-
-            highlightNode(element);
+          } else {
+            // Recursively process child nodes
+            for (let i = node.childNodes.length - 1; i >= 0; i--) {
+              highlightNode(node.childNodes[i]);
+            }
+          }
         }
 
+        highlightNode(element);
+      }
 
       function clearSearch() {
-          let input = document.getElementById("search");
-          let clearBtn = document.getElementById("clearSearch");
+        let input = document.getElementById("search");
+        let clearBtn = document.getElementById("clearSearch");
 
-          // Clear the search input
-          input.value = "";
-          clearBtn.style.display = "none"; // Hide the clear button
+        // Clear the search input
+        input.value = "";
+        clearBtn.style.display = "none"; // Hide the clear button
 
-          // Reset the table to show all rows
-          let table = document.querySelector("table:not([style*='display: none'])");
-          if (!table) return;
+        // Reset the table to show all rows
+        let table = document.querySelector(
+          "table:not([style*='display: none'])"
+        );
+        if (!table) return;
 
-          let rows = table.getElementsByTagName("tr");
-          for (let i = 1; i < rows.length; i++) {
-              rows[i].style.display = ""; // Make all rows visible again
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 1; i < rows.length; i++) {
+          rows[i].style.display = ""; // Make all rows visible again
 
-              // Remove any highlighting
-              let cells = rows[i].getElementsByTagName("td");
-              for (let j = 0; j < cells.length; j++) {
-                  cells[j].innerHTML = cells[j].textContent;
-              }
+          // Remove any highlighting
+          let cells = rows[i].getElementsByTagName("td");
+          for (let j = 0; j < cells.length; j++) {
+            cells[j].innerHTML = cells[j].textContent;
           }
+        }
       }
 
+      const operators = [
+        "David nachmani",
+        "Oz avraham",
+        "Doron gur",
+        "Dima ganelin",
+        "Uri baranes",
+        "Sharon rad",
+        "Michael kab",
+      ];
+      const workTypes = [
+        "Metallugraphy",
+        "Hardness",
+        "Tensile/Shear",
+        "SEM/EDS",
+        "XRF",
+        "NDT",
+        "Chemistry",
+      ];
+      let defaultWorkNumber = 73678;
 
-
-        const operators = ["David nachmani", "Oz avraham", "Doron gur", "Dima ganelin", "Uri baranes", "Sharon rad", "Michael kab"];
-        const workTypes = ["Metallugraphy", "Hardness","Tensile/Shear", "SEM/EDS", "XRF", "NDT", "Chemistry"];
-        let defaultWorkNumber = 73678;
-
-        function getNextWorkNumber() {
-            let table = document.getElementById("dataTable2").getElementsByTagName('tbody')[0];
-            if (table.rows.length === 0) {
-                return defaultWorkNumber;
-            } else {
-                return parseInt(table.rows[table.rows.length - 1].cells[0].textContent) + 1;
-            }
+      function getNextWorkNumber() {
+        let table = document
+          .getElementById("dataTable2")
+          .getElementsByTagName("tbody")[0];
+        if (table.rows.length === 0) {
+          return defaultWorkNumber;
+        } else {
+          return (
+            parseInt(table.rows[table.rows.length - 1].cells[0].textContent) + 1
+          );
         }
+      }
 
-        function populateSelect(selectId, options) {
-            const select = document.getElementById(selectId);
-            select.innerHTML = "";
-            options.forEach(option => {
-                let opt = document.createElement("option");
-                opt.value = option;
-                opt.textContent = option;
-                select.appendChild(opt);
-            });
+      function populateSelect(selectId, options) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = "";
+        options.forEach((option) => {
+          let opt = document.createElement("option");
+          opt.value = option;
+          opt.textContent = option;
+          select.appendChild(opt);
+        });
+      }
+
+      document.getElementById("openModal").onclick = function () {
+        document.getElementById("inputModal").style.display = "flex";
+        document.getElementById("dataForm").style.display = "grid";
+        populateSelect("operator", operators);
+        populateSelect("workType", workTypes);
+      };
+
+      document.getElementsByClassName("close")[0].onclick = function () {
+        document.getElementById("inputModal").style.display = "none";
+        document.getElementById("dataForm").style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target === document.getElementById("inputModal")) {
+          document.getElementById("inputModal").style.display = "none";
+          document.getElementById("dataForm").style.display = "none";
         }
-
-        document.getElementById("openModal").onclick = function() {
-            document.getElementById("inputModal").style.display = "flex";
-            document.getElementById("dataForm").style.display = "grid";
-            populateSelect("operator", operators);
-            populateSelect("workType", workTypes);
-        };
-
-        document.getElementsByClassName("close")[0].onclick = function() {
-            document.getElementById("inputModal").style.display = "none";
-            document.getElementById("dataForm").style.display = "none";
-        };
-
-        window.onclick = function(event) {
-            if (event.target === document.getElementById("inputModal")) {
-                document.getElementById("inputModal").style.display = "none";
-                document.getElementById("dataForm").style.display = "none";
-            }
-        };
-
+      };
     </script>
-</body>
+  </body>
 </html>

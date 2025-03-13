@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Curve Fitting</title>
+    <title>XRD</title>
+    <link rel="shortcut icon" href="Images/favicon.png" type="image/png" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -131,7 +132,7 @@
       }
       p {
         white-space: pre-wrap;
-        margin-bottom: 35px;;
+        margin-bottom: 35px;
       }
       .divider {
         border-top: 1px solid #ccc; /* Light gray line */
@@ -890,14 +891,11 @@
     </div>
 
     <script>
-
       const multiplierThreshold = 30;
 
-      
       const resultsTableWithHead = document.getElementById("resultsTable");
       const matchResult = document.getElementById("matchResult");
       const calcError = document.getElementById("calcError");
-
 
       function updateChart() {
         const ctx = document.getElementById("xrdChart").getContext("2d");
@@ -993,7 +991,6 @@
           },
         });
 
-        
         const matchingRow = findMatchingRow(peaks);
 
         if (matchingRow) {
@@ -1089,14 +1086,15 @@
         let normalizedValues = normalizeValues(inverseD2);
         let multiplier = findMultiplier(normalizedValues[1]);
 
-        resultsTableWithHead.style.display = 'none';
+        resultsTableWithHead.style.display = "none";
 
-        if(multiplier > multiplierThreshold){
-              calcError.textContent = "Error calculating hkl, multiplier too large. probably not a cubic structure.";
-           return;
+        if (multiplier > multiplierThreshold) {
+          calcError.textContent =
+            "Error calculating hkl, multiplier too large. probably not a cubic structure.";
+          return;
         }
 
-        resultsTableWithHead.style.display = 'block';
+        resultsTableWithHead.style.display = "block";
 
         let ratios = normalizedValues.map((v) => Math.round(v * multiplier));
 
