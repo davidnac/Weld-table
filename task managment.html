@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f9f9f9;
+            padding: 12px;
+        }
+
+        .user-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 0 auto;
+            margin-top: 40px;
+            width: 1400px;
+        }
+
+        .user-card {
+            width: 150px;
+            padding: 10px;
+            padding-top: 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            background: white;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .user-card:hover {
+            transform: scale(1.05);
+        }
+
+        .user-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        select{
+            padding: 6px;
+            border: none;
+            border-radius: 5px;
+            
+        }
+
+               table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .file-button {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+            }
+
+            .file-button:hover {
+            background-color: #45a049;
+            }
+
+            .btnContainer{
+                margin-top: 40px;
+            }
+            p{
+                color: gray;
+                font-size: 12px;
+                margin-top: 0;
+            }
+            h3{
+                font-size: 17px;
+                margin-bottom: 5px;
+            }
+
+            .modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        width: 300px;
+        text-align: center;
+    }
+
+    .modal-content input {
+        width: 100%;
+        margin: 10px 0;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .modal-content button {
+        background: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .modal-content button:hover {
+        background: #0056b3;
+    }
+
+    .close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Materials & Process Engineering Tasks Management</h1>
+
+    <div class="btnContainer">
+
+    <button onclick="openUserModal()">Add User</button>
+
+    <button onclick="exportToCSV()">Export to CSV</button>
+    
+    <label for="fileInput" class="file-button">Import CSV</label>
+    <input type="file" id="fileInput" accept=".csv" onchange="importFromCSV()" style="display: none;">
+    </div>
+    
+    <div id="user-list" class="user-container"></div>
+
+    <div id="task-section" class="hidden">
+        <button onclick="goBack()">⬅ Back</button>
+        <h2 id="user-title"></h2>
+
+        <label for="category-filter">Filter by Category:</label>
+        <select id="category-filter" onchange="filterTasks()">
+            <option value="all">All</option>
+            <option value="Development">Development</option>
+            <option value="Design">Design</option>
+            <option value="Testing">Testing</option>
+        </select>
+
+        <label for="status-filter">Filter by Status:</label>
+        <select id="status-filter" onchange="filterTasks()">
+            <option value="all">All</option>
+            <option value="Finished">Finished</option>
+            <option value="Open">Open</option>
+            <option value="Problem">Problem</option>
+        </select>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Notes</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="task-list"></tbody>
+        </table>
+        
+    </div>
+
+    
+<!-- User Modal -->
+<div id="user-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close" onclick="closeUserModal()">&times;</span>
+        <h2>Add New User</h2>
+        <label>Name:</label>
+        <input type="text" id="new-user-name">
+        <label>Title:</label>
+        <input type="text" id="new-user-title">
+        <label>Image URL:</label>
+        <input type="text" id="new-user-image">
+        <button onclick="addUser()">Add User</button>
+    </div>
+</div>
+
+
+
+    <script>
+        let users = [
+            
+            { id: 6, name: "Doron", title: "Lab Manager", image: "https://i.pravatar.cc/80?img=6" },    
+            { id: 3, name: "David", title: "Heat treatment, Brazing, Welding, Marking",image: "https://i.pravatar.cc/80?img=3" },
+            { id: 5, name: "Dima", title: "Plasma, Rubber, SVPA", image: "https://i.pravatar.cc/80?img=5" },
+            { id: 4, name: "Oz", title: "Shot peening, waterjet, Abrasive blast", image: "https://i.pravatar.cc/80?img=4" },
+            { id: 7, name: "Uri", title: "Materials", image: "https://i.pravatar.cc/80?img=7" },
+            { id: 9, name: "Yohan", title: "Blade engineer", image: "https://i.pravatar.cc/80?img=9" },
+            { id: 13, name: "Sirota", title: "Chemistry", image: "https://i.pravatar.cc/80?img=13" },
+            { id: 1, name: "Ella", title: "Chemistry", image: "https://i.pravatar.cc/80?img=1" },
+            { id: 2, name: "Svetlana", title: "Chemistry", image: "https://i.pravatar.cc/80?img=2" },
+            { id: 8, name: "Olga", title: "Chemistry", image: "https://i.pravatar.cc/80?img=8" },
+            { id: 12, name: "Michael", title: "NDT", image: "https://i.pravatar.cc/80?img=12" },
+            { id: 10, name: "Yuda", title: "Turning", image: "https://i.pravatar.cc/80?img=10" },
+            { id: 11, name: "Alex", title: "CNC", image: "https://i.pravatar.cc/80?img=11" },
+            
+            
+            { id: 14, name: "Sharon", title: "Manager", image: "https://i.pravatar.cc/80?img=14" }
+        ];
+
+        let tasks = {
+            1: [
+                { title: "Fix Bug #101", notes: "Urgent issue", date: "2025-03-15", category: "Development", status: "Open" },
+                { title: "Homepage Redesign", notes: "New UI", date: "2025-03-18", category: "Design", status: "Finished" }
+            ],
+            2: [
+                { title: "API Documentation", notes: "Write endpoint docs", date: "2025-03-12", category: "Development", status: "Finished" },
+                { title: "Unit Testing", notes: "Check coverage", date: "2025-03-14", category: "Testing", status: "Problem" }
+            ],
+            3: [
+                { title: "Improve UX", notes: "Better onboarding", date: "2025-03-20", category: "Design", status: "Open" },
+                { title: "Fix Mobile View", notes: "Adjust layout", date: "2025-03-21", category: "Development", status: "Problem" }
+            ]
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const userList = document.getElementById("user-list");
+            users.forEach(user => {
+                const userCard = document.createElement("div");
+                userCard.classList.add("user-card");
+                userCard.innerHTML = `<img src="${user.image}" alt="${user.name}"><h3>${user.name}</h3><p>${user.title}</p>`;
+                userCard.onclick = () => showTasks(user.id, user.name);
+                userList.appendChild(userCard);
+            });
+        });
+
+        function showTasks(userId, userName) {
+            document.getElementById("user-list").classList.add("hidden");
+            document.querySelector(".btnContainer").classList.add("hidden");
+            document.getElementById("task-section").classList.remove("hidden");
+            document.getElementById("user-title").innerText = `${userName}'s Tasks`;
+            filterTasks();
+        }
+
+        function filterTasks() {
+            const userName = document.getElementById("user-title").innerText.split("'s")[0];
+            const userId = users.find(user => user.name === userName)?.id;
+
+            const category = document.getElementById("category-filter").value;
+            const status = document.getElementById("status-filter").value;
+            const taskList = document.getElementById("task-list");
+            taskList.innerHTML = "";
+
+            tasks[userId]?.filter(task =>
+                (category === "all" || task.category === category) &&
+                (status === "all" || task.status === status)
+            ).forEach(task => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${task.title}</td><td>${task.notes}</td><td>${task.date}</td><td>${task.category}</td><td>${task.status}</td>`;
+                taskList.appendChild(row);
+            });
+        }
+
+        function goBack() {
+            document.getElementById("task-section").classList.add("hidden");
+            document.getElementById("user-list").classList.remove("hidden");
+            document.querySelector(".btnContainer").classList.remove("hidden");
+        }
+
+
+        function renderUserList() {
+        const userList = document.getElementById("user-list");
+        userList.innerHTML = "";
+        users.forEach(user => {
+            const userCard = document.createElement("div");
+            userCard.classList.add("user-card");
+            userCard.innerHTML = `<img src="${user.image}" alt="${user.name}"><h3>${user.name}</h3><p>${user.title}</p>`;
+            userCard.onclick = () => showTasks(user.id, user.name);
+            userList.appendChild(userCard);
+        });
+    }
+
+        
+    function openUserModal() {
+        document.getElementById("user-modal").classList.remove("hidden");
+    }
+
+    function closeUserModal() {
+        document.getElementById("user-modal").classList.add("hidden");
+    }
+
+    function addUser() {
+        const name = document.getElementById("new-user-name").value;
+        const title = document.getElementById("new-user-title").value;
+        const image = document.getElementById("new-user-image").value || "https://i.pravatar.cc/80";
+        
+        if (!name || !title) {
+            alert("Please enter both name and title");
+            return;
+        }
+
+        const newUser = { id: Date.now(), name, title, image };
+        users.push(newUser);
+        renderUserList();
+        closeUserModal();
+    }
+
+
+        function exportToCSV() {
+            let csvContent = "User,Title,Notes,Date,Category,Status\n";
+            users.forEach(user => {
+                tasks[user.id]?.forEach(task => {
+                    csvContent += `${user.name},${task.title},${task.notes},${task.date},${task.category},${task.status}\n`;
+                });
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.setAttribute("href", URL.createObjectURL(blob));
+            link.setAttribute("download", "tasks.csv");
+            document.body.appendChild(link);
+            link.click();
+
+        }
+
+        function importFromCSV() {
+            const file = document.getElementById("fileInput").files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const rows = e.target.result.split("\n").slice(1);
+                tasks = {};
+
+                rows.forEach(row => {
+                    const [userName, title, notes, date, category, status] = row.split(",");
+                    const user = users.find(u => u.name === userName);
+                    if (user) {
+                        tasks[user.id] = tasks[user.id] || [];
+                        tasks[user.id].push({ title, notes, date, category, status });
+                    }
+                });
+
+                alert("Tasks Imported!");
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
